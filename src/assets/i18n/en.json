@@ -1,0 +1,124 @@
+{
+    "header": {
+        "search": {
+            "PLACEHOLDER": "Type and hit enter.."
+        }
+    },
+    "offsidebar": {
+        "setting": {
+            "SETTINGS": "Settings"
+        }
+    },
+    "sidebar": {
+        "WELCOME": "Welcome",
+        "heading": {
+            "HEADER": "Menu Heading"
+        },
+        "nav": {
+            "SINGLEVIEW": "Single View"
+        }
+    },
+    "dashboard": {
+        "WELCOME": "Welcome"
+    },
+    "user": {
+        "USER":"User",
+        "FNAME":"First Name",
+        "LNAME":"Last Name",
+        "EMAIL":"Email",
+        "STORE":"Store",
+        "ROLE":"Role",
+        "CREATE":"Create",
+        "EDIT":"Edit",
+        "ADDNEWUSER": "Add User"
+        
+    },
+    "button": {
+        "SAVEBTN":"Save",
+        "CANCELBTN":"Cancel",
+        "DELETEBTN":"Delete"
+    },
+    "validation":{
+        "NAMEISREQUIRED":"Name is required", 
+        "URLREQUIRED":"Web URL is required",       
+        "PAASWORDREQUIRED":"Password is required",
+        "FULLNAMEREQUIRED":"Full name is required",        
+        "EMAIL":"Email is required",
+        "TENDERREF":"Tender reference number is required",
+        "TENDERID":"Tender Id is required",
+        "LOCATION/CITY/AREA":"Location/City/Area name is required",
+        "PROJECTTYPEOFLANE":"Project type of lane is required",
+        "PROJECTLENGTH":"Project length is required",
+        "ELIGIBILITYCRITERIA":"Eligibility criteria is required",
+        "ANNUALFINANCIALTURNOVER":"Annual Financial TurnOver is required",
+        "TECHNICALCRITERIA":"Technical criteria is required",
+        "RESOURCES":"Resources are required",
+        "FUNDREQUIRD":"Fund requirement number is required",
+        "RATEQUOTE":"Rate quote is required",
+        "ESTIMATEDCONTRACTVALUE":"Estimated contract number is required",
+        "ESTIMATEDPROJECTVALUE":"Estimated project number is required",
+        "PERIODOFCOMPLETION":"Period of completion is required",
+        "CONSORTIUM":"Consortium is required",
+        "BIDDOCUMENTFEE":"Bid DocumentFee number is required",
+        "BIDDOCUENTFEEINFORMOF":"Bid DocumentFee In FormOf is required",
+        "BIDSECURITY":"Bid security number is required",
+        "BIDSECURITYINFORMOF":"Bid Security InFormOf is required",
+        "PUBLISHEDDATE":"Published date is required",
+        "PREBIDMEETING":"PreBid meeting date is required",
+        "PREBIDMEETINGTIME":"PreBid meeting time is required",
+        "BIDSUBMISSIONLASTDATE":"Bid submission last end date is required",
+        "BIDSUBMISSIONTIME":"Bid submission time is required",
+        "BIDVALIDITYPERIOD":"Bid validity period is required",
+        "OFFLINESUBMISSIONLASTDATE":"Offline submission last date is required",
+        "OFFLINESUBMISSIONTIME":"Offline submission time is required",
+        "SCOPEOFWORK":"Scope of work is required",
+        "RESOURCESREQUIREMENT":"Resources requirement is required",
+        "REASONREQUIRED":"Reason is required",
+        "NUMBERREQUIRED":"This field must contain only numbers",
+        "EXPERIENCEREQUIRED":"Experience required",
+        "DESIGNATIONREQUIRED":"Designation required",
+        "DATEREQUIRED":"Date required",
+        "BRANCHREQUIRED":"Branch name is required",
+        "LEVELREQUIRED":"Level name is required",
+        "DEPARTMENTREQUIRED":"Department name is required",
+        "STATENAMEREQUIRED":"State name is required",
+        "INQUIRYREQUIRED":"Inquiry is required",
+        "WEBSITEREQUIRED":"Website is required",
+        "AUTHORITYREQUIRED":"Authority is required",
+        "AWARDOFWORKREQUIRED":"Awardofwork is required",
+        "CLIENTREQUIRED":"Client is required",
+        "FINALSTATUSFROMHODREQUIRED":"Final status from hod is required",
+        "INFAVOURREQUIRED":"In favour is required",
+        "TYPEOFWORKREQUIRED":"Type of work required",
+        "BGNUMBERREQUIRED":"DD/FD/BG number is required",
+        "VALIDUPTOREQUIRED":"Valid upto is required",
+        "NAMEOFBANKREQUIRED":"Name of bank is required",
+        "MODEOFSUBMISSION":"Mode of submission is required",
+        "DATEOFOPENING":"Date of opening is required"
+    },
+    "message": {
+        "UPDATEMSG":"Updated Successfully",
+        "CREATEMSG":"Created Successfully",
+        "DELETEMSG":"Deleted Successfully",
+        "INSERTMSG":"Inserted Successfully"
+    },
+    "toaster": {
+        "success": {
+            "TYPE":"success",
+            "TITLE":"Success"
+        }
+    },
+    "sweetalert": {
+        "SUCCESSICON":"success",
+        "WARNINGICON":"warning",
+        "TITLE":"Are you sure?",
+        "TEXT":"You will not be able to recover this record!",
+        "OKBUTTON":"OK",
+        "CANCELBUTTON":"No, cancel plx!",
+        "CONFIRMBUTTON":"Yes, delete it!",
+        "CANCELTEXT":"Your record is safe :)",
+        "SAVE":"Save",
+        "CANCEL":"Cancel",
+        "DELETE":"Delete"
+    }
+}

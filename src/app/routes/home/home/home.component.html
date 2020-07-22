@@ -1,0 +1,53 @@
+ <!-- <app-kanban-board></app-kanban-board>  -->
+
+<div class="row" style="padding-top: 4%;">
+    <div class="col-sm-1"></div>
+    <div class="col-lg-10">
+        <div class="card card-default shadow p-3 mb-5 bg-white rounded">
+            <div class="card-header">
+                <div class="row">
+                    <div class="col-md-3">Lunch a Web Audit</div>
+                    <div class="col-md-7"></div>
+                    <div class="col-md-2"><a href="#">View all Audits</a></div>
+                </div>
+            </div>
+            <div class="card-body" style="border: black 2px;">
+                <div class="row" >
+                    <div class="col-lg-10">
+                        <input class="form-control" placeholder="Website URL" style="height: 3.1575rem;">
+                    </div>
+                    <div class="col-lg-2">
+                        <button class="mr-1 btn btn-primary btn-lg" type="submit">RUN AUDIT</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+    </div>
+    <div class="col-sm-1"></div>
+</div>
+<div class="row">
+    <div class="col-md-1"></div>
+    <div class="col-md-3" style="font-size: larger;  font-weight: normal;
+    color: black;">Your Campagins</div>
+    <div class="col-md-5"></div>
+    <div class="col-md-2">
+        <button class="mr-1 btn btn-primary btn-lg" type="button" (click)="onClick()">Add a Campagin</button>
+ 
+    <div class="col-md-1"></div>
+</div>
+
+</div>
+<hr>
+<br>
+<div class="row">
+    <div class="col-md-1"></div>
+    <div class="col-md-10">
+        <div class="card card-default shadow p-3 mb-5 bg-white rounded">
+            <div class="table-responsive">
+                <ng2-smart-table [settings]="settings" [source]="tableData" (userRowSelect)="userRowSelect($event)"></ng2-smart-table>
+            </div>
+        </div>
+    </div>
+    <div class="col-md-1"></div>
+</div>

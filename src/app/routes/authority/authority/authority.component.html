@@ -1,0 +1,13 @@
+<form [formGroup]="valForm" class="form-horizontal" novalidate="">
+
+    <ngx-select [allowClear]="true" [items]="authority" optionValueField="id" optionTextField="name"
+        [disabled]="disabled" (data)="refreshValue($event)" (select)="selectAuthority($event)"
+        (keyup.enter)="createAuthority(textvalue)" (removed)="removed($event)" (typed)="typed($event)"
+        placeholder="Authority" [title]="authorityName" formControlName="Name" [(ngModel)]="authorityName">
+    </ngx-select>
+
+    <span class="text-danger"
+        *ngIf="valForm.controls['Name'].hasError('required') && (valForm.controls['Name'].dirty || valForm.controls['Name'].touched)">
+        {{'validation.AUTHORITYREQUIRED' | translate}}</span>
+
+</form>

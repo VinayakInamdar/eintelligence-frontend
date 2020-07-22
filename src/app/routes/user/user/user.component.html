@@ -1,0 +1,13 @@
+
+    <div class="mb-3 clearfix">
+        <div class="pull-let wd-md">
+            <a routerLink="/user/createuser"><button
+                    class="mb-1 mr-1 btn btn-green btn-lg">{{'user.ADDNEWUSER' | translate}}</button></a>
+        </div>
+    </div>
+
+<div class="card card-default">
+    <div class="table-responsive">
+        <ng2-smart-table [settings]="settings" [source]="tableData" (userRowSelect)="userRowSelect($event)"></ng2-smart-table>
+    </div>
+</div>

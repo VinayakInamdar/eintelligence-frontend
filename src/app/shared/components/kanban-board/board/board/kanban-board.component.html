@@ -1,0 +1,75 @@
+<!-- <div class="container" style="max-width:inherit;width:auto;height:100%;" cdkDropListGroup>
+  <div class="row">
+    <div class="col-11"></div>
+  </div>
+  <div class="row" style="height:inherit;">
+    <app-list *ngFor="let list of lists;let i = index" [list]="list" [listIndex]="i"
+              (moveCardAcrossList)="moveCardAcrossList($event)"
+              (deleteList)="deleteList($event)"
+              attr.listIndex="{{i}}"
+              [id] = "list.status"
+              cdkDropList
+              [cdkDropListData]="list.cards"
+              (cdkDropListDropped)="drop($event)"
+    ></app-list> -->
+    <!-- <app-list *ngFor="let list of lists;let i = index" [list]="list" [listIndex]="i"              
+              attr.listIndex="{{i}}"
+              [id] = "list.status"
+              cdkDropList
+              [cdkDropListData]="list.cards"
+              (cdkDropListDropped)="drop($event)"
+    ></app-list> -->
+    <!-- <div class="col custom-col"
+         style="margin:10px;padding:15px;padding-top:15px;padding-bottom:15px;">
+      <h6 class="text-center add-new-list" (click)="addList()">Add new item...</h6>
+    </div>
+  </div>
+</div> -->
+
+<!-- <div class="board"> -->
+  <div>
+
+  <div class="board-bar">
+    <p class="board-title">{{ board.name }}</p>
+  </div>
+
+  <div class="board-wrapper">
+
+    <div class="board-columns row" cdkDropListGroup>
+      <div class="board-column col-md-4" *ngFor="let column of board.columns">
+
+        <div class="title">
+          {{ column.name }}
+        </div>
+
+        <div class="tasks-container"
+             cdkDropList
+             [cdkDropListData]="column.tasks"
+            (cdkDropListDropped)="drop($event)">
+          <div class="task" *ngFor="let item of column.tasks" cdkDrag>
+            <div class="example-custom-placeholder" *cdkDragPlaceholder></div>
+            <div class="task-body">
+              <h4 class="task-title" > 
+                <a href="javascript:void(0)">{{item.header }}  </a>  
+              </h4>
+              <div class="task-details">
+              <h6 class="source" >
+                Source: {{item.leadSource}}
+              </h6>
+              <h6 class="created-date" >
+                Created: {{item.createdDate}}
+              </h6>
+            </div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+    </div>
+
+  </div>
+
+</div>
+
+
+

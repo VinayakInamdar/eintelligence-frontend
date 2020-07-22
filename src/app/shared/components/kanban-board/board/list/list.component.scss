@@ -1,0 +1,44 @@
+@import '../../../../styles/app/variables.scss';
+.col {
+  background-color: #F5F5F5;
+  margin: 0px;
+  padding: 5px;
+  /* padding-top: 10px;
+  padding-bottom: 10px; */
+  border-top: solid 5px $info;
+  max-width: 270px;
+  
+}
+
+.text-center.add-new-card:hover {
+  opacity:0.9;
+  color:#767676;
+
+}
+
+.text-center.add-new-card {
+  font-size:14px;
+  color:#A6A6A6;
+  cursor:pointer;
+  opacity:0.4;
+  min-width: 230px;
+}
+
+.list-name{
+  font-weight: bold;
+  text-align: center;
+}
+
+.list{
+  background-color: #e7e9ea;
+
+}
+
+.list-highlight {
+  border-top: solid 5px $info;
+  border-left: 1px solid grey;
+  border-right: 1px solid grey;
+  border-bottom: 1px solid grey;
+}
+
+
