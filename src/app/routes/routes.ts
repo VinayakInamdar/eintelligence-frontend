@@ -74,6 +74,12 @@ export const routes: Routes = [
                 //canActivate: [RequireAuthenticatedUserRouteGuardService],
                 loadChildren: () => import('./account/account.module').then(m => m.AccountModule)
             },
+            {
+                path: 'analytics',
+                component: LayoutComponent,
+                //canActivate: [RequireAuthenticatedUserRouteGuardService],
+                loadChildren: () => import('./analytics/analytics.module').then(m => m.AnalyticsModule)
+            },
         ]
     },
     

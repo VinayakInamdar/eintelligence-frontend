@@ -2,7 +2,7 @@
 const Home = {
     text: 'Home',
     link: '/home',
-    icon: 'icon-home'
+    icon: 'icon-home',
 };
 const User = {
     text: 'User',
@@ -23,6 +23,11 @@ const Account = {
     //         link: '/account/branding'
     //     }
     // ]
+};
+const Analytics = {
+    text: 'Analytics',
+    link: '/analytics',
+    icon: "icon-chart"
 };
 // const Register = {
 //     text: 'Register',
@@ -55,5 +60,6 @@ export const menu = [
     headingMain,
     Home,
     User,
-    Account
+    Account,
+    Analytics
 ];
