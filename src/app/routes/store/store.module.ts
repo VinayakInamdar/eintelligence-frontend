@@ -1,21 +1,22 @@
 import { NgModule } from '@angular/core';
 import { CommonModule } from '@angular/common';
-import { Routes, RouterModule } from '@angular/router';
+import { StoreComponent } from './store/store.component';
 import { SharedModule } from 'src/app/shared/shared.module';
+import { RouterModule, Routes } from '@angular/router';
 import { Ng2SmartTableModule } from 'ng2-smart-table';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { HttpClientModule } from '@angular/common/http';
 import { FileUploadModule } from 'ng2-file-upload';
 import { NgxSelectModule } from 'ngx-select-ex';
-import { AccountComponent } from './account/account.component';
 import { NgxIntlTelInputModule } from 'ngx-intl-tel-input';
+import { CheckoutComponent } from './checkout/checkout.component';
 
 const routes: Routes = [
-  { path: '', component: AccountComponent }
+  { path: '', component: StoreComponent }
 ];
 
 @NgModule({
-  declarations: [AccountComponent],
+  declarations: [StoreComponent, CheckoutComponent],
   imports: [
     CommonModule,
     SharedModule,
@@ -29,9 +30,8 @@ const routes: Routes = [
     NgxSelectModule,
     NgxIntlTelInputModule
   ],
- 
-  exports: [
-    RouterModule,
-],
+  exports : [
+    RouterModule
+  ],
 })
-export class AccountModule { }
+export class StoreModule { }

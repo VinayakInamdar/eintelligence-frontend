@@ -1,0 +1,149 @@
+[
+      {
+        "id": 1,
+        "name": "SEO",
+        "plans": [
+          {
+            "planId": 1,
+            "name": "SEO Plus",
+            "title": "Our Entry Level SEO Workflow",
+            "subTitle": "Up to 20 hours of dedicated work from our seasoned Digital Marketers, Writers, Editors and Webmasters… ",
+            "features": [
+              "Keywords",
+              "Website Audit",
+              "Keyword Research",
+              "Technical SEO Optimization",
+              "On-page Content Optimization",
+              "Monthly Link Building",
+              "Monthly Reporting"
+            ],
+            "price": 375
+          },
+          {
+            "planId": 2,
+            "name": "SEO Premium",
+            "title": "Our Most Popular SEO Service",
+            "subTitle": "Up to 20 hours of dedicated work from our seasoned Digital Marketers, Writers, Editors and Webmasters… ",
+            "features": [
+              "20 Keywords",
+              "Website Audit",
+              "Keyword Research",
+              "Technical SEO Optimization",
+              "On-page Content Optimization",
+              "On-page Hygiene",
+              "Monthly Link Building",
+              "Monthly Reporting"
+            ],
+            "price": 575
+          },
+          {
+            "planId": 3,
+            "name": "SEO Prime",
+            "title": "Our Most Comprehensive SEO Workflow",
+            "subTitle": "61 hours of dedicated work from our most Senior Digital Marketers, Writers, Editors and Webmasters... ",
+            "features": [
+              "30 Keywords",
+              "Website Audit",
+              "Keyword Research",
+              "Advanced Technical SEO Optimization",
+              "On-page Content Optimization",
+              "Keystone Content Generation",
+              "On-page Hygiene",
+              "Monthly Link Building",
+              "Monthly Reporting"
+            ],
+            "price": 999
+          }
+        ]
+      },
+      {
+        "id": 2,
+        "name": "Link Building",
+        "plans": [
+          {
+            "planId": 4,
+            "name": "Link Building - DA10+",
+            "title": "Done for you outreach by our experts",
+            "subTitle": "Get quality link building done for you. Our team helps you gain ",
+            "features": [
+              "Guaranteed DA10+ Link",
+              "90-days Live Guaranteed",
+              "Fast Turnaround"
+            ],
+            "price": 375
+          },
+          {
+            "planId": 5,
+            "name": "Link Building - DA20+",
+            "title": "Done for you outreach by our experts",
+            "subTitle": "Get quality link building done for you. Our team helps you gain ",
+            "features": [
+              "Guaranteed DA20+ Link",
+              "90-days Live Guaranteed",
+              "Fast Turnaround"
+            ],
+            "price": 375
+          },
+          {
+            "planId": 6,
+            "name": "Link Building - DA30+",
+            "title": "Done for you outreach by our experts",
+            "subTitle": "Get quality link building done for you. Our team helps you gain ",
+            "features": [
+              "Guaranteed DA30+ Link",
+              "90-days Live Guaranteed",
+              "Fast Turnaround"
+            ],
+            "price": 375
+          },
+          {
+            "planId": 7,
+            "name": "Link Building - DA40+",
+            "title": "Done for you outreach by our experts",
+            "subTitle": "Get quality link building done for you. Our team helps you gain ",
+            "features": [
+              "Guaranteed DA40+ Link",
+              "90-days Live Guaranteed",
+              "Fast Turnaround"
+            ],
+            "price": 375
+          }
+        ]
+      },
+      {
+        "id": 3,
+        "name": "Agency Builder Packages",
+        "plans": [
+          {
+            "planId": 8,
+            "name": "Link Building - DA10+",
+            "title": "",
+            "subTitle": "Premium Wordpress Agency Website created with stock content. Including white label setup.",
+            "features": [
+              "Includes Up to 4 White Labeled Service Pages",
+              "Includes White Label Dashboard Setup",
+              "Includes White Label Web Design Portfolio",
+              "Stock Content Built In",
+              "5 Pages",
+              "Select From Our Digital Agency Mockups"
+            ],
+            "price": 375
+          },
+          {
+            "planId": 9,
+            "name": "Link Building - DA20+",
+            "title": "",
+            "subTitle": "All-in-One agency builder package: Premium agency website with original, high-quality content. ",
+            "features": [
+              "Select From Our Digital Agency Mockups",
+              "Includes White Label Dashboard Setup",
+              "Includes White Label Web Design Portfolio",
+              "Includes Inner Pages (Contact, About Us, Our Work)",
+              "Includes Up to 4 White Labeled Service Pages",
+              "Includes Original Content Done For You"
+            ],
+            "price": 375
+          }
+        ]
+      }
+]

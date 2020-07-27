@@ -24,6 +24,13 @@ const Account = {
     //     }
     // ]
 };
+
+const Store = {
+    text: 'Store',
+    link: '/store',
+    icon: "icon-user-follow"
+};
+
 // const Register = {
 //     text: 'Register',
 //     link: '/register',
@@ -55,5 +62,6 @@ export const menu = [
     headingMain,
     Home,
     User,
-    Account
+    Account,
+    Store
 ];

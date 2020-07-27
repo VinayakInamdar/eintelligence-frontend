@@ -74,6 +74,17 @@ export const routes: Routes = [
                 //canActivate: [RequireAuthenticatedUserRouteGuardService],
                 loadChildren: () => import('./account/account.module').then(m => m.AccountModule)
             },
+            {
+                path: 'store',
+                component: LayoutComponent,
+                //canActivate: [RequireAuthenticatedUserRouteGuardService],
+                loadChildren: () => import('./store/store.module').then(m => m.StoreModule)
+            },
+            {
+                path: 'checkout',
+                component: LayoutComponent,
+                loadChildren: () => import('./store/checkout/checkout.module').then(m => m.CheckoutModule)
+            },
         ]
     },
     
