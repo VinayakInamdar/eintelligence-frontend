@@ -29,6 +29,7 @@ export class AccountComponent implements OnInit {
   phoneForm = new FormGroup({
     phone: new FormControl(undefined, [Validators.required])
   });
+  settingActive = 1;
 
   //For Company Information state selection dropdown
   public state: Array<string> = ['Alabama', 'Alaska', 'Arizona', 'Arkansas', 'Byram', 'California',

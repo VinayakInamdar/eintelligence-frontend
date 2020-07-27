@@ -50,7 +50,7 @@ export class CampaginComponent implements OnInit {
   });
   }
   submitForm(value: any) {
-    debugger
+    
     var result: Campaign = Object.assign({}, value);
     //  result.profilePicture = this.fileToUpload.name
     

@@ -1,0 +1,151 @@
+<div class="row">
+    <div class="col-sm-3" style="padding: unset;">
+        <!-- max-width: 18%; -->
+        <div class="card">
+            <div class="card-body">
+                <p style="font-size: large;">Services</p><br>
+                <a (click)="settingActive=1" [ngClass]="{'active': (settingActive == 1)}"
+                    style=" font-weight:3px; font-size:14px;"><em class="fa-1.9x fas fa-code-branch"></em> &nbsp;SEO                    </a>
+                <hr>
+                <a (click)="settingActive=2" [ngClass]="{'active': (settingActive == 2)}"
+                    style=" font-weight:3px; font-size:14px;"><em class="fa-1.9x fas fa-code-branch"></em>
+                    &nbsp;Link Building</a>             
+                <hr>
+                <a (click)="settingActive=3" [ngClass]="{'active': (settingActive == 3)}"
+                    style=" font-weight:3px; font-size:14px;"><em class="fa-1.9x fas fa-code-branch"></em>
+                    &nbsp;Agency Building Packages</a>             
+                <hr>
+                <a (click)="settingActive=4" [ngClass]="{'active': (settingActive == 4)}"
+                    style=" font-weight:3px; font-size:14px;"><em class="fa-1.9x fas fa-code-branch"></em>
+                    &nbsp;Websites Development</a>             
+                <hr>
+                <a (click)="settingActive=5" [ngClass]="{'active': (settingActive == 5)}"
+                    style=" font-weight:3px; font-size:14px;"><em class="fa-1.9x fas fa-code-branch"></em>
+                    &nbsp;Paid Advertisement</a>             
+                <hr>
+                <a (click)="settingActive=6" [ngClass]="{'active': (settingActive == 6)}"
+                        style=" font-weight:3px; font-size:14px;"><em class="fa-1.9x fas fa-code-branch"></em>
+                        &nbsp;Content Marketing</a>     
+                        
+                        <hr>
+                <a (click)="settingActive=7" [ngClass]="{'active': (settingActive == 7)}"
+                    style=" font-weight:3px; font-size:14px;"><em class="fa-1.9x fas fa-code-branch"></em>
+                    &nbsp;Brand Design</a>             
+                                                          
+            </div>
+        </div>
+    </div>
+    <div class="col-md-9"  >
+
+        <div *ngFor="let product of products" >
+            <div *ngIf="settingActive == 1 && product.id == 1">
+                <div class="card b cart-container" >
+                    <div class="card-header" style="font-size: large;">{{product.name}}</div>
+                    <div class="container mt-2">                    
+                          <div class="row pad-18">                  
+                            <div class="col-md-4 col-sm-6 item"  *ngFor="let plan of product.plans">                                
+                                <div class="card item-card card-block-height card-block">                          
+                                  <h3 class="card-title font-weight-bold mt-3 mb-3">{{plan.name}}</h3>
+                                  <p class="">{{plan.title}}</p> 
+                                  <p class="service-link">
+                                   {{plan.subTitle}}
+                                </p>
+                                  <hr>
+                                <div class="pad-product-item" *ngFor="let feature of plan.features">
+                                    <ul>
+                                        <li>{{feature}}</li>                                                   
+                                    </ul>
+                            </div>
+                                  <div class="product-buttons-box">
+                                    <button class="btn btn-success btn-block btn-lg checkout-btn">
+                                        <a [routerLink]='["/checkout", plan ]'> BUY NOW for {{plan.price}}</a>
+                                       
+                                        <span data-toggle="popover"><i class="fa fa-info-circle"></i></span>
+                                    </button>
+                                    <button class="btn btn-secondary btn-block btn-lg checkout-btn">
+                                       Add To Cart
+                                       <span data-toggle="popover"><i class="fa fa fa-cart-plus"></i></span>
+                                    </button>   
+                                </div>
+                            </div>
+                            </div>                                          
+                          </div>                      
+                        </div>                    
+                </div>
+            </div>
+            <div *ngIf="settingActive == 2 && product.id == 2">
+                <div class="card b cart-container" >
+                    <div class="card-header" style="font-size: large;">{{product.name}}</div>
+                    <div class="container mt-2">                    
+                          <div class="row pad-18">                  
+                            <div class="col-md-3 col-sm-6 item"  *ngFor="let plan of product.plans">                                
+                                <div class="card item-card card-block">                          
+                                  <h3 class="card-title font-weight-bold mt-3 mb-3">{{plan.name}}</h3>
+                                  <p class="">{{plan.title}}</p> 
+                                  <p class="service-link">
+                                   {{plan.subTitle}}
+                                </p>
+                                  <hr>
+                                <div class="pad-product-item" *ngFor="let feature of plan.features">
+                                    <ul>
+                                        <li>{{feature}}</li>                                                   
+                                    </ul>
+                            </div>
+                                  <div class="product-buttons-box">
+                                    <button class="btn btn-success btn-block btn-lg checkout-btn">
+                                        BUY NOW for {{plan.price}}
+                                        <span data-toggle="popover"><i class="fa fa-info-circle"></i></span>
+                                    </button>         
+                                    <button class="btn btn-secondary btn-block btn-lg checkout-btn">
+                                        Add To Cart
+                                        <span data-toggle="popover"><i class="fa fa fa-cart-plus"></i></span>
+                                     </button>                         
+                                </div>
+                            </div>
+                            </div>                                          
+                          </div>                      
+                        </div>                    
+                </div>
+            </div>           
+            <div *ngIf="settingActive == 3 && product.id == 3">
+                <div class="card b cart-container" >
+                    <div class="card-header" style="font-size: large;">{{product.name}}</div>
+                    <div class="container mt-2">                    
+                          <div class="row pad-18">                  
+                            <div class="col-md-6 col-sm-6 item"  *ngFor="let plan of product.plans">                                
+                                <div class="card item-card card-block">                          
+                                  <h3 class="card-title font-weight-bold mt-3 mb-3">{{plan.name}}</h3>
+                                  <p class="">{{plan.title}}</p> 
+                                  <p class="service-link">
+                                   {{plan.subTitle}}
+                                </p>
+                                  <hr>
+                                <div class="pad-product-item" *ngFor="let feature of plan.features">
+                                    <ul>
+                                        <li>{{feature}}</li>                                                   
+                                    </ul>
+                            </div>
+                                  <div class="product-buttons-box">
+                                    <button class="btn btn-success btn-block btn-lg checkout-btn">
+                                        BUY NOW for {{plan.price}}
+                                        <span data-toggle="popover"><i class="fa fa-info-circle"></i></span>
+                                    </button>     
+                                    <button class="btn btn-secondary btn-block btn-lg checkout-btn">
+                                        Add To Cart
+                                        <span data-toggle="popover"><i class="fa fa fa-cart-plus"></i></span>
+                                     </button>                             
+                                </div>
+                            </div>
+                            </div>                                          
+                          </div>                      
+                        </div>                    
+                </div>
+            </div>
+            <div *ngIf="settingActive == 4 && product.id == 4">             
+            </div>
+        </div>
+      
+
+    </div>
+
+</div>

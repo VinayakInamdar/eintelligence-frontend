@@ -25,188 +25,7 @@
         </div>
     </div>
     <div class="col-md-9">
-        <div *ngIf="settingActive == 1">
-            <div class="card b">
-                <div class="card-header" style="font-size: large;">Account Setting</div>
-                <!-- <div class="col-md-7"> -->
-                <!-- <div class="card"> -->
-                <div class="card-body">
-                    <div class="row">
-                        <div class="col-md-9">
-                            <div class="panel panel-default">
-                                <div class="panel-heading" style="padding:0px; margin-bottom: 0px;">
-                                    <p style="padding-left: 3%; font-size: large; padding-top: 1%;">Company Information
-                                    </p>
-                                </div>
-                                <div class="panel-body">
-                                    <form class="form-horizontal" [formGroup]="phoneForm">
-                                        <div class="form-group row">
-                                            <label class="col-md-4 col-form-label" style="padding:3px 11px;">
-                                                COMPANY INFORMATION <span style="color: red;">*</span></label>
-                                            <div class="col-md-8">
-                                                <input class="form-control" style="height: 2.19rem;" />
-                                            </div>
-                                        </div>
-                                        <div class="form-group row">
-                                            <label class="col-md-4 col-form-label">
-                                                WEBSITE <span style="color: red;">*</span></label>
-                                            <div class="col-md-8">
-                                                <input class="form-control" style="height: 2.19rem;" />
-                                            </div>
-                                        </div>
-                                        <div class="form-group row">
-                                            <label class="col-md-4 col-form-label">
-                                                BUSINESS PHONE #</label>
-                                            <div class="col-md-8">
-                                                <ngx-intl-tel-input [inputId]="'ad'"
-                                                    [preferredCountries]="preferredCountries"
-                                                    [enableAutoCountrySelect]="false" [enablePlaceholder]="true"
-                                                    [searchCountryFlag]="true"
-                                                    [searchCountryField]="[SearchCountryField.Iso2, SearchCountryField.Name]"
-                                                    [selectFirstCountry]="false" [selectedCountryISO]="CountryISO.India"
-                                                    [tooltipField]="TooltipLabel.Name" [phoneValidation]="true"
-                                                    [separateDialCode]="separateDialCode" name="phone"
-                                                    formControlName="phone">
-                                                </ngx-intl-tel-input>
-                                            </div>
-                                            <!-- <div class="col-md-8">
-                                                <input class="form-control" style="height: 2.19rem;" />
-                                            </div> -->
-                                        </div>
-                                        <div class="form-group ">
-                                            <label class="col-md-4 col-form-label">
-                                                BUSINESS EMAIL</label>
-                                            <div class="col-md-8">
-                                                <input class="form-control" style="height: 2.19rem;" />
-                                            </div>
-                                        </div>
-                                        <div class="form-group ">
-                                            <label class="col-md-4 col-form-label">
-                                                TIMEZONE</label>
-                                            <div class="col-md-8">
-                                                <!-- <input class="form-control" placeholder="First Name" style="height: 2.19rem;"/> -->
-                                                <ngx-select [allowClear]="true" [items]="time" [disabled]="disabled"
-                                                    (data)="refreshValue($event)" (select)="selectedstate($event)"
-                                                    (removed)="removed($event)">
-                                                </ngx-select>
-                                            </div>
-                                        </div>
-                                        <div class="form-group ">
-                                            <label class="col-md-4 col-form-label">
-                                                ADDRESS</label>
-                                            <div class="col-md-8">
-                                                <input class="form-control" style="height: 2.19rem;" />
-                                            </div>
-                                        </div>
-                                        <div class="form-group ">
-                                            <label class="col-md-4 col-form-label">
-                                                ZIP CODE <span style="color: red;">*</span></label>
-                                            <div class="col-md-3">
-                                                <input class="form-control" style="height: 2.19rem;" />
-                                            </div>
-                                            <label class="col-sm-1 col-form-label" style="padding:1px 9px;">
-                                                CITY</label>
-                                            <div class="col-md-4">
-                                                <input class="form-control" style="height: 2.19rem;" />
-                                            </div>
-                                        </div>
-                                        <div class="form-group ">
-                                            <label class="col-md-4 col-form-label">
-                                                STATE</label>
-                                            <div class="col-md-3">
-                                                <!-- <input class="form-control" placeholder="First Name" style="height: 2.19rem;"/> -->
-                                                <ngx-select [allowClear]="true" [items]="state" [disabled]="disabled"
-                                                    (data)="refreshValue($event)" (select)="selectedstate($event)"
-                                                    (removed)="removed($event)">
-                                                </ngx-select>
-                                            </div>
-                                            <label class="col-md-2 col-form-label" style="padding:3px 11px;">
-                                                COUNTRY <span style="color: red;">*</span></label>
-                                            <div class="col-md-3">
-                                                <!-- <input class="form-control" style="height: 2.19rem;" /> -->
-                                                <ngx-select [allowClear]="true" [items]="country" [disabled]="disabled"
-                                                    (data)="refreshValue($event)" (select)="selectedstate($event)"
-                                                    (removed)="removed($event)">
-                                                </ngx-select>
-                                            </div>
-                                        </div>
-                                        <div class="form-group ">
-                                            <label class="col-md-4 col-form-label">
-                                                COMPANY DESCRIPTION</label>
-                                            <div class="col-md-8">
-                                                <textarea class="form-control" type="textarea"
-                                                    placeholder="Name of the Work"></textarea>
-                                            </div>
-                                        </div>
-                                        <div>
-                                            <button class="mr-1 btn btn-sm float-right" type="submit"
-                                                style="background-color:#5D9CEC;color: white;">Save</button>
-                                        </div>
-                                    </form>
-                                </div>
-                            </div>
-                        </div>
-
-                        <div class="col-md-3" style="padding: unset; padding-right: 1%;">
-                            <div class="panel panel-default">
-                                <div class="panel-heading" style="padding:0px; margin-bottom: 0px;">
-                                    <p style="padding-left: 3%; font-size: large; padding-top: 1%;">Profile Picture</p>
-                                </div>
-                                <div class="panel-body">
-                                    <img src="../../../../assets/img/userprofile.png"
-                                        style="width: 90%; padding-left: 15%;">
-                                    <div class="text-center" style="padding-top: 5%;">
-                                        <button class="mr-1 btn btn-md" type="submit"
-                                            style="background-color:#5D9CEC;color: white;">Upload</button>
-                                    </div>
-                                </div>
-                            </div>
-
-                            <div class="panel panel-default">
-                                <div class="panel-heading" style="padding:0px; margin-bottom: 0px;">
-                                    <p style="padding-left: 3%; font-size: large; padding-top: 1%;">Branding</p>
-                                </div>
-                                <div class="panel-body text-center">
-                                    <a href="#">UPLOAD NEW LOGO</a>
-                                </div>
-                            </div>
-                        </div>
-
-                    </div>
-                    <!-- <form action="">
-                                <div class="form-group">
-                                    <label>Name</label>
-                                    <input class="form-control" type="text" />
-                                </div>
-                                <div class="form-group">
-                                    <label>Bio</label>
-                                    <textarea class="form-control" rows="3"></textarea>
-                                </div>
-                                <div class="form-group">
-                                    <label>URL</label>
-                                    <input class="form-control" type="text" />
-                                </div>
-                                <div class="form-group">
-                                    <label>Company</label>
-                                    <input class="form-control" type="text" />
-                                </div>
-                                <div class="form-group">
-                                    <label>Location</label>
-                                    <input class="form-control" type="text" />
-                                </div>
-                                <button class="btn btn-info" type="button">Update settings</button>
-                                <p>
-                                    <small class="text-muted">* Integer fermentum accumsan metus, id sagittis ipsum
-                                        molestie
-                                        vitae</small>
-                                </p>
-                            </form> -->
-                </div>
-                <!-- </div> -->
-                <!-- <div class="col-md-2"></div> -->
-
-                <!-- </div> -->
-            </div>
+        <div *ngIf="settingActive == 1">            
         </div>
         <div *ngIf="settingActive == 2">
             <div class="card b">
@@ -284,7 +103,6 @@
                     <div class="row">
                         <div class="col-md-12">
                             <div class="panel panel-default">
-
                                 <div class="panel-heading" style="padding:0px; margin-bottom: 0px;">
                                     <p style="padding-left: 3%; font-size: medium; padding-top: 1%;">Email Address
                                         <i class="mr-2 fa fa-info-circle float-right" style="padding-top: 1px;"
@@ -294,7 +112,6 @@
                                             popoverTitle="Email Quotes" placement="bottom"></i>
 
                                     </p>
-
                                 </div>
                                 <div class="panel-body">
                                     <form class="form-horizontal">

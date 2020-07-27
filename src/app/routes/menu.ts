@@ -24,11 +24,13 @@ const Account = {
     //     }
     // ]
 };
-const Analytics = {
-    text: 'Analytics',
-    link: '/analytics',
-    icon: "icon-chart"
+
+const Store = {
+    text: 'Store',
+    link: '/store',
+    icon: "icon-user-follow"
 };
+
 // const Register = {
 //     text: 'Register',
 //     link: '/register',
@@ -61,5 +63,5 @@ export const menu = [
     Home,
     User,
     Account,
-    Analytics
+    Store
 ];

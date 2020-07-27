@@ -43,7 +43,8 @@ export class UserComponent implements OnInit {
     }
 
     public getUserList(): void {
-        this.userService.getUser().subscribe(res => {
+        this.userService.getUser().subscribe(
+          res => {
             this.userList = res;
             this.tableData = this.userList;            
         });

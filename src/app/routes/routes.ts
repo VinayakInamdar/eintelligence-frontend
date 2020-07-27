@@ -75,10 +75,15 @@ export const routes: Routes = [
                 loadChildren: () => import('./account/account.module').then(m => m.AccountModule)
             },
             {
-                path: 'analytics',
+                path: 'store',
                 component: LayoutComponent,
                 //canActivate: [RequireAuthenticatedUserRouteGuardService],
-                loadChildren: () => import('./analytics/analytics.module').then(m => m.AnalyticsModule)
+                loadChildren: () => import('./store/store.module').then(m => m.StoreModule)
+            },
+            {
+                path: 'checkout',
+                component: LayoutComponent,
+                loadChildren: () => import('./store/checkout/checkout.module').then(m => m.CheckoutModule)
             },
         ]
     },
