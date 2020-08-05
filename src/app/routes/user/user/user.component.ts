@@ -69,21 +69,17 @@ export class UserComponent implements OnInit {
     public ngOnInit(): void {
         //this.getUserList();
     }
+    // using to check event for edit and delete user
     public onCustomAction(event) {
       switch ( event.action) {
         case 'editrecord':
-          this.userRowSelect(event);
+          this.editUserById(event);
           break;
        case 'deleterecord':
           this.deleteUserById(event);
       }
     }
-  editRecord(data: any) {
-    throw new Error("Method not implemented.");
-  }
-  viewRecord(data: any) {
-    throw new Error("Method not implemented.");
-  }
+  // using to search user locally
   onSearch(query: string = '') {
     if(query == "") {
       this.source = new LocalDataSource(this.userList)
@@ -110,7 +106,7 @@ export class UserComponent implements OnInit {
     }
     
   }
-
+     // using to get user list
     public getUserList(): void {
         this.userService.getUser().subscribe(
           res => {
@@ -119,10 +115,11 @@ export class UserComponent implements OnInit {
             this.source = new LocalDataSource(this.userList)         
         });
     }
-    
-    public userRowSelect($event): any {        
+    // using to edit user from list
+    public editUserById($event): any {        
         this.router.navigate(['/user/edituser/' + $event.data.id]);
     }
+    // using to delete user from list
     public deleteUserById($event): any {
       // this.userService.deleteUserById($event.data.id)
                   //Toaster
