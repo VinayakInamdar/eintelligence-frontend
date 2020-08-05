@@ -25,6 +25,7 @@ export class AccountComponent implements OnInit {
   SearchCountryField = SearchCountryField;
   TooltipLabel = TooltipLabel;
   CountryISO = CountryISO;
+  maxHeight = window.innerHeight/1;
   preferredCountries: CountryISO[] = [CountryISO.UnitedStates, CountryISO.UnitedKingdom];
   phoneForm = new FormGroup({
     phone: new FormControl(undefined, [Validators.required])
