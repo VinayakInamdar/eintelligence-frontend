@@ -13,6 +13,7 @@ export class StoreComponent implements OnInit {
   products: IProduct[];
   errorMessage = '';
   settingActive = 1;
+  maxHeight = window.innerHeight;
   
   constructor(public router :Router, public productService : StoreService) { }
 
