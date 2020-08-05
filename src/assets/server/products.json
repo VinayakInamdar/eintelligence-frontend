@@ -1,149 +1,268 @@
 [
       {
         "id": 1,
-        "name": "SEO",
+        "name": "Link Building",
         "plans": [
           {
             "planId": 1,
-            "name": "SEO Plus",
-            "title": "Our Entry Level SEO Workflow",
-            "subTitle": "Up to 20 hours of dedicated work from our seasoned Digital Marketers, Writers, Editors and Webmasters… ",
+            "name": "Business Listings",
+            "title": "Done for you outreach by our experts",
+            "subTitle": "Get quality link building done for you. Our team helps you gain ",
             "features": [
-              "Keywords",
-              "Website Audit",
-              "Keyword Research",
-              "Technical SEO Optimization",
-              "On-page Content Optimization",
-              "Monthly Link Building",
-              "Monthly Reporting"
+              "Full Citation Audit",
+              "30 Local Business Directories"
             ],
-            "price": 375
+            "price": "$59"
           },
           {
             "planId": 2,
-            "name": "SEO Premium",
-            "title": "Our Most Popular SEO Service",
-            "subTitle": "Up to 20 hours of dedicated work from our seasoned Digital Marketers, Writers, Editors and Webmasters… ",
+            "name": "Press Release Distribution",
+            "title": "Done for you outreach by our experts",
+            "subTitle": "Get quality link building done for you. Our team helps you gain ",
             "features": [
-              "20 Keywords",
-              "Website Audit",
-              "Keyword Research",
-              "Technical SEO Optimization",
-              "On-page Content Optimization",
-              "On-page Hygiene",
-              "Monthly Link Building",
-              "Monthly Reporting"
+              "Press Release editing",
+              "Distribution to 30 free PR Directories"
             ],
-            "price": 575
+            "price": "$59"
           },
           {
             "planId": 3,
-            "name": "SEO Prime",
-            "title": "Our Most Comprehensive SEO Workflow",
-            "subTitle": "61 hours of dedicated work from our most Senior Digital Marketers, Writers, Editors and Webmasters... ",
+            "name": "Guest Posting",
+            "title": "Done for you outreach by our experts",
+            "subTitle": "Get quality link building done for you. Our team helps you gain ",
             "features": [
-              "30 Keywords",
-              "Website Audit",
-              "Keyword Research",
-              "Advanced Technical SEO Optimization",
-              "On-page Content Optimization",
-              "Keystone Content Generation",
-              "On-page Hygiene",
-              "Monthly Link Building",
-              "Monthly Reporting"
+              "500 Words article",
+              "1 Guest Post on DA 20+ Blog",
+              "We use Manual Outreach on real sites"
             ],
-            "price": 999
+            "price": "$79"
+          },
+          {
+            "planId": 4,
+            "name": "Blog Comments",
+            "title": "Done for you outreach by our experts",
+            "subTitle": "Get quality link building done for you. Our team helps you gain ",
+            "features": [
+              "5 comments on DA20+ Blogs",
+              "Combination of Do & No Follow",
+              "Minimum 100 Character comments"
+            ],
+            "price": "$59"
           }
         ]
       },
       {
         "id": 2,
-        "name": "Link Building",
+        "name": "Content Writing Packages",
         "plans": [
           {
-            "planId": 4,
-            "name": "Link Building - DA10+",
-            "title": "Done for you outreach by our experts",
-            "subTitle": "Get quality link building done for you. Our team helps you gain ",
-            "features": [
-              "Guaranteed DA10+ Link",
-              "90-days Live Guaranteed",
-              "Fast Turnaround"
-            ],
-            "price": 375
-          },
-          {
             "planId": 5,
-            "name": "Link Building - DA20+",
-            "title": "Done for you outreach by our experts",
-            "subTitle": "Get quality link building done for you. Our team helps you gain ",
+            "name": "General Blog Writing",
+            "title": "",
+            "subTitle": "Premium Wordpress Agency Website created with stock content. Including white label setup.",
             "features": [
-              "Guaranteed DA20+ Link",
-              "90-days Live Guaranteed",
-              "Fast Turnaround"
+              "Topic Research and ideation",
+              "Well researched article",
+              "Keyword optimized content",
+              "1 Stock Image",
+              "Optional posting to your WordPress blog"
             ],
-            "price": 375
+            "price": "$30/500 words - $5 per additional 100 words"
           },
           {
             "planId": 6,
-            "name": "Link Building - DA30+",
-            "title": "Done for you outreach by our experts",
-            "subTitle": "Get quality link building done for you. Our team helps you gain ",
+            "name": "Country Specific Blog Writing",
+            "title": "",
+            "subTitle": "All-in-One agency builder package: Premium agency website with original, high-quality content. ",
             "features": [
-              "Guaranteed DA30+ Link",
-              "90-days Live Guaranteed",
-              "Fast Turnaround"
+              "Writing done by specific country’s Native writer (Please specify Country. We currently have writers in these countries – US, UK, Canada, Australia & Singapore)",
+              "Topic Research and ideation",
+              "Well researched article",
+              "Keyword optimized content",
+              "1 Stock Image",
+              "Optional posting to your wordpress blog"
             ],
-            "price": 375
-          },
-          {
-            "planId": 7,
-            "name": "Link Building - DA40+",
-            "title": "Done for you outreach by our experts",
-            "subTitle": "Get quality link building done for you. Our team helps you gain ",
-            "features": [
-              "Guaranteed DA40+ Link",
-              "90-days Live Guaranteed",
-              "Fast Turnaround"
-            ],
-            "price": 375
+            "price": "$50/500 words - $8 per additional 100 words"
           }
         ]
       },
       {
         "id": 3,
-        "name": "Agency Builder Packages",
+        "name": "Local SEO Packages (Monthly Recurring)",
         "plans": [
           {
-            "planId": 8,
-            "name": "Link Building - DA10+",
+            "planId": 7,
+            "name": "Standard Local SEO Package",
             "title": "",
             "subTitle": "Premium Wordpress Agency Website created with stock content. Including white label setup.",
             "features": [
-              "Includes Up to 4 White Labeled Service Pages",
-              "Includes White Label Dashboard Setup",
-              "Includes White Label Web Design Portfolio",
-              "Stock Content Built In",
-              "5 Pages",
-              "Select From Our Digital Agency Mockups"
+              "10-20 Keywords",
+              "Keyword Research",
+              "Detailed Initial Audit",
+              "GMB Profile Set up and Optimization",
+              "Local Citations",
+              "Business Listings",
+              "Technical SEO",
+              "On-Page Optimization",
+              "Link Acquisition",
+              "Monthly Reporting"
             ],
-            "price": 375
+            "price": "$249 Per month",
+            "recommended_agency_price": "$549"
           },
           {
-            "planId": 9,
-            "name": "Link Building - DA20+",
+            "planId": 8,
+            "name": "Advanced Local SEO Package",
             "title": "",
             "subTitle": "All-in-One agency builder package: Premium agency website with original, high-quality content. ",
             "features": [
-              "Select From Our Digital Agency Mockups",
-              "Includes White Label Dashboard Setup",
-              "Includes White Label Web Design Portfolio",
-              "Includes Inner Pages (Contact, About Us, Our Work)",
-              "Includes Up to 4 White Labeled Service Pages",
-              "Includes Original Content Done For You"
+              "20-50 Keywords",
+              "Keyword Research",
+              "Detailed Initial Audit",
+              "GMB Profile Set up and Optimization",
+              "Local Citations",
+              "Business Listings",
+              "Technical SEO",
+              "On-Page Optimization",
+              "Link Acquisition",
+              "1 Blog Article",
+              "Guaranteed 2 DA 20+ Links",
+              "Monthly Reporting"
             ],
-            "price": 375
+            "price": "$449 Per month",
+            "recommended_agency_price": "$949"
+          },
+          {
+            "planId": 9,
+            "name": "Ultimate Local SEO Package",
+            "title": "",
+            "subTitle": "All-in-One agency builder package: Premium agency website with original, high-quality content. ",
+            "features": [
+              "50-100 Keywords",
+              "Keyword Research",
+              "Detailed Initial Audit",
+              "GMB Profile Set up and Optimization",
+              "Local Citations",
+              "Business Listings",
+              "Technical SEO",
+              "On-Page Optimization",
+              "Link Acquisition",
+              "2 Blog Article",
+              "Guaranteed 5 DA 20+ Links",
+              "Monthly Reporting"
+            ],
+            "price": "$649 Per month",
+            "recommended_agency_price": "$1249"
           }
+        ]
+      },
+      {
+        "id": 4,
+        "name": "Business SEO Packages",
+        "plans": [
+          {
+            "planId": 10,
+            "name": "Standard Business SEO Package",
+            "title": "",
+            "subTitle": "Premium Wordpress Agency Website created with stock content. Including white label setup.",
+            "features": [
+              "10-20 Keywords",
+              "Keyword Research",
+              "Detailed Initial Audit",
+              "Business Listings",
+              "Local Citations",
+              "Social Citations",
+              "GMB Set up and Optimization",
+              "Technical SEO",
+              "On-Page Optimization",
+              "Link Acquisition",
+              "1 Blog Article",
+              "Guaranteed 2 DA 20+ Links",
+              "Monthly Reporting"
+            ],
+            "price": "$349 Per month",
+            "recommended_agency_price": "$649"
+          },
+          {
+            "planId": 11,
+            "name": "Advanced Business SEO Package",
+            "title": "",
+            "subTitle": "All-in-One agency builder package: Premium agency website with original, high-quality content. ",
+            "features": [
+              "20-50 Keywords",
+              "Keyword Research",
+              "Detailed Initial Audit",
+              "Business Listings",
+              "Local Citations",
+              "Social Citations",
+              "GMB Set up and Optimization",
+              "Technical SEO",
+              "On-Page Optimization",
+              "Link Acquisition",
+              "2 Blog Article",
+              "Guaranteed 5 DA 20+ Links",
+              "Monthly Reporting"
+            ],
+            "price": "$549 Per month",
+            "recommended_agency_price": "$949"
+          },
+          {
+            "planId": 12,
+            "name": "Ultimate Business SEO Package",
+            "title": "",
+            "subTitle": "All-in-One agency builder package: Premium agency website with original, high-quality content. ",
+            "features": [
+              "50-100 Keywords",
+              "Keyword Research",
+              "Detailed Initial Audit",
+              "Business Listings",
+              "Local Citations",
+              "Social Citations",
+              "GMB Set up and Optimization",
+              "Technical SEO",
+              "On-Page Optimization",
+              "Link Acquisition",
+              "4 Blog Article",
+              "Guaranteed 8 DA 20+ Links",
+              "Monthly Reporting"
+            ],
+            "price": "$749 Per month",
+            "recommended_agency_price": "$1149"
+          }
+        ]
+      },
+      {
+        "id": 5,
+        "name": "Website Design Packages",
+        "plans": [
+          {
+            "planId": 13,
+            "name": "Informational Website",
+            "title": "",
+            "subTitle": "Premium Wordpress Agency Website created with stock content. Including white label setup.",
+            "features": [
+              "Base Price - $399",
+              "Plus $39 Per Page",
+              "Plus $49 Per Page of Content",
+              "Hosting + SSL + CMS - $29 Per month",
+              "Optional Website Maintenance - $29 Per month for up-to 2 hours of website maintenance tasks"
+            ],
+            "price": "$399"
+          },
+          {
+            "planId": 14,
+            "name": "E-commerce Website",
+            "title": "",
+            "subTitle": "All-in-One agency builder package: Premium agency website with original, high-quality content. ",
+            "features": [
+              "Base Price - $799",
+              "Plus $39 Per Page",
+              "Plus $9 Per Page",
+              "Plus $49 Per Page of Content",
+              "Hosting + SSL + CMS - $39 Per month",
+              "Optional Website Maintenance - $49 Per month for up-to 3 hours of website maintenance tasks"
+            ],
+            "price": "$799"          }
         ]
       }
 ]
