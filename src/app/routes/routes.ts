@@ -92,6 +92,16 @@ export const routes: Routes = [
                 component: LayoutComponent,
                 loadChildren: () => import('./store/checkout/checkout.module').then(m => m.CheckoutModule)
             },
+            {
+                path: 'overview',
+                component: LayoutComponent,
+                loadChildren: () => import('./overview/overview.module').then(m => m.OverviewModule)
+            },
+            {
+                path: 'integrations/:id',
+                component: LayoutComponent,
+                loadChildren: () => import('./integrations/integrations.module').then(m => m.IntegrationsModule)
+            },
         ]
     },
     

@@ -1,0 +1,160 @@
+
+
+
+
+<div class="row" style="padding: 4%;">
+
+    <div class="col-lg-12">
+      
+        <div  style="font-size: large;padding-bottom:  5px;">  Campaign Overview :  {{campaignName}} </div>
+
+        <div class="card card-default shadow bg-white rounded">
+            <div class="card-header">
+                <div class="row borderBtm padding5">
+                    Analytics Overview
+                </div>
+            </div>
+            <div class="row">
+                <div class="chart-wrapper mx-auto chart-container">
+                    <canvas   baseChart 
+                        [datasets]="lineChartData" 
+                        [labels]="lineChartLabels" 
+                        [options]="lineChartOptions"
+                        [colors]="lineChartColors" 
+                        [legend]="lineChartLegend" 
+                        [chartType]="lineChartType" 
+                        [plugins]="lineChartPlugins"
+                        [fullWidth]="true"
+                        
+                        
+                        
+                        >
+                    </canvas>
+                </div>
+
+                
+                                            <!-- *ngIf="!hasActiveAccount && !hasAuthorize" -->
+                            <div class="widget-overlay" *ngIf="!hasActiveAccount && !hasAuthorize">
+                            <div class="widget-overlay-content text-center">
+                                <h2 style="color: white;">Integrate Analytics</h2>
+                            <div class="text-center btn-container">
+                            <a  class="btn" style="background-color: white;" (click)="goToOverview()"   > <span></span>   &nbsp;&nbsp;Integrate Google Analytics</a>
+                            <!-- <img src="assets/img/ga.png"> -->
+                            </div>
+                            </div>
+
+                            </div>
+                                    
+            </div>
+        </div>
+    </div>
+    
+
+    <div class="col-lg-12">
+      
+        
+
+        <div class="card card-default shadow bg-white rounded">
+            
+            <div  style="border: black 2px;">
+                <div class="row" >
+
+                    <div class="stat-container clearfix">
+                        <div id="sessions-stat" class="stat-box">
+                    <div class="stat-label text-uppercase">Sessions</div>
+                    <div class="stat-value text-center">
+                        <h3 class="text-blue" style="margin-bottom:0">--</h3>
+                    </div>
+                </div>
+                <div id="newUsers-stat" class="stat-box">
+                    <div class="stat-label text-uppercase">Users</div>
+                    <div class="stat-value text-center">
+                        <h3 class="text-blue" style="margin-bottom:0">--</h3>
+                    </div>
+                </div>
+                <div id="percentNewSessions-stat" class="stat-box">
+                    <div class="stat-label text-uppercase">%New Session</div>
+                    <div class="stat-value text-center">
+                        <h3 class="text-blue" style="margin-bottom:0">--</h3>
+                    </div>
+                </div>
+                <div id="bounceRate-stat" class="stat-box">
+                    <div class="stat-label text-uppercase">Bounce Rate</div>
+                    <div class="stat-value text-center">
+                        <h3 class="text-blue" style="margin-bottom:0">--</h3>
+                    </div>
+                </div>
+                <div id="pageviews-stat" class="stat-box">
+                    <div class="stat-label text-uppercase">Pageviews</div>
+                    <div class="stat-value text-center">
+                        <h3 class="text-blue" style="margin-bottom:0">--</h3>
+                    </div>
+                </div>
+                <div id="pageviewsPerSession-stat" class="stat-box">
+                    <div class="stat-label text-uppercase">Pages/Session</div>
+                    <div class="stat-value text-center">
+                        <h3 class="text-blue" style="margin-bottom:0">--</h3>
+                    </div>
+                </div>
+                <div id="avgSessionDuration-stat" class="stat-box">
+                    <div class="stat-label text-uppercase">Avg Sess. Duration</div>
+                    <div class="stat-value text-center">
+                        <h3 class="text-blue" style="margin-bottom:0">--</h3>
+                    </div>
+                </div>
+                <div id="goalCompletions-stat" class="stat-box">
+                    <div class="stat-label text-uppercase">Goal Completion</div>
+                    <div class="stat-value text-center">
+                        <h3 class="text-blue" style="margin-bottom:0">--</h3>
+                    </div>
+                </div>
+                <div id="goalConversionRate-stat" class="stat-box">
+                    <div class="stat-label text-uppercase">Conversion Rate</div>
+                    <div class="stat-value text-center">
+                        <h3 class="text-blue" style="margin-bottom:0">--</h3>
+                    </div>
+                </div>
+                    </div>
+                  
+
+
+                </div>
+            </div>
+        </div>
+    </div>    
+
+    <div class="col-lg-6">
+        <div class="card card-default shadow bg-white rounded">
+            <div class="card-header">
+                <div class="row">
+                    <div class="col-md-3"></div>
+                    <div class="col-md-7"></div>
+                    <div class="col-md-2"></div>
+                </div>
+            </div>
+            <div class="card-body" style="border: black 2px;">
+                <div class="row" >
+                    
+                </div>
+            </div>
+        </div>
+    </div>    
+
+    <div class="col-lg-6">
+        <div class="card card-default shadow bg-white rounded">
+            <div class="card-header">
+                <div class="row">
+                    <div class="col-md-3"></div>
+                    <div class="col-md-7"></div>
+                    <div class="col-md-2"></div>
+                </div>
+            </div>
+            <div class="card-body" style="border: black 2px;">
+                <div class="row" >
+                    
+                </div>
+            </div>
+        </div>
+
+    </div>    
+</div>

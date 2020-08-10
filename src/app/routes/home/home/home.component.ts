@@ -53,4 +53,11 @@ export class HomeComponent implements OnInit {
     public onClick(): any {
         this.router.navigate(['/home/campagin']);
       }
+
+      userRowSelect(campaign: any) : void{
+
+        this.router.navigate(['/home/overview', {id : campaign.data.id}]);
+        
+             
+      }
 }

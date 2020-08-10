@@ -36,6 +36,18 @@ const Admin = {
     icon: "fas fa-user-shield"
 };
 
+const Campaign = {
+    text: 'Campaign',
+    link: '/campaign',
+    icon: "icon-user-follow"
+};
+
+const Integrations = {
+    text: 'Integrnations',
+    link: '/integrations',
+    icon: "icon-user-follow"
+};
+
 // const Register = {
 //     text: 'Register',
 //     link: '/register',
@@ -69,5 +81,7 @@ export const menu = [
     User,
     Account,
     Store,
-    Admin
+    Admin,
+    Campaign,
+    Integrations
 ];
