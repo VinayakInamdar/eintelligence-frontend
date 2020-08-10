@@ -1,21 +1,25 @@
 import { NgModule } from '@angular/core';
 import { CommonModule } from '@angular/common';
-import { Routes, RouterModule } from '@angular/router';
+import { AdminComponent } from './admin/admin.component';
 import { SharedModule } from 'src/app/shared/shared.module';
+import { RouterModule, Routes } from '@angular/router';
 import { Ng2SmartTableModule } from 'ng2-smart-table';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { HttpClientModule } from '@angular/common/http';
 import { FileUploadModule } from 'ng2-file-upload';
 import { NgxSelectModule } from 'ngx-select-ex';
-import { AccountComponent, DialogContentExampleDialog } from './account/account.component';
 import { NgxIntlTelInputModule } from 'ngx-intl-tel-input';
+import { CampaignListComponent } from './campaign-list/campaign-list.component';
+import { CampaignDetailComponent } from './campaign-detail/campaign-detail.component';
 
 const routes: Routes = [
-  { path: '', component: AccountComponent }
+  { path: '', component: AdminComponent },
+  { path: 'campaignlist/:id',component: CampaignListComponent},
+  {path: 'campaignlist/:id/:campaignid',component: CampaignDetailComponent}
 ];
 
 @NgModule({
-  declarations: [AccountComponent,DialogContentExampleDialog],
+  declarations: [AdminComponent, CampaignListComponent, CampaignDetailComponent],
   imports: [
     CommonModule,
     SharedModule,
@@ -29,9 +33,8 @@ const routes: Routes = [
     NgxSelectModule,
     NgxIntlTelInputModule
   ],
- 
-  exports: [
-    RouterModule,
-],
+  exports : [
+    RouterModule
+  ],
 })
-export class AccountModule { }
+export class AdminModule { }

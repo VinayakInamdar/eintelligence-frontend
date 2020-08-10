@@ -1,7 +1,9 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, ViewChild } from '@angular/core';
 import { Router } from '@angular/router';
 import { FormGroup, FormControl, Validators } from '@angular/forms';
-import { SearchCountryField, TooltipLabel, CountryISO } from 'ngx-intl-tel-input';
+import { SearchCountryField, TooltipLabel, CountryISO, NgxIntlTelInputComponent } from 'ngx-intl-tel-input';
+import { CompanyInformation } from './companyinformation.model';
+import { MatDialog, MatDialogRef } from '@angular/material/dialog';
 declare var $: any;
 
 // Tooltips fix for summernote
@@ -20,16 +22,48 @@ Object.prototype.toString = function() {
   styleUrls: ['./account.component.scss']
 })
 export class AccountComponent implements OnInit {
-
+  @ViewChild('ngxintlbil', { static: false }) ngxintlbil: NgxIntlTelInputComponent;
+  @ViewChild('ngxintlcom', { static: false }) ngxintlcom: NgxIntlTelInputComponent;
   separateDialCode = true;
   SearchCountryField = SearchCountryField;
   TooltipLabel = TooltipLabel;
   CountryISO = CountryISO;
   maxHeight = window.innerHeight/1;
+  isCollapsed = true;
   preferredCountries: CountryISO[] = [CountryISO.UnitedStates, CountryISO.UnitedKingdom];
+  
   phoneForm = new FormGroup({
-    phone: new FormControl(undefined, [Validators.required])
+    companyinformation: new FormControl(undefined, [Validators.required]),
+    website: new FormControl(undefined, [Validators.required]),
+    phone: new FormControl(undefined, [Validators.required]),
+    email: new FormControl(undefined, [Validators.required]),
+    timezone: new FormControl(undefined, [Validators.required]),
+    Address: new FormControl(undefined, [Validators.required]),
+    zipcode: new FormControl(undefined, [Validators.required]),
+    city: new FormControl(undefined, [Validators.required]),
+    state: new FormControl(undefined, [Validators.required]),
+    country: new FormControl(undefined, [Validators.required]),
+    companydescription: new FormControl(undefined, [Validators.required]),
+    
   });
+  profileInfo = new FormGroup({
+    firstname: new FormControl(undefined, [Validators.required]),
+    lastname: new FormControl(undefined, [Validators.required]),
+    email: new FormControl(undefined, [Validators.required]),
+    phone: new FormControl(undefined, [Validators.required]),
+})
+billingInfo = new FormGroup({
+  companyinformation: new FormControl(undefined, [Validators.required]),
+  website: new FormControl(undefined, [Validators.required]),
+  phone: new FormControl(undefined, [Validators.required]),
+  email: new FormControl(undefined, [Validators.required]),
+  Address: new FormControl(undefined, [Validators.required]),
+  zipcode: new FormControl(undefined, [Validators.required]),
+  city: new FormControl(undefined, [Validators.required]),
+  state: new FormControl(undefined, [Validators.required]),
+  country: new FormControl(undefined, [Validators.required]),
+  companydescription: new FormControl(undefined, [Validators.required]),
+})
   settingActive = 1;
 
   //For Company Information state selection dropdown
@@ -106,7 +140,7 @@ export class AccountComponent implements OnInit {
     'Montenegro', 'Congo Democratic'];
 
 
-  constructor(public router: Router) { 
+  constructor(public router: Router,public dialog: MatDialog) { 
     this.changeText = false;
   }
 
@@ -138,16 +172,139 @@ export class AccountComponent implements OnInit {
           }
       }
   });
+  
 
    // Hide the initial popovers that display
    $('.note-popover').css({
     'display': 'none'
 });
 
+
+
+  }
+
+  openFile(){
+    console.log('hell')
+    document.querySelector('input').click()
+  }
+  handle(e){
+    console.log('Change input file')
+  }
+  public openAttachment(filepicker) {
+    document.getElementById(filepicker).click();
+  }
+  public fileChangeEvent(fileInput: any,type){
+    var filetype = "";
+    if (fileInput.target.files && fileInput.target.files[0]) {
+      var reader = new FileReader();
+
+      reader.onload = function (e : any) {
+        if(type == "img"){
+           filetype = "#previewimg"
+        }
+        else {
+          filetype = "#previewlogo"
+        }
+          $(filetype).attr('src', e.target.result);
+      }
+
+      reader.readAsDataURL(fileInput.target.files[0]);
+  }
+}
+  public setAsCompanyInformation(value){
+    if(value){
+      for (let c in this.billingInfo.controls) {
+        if(c == "phone"){
+          var value = this.phoneForm.controls.phone.value.number
+          this.ngxintlbil.selectedCountry = this.ngxintlcom.selectedCountry
+          this.billingInfo.controls.phone.setValue(value)  
+        }
+        else {
+          this.billingInfo.controls[c].setValue(this.phoneForm.controls[c].value);
+        }
+
+    }
+    }
+    else {
+      for (let c in this.billingInfo.controls) {
+        if(c == "phone"){
+          var value = null;
+          this.ngxintlbil.selectedCountry = this.ngxintlcom.selectedCountry
+          this.billingInfo.controls.phone.setValue(value)  
+        }
+        this.billingInfo.controls[c].setValue(undefined);
+    }
+    }
+    // this.billingInfo.controls.phone.setValue('+919898989898')
+    // this.billingInfo.controls.companyinformation.setValue(this.phoneForm.value.companyinformation)
+  }
+  submitForm(value: any,formtype: string) {
+    
+    var result: CompanyInformation = Object.assign({}, value);
+    if(formtype == "phoneform"){
+      for (let c in this.phoneForm.controls) {
+        this.phoneForm.controls[c].markAsTouched();
+    }
+    }
+    else if (formtype == "profileinfoform") {
+      for (let c in this.profileInfo.controls) {
+        this.profileInfo.controls[c].markAsTouched();
+    }
+    }
+    else {
+      for (let c in this.billingInfo.controls) {
+        this.billingInfo.controls[c].markAsTouched();
+    }
+    }
+
+    //  result.profilePicture = this.fileToUpload.name
+    
+    // this.campaignService.createCampaign(result).subscribe((res: Campaign) => {
+    //     this.campaignModel = res;
+    //      //validation
+    //      event.preventDefault();
+    //      for (let c in this.valForm.controls) {
+    //          this.valForm.controls[c].markAsTouched();
+    //      }
+    //      if (!this.valForm.valid) { 
+    //          return;
+    //      }
+       
+    //   });
+  }
+  openModalWithComponent(event) {
+    event.preventDefault()
+    const dialogRef = this.dialog.open(DialogContentExampleDialog);
+
+    dialogRef.afterClosed().subscribe(result => {
+      console.log(`Dialog result: ${result}`);
+    });
   }
 
   
   //   // public onClick(): any {
   //   //   this.router.navigate(['/account/branding']);
   //   // }
+}
+@Component({
+  selector: 'dialog-content-example-dialog',
+  templateUrl: './account.modal.html',
+})
+export class DialogContentExampleDialog {
+  passwordform = new FormGroup({
+    password : new FormControl(undefined,[Validators.required])
+  })
+  constructor(
+    public dialogRef: MatDialogRef<DialogContentExampleDialog>,
+    ) {}
+    onClose(event): void {
+      event.preventDefault()
+      this.dialogRef.close();
+    }
+  submitForm(value: any,){
+    var result: CompanyInformation = Object.assign({}, value);
+    for (let c in this.passwordform.controls) {
+      this.passwordform.controls[c].markAsTouched();
+  }
+  }
 }

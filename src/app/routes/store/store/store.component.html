@@ -60,11 +60,7 @@
                                     <button class="btn btn-success btn-block btn-lg checkout-btn">
                                         BUY NOW for {{plan.price}}
                                         <span data-toggle="popover"><i class="fa fa-info-circle"></i></span>
-                                    </button>         
-                                    <button class="btn btn-secondary btn-block btn-lg checkout-btn">
-                                        Add To Cart
-                                        <span data-toggle="popover"><i class="fa fa fa-cart-plus"></i></span>
-                                     </button>                         
+                                    </button>                                  
                                 </div>
                             </div>
                             </div>                                          
@@ -94,11 +90,7 @@
                                     <button class="btn btn-success btn-block btn-lg checkout-btn">
                                         BUY NOW for {{plan.price}}
                                         <span data-toggle="popover"><i class="fa fa-info-circle"></i></span>
-                                    </button>     
-                                    <button class="btn btn-secondary btn-block btn-lg checkout-btn">
-                                        Add To Cart
-                                        <span data-toggle="popover"><i class="fa fa fa-cart-plus"></i></span>
-                                     </button>                             
+                                    </button>                               
                                 </div>
                             </div>
                             </div>                                          
@@ -111,7 +103,7 @@
                     <div class="card-header" style="font-size: large;">{{product.name}}</div>
                     <div class="container mt-2" style="height: auto;">                    
                           <div class="row pad-18">                  
-                            <div class="col-md-6 col-sm-6 item"  *ngFor="let plan of product.plans">                                
+                            <div class="col-md-4 col-sm-6 item"  *ngFor="let plan of product.plans">                                
                                 <div class="card item-card card-block" [style.height.px]="maxHeight + 50">                         
                                   <h3 class="card-title font-weight-bold mt-3 mb-3 text-left">{{plan.name}}</h3>
                                   <p class="">{{plan.title}}</p> 
@@ -129,10 +121,6 @@
                                         BUY NOW for {{plan.price}}
                                         <span data-toggle="popover"><i class="fa fa-info-circle"></i></span>
                                     </button>     
-                                    <button class="btn btn-secondary btn-block btn-lg checkout-btn">
-                                        Add To Cart
-                                        <span data-toggle="popover"><i class="fa fa fa-cart-plus"></i></span>
-                                     </button>   
                                      <div class="product-resell-price-box text-center">
                                         <span>Recommended Agency Price : {{plan.recommended_agency_price}}</span>
                                     </div>                            
@@ -148,7 +136,7 @@
                     <div class="card-header" style="font-size: large;">{{product.name}}</div>
                     <div class="container mt-2" style="height: auto;">                    
                           <div class="row pad-18">                  
-                            <div class="col-md-6 col-sm-6 item"  *ngFor="let plan of product.plans" style="height: max-content;">                                
+                            <div class="col-md-4 col-sm-6 item"  *ngFor="let plan of product.plans" style="height: max-content;">                                
                                 <div class="card item-card card-block">                          
                                   <h3 class="card-title font-weight-bold mt-3 mb-3 text-left">{{plan.name}}</h3>
                                   <p class="">{{plan.title}}</p> 
@@ -165,11 +153,7 @@
                                     <button class="btn btn-success btn-block btn-lg checkout-btn">
                                         BUY NOW for {{plan.price}}
                                         <span data-toggle="popover"><i class="fa fa-info-circle"></i></span>
-                                    </button>     
-                                    <button class="btn btn-secondary btn-block btn-lg checkout-btn">
-                                        Add To Cart
-                                        <span data-toggle="popover"><i class="fa fa fa-cart-plus"></i></span>
-                                     </button>                             
+                                    </button>                              
                                 </div>
                                 <div class="product-resell-price-box text-center">
                                     <span>Recommended Agency Price : {{plan.recommended_agency_price}}</span>

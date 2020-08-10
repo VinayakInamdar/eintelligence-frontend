@@ -64,6 +64,7 @@ export const routes: Routes = [
                 path: 'login',
                 loadChildren: () => import('./register/login/login.module').then(m => m.LoginModule)
             },
+
             {
                 path: 'campaign',
                 loadChildren: () => import('./campaign/campagin.module').then(m => m.CampaginModule )
@@ -79,6 +80,12 @@ export const routes: Routes = [
                 component: LayoutComponent,
                 //canActivate: [RequireAuthenticatedUserRouteGuardService],
                 loadChildren: () => import('./store/store.module').then(m => m.StoreModule)
+            },
+            {
+                path: 'admin',
+                component: LayoutComponent,
+                // canActivate: [RequireAuthenticatedUserRouteGuardService],
+                loadChildren: () => import('./admin/admin.module').then(m => m.AdminModule)
             },
             {
                 path: 'checkout',

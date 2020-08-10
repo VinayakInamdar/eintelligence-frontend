@@ -1,0 +1,37 @@
+[
+    {
+        "id":1,
+        "email":"rahikumarrbhagat@gmail.com",
+        "agency_name":"rahi-agency",
+        "fName":"rahi",
+        "lName":"bhagat"
+    },
+    {
+        "id":2,
+        "email":"abhisi@gmail.com",
+        "agency_name":"abhisi-agency",
+        "fName":"abhisi",
+        "lName":"helpdesk"
+    },
+    {
+        "id":3,
+        "email":"sunil123@gmail.com",
+        "agency_name":"sunil-agency",
+        "fName":"sunil",
+        "lName":"yadav"
+    },
+    {
+        "id":4,
+        "email":"techovarya@gmail.com",
+        "agency_name":"techovarya-agency",
+        "fName":"techovarya",
+        "lName":"solutions"
+    },
+    {
+        "id":5,
+        "email":"hemantjani@gmail.com",
+        "agency_name":"hemant-agency",
+        "fName":"hemant",
+        "lName":"jani"
+    }
+]

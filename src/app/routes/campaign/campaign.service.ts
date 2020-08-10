@@ -2,7 +2,7 @@ import { Injectable } from '@angular/core';
 import { Observable } from 'rxjs/Observable';
 import 'rxjs/add/operator/map';
 import 'rxjs/add/operator/toPromise';
-import { HttpClient } from '@angular/common/http';
+import { HttpClient, HttpParams } from '@angular/common/http';
 import { environment } from '../../../environments/environment';
 import { Campaign } from './campaign.model';
 
@@ -21,6 +21,13 @@ export class CampaignService {
     return this.http.post<Campaign>(this.Url + 'campaigns', campaignSetupData);
   }
   getCampaign(): Observable<Campaign[]> {
-    return this.http.get<Campaign[]>(this.Url + '/campaigns')
+    return this.http.get<Campaign[]>(this.Url + '/campaigns',{
+      params: new HttpParams().set('pageSize', '50')
+    })
   }
+  // getCampaignById(campaignId): Observable<Campaign[]> {
+  //   return this.http.get<Campaign[]>(this.Url + '/googleanalyticsaccounts',{
+  //     params: new HttpParams().set('pageSize', '1').set('searchQuery',  'CampaignID ==' + campaignId)
+  //   })
+  // }
 }

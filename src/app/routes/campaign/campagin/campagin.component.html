@@ -10,9 +10,9 @@
 <div class="row w3-container w3-center w3-animate-right" style="padding-top: 20px;">
     <div class="col-md-2"> </div>
     <div class="col-md-8">
-        <form [formGroup]="valForm" class="form-horizontal card" (submit)="submitForm(valForm.value)" novalidate=""
+        <form [formGroup]="valForm" class="form-horizontal card" (keydown.enter)="$event.preventDefault()" (submit)="submitForm(valForm.value)" novalidate=""
             style="height: 410px;">
-            <tabset [justified]="true">
+            <tabset [justified]="true" #staticTabs>
                 <tab style="height: 335px;">
                     <ng-template tabHeading>
                         <p style="font:large arial;">Campaign Name</p>
@@ -25,20 +25,21 @@
                             <h3> Your client's campaign name</h3>
                             <hr>
                             <label>CAMPAIGN NAME</label>
-                            <input class="form-control" formControlName="name" placeholder="Name of your campaign"
+                            <input #name_field class="form-control" formControlName="name" placeholder="Name of your campaign"
                                 style="height: 3.1575rem;">
                             <span class="text-danger"
                                 *ngIf="valForm.controls['name'].hasError('required') && (valForm.controls['name'].dirty || valForm.controls['name'].touched)">
-                                {{'validation.NAMEISREQUIRED' | translate}}</span><br>
-                            <!-- <div class="text-center">
-                                <button class="mr-1 btn btn-primary btn-lg" type="submit" (click)="tab=2">Next </button>
-                            </div> -->
+                                {{'validation.NAMEISREQUIRED' | translate}}</span>
+                                <br>
+                            <div class="text-center">
+                                <button class="mr-1 btn btn-primary btn-lg" type="submit" (click)="goToNextTab($event,name_field.value,'name',1)">Next </button>
+                            </div>
                         </div>
                         <div class="col-md-1"></div>
                     </div>
 
                 </tab>
-                <tab style="height: 335px;" tab="2">
+                <tab  style="height: 335px;" tab="2">
                     <ng-template tabHeading>
                         <p style="font:large arial;">Website</p>
                     </ng-template>
@@ -50,25 +51,28 @@
                             <hr>
                             <label>WEBSITE URL</label>
                             <div class="form-group row">
-                                <input class="form-control" type="url" placeholder="http:// or https://"
+                                <input #webUrl_field class="form-control" type="url" placeholder="http:// or https://"
                                     formControlName="webUrl" [formControl]="valForm.controls['webUrl']"
                                     style="height: 3.1575rem;" />
                                 <span class="text-danger"
                                     *ngIf="valForm.controls['webUrl'].hasError('required') && (valForm.controls['webUrl'].dirty || valForm.controls['webUrl'].touched)">
                                     {{'validation.URLREQUIRED' | translate}}</span>
+                                    <span class="text-danger"
+                                    *ngIf="valForm.controls['webUrl'].hasError('pattern') && (valForm.controls['webUrl'].dirty || valForm.controls['webUrl'].touched)">
+                                    {{'validation.URLVALIDATION' | translate}}</span>
                             </div>
                           
-                            <!-- <div class="row">
+                            <div class="row">
                                 <div class="col-md-3">
-                                    <button class="mr-1 btn btn-secondary btn-lg" type="submit" (click)="tab=1">
+                                    <button class="mr-1 btn btn-secondary btn-lg" type="submit" (click)="goToPreviousTab($event,0)">
                                         < Go Back</button>
                                 </div>
                                 <div class="col-md-6"></div>
                                 <div class="col-md-3">
-                                    <button class="mr-1 btn btn-primary btn-lg" type="submit">Next
+                                    <button class="mr-1 btn btn-primary btn-lg" type="submit" (click)="goToNextTab($event,webUrl_field.value,'webUrl',2)">Next
                                         ></button>
                                 </div>
-                            </div> -->
+                            </div>
                         </div>
                         <div class="col-md-1"></div>
                     </div>
@@ -131,10 +135,10 @@
                                 </div>
                             </div><br>
                             <div class="row">
-                                <!-- <div class="col-md-3">
-                                    <button class="mr-1 btn btn-secondary btn-lg" type="submit">
+                                <div class="col-md-3">
+                                    <button class="mr-1 btn btn-secondary btn-lg" type="submit" (click)="goToPreviousTab($event,1)">
                                         < Go Back</button>
-                                </div> -->
+                                </div>
                                 <div class="col-md-5"></div>
                                 <div class="col-md-4">
                                     <!-- <a routerLink="./home"> -->

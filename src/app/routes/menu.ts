@@ -28,7 +28,12 @@ const Account = {
 const Store = {
     text: 'Store',
     link: '/store',
-    icon: "icon-user-follow"
+    icon: "fas fa-store"
+};
+const Admin = {
+    text: 'Admin',
+    link: '/admin',
+    icon: "fas fa-user-shield"
 };
 
 // const Register = {
@@ -63,5 +68,6 @@ export const menu = [
     Home,
     User,
     Account,
-    Store
+    Store,
+    Admin
 ];

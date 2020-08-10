@@ -7,4 +7,19 @@ label{
 .active{
     color:blue;
 }
+
+.filepicker{
+    -webkit-appearance: none;
+    position:absolute;
+    top:1px;
+    right:1px;
+    width: 40px;
+    height: 40px;
+    text-indent: 100em;
+    background: url('../../../../assets/img/userprofile.png');
+    background-size: cover;
+    overflow: hidden;
+    cursor: pointer;
+    outline: none;
+}
     

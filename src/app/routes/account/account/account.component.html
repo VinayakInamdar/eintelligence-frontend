@@ -35,26 +35,32 @@
                                 </p>
                             </div>
                             <div class="panel-body">
-                                <form class="form-horizontal" [formGroup]="phoneForm">
+                                <form class="form-horizontal" [formGroup]="phoneForm"  (submit)="submitForm(phoneForm.value,'phoneform')">
                                     <div class="form-group row">
                                         <label class="col-md-4 col-form-label" style="padding:3px 11px;">
                                             COMPANY INFORMATION <span style="color: red;">*</span></label>
                                         <div class="col-md-8">
-                                            <input class="form-control" style="height: 2.19rem;" />
+                                            <input formControlName="companyinformation" class="form-control" style="height: 2.19rem;" />
+                                            <span class="text-danger"
+                                *ngIf="phoneForm.controls['companyinformation'].hasError('required') && (phoneForm.controls['companyinformation'].dirty || phoneForm.controls['companyinformation'].touched)">
+                                {{'validation.NAMEISREQUIRED' | translate}}</span><br>
                                         </div>
                                     </div>
                                     <div class="form-group row">
                                         <label class="col-md-4 col-form-label">
                                             WEBSITE <span style="color: red;">*</span></label>
                                         <div class="col-md-8">
-                                            <input class="form-control" style="height: 2.19rem;" />
+                                            <input formControlName="website"  class="form-control" style="height: 2.19rem;" />
+                                            <span class="text-danger"
+                                *ngIf="phoneForm.controls['website'].hasError('required') && (phoneForm.controls['website'].dirty || phoneForm.controls['website'].touched)">
+                                {{'validation.WEBSITEREQUIRED' | translate}}</span><br>
                                         </div>
                                     </div>
                                     <div class="form-group row">
                                         <label class="col-md-4 col-form-label">
                                             BUSINESS PHONE #</label>
                                         <div class="col-md-8">
-                                            <ngx-intl-tel-input [inputId]="'ad'"
+                                            <ngx-intl-tel-input #ngxintlcom [inputId]="'ad'"
                                                 [preferredCountries]="preferredCountries"
                                                 [enableAutoCountrySelect]="false" [enablePlaceholder]="true"
                                                 [searchCountryFlag]="true"
@@ -71,9 +77,12 @@
                                     </div>
                                     <div class="form-group ">
                                         <label class="col-md-4 col-form-label">
-                                            BUSINESS EMAIL</label>
+                                            BUSINESS EMAIL<span style="color: red;">*</span></label>
                                         <div class="col-md-8">
-                                            <input class="form-control" style="height: 2.19rem;" />
+                                            <input formControlName="email" class="form-control" style="height: 2.19rem;" />
+                                            <span class="text-danger"
+                                            *ngIf="phoneForm.controls['email'].hasError('required') && (phoneForm.controls['email'].dirty || phoneForm.controls['email'].touched)">
+                                            {{'validation.EMAIL' | translate}}</span><br>
                                         </div>
                                     </div>
                                     <div class="form-group ">
@@ -83,7 +92,8 @@
                                             <!-- <input class="form-control" placeholder="First Name" style="height: 2.19rem;"/> -->
                                             <ngx-select [allowClear]="true" [items]="time" [disabled]="disabled"
                                                 (data)="refreshValue($event)" (select)="selectedstate($event)"
-                                                (removed)="removed($event)">
+                                                (removed)="removed($event)"
+                                                formControlName="timezone">
                                             </ngx-select>
                                         </div>
                                     </div>
@@ -91,30 +101,40 @@
                                         <label class="col-md-4 col-form-label">
                                             ADDRESS</label>
                                         <div class="col-md-8">
-                                            <input class="form-control" style="height: 2.19rem;" />
+                                            <input formControlName="Address" class="form-control" style="height: 2.19rem;" />
                                         </div>
                                     </div>
                                     <div class="form-group ">
                                         <label class="col-md-4 col-form-label">
                                             ZIP CODE <span style="color: red;">*</span></label>
                                         <div class="col-md-3">
-                                            <input class="form-control" style="height: 2.19rem;" />
+                                            <input formControlName="zipcode" class="form-control" style="height: 2.19rem;" />
+                                            <span class="text-danger"
+                                            *ngIf="phoneForm.controls['zipcode'].hasError('required') && (phoneForm.controls['zipcode'].dirty || phoneForm.controls['zipcode'].touched)">
+                                            {{'validation.ZIPCODE' | translate}}</span><br>
                                         </div>
-                                        <label class="col-sm-1 col-form-label" style="padding:1px 9px;">
-                                            CITY</label>
-                                        <div class="col-md-4">
-                                            <input class="form-control" style="height: 2.19rem;" />
+                                        <label class="col-md-2 col-form-label" style="padding:3px 11px;">
+                                            CITY <span style="color: red;">*</span></label>
+                                        <div class="col-md-3">
+                                            <input formControlName="city"  class="form-control" style="height: 2.19rem;" />
+                                            <span class="text-danger"
+                                            *ngIf="phoneForm.controls['city'].hasError('required') && (phoneForm.controls['city'].dirty || phoneForm.controls['city'].touched)">
+                                            {{'validation.CITYNAMEREQUIRED' | translate}}</span><br>
                                         </div>
                                     </div>
                                     <div class="form-group ">
                                         <label class="col-md-4 col-form-label">
-                                            STATE</label>
+                                            STATE <span style="color: red;">*</span></label>
                                         <div class="col-md-3">
                                             <!-- <input class="form-control" placeholder="First Name" style="height: 2.19rem;"/> -->
                                             <ngx-select [allowClear]="true" [items]="state" [disabled]="disabled"
                                                 (data)="refreshValue($event)" (select)="selectedstate($event)"
-                                                (removed)="removed($event)">
+                                                (removed)="removed($event)"
+                                                formControlName="state">
                                             </ngx-select>
+                                            <span class="text-danger"
+                                            *ngIf="phoneForm.controls['state'].hasError('required') && (phoneForm.controls['state'].dirty || phoneForm.controls['state'].touched)">
+                                            {{'validation.STATENAMEREQUIRED' | translate}}</span><br>
                                         </div>
                                         <label class="col-md-2 col-form-label" style="padding:3px 11px;">
                                             COUNTRY <span style="color: red;">*</span></label>
@@ -122,15 +142,19 @@
                                             <!-- <input class="form-control" style="height: 2.19rem;" /> -->
                                             <ngx-select [allowClear]="true" [items]="country" [disabled]="disabled"
                                                 (data)="refreshValue($event)" (select)="selectedstate($event)"
-                                                (removed)="removed($event)">
+                                                (removed)="removed($event)"
+                                                formControlName="country">
                                             </ngx-select>
+                                            <span class="text-danger"
+                                            *ngIf="phoneForm.controls['country'].hasError('required') && (phoneForm.controls['country'].dirty || phoneForm.controls['country'].touched)">
+                                            {{'validation.COUNTRYNAMEREQUIRED' | translate}}</span><br>
                                         </div>
                                     </div>
                                     <div class="form-group ">
                                         <label class="col-md-4 col-form-label">
                                             COMPANY DESCRIPTION</label>
                                         <div class="col-md-8">
-                                            <textarea class="form-control" type="textarea"
+                                            <textarea formControlName="companydescription" class="form-control" type="textarea"
                                                 placeholder="Name of the Work"></textarea>
                                         </div>
                                     </div>
@@ -149,12 +173,20 @@
                                 <p style="padding-left: 3%; font-size: large; padding-top: 1%;">Profile Picture</p>
                             </div>
                             <div class="panel-body">
-                                <img src="../../../../assets/img/userprofile.png"
+                                <img id="previewimg" src="../../../../assets/img/userprofile.png"
                                     style="width: 90%; padding-left: 15%;">
                                 <div class="text-center" style="padding-top: 5%;">
-                                    <button class="mr-1 btn btn-md" type="submit"
-                                        style="background-color:#5D9CEC;color: white;">Upload</button>
+                                   
+                                    <button class="mr-1 btn btn-md"
+                                        style="background-color:#5D9CEC;color: white;" (click)="openAttachment('filepicker')">Upload
+                                        
+                                    </button>
+                                    <input type="file" style="display:none;" id="filepicker" (change)="fileChangeEvent($event,'img')">
                                 </div>
+                                <!-- <div class="modal-body">
+                                    <input type="file" (change)="fileChangeEvent($event)" placeholder="Upload file..." />
+                                    <img id="preview" src="" alt="Preview">
+                                 </div> -->
                             </div>
                         </div>
 
@@ -162,8 +194,17 @@
                             <div class="panel-heading" style="padding:0px; margin-bottom: 0px;">
                                 <p style="padding-left: 3%; font-size: large; padding-top: 1%;">Branding</p>
                             </div>
-                            <div class="panel-body text-center">
-                                <a href="#">UPLOAD NEW LOGO</a>
+                            <div class="panel-body">
+                                <img id="previewlogo" src="../../../../assets/img/userprofile.png"
+                                style="width: 90%; padding-left: 15%;">
+                                <div class="text-center" style="padding-top: 5%;">
+                                    <button class="mr-1 btn btn-md"
+                                    style="background-color:#5D9CEC;color: white;" (click)="openAttachment('filepicker1')">Upload
+                                    NEW LOGO
+                                </button>
+                                <!-- <a href="#" (click)="openAttachment('filepicker1')">UPLOAD NEW LOGO</a> -->
+                                <input type="file" style="display:none;" id="filepicker1" (change)="fileChangeEvent($event,'logo')">
+                            </div>
                             </div>
                         </div>
                     </div>
@@ -198,6 +239,286 @@
                             </p>
                         </form> -->
             </div>
+            <div class="card-body">
+                <div class="row">
+                    <div class="col-md-9">
+                        <div class="panel panel-default">
+                            <div class="panel-heading" style="padding:0px; margin-bottom: 0px;">
+                                <div class="row" style="padding:3px; margin-bottom: 0px;">
+                                    <p class="col-md-10" style="padding-left: 3%; font-size: large; padding-top: 1%;">Profile Information
+                                    </p>
+          
+                                </div>
+                                
+                                
+                            </div>
+                            <div class="panel-body">
+                                <form class="form-horizontal" [formGroup]="profileInfo"  (submit)="submitForm(profileInfo.value,'profileinfoform')">
+                                    <div class="form-group row">
+                                        <label class="col-md-4 col-form-label" style="padding:3px 11px;">
+                                            FIRST NAME <span style="color: red;">*</span></label>
+                                        <div class="col-md-3">
+                                            <input formControlName="firstname" class="form-control" style="height: 2.19rem;" />
+                                            <span class="text-danger"
+                                *ngIf="profileInfo.controls['firstname'].hasError('required') && (profileInfo.controls['firstname'].dirty || profileInfo.controls['firstname'].touched)">
+                                {{'validation.NAMEISREQUIRED' | translate}}</span><br>
+                                        </div>
+                                        <label class="col-md-2 col-form-label" style="padding:3px 11px;">
+                                            LAST NAME <span style="color: red;">*</span></label>
+                                        <div class="col-md-3">
+                                            <input formControlName="lastname" class="form-control" style="height: 2.19rem;" />
+                                            <span class="text-danger"
+                                *ngIf="profileInfo.controls['lastname'].hasError('required') && (profileInfo.controls['lastname'].dirty || profileInfo.controls['lastname'].touched)">
+                                {{'validation.NAMEISREQUIRED' | translate}}</span><br>
+                                        </div>
+                                    </div>
+
+                                    <div class="form-group ">
+                                        <label class="col-md-4 col-form-label">
+                                         EMAIL<span style="color: red;">*</span></label>
+                                        <div class="col-md-8">
+                                            <input formControlName="email" class="form-control" style="height: 2.19rem;" />
+                                            <span class="text-danger"
+                                            *ngIf="profileInfo.controls['email'].hasError('required') && (profileInfo.controls['email'].dirty || profileInfo.controls['email'].touched)">
+                                            {{'validation.EMAIL' | translate}}</span><br>
+                                        </div>
+                                    </div>
+                                    <div class="form-group row">
+                                        <label class="col-md-4 col-form-label">
+                                            BUSINESS PHONE #</label>
+                                        <div class="col-md-8">
+                                            <ngx-intl-tel-input [inputId]="'ad'"
+                                                [preferredCountries]="preferredCountries"
+                                                [enableAutoCountrySelect]="false" [enablePlaceholder]="true"
+                                                [searchCountryFlag]="true"
+                                                [searchCountryField]="[SearchCountryField.Iso2, SearchCountryField.Name]"
+                                                [selectFirstCountry]="false" [selectedCountryISO]="CountryISO.India"
+                                                [tooltipField]="TooltipLabel.Name" [phoneValidation]="true"
+                                                [separateDialCode]="separateDialCode" name="phone"
+                                                formControlName="phone">
+                                            </ngx-intl-tel-input>
+                                        </div>
+                                        <!-- <div class="col-md-8">
+                                            <input class="form-control" style="height: 2.19rem;" />
+                                        </div> -->
+                                    </div>
+                                    <div>
+                                        <button class="mr-1 btn btn-sm float-left" (click)="openModalWithComponent($event)"
+                                        style="background-color:#5D9CEC;color: white;">Change Password</button>
+                                        <button class="mr-1 btn btn-sm float-right" type="submit"
+                                            style="background-color:#5D9CEC;color: white;">Save</button>
+                                    </div>
+                                </form>
+                            </div>
+                        </div>
+                    </div>
+
+                   
+
+                </div>
+                <!-- <form action="">
+                            <div class="form-group">
+                                <label>Name</label>
+                                <input class="form-control" type="text" />
+                            </div>
+                            <div class="form-group">
+                                <label>Bio</label>
+                                <textarea class="form-control" rows="3"></textarea>
+                            </div>
+                            <div class="form-group">
+                                <label>URL</label>
+                                <input class="form-control" type="text" />
+                            </div>
+                            <div class="form-group">
+                                <label>Company</label>
+                                <input class="form-control" type="text" />
+                            </div>
+                            <div class="form-group">
+                                <label>Location</label>
+                                <input class="form-control" type="text" />
+                            </div>
+                            <button class="btn btn-info" type="button">Update settings</button>
+                            <p>
+                                <small class="text-muted">* Integer fermentum accumsan metus, id sagittis ipsum
+                                    molestie
+                                    vitae</small>
+                            </p>
+                        </form> -->
+            </div>
+            <div class="card-body">
+                <div class="row">
+                    <div class="col-md-9">
+                        <div class="panel panel-default">
+                            <div class="panel-heading" style="padding:0px; margin-bottom: 0px;">
+                                <div class="row" style="padding:3px; margin-bottom: 0px;">
+                                    <p class="col-md-10" style="padding-left: 3%; font-size: large; padding-top: 1%;">Billing Information
+                                    </p>
+                                    <div style="padding-top: 0.5rem;padding-left: 3.5rem;">
+                                        <i (click)="isCollapsed = !isCollapsed"
+                                            [attr.aria-expanded]="!isCollapsed" aria-controls="collapseBasic1" [ngClass]="{'fas fa-chevron-down': isCollapsed,'fa fa-chevron-up': !isCollapsed}"></i>
+                                    </div>
+          
+                                </div>
+                            </div>
+                            <div class="panel-body" id="collapseBasic1" [collapse]="isCollapsed" [isAnimated]="true">
+                                <form class="form-horizontal" [formGroup]="billingInfo"  (submit)="submitForm(billingInfo.value,'billinginfoform')">
+                                    <div class="form-group-now">
+                                        <section class="example-section">
+                                            <mat-checkbox class="example-margin" (change)="setAsCompanyInformation($event.checked)">SAME AS COMPANY INFORMATION</mat-checkbox>
+                                          </section>
+                                    </div>
+                                    <div class="form-group row">
+                                        <label class="col-md-4 col-form-label" style="padding:3px 11px;">
+                                            COMPANY INFORMATION <span style="color: red;">*</span></label>
+                                        <div class="col-md-8">
+                                            <input formControlName="companyinformation" class="form-control" style="height: 2.19rem;" />
+                                            <span class="text-danger"
+                                *ngIf="billingInfo.controls['companyinformation'].hasError('required') && (billingInfo.controls['companyinformation'].dirty || billingInfo.controls['companyinformation'].touched)">
+                                {{'validation.NAMEISREQUIRED' | translate}}</span><br>
+                                        </div>
+                                    </div>
+                                    <div class="form-group row">
+                                        <label class="col-md-4 col-form-label">
+                                            WEBSITE <span style="color: red;">*</span></label>
+                                        <div class="col-md-8">
+                                            <input formControlName="website"  class="form-control" style="height: 2.19rem;" />
+                                            <span class="text-danger"
+                                *ngIf="billingInfo.controls['website'].hasError('required') && (billingInfo.controls['website'].dirty || billingInfo.controls['website'].touched)">
+                                {{'validation.WEBSITEREQUIRED' | translate}}</span><br>
+                                        </div>
+                                    </div>
+                                    <div class="form-group row">
+                                        <label class="col-md-4 col-form-label">
+                                            BUSINESS PHONE #</label>
+                                        <div class="col-md-8">
+                                            <ngx-intl-tel-input #ngxintlbil [inputId]="'ad'"
+                                                [preferredCountries]="preferredCountries"
+                                                [enableAutoCountrySelect]="false" [enablePlaceholder]="true"
+                                                [searchCountryFlag]="true"
+                                                [searchCountryField]="[SearchCountryField.Iso2, SearchCountryField.Name]"
+                                                [selectFirstCountry]="false" [selectedCountryISO]="CountryISO.India"
+                                                [tooltipField]="TooltipLabel.Name" [phoneValidation]="true"
+                                                [separateDialCode]="separateDialCode" name="phone"
+                                                formControlName="phone">
+                                            </ngx-intl-tel-input>
+                                        </div>
+                                        <!-- <div class="col-md-8">
+                                            <input class="form-control" style="height: 2.19rem;" />
+                                        </div> -->
+                                    </div>
+                                    <div class="form-group ">
+                                        <label class="col-md-4 col-form-label">
+                                            BUSINESS EMAIL<span style="color: red;">*</span></label>
+                                        <div class="col-md-8">
+                                            <input formControlName="email" class="form-control" style="height: 2.19rem;" />
+                                            <span class="text-danger"
+                                            *ngIf="billingInfo.controls['email'].hasError('required') && (billingInfo.controls['email'].dirty || billingInfo.controls['email'].touched)">
+                                            {{'validation.EMAIL' | translate}}</span><br>
+                                        </div>
+                                    </div>
+                                    <div class="form-group ">
+                                        <label class="col-md-4 col-form-label">
+                                            ADDRESS</label>
+                                        <div class="col-md-8">
+                                            <input formControlName="Address" class="form-control" style="height: 2.19rem;" />
+                                        </div>
+                                    </div>
+                                    <div class="form-group ">
+                                        <label class="col-md-4 col-form-label">
+                                            ZIP CODE <span style="color: red;">*</span></label>
+                                        <div class="col-md-3">
+                                            <input formControlName="zipcode" class="form-control" style="height: 2.19rem;" />
+                                            <span class="text-danger"
+                                            *ngIf="billingInfo.controls['zipcode'].hasError('required') && (billingInfo.controls['zipcode'].dirty || billingInfo.controls['zipcode'].touched)">
+                                            {{'validation.ZIPCODE' | translate}}</span><br>
+                                        </div>
+                                        <label class="col-md-2 col-form-label" style="padding:3px 11px;">
+                                            CITY <span style="color: red;">*</span></label>
+                                        <div class="col-md-3">
+                                            <input formControlName="city"  class="form-control" style="height: 2.19rem;" />
+                                            <span class="text-danger"
+                                            *ngIf="billingInfo.controls['city'].hasError('required') && (billingInfo.controls['city'].dirty || billingInfo.controls['city'].touched)">
+                                            {{'validation.CITYNAMEREQUIRED' | translate}}</span><br>
+                                        </div>
+                                    </div>
+                                    <div class="form-group ">
+                                        <label class="col-md-4 col-form-label">
+                                            STATE <span style="color: red;">*</span></label>
+                                        <div class="col-md-3">
+                                            <!-- <input class="form-control" placeholder="First Name" style="height: 2.19rem;"/> -->
+                                            <ngx-select [allowClear]="true" [items]="state" [disabled]="disabled"
+                                                (data)="refreshValue($event)" (select)="selectedstate($event)"
+                                                (removed)="removed($event)"
+                                                formControlName="state">
+                                            </ngx-select>
+                                            <span class="text-danger"
+                                            *ngIf="billingInfo.controls['state'].hasError('required') && (billingInfo.controls['state'].dirty || billingInfo.controls['state'].touched)">
+                                            {{'validation.STATENAMEREQUIRED' | translate}}</span><br>
+                                        </div>
+                                        <label class="col-md-2 col-form-label" style="padding:3px 11px;">
+                                            COUNTRY <span style="color: red;">*</span></label>
+                                        <div class="col-md-3">
+                                            <!-- <input class="form-control" style="height: 2.19rem;" /> -->
+                                            <ngx-select [allowClear]="true" [items]="country" [disabled]="disabled"
+                                                (data)="refreshValue($event)" (select)="selectedstate($event)"
+                                                (removed)="removed($event)"
+                                                formControlName="country">
+                                            </ngx-select>
+                                            <span class="text-danger"
+                                            *ngIf="billingInfo.controls['country'].hasError('required') && (billingInfo.controls['country'].dirty || billingInfo.controls['country'].touched)">
+                                            {{'validation.COUNTRYNAMEREQUIRED' | translate}}</span><br>
+                                        </div>
+                                    </div>
+                                    <div class="form-group ">
+                                        <label class="col-md-4 col-form-label">
+                                            COMPANY DESCRIPTION</label>
+                                        <div class="col-md-8">
+                                            <textarea formControlName="companydescription" class="form-control" type="textarea"
+                                                placeholder="Name of the Work"></textarea>
+                                        </div>
+                                    </div>
+                                    <div>
+                                        <button class="mr-1 btn btn-sm float-right" type="submit"
+                                            style="background-color:#5D9CEC;color: white;">Save</button>
+                                    </div>
+                                </form>
+                            </div>
+                        </div>
+                    </div>
+
+                
+                </div>
+                <!-- <form action="">
+                            <div class="form-group">
+                                <label>Name</label>
+                                <input class="form-control" type="text" />
+                            </div>
+                            <div class="form-group">
+                                <label>Bio</label>
+                                <textarea class="form-control" rows="3"></textarea>
+                            </div>
+                            <div class="form-group">
+                                <label>URL</label>
+                                <input class="form-control" type="text" />
+                            </div>
+                            <div class="form-group">
+                                <label>Company</label>
+                                <input class="form-control" type="text" />
+                            </div>
+                            <div class="form-group">
+                                <label>Location</label>
+                                <input class="form-control" type="text" />
+                            </div>
+                            <button class="btn btn-info" type="button">Update settings</button>
+                            <p>
+                                <small class="text-muted">* Integer fermentum accumsan metus, id sagittis ipsum
+                                    molestie
+                                    vitae</small>
+                            </p>
+                        </form> -->
+            </div>
+
+
             <!-- </div> -->
             <!-- <div class="col-md-2"></div> -->
 
@@ -243,7 +564,7 @@
                                                         </p>
                                                     </div>
                                                     <div class="pannel-body">
-                                                        <textarea class="form-control" placeholder="Enter a message"
+                                                        <textarea id="descriptionEducation" #descriptionEducation class="form-control" placeholder="Enter a message"
                                                             rows="7"></textarea>
 
                                                     </div>
@@ -254,7 +575,7 @@
 
                                                 </div>
                                                 <div>
-                                                    <p style="font-size: small;">Characters remaining:1600
+                                                    <p style="font-size: small;">Characters remaining:{{1600 - descriptionEducation.value.length}}
                                                     </p>
                                                 </div>
                                                 <div>
