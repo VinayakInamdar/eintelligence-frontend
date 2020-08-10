@@ -23,4 +23,5 @@ export class CampaignService {
   getCampaign(): Observable<Campaign[]> {
     return this.http.get<Campaign[]>(this.Url + '/campaigns')
   }
+
 }

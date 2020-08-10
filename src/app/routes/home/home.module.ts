@@ -8,10 +8,14 @@ import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { HttpClientModule } from '@angular/common/http';
 import { FileUploadModule } from 'ng2-file-upload';
 import { NgxSelectModule } from 'ngx-select-ex';
+import { OverviewComponent } from '../overview/overview/overview.component';
+import { ChartsModule } from 'ng2-charts';
+
 
 const routes: Routes = [
     { path: '', component: HomeComponent },
-    { path: 'campagin', component: CampaginComponent }
+    { path: 'campagin', component: CampaginComponent },
+    { path: 'overview', component: OverviewComponent },
 ];
 
 @NgModule({
@@ -24,9 +28,10 @@ const routes: Routes = [
         HttpClientModule,
         FileUploadModule,
         FormsModule,
-        NgxSelectModule
+        NgxSelectModule,
+        ChartsModule
     ],
-    declarations: [HomeComponent, CampaginComponent],
+    declarations: [HomeComponent, CampaginComponent,OverviewComponent],
     exports: [
         RouterModule
     ]

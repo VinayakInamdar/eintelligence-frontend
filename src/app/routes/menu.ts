@@ -31,6 +31,18 @@ const Store = {
     icon: "icon-user-follow"
 };
 
+const Campaign = {
+    text: 'Campaign',
+    link: '/campaign',
+    icon: "icon-user-follow"
+};
+
+const Integrations = {
+    text: 'Integrnations',
+    link: '/integrations',
+    icon: "icon-user-follow"
+};
+
 // const Register = {
 //     text: 'Register',
 //     link: '/register',
@@ -63,5 +75,7 @@ export const menu = [
     Home,
     User,
     Account,
-    Store
+    Store,
+    Campaign,
+    Integrations
 ];

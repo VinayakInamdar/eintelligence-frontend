@@ -16,7 +16,7 @@ import { RequireAuthenticatedUserRouteGuardService } from './shared/services/req
 import { OpenIdConnectService } from './shared/services/open-id-connect.service';
 import { RegisterComponent } from './routes/register/register/register.component';
 import { NgxSummernoteModule } from 'ngx-summernote';
-
+import { ChartsModule } from 'ng2-charts';
 
 // https://github.com/ocombe/ng2-translate/issues/218
 export function createTranslateLoader(http: HttpClient) {
@@ -43,7 +43,8 @@ export function createTranslateLoader(http: HttpClient) {
                 useFactory: (createTranslateLoader),
                 deps: [HttpClient]
             }
-        })  
+        })  ,
+        ChartsModule
     ],
     providers: [
         RequireAuthenticatedUserRouteGuardService,

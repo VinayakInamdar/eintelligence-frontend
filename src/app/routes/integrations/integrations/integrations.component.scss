@@ -1,0 +1,79 @@
+.widget-overlay-content {
+    background: #2D9CDB;
+    box-shadow: 0px 2px 11px rgba(0, 0, 0, 0.1);
+    border-radius: 6px;
+    padding: 50px 30px;
+    min-width: 440px;
+}
+
+.text-center {
+    text-align: center !important;
+}
+
+.widget-overlay {
+    background: rgba(255, 255, 255, 0.9);
+    width: 100%;
+    left: 0;
+    top: 0;
+    height: 100%;
+    z-index: 2;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.borderBtm{
+    border-bottom: 1px solid lightgrey;
+}
+
+.padding5{
+    padding: 5px;
+}
+
+.clearfix {
+    display: block;
+}
+
+
+.integration-title{
+    font-family:  'OpenSans-Light';
+    margin-top: 5px;
+    font-size: 25px;
+}
+
+.authBtn{
+    float: right;
+    margin-top: 5px;
+}
+
+.margin-top5{
+    margin-top: 5px;
+}
+
+.integrated-account-container {
+    background: #F3F3F4;
+    padding: 10px;
+    text-align: center;
+    box-sizing: border-box;
+    color: #aeaeae;
+    -moz-box-sizing: border-box;
+    -webkit-box-sizing: border-box;   
+}
+
+.padding-right{
+    padding-right: 5px;
+}
+
+.manage-btn{
+background-color: transparent;
+color: #0a88c7;
+border-color: #0a88c7;
+}
+
+.padding-bt5{
+    padding-bottom: 5px;
+}
+
+.margin-right{
+    margin-right: 5px;
+}
