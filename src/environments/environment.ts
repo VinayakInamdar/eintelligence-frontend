@@ -1,23 +1,11 @@
 // This file can be replaced during build by using the `fileReplacements` array.
 // `ng build --prod` replaces `environment.ts` with `environment.prod.ts`.
 // The list of file replacements can be found in `angular.json`.
-// export const environment = {
-//   production: false,
-//   apiUrl: 'https://localhost:44357/api/',
-//   openIdConnectSettings: {
-//     authority: 'https://localhost:44349/',
-//     client_id: 'tourmanagementclient',
-//     redirect_uri: 'https://localhost:4200/signin-oidc',
-//     scope: 'openid profile roles tourmanagementapi',
-//     response_type: 'id_token token',
-//     post_logout_redirect_uri: 'https://localhost:4200/',
-//   },
-// };
 export const environment = {
-  production: true,
-  apiUrl: 'https://eintelligencebackend.azurewebsites.net/api/',
+  production: false,
+  apiUrl: 'https://localhost:44357/api/',
   openIdConnectSettings: {
-    authority: 'https://eintelligenceidentity.azurewebsites.net/',
+    authority: 'https://localhost:44349/',
     client_id: 'tourmanagementclient',
     redirect_uri: 'https://localhost:4200/signin-oidc',
     scope: 'openid profile roles tourmanagementapi',
@@ -25,6 +13,18 @@ export const environment = {
     post_logout_redirect_uri: 'https://localhost:4200/',
   },
 };
+// export const environment = {
+//   production: true,
+//   apiUrl: 'https://eintelligencebackend.azurewebsites.net/api/',
+//   openIdConnectSettings: {
+//     authority: 'https://eintelligenceidentity.azurewebsites.net/',
+//     client_id: 'tourmanagementclient',
+//     redirect_uri: 'https://localhost:4200/signin-oidc',
+//     scope: 'openid profile roles tourmanagementapi',
+//     response_type: 'id_token token',
+//     post_logout_redirect_uri: 'https://localhost:4200/',
+//   },
+// };
 
 // export const environment = {
 //   production: false,

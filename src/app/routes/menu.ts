@@ -45,7 +45,7 @@ const Campaign = {
 const Integrations = {
     text: 'Integrnations',
     link: '/integrations',
-    icon: "icon-user-follow"
+    icon: "fas fa-cogs"
 };
 
 // const Register = {

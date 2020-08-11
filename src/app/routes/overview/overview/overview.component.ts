@@ -1,11 +1,13 @@
 import { Component, OnInit } from '@angular/core';
 import { ActivatedRoute, Router } from '@angular/router';
+import {Location} from '@angular/common';
 import { IntegrationsService } from '../../integrations/integrations.service';
 import { GoogleAnalyticsAccountSetups } from '../../integrations/googleAnalyticsAccount.model';
 import { GoogleAccountSetups } from '../../integrations/googleAccountSetups.model';
 import { OverviewService } from '../overview.service';
 import { ChartDataSets, ChartOptions, ChartScales } from 'chart.js';
 import { Label, Color } from 'ng2-charts';
+import { CampaignService } from '../../campaign/campaign.service';
 
 @Component({
   selector: 'app-overview',
@@ -24,6 +26,7 @@ export class OverviewComponent implements OnInit {
   authorizeGaAccounts: any;
   hasAuthorize: boolean;
   reportsData:any;
+  selectedCampaignName:string;
 
 
   
@@ -67,11 +70,17 @@ export class OverviewComponent implements OnInit {
   lineChartLegend = true;
   lineChartPlugins = [];
   lineChartType = 'line';
+  campaignList: import("c:/Users/rahik/CoreFrontend_Techovarya(2)/eintelligence-frontend/src/app/routes/campaign/campaign.model").Campaign[];
+  showdiv: boolean = false;
+  show: string = 'undefine';
 
   
-  constructor(private route : ActivatedRoute, private router: Router, private integrationsService : IntegrationsService, private overvieswService : OverviewService ) { 
+  constructor(private route : ActivatedRoute, private router: Router, private integrationsService : IntegrationsService,
+     private overvieswService : OverviewService,public campaignService: CampaignService,
+     private location: Location ) { 
 
     this.getGaSetupByCampaignId();
+    this.getCampaignList();
   }
 
   ngOnInit(): void {
@@ -146,6 +155,27 @@ export class OverviewComponent implements OnInit {
         
       });
   };
+
+  public getCampaignList(): void {
+    this.campaignService.getCampaign().subscribe(res => {
+        this.campaignList = res;           
+    });
+}
+ public onCampaignSelect(event,selectedCampaign) {
+   this.selectedCampaignName = selectedCampaign.name
+   this.selectedCampId = selectedCampaign.id
+   this.router.navigate(['/home/overview', {id : this.selectedCampId}]);
+   console.log(event,selectedCampaign)
+ }
+
+ public onClick(event): any {
+  this.router.navigate(['/home/campagin']);
+}
+public showDiv(event,value,show) {
+  this.showdiv = value == 'true' ? true : false;
+  this.show = show;
+  
+}
 
 
 

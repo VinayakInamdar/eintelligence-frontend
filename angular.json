@@ -103,8 +103,8 @@
           "options": {
             "browserTarget": "ng2angle:build",
             "ssl": true,
-            "sslKey": "privatekey.key",
-            "sslCert": "certificate.pem"
+            "sslKey": "localhost.key",
+            "sslCert": "localhost.pem"
           },
           "configurations": {
             "production": {

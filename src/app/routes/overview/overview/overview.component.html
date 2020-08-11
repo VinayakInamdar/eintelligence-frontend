@@ -3,10 +3,250 @@
 
 
 <div class="row" style="padding: 4%;">
+    <div class="grey-container">
+        <div class="pagewidth clearfix ">
+            <div class="campaign-selector-container ">
+                <div class="btn-group">
+                    <div class="btn-add-new-campaign btn btn-default">
+                        <i class="fa fa-plus" aria-hidden="true" (click)="onClick($event)"></i>
+                    </div>
+                    <div class="btn-group" dropdown>
+                        <button id="button-basic" dropdownToggle type="input" class="btn" style="width:auto ;"
+                                aria-controls="dropdown-basic">
+                          {{selectedCampaignName !== undefined ? selectedCampaignName : 'select your campaign'}}                
+                          <span class="caret">    </span>
+                        </button>
+                        <ul id="dropdown-basic" *dropdownMenu class="dropdown-menu"
+                            role="menu" aria-labelledby="button-basic" style="max-height: 300px;overflow: auto;">
+                          <li role="menuitem" *ngFor="let campaign of campaignList" [ngClass]="{'active': selectedCampId == campaign.id}"><a class="dropdown-item" (click)="onCampaignSelect($event,campaign)" href="#">{{campaign.name}}</a></li>
+                        </ul>
+                      </div>
+                </div>
+
+            </div>
+            <ul id="page_menu" class="campaign-menu pull-right" style="padding-top: 5px;">
+                <li id="overview_menu" class="no-third-nav" data-third-menu="">
+        <a href="#" class="btn" (mouseenter)="showDiv($event,'false','undefined')">
+            <span class="fontsizesmall">Overview</span>
+                        </a>
+
+                </li>
+                <li id="seo_menu" class="" data-third-menu="seo_menu_index">
+        <a href="#" class="btn" (mouseenter)="showDiv($event,'true','seo')">
+            <span class="fontsizesmall">SEO</span>
+                        </a>
+
+                </li>
+                <li id="local_seo_menu" class="active-link" data-third-menu="location_menu_index">
+        <a href="#" class="btn" (mouseenter)="showDiv($event,'true','gmb')">
+            <span class="fontsizesmall">GMB</span>
+                        </a>
+
+                </li>
+                <li id="reputation_menu" class="" data-third-menu="repman_menu_index">
+        <a href="#" class="btn" (mouseenter)="showDiv($event,'false','undefined')">
+            <span class="fontsizesmall">Reputation</span>
+                        </a>
+
+                </li>
+                <li id="analytics_menu" class="" data-third-menu="analytics_menu_index">
+        <a href="#" class="btn" (mouseenter)="showDiv($event,'true','analytics')">
+            <span class="fontsizesmall">Analytics</span>
+                        </a>
+
+                </li>
+                <li id="contacts_menu" class="" data-third-menu="">
+        <a href="#" class="btn" (mouseenter)="showDiv($event,'false','undefined')">
+            <span class="fontsizesmall">Contacts</span>
+                        </a>
+
+                </li>
+                        <li id="ppc_menu" class="" data-third-menu="ppc_menu_index">
+        <a href="#" class="btn" (mouseenter)="showDiv($event,'true','ppc')" >
+            <span class="fontsizesmall">PPC</span>
+                        </a>
+
+                </li>
+                <li id="report_builder_menu" class="" data-third-menu="">
+        <a href="#" class="btn" (mouseenter)="showDiv($event,'false','undefined')">
+            <span class="fontsizesmall">Reports</span>
+                        </a>
+
+                </li>
+                <li id="projects_menu" class="" data-third-menu="">
+        <a href="#" class="btn" (mouseenter)="showDiv($event,'false','undefined')">
+            <span class="fontsizesmall">Projects</span>
+                        </a>
+
+                </li>
+                <li id="settings_menu" class="" data-third-menu="campaign_settings_menu_index">
+        <a href="#" class="btn" (mouseenter)="showDiv($event,'true','settings')">
+            <span class="fontsizesmall">Settings</span>
+                        </a>
+
+                </li>
+</ul>
+        </div>
+
+    </div>
+    <div *ngIf="showdiv" style="font-size:small;" class="grey-container solid box-shadow-header">
+    <div *ngIf="showdiv && show=='seo'" class="third-level-menu-item pagewidth clearfix seo_menu_index active">
+        <ul id="page_menu" class="campaign-menu pull-right" style="padding-top: 5px;font-size: small;">
+            <li id="overview_menu" class="no-third-nav" data-third-menu="">
+    <a href="#" class="btn">
+        <span class="fontsizesmall">On Page</span>
+                    </a>
+
+            </li>
+            <li id="seo_menu" class="" data-third-menu="seo_menu_index">
+    <a href="#" class="btn">
+        <span class="fontsizesmall">Keyword Rankings</span>
+                    </a>
+
+            </li>
+            <li id="local_seo_menu" class="active-link" data-third-menu="location_menu_index">
+    <a href="#" class="btn">
+        <span class="fontsizesmall">Monthly Trend</span>
+                    </a>
+
+            </li>
+            <li id="reputation_menu" class="" data-third-menu="repman_menu_index">
+    <a href="#" class="btn">
+        <span class="fontsizesmall">Reputation</span>
+                    </a>
+
+            </li>
+            <li id="analytics_menu" class="" data-third-menu="analytics_menu_index">
+    <a href="#" class="btn">
+        <span class="fontsizesmall">Links Built</span>
+                    </a>
+
+            </li>
+</ul>
+    </div>
+    <div *ngIf="showdiv && show=='gmb'" class="pagewidth clearfix ">
+        <ul id="page_menu" class="campaign-menu pull-right" style="padding-top: 5px;">
+            <li id="overview_menu" class="no-third-nav" data-third-menu="">
+    <a href="#" class="btn">
+        <span class="fontsizesmall">Overview</span>
+                    </a>
+
+            </li>
+            <li id="seo_menu" class="" data-third-menu="seo_menu_index">
+    <a href="#" class="btn">
+        <span class="fontsizesmall">Business Information</span>
+                    </a>
+
+            </li>
+            <li id="local_seo_menu" class="active-link" data-third-menu="location_menu_index">
+    <a href="#" class="btn">
+        <span class="fontsizesmall">Reviwes</span>
+                    </a>
+
+            </li>
+            <li id="reputation_menu" class="" data-third-menu="repman_menu_index">
+    <a href="#" class="btn">
+        <span class="fontsizesmall">Posts</span>
+                    </a>
+
+            </li>
+</ul>
+    </div>
+    <div *ngIf="showdiv && show=='analytics'" class="pagewidth clearfix ">
+        <ul id="page_menu" class="campaign-menu pull-right" style="padding-top: 5px;">
+            <li id="overview_menu" class="no-third-nav" data-third-menu="">
+    <a href="#" class="btn">
+        <span class="fontsizesmall">Acquistion</span>
+                    </a>
+
+            </li>
+            <li id="seo_menu" class="" data-third-menu="seo_menu_index">
+    <a href="#" class="btn">
+        <span class="fontsizesmall">Audience</span>
+                    </a>
+
+            </li>
+            <li id="local_seo_menu" class="active-link" data-third-menu="location_menu_index">
+    <a href="#" class="btn">
+        <span class="fontsizesmall">Behavior</span>
+                    </a>
+
+            </li>
+            <li id="reputation_menu" class="" data-third-menu="repman_menu_index">
+    <a href="#" class="btn">
+        <span class="fontsizesmall">Conversations</span>
+                    </a>
+
+            </li>
+</ul>
+    </div>
+    <div *ngIf="showdiv && show=='ppc'" class="pagewidth clearfix ">
+        <ul id="page_menu" class="campaign-menu pull-right" style="padding-top: 5px;">
+            <li id="overview_menu" class="no-third-nav" data-third-menu="">
+    <a href="#" class="btn">
+        <span class="fontsizesmall">Campaign</span>
+                    </a>
+
+            </li>
+            <li id="seo_menu" class="" data-third-menu="seo_menu_index">
+    <a href="#" class="btn">
+        <span class="fontsizesmall">AdGroups</span>
+                    </a>
+
+            </li>
+            <li id="local_seo_menu" class="active-link" data-third-menu="location_menu_index">
+    <a href="#" class="btn">
+        <span class="fontsizesmall">Ads</span>
+                    </a>
+
+            </li>
+            <li id="reputation_menu" class="" data-third-menu="repman_menu_index">
+    <a href="#" class="btn">
+        <span class="fontsizesmall">Keywords</span>
+                    </a>
+
+            </li>
+</ul>
+    </div>
+    <div *ngIf="showdiv && show=='settings'" class="pagewidth clearfix ">
+        <ul id="page_menu" class="campaign-menu pull-right" style="padding-top: 5px;">
+            <li id="overview_menu" class="no-third-nav" data-third-menu="">
+    <a href="#" class="btn">
+        <span class="fontsizesmall">Intake Forms</span>
+                    </a>
+
+            </li>
+            <li id="seo_menu" class="" data-third-menu="seo_menu_index">
+    <a href="#" class="btn">
+        <span class="fontsizesmall">Campaign Settings</span>
+                    </a>
+
+            </li>
+            <li id="local_seo_menu" class="active-link" data-third-menu="location_menu_index">
+    <a href="#" class="btn">
+        <span class="fontsizesmall">Competitors</span>
+                    </a>
+
+            </li>
+            <li id="reputation_menu" class="" data-third-menu="repman_menu_index">
+    <a href="#" class="btn">
+        <span class="fontsizesmall">Integrations</span>
+                    </a>
+
+            </li>
+            <li id="analytics_menu" class="" data-third-menu="analytics_menu_index">
+    <a href="#" class="btn">
+        <span class="fontsizesmall">Campaign Users</span>
+                    </a>
+
+            </li>
+</ul>
+    </div>
+</div>
 
     <div class="col-lg-12">
       
-        <div  style="font-size: large;padding-bottom:  5px;">  Campaign Overview :  {{campaignName}} </div>
+        <div  style="font-size: large;padding-bottom:  5px;padding-top: 30px;">  Campaign Overview :  {{campaignName}} </div>
 
         <div class="card card-default shadow bg-white rounded">
             <div class="card-header">
@@ -15,7 +255,7 @@
                 </div>
             </div>
             <div class="row">
-                <div class="chart-wrapper mx-auto chart-container">
+                <div class="chart-wrapper mx-auto chart-container" *ngIf="hasActiveAccount && hasAuthorize">
                     <canvas   baseChart 
                         [datasets]="lineChartData" 
                         [labels]="lineChartLabels" 

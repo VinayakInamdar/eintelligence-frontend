@@ -7,6 +7,7 @@ import { Subscription } from 'rxjs';
 import { Campaign } from '../campaign.model';
 import { CampaignService } from '../campaign.service';
 import { TabsetComponent } from 'ngx-bootstrap/tabs';
+import { LocalDataSource } from 'ng2-smart-table';
 
 
 const success = require('sweetalert');
@@ -29,13 +30,43 @@ export class CampaginComponent implements OnInit,AfterViewInit {
   id: number;
   public demo1TabIndex = 0;
   public myreg = '(https?://)?([\\da-z.-]+)\\.([a-z.]{2,6})[/\\w .-]*/?';
- 
+  url: string;
+  selectedCampaignName:string;
+  selectedCampId : string;
+  campaignList: import("c:/Users/rahik/CoreFrontend_Techovarya(2)/eintelligence-frontend/src/app/routes/campaign/campaign.model").Campaign[];
+  settings = {
+    actions:{add: false, edit:false, delete:false},
+    columns: {
+      name: {
+        title: 'name',
+        filter: false
+      },
+      webUrl: {
+        title: 'webUrl',
+        filter: false
+      },
+      moreTraffic: {
+        title: 'moreTraffic',
+        filter: false
+      },
+      sales: {
+        title: 'sales',
+        filter: false
+      },
+      leadGeneration: {
+        title: 'leadGeneration',
+        filter: false
+      }
+    }
+  };
+  source: LocalDataSource;
 
   constructor(private translate: TranslateService,  fb: FormBuilder,
     private campaignService: CampaignService, 
      public route: ActivatedRoute, public router: Router) { 
 
       this.campaignModel = new Campaign();
+      this.getCampaignList();
       
 
       this.valForm = fb.group({
@@ -47,16 +78,51 @@ export class CampaginComponent implements OnInit,AfterViewInit {
     })     
   }
   ngAfterViewInit(): void {
+    this.url = this.router.url
     this.disableTab()
   }
 
      
   ngOnInit(): void {
+
     this.sub = this.route.params.subscribe(params => {
       this.id = params['id'];
   });
 
   }
+
+  public getCampaignList(): void {
+    this.campaignService.getCampaign().subscribe(res => {
+        this.campaignList = res; 
+        this.source = new LocalDataSource(this.campaignList)            
+    });
+}
+public onCampaignSelect(event,selectedCampaign) {
+  this.selectedCampaignName = selectedCampaign.name
+  this.selectedCampId = selectedCampaign.id
+  this.router.navigate(['/campaign/overview', {id : this.selectedCampId}]);
+  console.log(event,selectedCampaign)
+}
+
+// using to search user locally
+onSearch(query: string = '') {
+  if(query == "") {
+    this.source = new LocalDataSource(this.campaignList)
+  }
+  else {
+    this.source.setFilter([
+      // fields we want to include in the search
+      {
+        field: 'name',
+        search: query
+      },
+    ], false); 
+    // second parameter specifying whether to perform 'AND' or 'OR' search 
+    // (meaning all columns should contain search query or at least one)
+    // 'AND' by default, so changing to 'OR' by setting false here
+  }
+  
+}
   submitForm(value: any) {
     
     var result: Campaign = Object.assign({}, value);
@@ -127,5 +193,11 @@ export class CampaginComponent implements OnInit,AfterViewInit {
             this.router.navigate(['/home']);
         }
     });
+}
+userRowSelect(campaign: any) : void{
+
+  this.router.navigate(['/campaign/overview', {id : campaign.data.id}]);
+  
+       
 }
 }

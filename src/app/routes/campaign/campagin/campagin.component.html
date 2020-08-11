@@ -1,5 +1,5 @@
 
-<div class="row">
+<div class="row" *ngIf="url !== '/campaign'">
     <div class="col-md-2"></div>
     <div class="col-md-8" style="padding-left: 62%;height: 20px;"><a routerLink="./home">
             <em class="fa-2x mr-2 fas fa-times"></em></a>
@@ -7,7 +7,7 @@
     <div class="col-md-2"> </div>
 </div>
 
-<div class="row w3-container w3-center w3-animate-right" style="padding-top: 20px;">
+<div *ngIf="url !== '/campaign'" class="row w3-container w3-center w3-animate-right" style="padding-top: 20px;">
     <div class="col-md-2"> </div>
     <div class="col-md-8">
         <form [formGroup]="valForm" class="form-horizontal card" (keydown.enter)="$event.preventDefault()" (submit)="submitForm(valForm.value)" novalidate=""
@@ -157,5 +157,66 @@
     </div>
     <div class="col-md-2"></div>
 </div>
+
+
+
+
+<div class="row" style="padding: 4%;">
+    <div class="grey-container">
+        <div class="pagewidth clearfix ">
+            <div class="campaign-selector-container ">
+                <div class="btn-group">
+                    <div class="btn-add-new-campaign btn btn-default">
+                        <i class="fa fa-plus" aria-hidden="true" (click)="onClick($event)"></i>
+                    </div>
+                    <div class="btn-group" dropdown>
+                        <button id="button-basic" dropdownToggle type="input" class="btn" style="width:auto ;"
+                                aria-controls="dropdown-basic">
+                          {{selectedCampaignName !== undefined ? selectedCampaignName : 'select your campaign'}}                
+                          <span class="caret">    </span>
+                        </button>
+                        <ul id="dropdown-basic" *dropdownMenu class="dropdown-menu"
+                            role="menu" aria-labelledby="button-basic" style="max-height: 300px;overflow: auto;">
+                          <li role="menuitem" *ngFor="let campaign of campaignList" [ngClass]="{'active': selectedCampId == campaign.id}"><a class="dropdown-item" (click)="onCampaignSelect($event,campaign)" href="#">{{campaign.name}}</a></li>
+                        </ul>
+                      </div>
+                </div>
+
+            </div>
+     
+        </div>
+
+    </div>
+</div>
+    <div class="row">
+        <div class="col-md-1"></div>
+        <div class="col-md-3" style="font-size: larger;  font-weight: normal;
+        color: black;">All Campagins</div>
+        <div class="col-md-4"></div>
+        <div class="col-md-3 search-container">
+            <input #search class="form-control ng-valid ng-dirty ng-valid-parse ng-touched ng-empty" style="width: fit-content;" type="text" placeholder="Search for campaigns" (keyup)="onSearch(search.value)">
+            <i class="svg-mask svg-search fa fa-search" style="position: absolute;"></i>
+        <div class="col-md-1"></div>
+    </div>
+    
+    </div>
+    <hr>
+    <br>
+    <div class="row">
+        <div class="col-md-1"></div>
+        <div class="col-md-10">
+            <div class="card card-default shadow p-3 mb-5 bg-white rounded">
+                <div class="table-responsive">
+                    <ng2-smart-table [settings]="settings" [source]="source" (userRowSelect)="userRowSelect($event)"></ng2-smart-table>
+                </div>
+            </div>
+        </div>
+        <div class="col-md-1"></div>
+    </div>
+
+    
+   
+
+
 
 <toaster-container [toasterconfig]="toasterconfig"></toaster-container>
