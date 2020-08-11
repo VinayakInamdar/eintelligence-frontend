@@ -27,6 +27,19 @@ export const environment = {
 // };
 
 // export const environment = {
+//   production: true,
+//   apiUrl: 'https://eintelligencebackend.azurewebsites.net/api/',
+//   openIdConnectSettings: {
+//     authority: 'https://eintelligenceidentity.azurewebsites.net/',
+//     client_id: 'tourmanagementclient',
+//     redirect_uri: 'https://localhost:4200/signin-oidc',
+//     scope: 'openid profile roles tourmanagementapi',
+//     response_type: 'id_token token',
+//     post_logout_redirect_uri: 'https://localhost:4200/',
+//   },
+// };
+
+// export const environment = {
 //   production: false,
 //   apiUrl: 'https://eintelligencebackend.azurewebsites.net/api/',
 //   openIdConnectSettings: {

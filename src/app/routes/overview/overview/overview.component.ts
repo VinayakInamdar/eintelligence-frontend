@@ -29,12 +29,15 @@ export class OverviewComponent implements OnInit {
   selectedCampaignName:string;
 
 
+  dateLabels: any;
   
   lineChartData: ChartDataSets[] = [
     { data: [85, 72, 30, 75, 77 ,25, 72, 48, 55, 17 ,85, 52, 58, 75, 27 ,35, 82, 48, 35, 47 ,75, 12, 48, 75, 67 ,65, 12, 28, 45, 77 ,85, 72, 28, 75, 77 ,25, 32, 48, 85, 17,74 ], label: 'Sessions', borderCapStyle: 'square' },
   ];
 
   lineChartLabels: Label[] = ['1 jan', '2 jan', '3jan', '4jan', '5jan', '6jan','1 jan', '2 jan', '3jan', '4jan', '5jan','6jan','1 jan', '2 jan', '3jan', '4jan', '5jan','6jan','1 jan', '2 jan', '3jan', '4jan', '5jan','6jan','1 jan', '2 jan', '3jan', '4jan', '5jan','6jan','1 jan', '2 jan', '3jan', '4jan', '5jan','6jan','1 jan', '2 jan', '3jan', '4jan', '5jan' ];
+
+  //lineChartLabels: Label[] = this.dateLabels;
 
   lineChartOptions : ChartOptions  = {
     responsive: true,
@@ -54,8 +57,6 @@ export class OverviewComponent implements OnInit {
     
   };
 
-
-
   lineChartColors: Color[] = [
     {
       borderColor: '#2D9EE2',
@@ -64,15 +65,13 @@ export class OverviewComponent implements OnInit {
       pointBackgroundColor :'white'   
     },
   ];
-
-  
-
   lineChartLegend = true;
   lineChartPlugins = [];
   lineChartType = 'line';
   campaignList: import("c:/Users/rahik/CoreFrontend_Techovarya(2)/eintelligence-frontend/src/app/routes/campaign/campaign.model").Campaign[];
   showdiv: boolean = false;
   show: string = 'undefine';
+  
 
   
   constructor(private route : ActivatedRoute, private router: Router, private integrationsService : IntegrationsService,
@@ -109,6 +108,8 @@ export class OverviewComponent implements OnInit {
     this.overvieswService.getGaAnalyticsReports(this.selectedCampId).subscribe(
       res =>{
           this.reportsData = res;
+           this.dateLabels = this.reportsData.gaPreparedDataDto.date;
+          
       }
     );
     
