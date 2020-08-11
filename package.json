@@ -7,7 +7,7 @@
   "private": true,
   "scripts": {
     "ng": "ng",
-    "start": "ng serve -o",
+    "start": "ng serve --ssl --ssl-key ./localhost.key  --ssl-cert ./localhost.crt",
     "build": "ng build --prod",
     "test": "ng test",
     "lint": "ng lint",
