@@ -8,6 +8,7 @@ import { OverviewService } from '../overview.service';
 import { ChartDataSets, ChartOptions, ChartScales } from 'chart.js';
 import { Label, Color, BaseChartDirective } from 'ng2-charts';
 import { CampaignService } from '../../campaign/campaign.service';
+import { Campaign } from '../../campaign/campaign.model';
 
 @Component({
   selector: 'app-overview',
@@ -123,7 +124,7 @@ export class OverviewComponent implements OnInit {
   lineChartLegend = true;
   lineChartPlugins = [];
   lineChartType = 'line';
-  campaignList: import("c:/Users/rahik/CoreFrontend_Techovarya(2)/eintelligence-frontend/src/app/routes/campaign/campaign.model").Campaign[];
+  campaignList: Campaign[];
   showdiv: boolean = false;
   show: string = 'undefine';
   url: string;

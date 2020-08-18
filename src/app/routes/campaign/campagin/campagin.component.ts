@@ -49,7 +49,7 @@ export class CampaginComponent implements OnInit,AfterViewInit {
   reportsData:any;
   selectedCampaignName:string;
   selectedCampId : string;
-  campaignList: import("c:/Users/rahik/CoreFrontend_Techovarya(2)/eintelligence-frontend/src/app/routes/campaign/campaign.model").Campaign[];
+  campaignList: Campaign[];
   settings = {
     actions:{add: false, edit:false, delete:false},
     columns: {
