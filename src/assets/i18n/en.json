@@ -40,6 +40,8 @@
     },
     "validation":{
         "NAMEISREQUIRED":"Name is required", 
+        "KEYWORDISREQUIRED":"Keyword is required", 
+        "LOCATIONISREQUIRED":"Location is required",
         "URLREQUIRED":"Web URL is required",
         "URLVALIDATION":"Web URL is not valid",       
         "PAASWORDREQUIRED":"Password is required",
@@ -105,7 +107,8 @@
         "UPDATEMSG":"Updated Successfully",
         "CREATEMSG":"Created Successfully",
         "DELETEMSG":"Deleted Successfully",
-        "INSERTMSG":"Inserted Successfully"
+        "INSERTMSG":"Inserted Successfully",
+        "SAVEMSG":"Saved Successfully"
     },
     "toaster": {
         "success": {

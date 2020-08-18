@@ -28,7 +28,7 @@ export class CampaignListComponent implements OnInit {
       this.getAgencyList();
       location.onPopState(() => {
 
-        console.log('pressed back!');
+        // console.log('pressed back!');
         // this.router.navigate(['/admin']);
 
     });
@@ -65,27 +65,30 @@ export class CampaignListComponent implements OnInit {
       this.id = params['id'];
   });
   }
-
+  //  using to get campaignList
   public getCampaignList(): void {
       this.campaignService.getCampaign().subscribe(res => {
           this.campaignList = res;
           this.tableData = this.campaignList;            
       });
-  }
+  } 
+
+  // using to get agencyList
   public getAgencyList(): void {
     this.adminService.getAgency().subscribe(
       res => {
         this.agencyList = res;   
         this.time = res;  
-        console.log(this.agencies)   
     });
-}
+} 
+
+  // to go to campaignDetail page 
   public userRowSelect(event): any {
     this.router.navigate(['/admin/campaignlist/' + this.agencyid + '/' + event.data.id]);
   }
-
+  
+  // using to load campaignList of selected agency
   public onChange(value) {
-    console.log(value)
     this.agencyid = + value;
     this.router.navigate(['/admin/campaignlist/' + value],{replaceUrl: true});
     this.getCampaignList()

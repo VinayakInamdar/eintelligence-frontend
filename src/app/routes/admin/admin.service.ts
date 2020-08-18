@@ -13,7 +13,8 @@ export class AdminService {
   constructor (private http: HttpClient){
 
   }
-
+  
+  // using to get agencyList
   getAgency () : Observable<IAgency[]>{
 
    return this.http.get<IAgency[]>(this.productUrl).pipe(

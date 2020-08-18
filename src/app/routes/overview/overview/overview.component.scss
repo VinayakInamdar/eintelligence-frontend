@@ -38,7 +38,7 @@
     border-left: 1px solid #ECECEC;
     float: left;
     width: 11%;
-    padding: 25px!important;
+    padding: 30px!important;
     margin: 0;
     box-sizing: border-box;
     -webkit-box-sizing: border-box;
@@ -46,6 +46,7 @@
 }
 
  .stat-box .stat-label{
+     font-size: 10px;
     text-align: center;
     min-height: 40px;
  }
@@ -113,6 +114,31 @@
 .fontsizemedium {
     font-size: medium;
 }
+// .stat-label {
+//     font-size: 10px;
+//     min-height: 30px;
+// }
+.text-blue {
+    color: #0f9ed6!important;
+    font-size: 20px;
+    font-weight: bold;
+}
+.form-control {
+    display: block;
+    width: 90%;
+    height: calc(1.5em + .75rem + 2px);
+    padding: .375rem .75rem;
+    font-size: 1rem;
+    font-weight: 400;
+    line-height: 1.5;
+    color: #495057;
+    background-color: #fff;
+    background-clip: padding-box;
+    border: 1px solid #ced4da;
+    border-radius: .25rem;
+    -webkit-transition: border-color .15s ease-in-out,box-shadow .15s ease-in-out;
+    transition: border-color .15s ease-in-out,box-shadow .15s ease-in-out;
+}
 ul#page_menu {
     position: absolute;
     top: 0;
@@ -137,4 +163,29 @@ li span.only-show-on-hover {
 }
 li:hover span.only-show-on-hover  {
     visibility: visible;
+}
+// Import module styling
+@import "~ngx-bootstrap/datepicker/bs-datepicker.css";
+
+/* Fix header text placement */
+.bs-datepicker-head > bs-datepicker-navigation-view {
+    display: flex;
+    justify-content: space-around;
+}
+
+/* Custom Theme */
+.theme-angle {
+    .bs-datepicker-head {
+        background-color: 'red';
+    }
+    .bs-datepicker-body table td {
+        span.selected, &.selected span,
+        span[class*="select-"]:after,
+        &[class*="select-"] span:after {
+            background-color: 'red';
+        }
+        &.week span {
+          color: 'red';
+        }
+    }
 }

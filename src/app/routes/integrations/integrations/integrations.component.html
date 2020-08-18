@@ -1,154 +1,182 @@
-
-
-<div class="row" style="padding: 4%;">
-
-    <!-- <div class="col-md-12">
-
-    <div class="col-md-4">
-        
-          <select class="form-control" >
-         <option value="0">--Select--</option>
-         <option *ngFor="let gaAccount of gaAccounts" value= {{gaAccount.id}}>{{gaAccount.userName}}</option>
-         </select>
-    </div>
-    </div> -->
-
-    <div class="col-lg-6">
-        <div class="card card-default shadow bg-white rounded">      
-            <div class="card-body" style="border: black 2px;">
-                <div class="row" >
-                    <div class="col-md-6">
-                         <h3 class="integration-title"> <img src="assets/img/ga-icon.png" width="40"> Google Analytics</h3>
-                    </div>
-                    <div class="col-md-6">
-
-                        <div class="authBtn" *ngIf="!hasGaSetup">
-                            <button type="button" (click)="googleAuth()" class="btn btn-primary">Authorize</button>
-                        </div>
-                        <div class="authBtn" *ngIf="hasGaSetup">
-                          <span><button type="button" (click)="isVisible = !isVisible" class="btn btn-primary padding-right manage-btn margin-right">Manage</button></span>
-                          <span><button type="button" (click)="googleAuth()" class="btn btn-primary padding-right manage-btn">Disconnect</button></span>                                                                           
-                        </div>
-                    
-                    </div> 
-                    <div class="col-md-12 padding-bt5" *ngIf="hasGaSetup" >
-                        <div  class="integrated-account-container">{{selectedProfile.viewName}} ({{selectedProfile.propertyID}}) </div>
-                    </div> 
-
-                    <div  *ngIf="isVisible">
-
-                    
-                    <div class="col-md-12 padding padding5" *ngIf="hasGaSetup" >
-                        <div class="col-md-3" >
-                           
-                        </div>
-                        <div class="col-md-9" >
-                            <button type="button" (click)="googleAuth()" class="btn btn-primary">Add New Account</button> <span> or, authorize an existing account:</span>
-                        </div>
-                                
-                    </div>    
-                    <div class="col-md-12 padding5" *ngIf="hasGaSetup" >
-                            
-                        <div class="col-md-4">
-                            <select class="form-control" [(ngModel)]="selectedAccount.id" (change)="onSelect($event.target.value)" >
-                                <option value="0">--Select--</option>
-                                <option *ngFor="let gaAccount of gaAccounts" value= {{gaAccount.id}}>{{gaAccount.userName}}</option>
-                                </select>
-                        </div>
-                        <div class="col-md-4">
-                          <select class="form-control" [(ngModel)]="selectedProfile.id">
-                            <option value="0">--Select--</option>
-                            <option *ngFor="let profile of profiles " value= {{profile.id}}>{{profile.websiteUrl}}</option>
-                            </select></div>
-                        <div class="col-md-4">
-
-                            <div >
-                                <button type="button" class="btn btn-primary" (click)="saveProfile()">Save Changes</button>
-                            </div>
-                                     
-                        </div>
-                                                                                                           
-                    </div>
-
-                    </div>
+<div style="padding-top: 35px;">
+    <div class="grey-container">
+        <div class="pagewidth clearfix ">
+            <div class="campaign-selector-container ">
+                <div class="btn-group">
+                    <!-- <div class="btn-add-new-campaign btn btn-default">
+                        <i class="fa fa-plus" aria-hidden="true" (click)="onClick($event)"></i>
+                    </div> -->
+                    <div class="btn-group" dropdown>
+                        <button id="button-basic" dropdownToggle type="input" class="btn" style="width:auto ;"
+                                aria-controls="dropdown-basic">
+                          {{selectedCampaignName !== undefined ? selectedCampaignName : 'select your campaign'}}                
+                          <span class="caret">    </span>
+                        </button>
+                        <ul id="dropdown-basic" *dropdownMenu class="dropdown-menu"
+                            role="menu" aria-labelledby="button-basic" style="max-height: 300px;overflow: auto;">
+                          <li role="menuitem" *ngFor="let campaign of campaignList" [ngClass]="{'active': selectedCampId == campaign.id}"><a class="dropdown-item" (click)="onCampaignSelect($event,campaign)" href="#">{{campaign.name}}</a></li>
+                        </ul>
+                      </div>
+                </div>
     
-                    <div class="col-md-12" *ngIf="!hasGaSetup" >
-                        <div  class="integrated-account-container">No accounts authorized.</div>
-                    </div>              
-                </div>               
             </div>
+     
         </div>
-    </div>    
-
-    <div class="col-lg-6">
-        <div class="card card-default shadow bg-white rounded">      
-            <div class="card-body" style="border: black 2px;">
-                <div class="row" >
-                    <div class="col-md-6">
-                         <h3 class="integration-title"> <img src="assets/img/ga-icon.png" width="40"> Google Analytics</h3>
-                    </div>
-                    <div class="col-md-6">
-
-                        <div class="authBtn">
-                            <button type="button" class="btn btn-primary">Authorize</button>
+    
+    </div>
+    </div>
+    
+    <div class="row" style="padding: 4%;">
+    
+        <!-- <div class="col-md-12">
+    
+        <div class="col-md-4">
+            
+              <select class="form-control" >
+             <option value="0">--Select--</option>
+             <option *ngFor="let gaAccount of gaAccounts" value= {{gaAccount.id}}>{{gaAccount.userName}}</option>
+             </select>
+        </div>
+        </div> -->
+        
+    
+        <div class="col-lg-6">
+            <div class="card card-default shadow bg-white rounded">      
+                <div class="card-body" style="border: black 2px;">
+                    <div class="row" >
+                        <div class="col-md-6">
+                             <h3 class="integration-title"> <img src="assets/img/ga-icon.png" width="40"> Google Analytics</h3>
                         </div>
-                    
-                    </div>
-
-                    <div class="col-md-12">
-                        <div  class="integrated-account-container">No accounts authorized.</div>
-
+                        <div class="col-md-6">
+    
+                            <div class="authBtn" *ngIf="!hasGaSetup">
+                                <button type="button" (click)="googleAuth()" class="btn btn-primary">Authorize</button>
+                            </div>
+                            <div class="authBtn" *ngIf="hasGaSetup">
+                              <span><button type="button" (click)="isVisible = !isVisible" class="btn btn-primary padding-right manage-btn margin-right">Manage</button></span>
+                              <span><button type="button" (click)="googleAuth()" class="btn btn-primary padding-right manage-btn">Disconnect</button></span>                                                                           
+                            </div>
+                        
+                        </div> 
+                        <div class="col-md-12 padding-bt5" *ngIf="hasGaSetup" >
+                            <div  class="integrated-account-container">{{selectedProfile.viewName}} ({{selectedProfile.propertyID}}) </div>
+                        </div> 
+    
+                        <div  *ngIf="isVisible">
+    
+                        
+                        <div class="col-md-12 padding padding5" *ngIf="hasGaSetup" >
+                            <div class="col-md-3" >
+                               
+                            </div>
+                            <div class="col-md-9" >
+                                <button type="button" (click)="googleAuth()" class="btn btn-primary">Add New Account</button> <span> or, authorize an existing account:</span>
+                            </div>
+                                    
+                        </div>    
+                        <div class="col-md-12 padding5" *ngIf="hasGaSetup" >
+                                
+                            <div class="col-md-4">
+                                <select class="form-control" [(ngModel)]="selectedAccount.id" (change)="onSelect($event.target.value)" >
+                                    <option value="0">--Select--</option>
+                                    <option *ngFor="let gaAccount of gaAccounts" value= {{gaAccount.id}}>{{gaAccount.userName}}</option>
+                                    </select>
+                            </div>
+                            <div class="col-md-4">
+                              <select class="form-control" [(ngModel)]="selectedProfile.id">
+                                <option value="0">--Select--</option>
+                                <option *ngFor="let profile of profiles " value= {{profile.id}}>{{profile.websiteUrl}}</option>
+                                </select></div>
+                            <div class="col-md-4">
+    
+                                <div >
+                                    <button type="button" class="btn btn-primary" (click)="saveProfile()">Save Changes</button>
+                                </div>
+                                         
+                            </div>
+                                                                                                               
+                        </div>
+    
+                        </div>
+        
+                        <div class="col-md-12" *ngIf="!hasGaSetup" >
+                            <div  class="integrated-account-container">No accounts authorized.</div>
+                        </div>              
+                    </div>               
+                </div>
+            </div>
+        </div>    
+    
+        <div class="col-lg-6">
+            <div class="card card-default shadow bg-white rounded">      
+                <div class="card-body" style="border: black 2px;">
+                    <div class="row" >
+                        <div class="col-md-6">
+                             <h3 class="integration-title"> <img src="assets/img/googleAd.png" width="45"> Google Ads </h3>
+                        </div>
+                        <div class="col-md-6">
+    
+                            <div class="authBtn">
+                                <button type="button" class="btn btn-primary">Authorize </button>
+                            </div>
+                        
+                        </div>
+    
+                        <div class="col-md-12">
+                            <div  class="integrated-account-container">(Coming soon...)   No accounts authorized.</div>
+    
+                        </div>
                     </div>
                 </div>
             </div>
-        </div>
-    </div> 
-
-    <div class="col-lg-6">
-        <div class="card card-default shadow bg-white rounded">      
-            <div class="card-body" style="border: black 2px;">
-                <div class="row" >
-                    <div class="col-md-6">
-                         <h3 class="integration-title"> <img src="assets/img/ga-icon.png" width="40"> Google Analytics</h3>
-                    </div>
-                    <div class="col-md-6">
-
-                        <div class="authBtn">
-                            <button type="button" class="btn btn-primary">Authorize</button>
+        </div> 
+    
+        <div class="col-lg-6">
+            <div class="card card-default shadow bg-white rounded">      
+                <div class="card-body" style="border: black 2px;">
+                    <div class="row" >
+                        <div class="col-md-6">
+                             <h3 class="integration-title"> <img src="assets/img/google-adsense.png" width="45"> Google Adsense </h3>
                         </div>
-                    
-                    </div>
-
-                    <div class="col-md-12">
-                        <div  class="integrated-account-container">No accounts authorized.</div>
-
+                        <div class="col-md-6">
+    
+                            <div class="authBtn">
+                                <button type="button" class="btn btn-primary">Authorize</button>
+                            </div>
+                        
+                        </div>
+    
+                        <div class="col-md-12">
+                            <div  class="integrated-account-container">(Coming soon...)   No accounts authorized.</div>
+    
+                        </div>
                     </div>
                 </div>
             </div>
-        </div>
-    </div>   
-
-    <div class="col-lg-6">
-        <div class="card card-default shadow bg-white rounded">      
-            <div class="card-body" style="border: black 2px;">
-                <div class="row" >
-                    <div class="col-md-6">
-                         <h3 class="integration-title"> <img src="assets/img/ga-icon.png" width="40"> Google Analytics</h3>
-                    </div>
-                    <div class="col-md-6">
-
-                        <div class="authBtn">
-                            <button type="button"  class="btn btn-primary">Authorize</button>
+        </div>   
+    
+        <div class="col-lg-6">
+            <div class="card card-default shadow bg-white rounded">      
+                <div class="card-body" style="border: black 2px;">
+                    <div class="row" >
+                        <div class="col-md-6">
+                             <h3 class="integration-title"> <img src="assets/img/ga-icon.png" width="40"> Google Analytics</h3>
                         </div>
-                    
-                    </div>
-
-                    <div class="col-md-12">
-                        <div  class="integrated-account-container">No accounts authorized.</div>
-
+                        <div class="col-md-6">
+    
+                            <div class="authBtn">
+                                <button type="button"  class="btn btn-primary">Authorize</button>
+                            </div>
+                        
+                        </div>
+    
+                        <div class="col-md-12">
+                            <div  class="integrated-account-container">No accounts authorized.</div>
+    
+                        </div>
                     </div>
                 </div>
             </div>
-        </div>
-    </div>    
-</div>
+        </div>    
+    </div>
+    

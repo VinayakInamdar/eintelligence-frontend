@@ -42,13 +42,13 @@ export class IntegrationsService {
     
   // }
 
-//   getGaSetupByCampaignId(campaignId: string): Observable<GoogleAnalyticsAccountSetups[]> {
-//     return this.http.get<GoogleAnalyticsAccountSetups[]>(`${this.Url}googleanalyticsaccounts`, {
-//         params: new HttpParams().set('pageSize', '1').set('searchQuery',  "CampaignID==" + campaignId )
+//   getGaSetupByCampaignIdDateRange(campaignId: string,startDate:string,endDate:string): Observable<GoogleAnalyticsAccountSetups[]> {
+//     return this.http.get<GoogleAnalyticsAccountSetups[]>(`${this.Url}googleanalyticsaccounts/GetGaAccountByCampaignID?id=` + campaignId, {
+//         params: new HttpParams().set('pageSize', '1').set('searchQuery',  "StartDate==" + startDate).set('searchQuery',"EndDate==" + endDate)
 //     });
     
 // }
-
+  // using to get google analytics setup of selected campaign Id
 getGaSetupByCampaignId(campaignId: string): Observable<GoogleAnalyticsAccountSetups[]> {
   return this.http.get<GoogleAnalyticsAccountSetups[]>(`${this.Url}googleanalyticsaccounts/GetGaAccountByCampaignID?id=` + campaignId);
   

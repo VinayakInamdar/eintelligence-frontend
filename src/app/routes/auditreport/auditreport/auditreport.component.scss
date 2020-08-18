@@ -1,0 +1,131 @@
+#report-content.preview {
+    padding-top: 170px;
+}
+.webview-report-header {
+    position: absolute;
+    width: 100%;
+    background: #FFF;
+    top: 0;
+    left: 0;
+    z-index: 1;
+}
+.pagewidth{
+display: flex;
+position: relative;
+}
+.preview .pagewidth {
+    width: 100%;
+    max-width: 1200px;
+    margin-left: auto;
+    margin-right: auto;
+}
+.webview-report-header .brand-logo {
+    width: 50%;
+    padding: 70px 0 30px;
+}
+.webview-report-header .button-container {
+    text-align: right;
+    width: 50%;
+    padding: 97px 0 10px;
+}
+.section-container {
+    padding-bottom: 50px;
+}
+
+.clearfix {
+    display: block;
+}
+.screenshot-desktop {
+    width: 100%;
+    max-width: 376px;
+    height: 270px;
+    float: right;
+    background: url(/assets/custom/images/webaudit/desktop-bg.png) no-repeat;
+    background-position: top;
+    background-size: contain;
+    margin-top: 21px;
+    position: relative;
+}
+.section-header-wrapper {
+    padding: 10px 0;
+    border-bottom: 1px solid #E2E8F3;
+    margin-bottom: 20px;
+}
+.section-title {
+    padding-left: 0;
+}
+.section-score-breakdown {
+    text-align: right;
+    padding-top: 10px;
+}
+.section-score .badge {
+    border-radius: 3px;
+    padding: 2px 12px;
+    margin-left: 5px;
+}
+.badge.critical {
+    background: #D32F2F;
+}
+.badge.for-improvement {
+    background: #FF6312;
+}
+.badge.looking-good {
+    background: #148B39;
+}
+.badge {
+    background: #46607D;
+    padding: 5px 10px;
+    border-radius: 30px;
+    font-family: Open Sans;
+    font-weight: 700;
+    font-size: 14px;
+    line-height: 17px;
+    color: #FFFFFF;
+}
+.section-item-container {
+    padding: 15px 0;
+    position: relative;
+}
+.section-item-container .section-score-breakdown {
+    text-align: left;
+}
+.section-score-breakdown {
+    text-align: right;
+    padding-top: 0px;
+}
+.page-screen-devices {
+    width: 100%;
+    height: 147px;
+    background: url(/assets/custom/images/webaudit/devices-bg.png) no-repeat;
+    background-position: top;
+    background-size: contain;
+    max-width: 212px;
+}
+.other-details ul li.critical {
+    color: #D32F2F;
+}
+.other-details ul li.critical .svg-icon {
+    background-color: #D32F2F;
+}
+.other-details ul li .svg-icon {
+    display: inline-block;
+    width: 7px;
+    height: 7px;
+    margin-right: 6px;
+    vertical-align: middle;
+    margin-top: -2px;
+}
+#usability-section .pagespeed .speed-insight-list {
+    border-top: 1px solid #E2E8F3;
+    margin-top: 15px;
+    padding-top: 15px;
+}
+.other-details ul li.looking-good {
+    color: #148B39;
+}
+.other-details ul li {
+    font-family: Open Sans;
+    font-size: 14px;
+    line-height: 19px;
+    padding-bottom: 10px;
+}

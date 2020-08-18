@@ -10,12 +10,16 @@ import { FileUploadModule } from 'ng2-file-upload';
 import { NgxSelectModule } from 'ngx-select-ex';
 import { OverviewComponent } from '../overview/overview/overview.component';
 import { ChartsModule } from 'ng2-charts';
+import { AuditsComponent } from '../audits/audits/audits.component';
+import { AuditreportComponent } from '../auditreport/auditreport/auditreport.component';
 
 
 const routes: Routes = [
     { path: '', component: HomeComponent },
-    { path: 'campagin', component: CampaginComponent },
+    { path: 'campaign', component: CampaginComponent },
     { path: 'overview', component: OverviewComponent },
+    { path : 'audits',component: AuditsComponent},
+    { path : 'audits/auditreport',component: AuditreportComponent}
 ];
 
 @NgModule({
@@ -31,7 +35,7 @@ const routes: Routes = [
         NgxSelectModule,
         ChartsModule
     ],
-    declarations: [HomeComponent, CampaginComponent,OverviewComponent],
+    declarations: [HomeComponent, CampaginComponent,OverviewComponent,AuditsComponent,AuditreportComponent],
     exports: [
         RouterModule
     ]
