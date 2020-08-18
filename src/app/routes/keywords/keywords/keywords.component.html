@@ -1,0 +1,406 @@
+
+    <div class="row" *ngIf="settingActive == 1;">
+        <div class="col-md-2"></div>
+        <div class="col-md-8" style="padding-left: 62%;height: 20px;"><a href="javascript:void(0);" (click)="closeAddKeyword($event)">
+                <em class="fa-2x mr-2 fas fa-times"></em></a>
+        </div>
+        <div class="col-md-2"> </div>
+    </div>
+    
+    <div *ngIf="settingActive == 1;" class="row w3-container w3-center w3-animate-right" style="padding-top: 20px;">
+        <div class="col-md-2"> </div>
+        <div class="col-md-8">
+            <form [formGroup]="valForm" class="form-horizontal card" (keydown.enter)="$event.preventDefault()" (submit)="submitForm(valForm.value)" novalidate=""
+                style="height: 410px;">
+                <tabset [justified]="true" #staticTabs>
+                    <tab style="height: 335px;">
+                        <ng-template tabHeading>
+                            <p style="font:large arial;">Keywords</p>
+                        </ng-template>
+    
+                        <div class="row">
+                            <div class="col-md-1"></div>
+                            <div class="col-md-10" style="padding-top: 5px;">
+                                <h1>What keywords would you like to track?</h1>
+                                <h3>Add one keyword per line or use the suggestion tool to retrieve related keywords.</h3>
+                                <hr>
+                                <label>KEYWORDS</label>
+                                <textarea id="textarea1" (keydown.enter)="triggerFunction($event)" type="textarea" #keyword_field class="form-controltextareaheight" cols='60' rows="10" formControlName="keyword" placeholder="Enter keyword here..."
+                                    ></textarea>
+                                <span class="text-danger"
+                                    *ngIf="valForm.controls['keyword'].hasError('required') && (valForm.controls['keyword'].dirty || valForm.controls['keyword'].touched)">
+                                    {{'validation.KEYWORDISREQUIRED' | translate}}</span>
+                                    <br>
+                                <div class="text-center">
+                                    <button class="mr-1 btn btn-primary btn-lg" type="submit" (click)="goToNextTab($event,keyword_field.value,'keyword',1)">Next </button>
+                                </div>
+                            </div>
+                            <div class="col-md-1"></div>
+                        </div>
+    
+                    </tab>
+                    <tab  style="height: 335px;" tab="2">
+                        <ng-template tabHeading>
+                            <p style="font:large arial;">Locations</p>
+                        </ng-template>
+                        <div class="row">
+                            <div class="col-md-1"></div>
+                            <div class="col-md-10" style="padding-top: 50px;">
+                                <h1>Where do you want to track these keywords?</h1>
+                                <h3> Add one location by city, country or region</h3>
+                                <hr>
+                                <div class="form-group row ">
+                                    <select #location_field class="form-control selectheight" formControlName="location" (change)="setSelectedLocation($event)"  form="carform" class="col-sm-12">
+                                        <option value={{country}} *ngFor="let country of country" >{{country}}</option>
+                                      </select>
+                                    <span class="text-danger"
+                                        *ngIf="valForm.controls['location'].hasError('required') && (valForm.controls['location'].dirty || valForm.controls['location'].touched)">
+                                        {{'validation.LOCATIONISREQUIRED' | translate}}</span>
+                                </div>
+                              
+                                <div class="row">
+                                    <div class="col-md-3">
+                                        <button class="mr-1 btn btn-secondary btn-lg" type="submit" (click)="goToPreviousTab($event,0)">
+                                            < Go Back</button>
+                                    </div>
+                                    <div class="col-md-6"></div>
+                                    <div class="col-md-3">
+                                        <button class="mr-1 btn btn-primary btn-lg" type="submit" (click)="goToNextTab($event,location_field.value,'location',2)">Next
+                                            ></button>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="col-md-1"></div>
+                        </div>
+                    </tab>
+                    <tab style="height: 335px;">
+                        <ng-template tabHeading>
+                            <p style="font:large arial;">Tags</p>
+                        </ng-template>
+                        <div class="row">
+                            <div class="col-md-12" style="padding-top: 10px;">
+                                <h1>Do you want to tag your keywords?</h1>
+                                <h3>Adding tags to your keywords can help you organize and filter your data.</h3>
+                                <hr>
+                                <label>Tags</label>
+                                <!-- <input #tag_field class="form-control" formControlName="tag" placeholder="Enter Tags here..."
+                                    style="height: 3.1575rem;">
+                                <span class="text-danger"
+                                    *ngIf="valForm.controls['tag'].hasError('required') && (valForm.controls['tag'].dirty || valForm.controls['tag'].touched)">
+                                    {{'validation.NAMEISREQUIRED' | translate}}</span> -->
+                                    <div class="editor-tag" (click)="focusTagInput()">
+                                        <span class="tag-item" *ngFor="let tag of tags">
+                                              {{tag}}
+                                              <span class="remove-tag" (click)="removeTag(tag)">×</span>
+                                            </span>
+                                            <input
+                                            placeholder="Enter tags"
+                                            #tagInput type="text"
+                                            class="input-tag"
+                                            (keyup)="onKeyUp($event)"
+                                            formControlName="tag">
+                                          </div>
+                                    
+                                    <br>
+                                <div class="row">
+                                    <div class="col-md-3">
+                                        <button class="mr-1 btn btn-secondary btn-lg" type="submit" (click)="goToPreviousTab($event,1)">
+                                            < Go Back</button>
+                                    </div>
+                                    <div class="col-md-5"></div>
+                                    <div class="col-md-4">
+                                        <!-- <a routerLink="./home"> -->
+                                        <button class="mr-1 btn btn-primary btn-lg" type="submit"
+                                            >Submit</button>
+                                        <!-- </a> -->
+                                    </div>
+                                </div>
+                            </div>
+    
+                        </div>
+                    </tab>
+                </tabset>
+            </form>
+        </div>
+        <div class="col-md-2"></div>
+    </div>
+    <div class="row" style="padding: 4%;" *ngIf="settingActive == 0;">
+    <div class="grey-container" *ngIf="settingActive == 0;">
+        <div class="pagewidth clearfix ">
+            <div class="campaign-selector-container ">
+                <div class="btn-group">
+                    <div class="btn-add-new-campaign btn btn-default">
+                        <i class="fa fa-plus" aria-hidden="true" (click)="onClick($event)"></i>
+                    </div>
+                    <div class="btn-group" dropdown>
+                        <button id="button-basic" dropdownToggle type="input" class="btn" style="width:auto ;"
+                                aria-controls="dropdown-basic">
+                          {{selectedCampaignName !== undefined ? selectedCampaignName : 'select your campaign'}}                
+                          <span class="caret">    </span>
+                        </button>
+                        <ul id="dropdown-basic" *dropdownMenu class="dropdown-menu"
+                            role="menu" aria-labelledby="button-basic" style="max-height: 300px;overflow: auto;">
+                          <li role="menuitem" *ngFor="let campaign of campaignList" [ngClass]="{'active': selectedCampId == campaign.id}"><a class="dropdown-item" (click)="onCampaignSelect($event,campaign)" href="#">{{campaign.name}}</a></li>
+                        </ul>
+                      </div>
+                </div>
+
+            </div>
+            <ul id="page_menu" class="campaign-menu pull-right" style="padding-top: 5px;">
+                <li id="overview_menu" class="no-third-nav" data-third-menu="">
+        <a href="#" class="btn" (mouseenter)="showDiv($event,'false','undefined')">
+            <span class="fontsizesmall">Overview</span>
+                        </a>
+
+                </li>
+                <li id="seo_menu" class="" data-third-menu="seo_menu_index">
+        <a href="#" class="btn" (mouseenter)="showDiv($event,'true','seo')">
+            <span class="fontsizesmall">SEO</span>
+                        </a>
+
+                </li>
+                <li id="local_seo_menu" class="active-link" data-third-menu="location_menu_index">
+        <a href="#" class="btn" (mouseenter)="showDiv($event,'true','gmb')">
+            <span class="fontsizesmall">GMB</span>
+                        </a>
+
+                </li>
+                <li id="reputation_menu" class="" data-third-menu="repman_menu_index">
+        <a href="#" class="btn" (mouseenter)="showDiv($event,'false','undefined')">
+            <span class="fontsizesmall">Reputation</span>
+                        </a>
+
+                </li>
+                <li id="analytics_menu" class="" data-third-menu="analytics_menu_index">
+        <a href="#" class="btn" (mouseenter)="showDiv($event,'true','analytics')">
+            <span class="fontsizesmall">Analytics</span>
+                        </a>
+
+                </li>
+                <li id="contacts_menu" class="" data-third-menu="">
+        <a href="#" class="btn" (mouseenter)="showDiv($event,'false','undefined')">
+            <span class="fontsizesmall">Contacts</span>
+                        </a>
+
+                </li>
+                        <li id="ppc_menu" class="" data-third-menu="ppc_menu_index">
+        <a href="#" class="btn" (mouseenter)="showDiv($event,'true','ppc')" >
+            <span class="fontsizesmall">PPC</span>
+                        </a>
+
+                </li>
+                <li id="report_builder_menu" class="" data-third-menu="">
+        <a href="#" class="btn" (mouseenter)="showDiv($event,'false','undefined')">
+            <span class="fontsizesmall">Reports</span>
+                        </a>
+
+                </li>
+                <li id="projects_menu" class="" data-third-menu="">
+        <a href="#" class="btn" (mouseenter)="showDiv($event,'false','undefined')">
+            <span class="fontsizesmall">Projects</span>
+                        </a>
+
+                </li>
+                <li id="settings_menu" class="" data-third-menu="campaign_settings_menu_index">
+        <a href="#" class="btn" (mouseenter)="showDiv($event,'true','settings')">
+            <span class="fontsizesmall">Settings</span>
+                        </a>
+
+                </li>
+</ul>
+        </div>
+
+    </div>
+
+    <div *ngIf="showdiv && settingActive == 0;" style="font-size:small;" class="grey-container solid box-shadow-header">
+    <div *ngIf="showdiv && show=='seo'" class="third-level-menu-item pagewidth clearfix seo_menu_index active">
+        <ul id="page_menu" class="campaign-menu pull-right" style="padding-top: 5px;font-size: small;">
+            <li id="overview_menu" class="paddingclass" [ngClass]="{'activeborderbottom': hovered == 'seo_onpage'}" data-third-menu="">
+    <a href="#" class="btn" (mouseenter)="hovered = 'seo_onpage'" (mouseleave)="hovered = ''">
+        <span class="fontsizesmall">On Page</span>
+                    </a>
+
+            </li>
+            <li class="paddingclass" [ngClass]="{'activeborderbottom': hovered == 'seo_keyword'}" data-third-menu="seo_menu_index">
+    <a href="javascript:void(0);" class="btn" (click)="goToAddNewKeywords($event)" (mouseenter)="hovered = 'seo_keyword'" (mouseleave)="hovered = ''">
+        <span class="fontsizesmall">Keyword Rankings</span>
+                    </a>
+
+            </li>
+            <li id="local_seo_menu" class="paddingclass" [ngClass]="{'activeborderbottom': hovered == 'seo_trend'}" data-third-menu="location_menu_index">
+    <a href="#" class="btn" (mouseenter)="hovered = 'seo_trend'" (mouseleave)="hovered = ''">
+        <span class="fontsizesmall">Monthly Trend</span>
+                    </a>
+
+            </li>
+            <li id="reputation_menu" class="paddingclass" [ngClass]="{'activeborderbottom': hovered == 'seo_reputation'}"
+            data-third-menu="repman_menu_index">
+    <a href="#" class="btn" (mouseenter)="hovered = 'seo_reputation'" (mouseleave)="hovered = ''">
+        <span class="fontsizesmall">Reputation</span>
+                    </a>
+
+            </li>
+            <li id="analytics_menu" class="paddingclass" [ngClass]="{'activeborderbottom': hovered == 'seo_linkbuilt'}"
+            data-third-menu="analytics_menu_index">
+    <a href="#" class="btn" (mouseenter)="hovered = 'seo_linkbuilt'" (mouseleave)="hovered = ''">
+        <span class="fontsizesmall">Links Built</span>
+                    </a>
+
+            </li>
+</ul>
+    </div>
+    <div *ngIf="showdiv && show=='gmb'" class="pagewidth clearfix ">
+        <ul id="page_menu" class="campaign-menu pull-right" style="padding-top: 5px;">
+            <li id="overview_menu" class="paddingclass" [ngClass]="{'activeborderbottom': hovered == 'gmb_overview'}"
+            data-third-menu="">
+    <a href="#" class="btn" (mouseenter)="hovered = 'gmb_overview'" (mouseleave)="hovered = ''"
+    >
+        <span class="fontsizesmall">Overview</span>
+                    </a>
+
+            </li>
+            <li id="seo_menu" class="paddingclass" [ngClass]="{'activeborderbottom': hovered == 'gmb_businessinfo'}" data-third-menu="seo_menu_index">
+    <a href="#" class="btn" (mouseenter)="hovered = 'gmb_businessinfo'" (mouseleave)="hovered = ''">
+        <span class="fontsizesmall">Business Information</span>
+                    </a>
+
+            </li>
+            <li id="local_seo_menu" class="paddingclass" [ngClass]="{'activeborderbottom': hovered == 'gmb_reviews'}" data-third-menu="location_menu_index">
+    <a href="#" class="btn" (mouseenter)="hovered = 'gmb_reviews'" (mouseleave)="hovered = ''">
+        <span class="fontsizesmall">Reviwes</span>
+                    </a>
+
+            </li>
+            <li id="reputation_menu" class="paddingclass" [ngClass]="{'activeborderbottom': hovered == 'gmb_posts'}" data-third-menu="repman_menu_index">
+    <a href="#" class="btn" (mouseenter)="hovered = 'gmb_posts'" (mouseleave)="hovered = ''">
+        <span class="fontsizesmall">Posts</span>
+                    </a>
+
+            </li>
+</ul>
+    </div>
+    <div *ngIf="showdiv && show=='analytics'" class="pagewidth clearfix ">
+        <ul id="page_menu" class="campaign-menu pull-right" style="padding-top: 5px;">
+            <li id="overview_menu" class="paddingclass" [ngClass]="{'activeborderbottom': hovered == 'analytics_acquisition'}"  data-third-menu="">
+    <a href="#" class="btn" (mouseenter)="hovered = 'analytics_acquisition'" (mouseleave)="hovered = ''">
+        <span class="fontsizesmall">Acquistion</span>
+                    </a>
+
+            </li>
+            <li id="seo_menu" class="paddingclass" [ngClass]="{'activeborderbottom': hovered == 'analytics_audience'}" data-third-menu="seo_menu_index">
+    <a href="#" class="btn" (mouseenter)="hovered = 'analytics_audience'" (mouseleave)="hovered = ''">
+        <span class="fontsizesmall">Audience</span>
+                    </a>
+
+            </li>
+            <li id="local_seo_menu" class="paddingclass" [ngClass]="{'activeborderbottom': hovered == 'analytics_behavior'}" data-third-menu="location_menu_index">
+    <a href="#" class="btn" (mouseenter)="hovered = 'analytics_behavior'" (mouseleave)="hovered = ''">
+        <span class="fontsizesmall">Behavior</span>
+                    </a>
+
+            </li>
+            <li id="reputati on_menu" class="paddingclass" [ngClass]="{'activeborderbottom': hovered == 'analytics_conv'}" data-third-menu="repman_menu_index">
+    <a href="#" class="btn" (mouseenter)="hovered = 'analytics_conv'" (mouseleave)="hovered = ''">
+        <span class="fontsizesmall">Conversations</span>
+                    </a>
+
+            </li>
+</ul>
+    </div>
+    <div *ngIf="showdiv && show=='ppc'" class="pagewidth clearfix ">
+        <ul id="page_menu" class="campaign-menu pull-right" style="padding-top: 5px;">
+            <li id="overview_menu" class="paddingclass" [ngClass]="{'activeborderbottom': hovered == 'ppc_campaign'}" data-third-menu="">
+    <a href="#" class="btn" (mouseenter)="hovered = 'ppc_campaign'" (mouseleave)="hovered = ''">
+        <span class="fontsizesmall">Campaign</span>
+                    </a>
+
+            </li>
+            <li id="seo_menu" class="paddingclass" [ngClass]="{'activeborderbottom': hovered == 'ppc_adgroups'}" data-third-menu="seo_menu_index">
+    <a href="#" class="btn" (mouseenter)="hovered = 'ppc_adgroups'" (mouseleave)="hovered = ''">
+        <span class="fontsizesmall">AdGroups</span>
+                    </a>
+
+            </li>
+            <li id="local_seo_menu" class="paddingclass" [ngClass]="{'activeborderbottom': hovered == 'ppc_ads'}" data-third-menu="location_menu_index">
+    <a href="#" class="btn" (mouseenter)="hovered = 'ppc_ads'" (mouseleave)="hovered = ''">
+        <span class="fontsizesmall">Ads</span>
+                    </a>
+
+            </li>
+            <li id="reputation_menu" class="paddingclass" [ngClass]="{'activeborderbottom': hovered == 'ppc_keywords'}" data-third-menu="repman_menu_index">
+    <a href="#" class="btn" (mouseenter)="hovered = 'ppc_keywords'" (mouseleave)="hovered = ''">
+        <span class="fontsizesmall">Keywords</span>
+                    </a>
+
+            </li>
+</ul>
+    </div>
+    <div *ngIf="showdiv && show=='settings'" class="pagewidth clearfix ">
+        <ul id="page_menu" class="campaign-menu pull-right" style="padding-top: 5px;">
+            <li id="overview_menu" class="paddingclass" [ngClass]="{'activeborderbottom': hovered == 'settings_intakeinfo'}" data-third-menu="">
+    <a href="#" class="btn" (mouseenter)="hovered = 'settings_intakeinfo'" (mouseleave)="hovered = ''">
+        <span class="fontsizesmall">Intake Forms</span>
+                    </a>
+
+            </li>
+            <li id="seo_menu" class="paddingclass" [ngClass]="{'activeborderbottom': hovered == 'settings_campaign'}" data-third-menu="seo_menu_index">
+    <a href="#" class="btn" (mouseenter)="hovered = 'settings_campaign'" (mouseleave)="hovered = ''">
+        <span class="fontsizesmall">Campaign Settings</span>
+                    </a>
+
+            </li>
+            <li id="local_seo_menu" class="paddingclass" [ngClass]="{'activeborderbottom': hovered == 'settings_competitors'}" data-third-menu="location_menu_index">
+    <a href="#" class="btn" (mouseenter)="hovered = 'settings_competitors'" (mouseleave)="hovered = ''">
+        <span class="fontsizesmall">Competitors</span>
+                    </a>
+
+            </li>
+            <li id="reputation_menu" class="paddingclass" [ngClass]="{'activeborderbottom': hovered == 'settings_integrations'}" data-third-menu="repman_menu_index">
+    <a href="#" class="btn" (mouseenter)="hovered = 'settings_integrations'" (mouseleave)="hovered = ''">
+        <span class="fontsizesmall">Integrations</span>
+                    </a>
+
+            </li>
+            <li id="analytics_menu" class="paddingclass" [ngClass]="{'activeborderbottom': hovered == 'settings_campaignusers'}" data-third-menu="analytics_menu_index">
+    <a href="#" class="btn" (mouseenter)="hovered = 'settings_campaignusers'" (mouseleave)="hovered = ''">
+        <span class="fontsizesmall">Campaign Users</span>
+                    </a>
+
+            </li>
+</ul>
+    </div>
+
+
+
+</div>
+</div>
+<div class="row" *ngIf="settingActive == 0;">
+    <div class="col-md-1"></div>
+    <div class="col-md-3" style="font-size: larger;  font-weight: normal;
+    color: black;">
+    <h4 style="padding-top: 10px;">Keyword Rankings</h4>
+</div>
+    <div class="col-md-2"></div>
+    <div class="col-md-3 search-container">
+        <input #search class="form-control ng-valid ng-dirty ng-valid-parse ng-touched ng-empty" style="width: fit-content;" type="text" placeholder="Search for keywords" (keyup)="onSearch(search.value)">
+       
+</div>
+<div class="col-md-2">
+    <button class="mr-1 btn btn-primary btn-lg" type="button" (click)="onClickToAddKeyword($event)">Add a Keyword</button>
+
+<div class="col-md-1"></div>
+</div>
+</div>
+<hr>
+<br>
+<div class="row" *ngIf="settingActive == 0;">
+    <div class="col-md-1"></div>
+    <div class="col-md-10">
+        <div class="card card-default shadow p-3 mb-5 bg-white rounded">
+            <div class="table-responsive">
+                <ng2-smart-table [settings]="settings" [source]="source" (userRowSelect)="userRowSelect($event)"></ng2-smart-table>
+            </div>
+        </div>
+    </div>
+    <div class="col-md-1"></div>
+</div>   

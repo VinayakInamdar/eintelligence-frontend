@@ -2,17 +2,17 @@
 const Home = {
     text: 'Home',
     link: '/home',
-    icon: 'icon-home',
+    icon: 'fas fa-home',
 };
 const User = {
     text: 'User',
     link: '/user',
-    icon: "icon-user"
+    icon: "fa fa-user"
 };
 const Account = {
     text: 'Account',
     link: '/account',
-    icon: "icon-user-follow",
+    icon: "fa fa-user-plus",
     // submenu: [
     //     {
     //         text: 'Account Setting',
@@ -39,7 +39,7 @@ const Admin = {
 const Campaign = {
     text: 'Campaign',
     link: '/campaign',
-    icon: "icon-user-follow"
+    icon: "fa fa-bullhorn"
 };
 
 const Integrations = {

@@ -1,6 +1,6 @@
 import { Injectable } from '@angular/core';
 import { environment } from 'src/environments/environment';
-import { HttpClient } from '@angular/common/http';
+import { HttpClient, HttpParams } from '@angular/common/http';
 import { Observable } from 'rxjs';
 
 @Injectable({
@@ -13,11 +13,24 @@ export class OverviewService {
 
    }
   Url = environment.apiUrl;
-
-  getGaAnalyticsReports(campaignId: string): Observable<any[]> {
-    return this.http.get<any[]>(`${this.Url}googleanalyticsaccounts/GetGaAnalyticsReports?id=` + campaignId);
+  // using to get google analytics report of selected campaign Id, Start Date , End Date
+  getGaAnalyticsReports(campaignId: string,startDate:string,endDate:string): Observable<any[]> {
+    return this.http.get<any[]>(`${this.Url}googleanalyticsaccounts/GetGaAnalyticsReports?id=` + campaignId,{
+      params: new HttpParams().set("startDate", startDate).set("endDate",endDate)
+   });
     
   }
+  
+    // using to get google analytics report of selected campaign Id, Start Date , End Date
+  getGaAnalyticsReportsByDateRange(campaignId: string,startDate:string,endDate:string): Observable<any[]> {
+    return this.http.get<any[]>(`${this.Url}googleanalyticsaccounts/GetGaAnalyticsReports?id=` + campaignId,{
+       params: new HttpParams().set("startDate", startDate).set("endDate",endDate)
+    });
+    
+  }
+
+ 
+
 
 }
 

@@ -182,7 +182,7 @@ billingInfo = new FormGroup({
 
 
   }
-
+  
   openFile(){
     console.log('hell')
     document.querySelector('input').click()
@@ -235,8 +235,7 @@ billingInfo = new FormGroup({
         this.billingInfo.controls[c].setValue(undefined);
     }
     }
-    // this.billingInfo.controls.phone.setValue('+919898989898')
-    // this.billingInfo.controls.companyinformation.setValue(this.phoneForm.value.companyinformation)
+  
   }
   submitForm(value: any,formtype: string) {
     
@@ -256,21 +255,6 @@ billingInfo = new FormGroup({
         this.billingInfo.controls[c].markAsTouched();
     }
     }
-
-    //  result.profilePicture = this.fileToUpload.name
-    
-    // this.campaignService.createCampaign(result).subscribe((res: Campaign) => {
-    //     this.campaignModel = res;
-    //      //validation
-    //      event.preventDefault();
-    //      for (let c in this.valForm.controls) {
-    //          this.valForm.controls[c].markAsTouched();
-    //      }
-    //      if (!this.valForm.valid) { 
-    //          return;
-    //      }
-       
-    //   });
   }
   openModalWithComponent(event) {
     event.preventDefault()
@@ -282,9 +266,7 @@ billingInfo = new FormGroup({
   }
 
   
-  //   // public onClick(): any {
-  //   //   this.router.navigate(['/account/branding']);
-  //   // }
+
 }
 @Component({
   selector: 'dialog-content-example-dialog',

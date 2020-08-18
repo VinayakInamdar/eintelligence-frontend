@@ -1,8 +1,14 @@
 import { Component, OnInit } from '@angular/core';
 import { IntegrationsService } from '../integrations.service';
 import { GoogleAccountSetups } from '../googleAccountSetups.model';
-import { ActivatedRoute } from '@angular/router';
+import { ActivatedRoute, Router } from '@angular/router';
 import { GoogleAnalyticsAccountSetups } from '../googleAnalyticsAccount.model';
+import { CampaignService } from '../../campaign/campaign.service';
+import { LocalDataSource } from 'ng2-smart-table';
+import { TranslateService } from '@ngx-translate/core';
+import { userInfo } from 'os';
+const success = require('sweetalert');
+
 
 @Component({
   selector: 'app-integrations',
@@ -16,6 +22,7 @@ export class IntegrationsComponent implements OnInit {
   hasGaSetup: boolean = false;
   gaAccounts : any;
   profiles: any;
+  userName: any = 'userName';
 
   selectedAccount: any ;
   activeAccount:any;
@@ -24,15 +31,24 @@ export class IntegrationsComponent implements OnInit {
   activeProfile:any;
 
   isVisible:boolean= true;
+  selectedCampaignName:string;
+  campaignList: import("c:/Users/rahik/CoreFrontend_Techovarya(2)/eintelligence-frontend/src/app/routes/campaign/campaign.model").Campaign[];
 
   
 
-  constructor(private integrationsService : IntegrationsService ,private route :ActivatedRoute) { }
+  constructor(private translate: TranslateService,private integrationsService : IntegrationsService ,private router: Router,private route :ActivatedRoute
+    ,private campaignService: CampaignService,) { 
+      this.getCampaignList();
+      let id = this.route.snapshot.paramMap.get('id');
+      this.selectedCampId = `${id}`;
+    }
 
   
 
   ngOnInit(): void {
+
     this.getGaSetupByCampaignId();
+    
   }
 
   public integrationData : any;
@@ -52,10 +68,10 @@ export class IntegrationsComponent implements OnInit {
 
   };
 
+    // using to get google analytics setup of selected campaign Id
   public getGaSetupByCampaignId(): void{
 
-    let id = this.route.snapshot.paramMap.get('id');
-  this.selectedCampId = `${id}`;
+
 
     this.integrationsService.getGaSetupByCampaignId(this.selectedCampId).subscribe(
 
@@ -67,7 +83,16 @@ export class IntegrationsComponent implements OnInit {
 
           this.hasGaSetup = true;
         }
-        this.gaAccounts =  this.googleAnalyticsAccountSetupList.map(function (item) { return  item.googleAccountSetups; });        
+        else {
+          this.hasGaSetup = false;
+        }
+        // using to get unique value from response
+        var gaAccounts =  this.googleAnalyticsAccountSetupList.map(function (item) { return  item.googleAccountSetups; });   
+        this.gaAccounts = gaAccounts.filter((thing, index, self) =>
+        index === self.findIndex((t) => (
+           t[this.userName] === thing[this.userName]
+        ))
+      )
         
         //distinct google account
         
@@ -125,9 +150,55 @@ export class IntegrationsComponent implements OnInit {
       // this.states = this.selectService.getStates().filter((item) => item.countryid == countryid);
 
       res => {
-       
+       this.successAlert()
       });
     
   }
+   
+  successAlert() {
+    success({
+        icon: this.translate.instant('sweetalert.SUCCESSICON'),
+        title: this.translate.instant('message.SAVEMSG'),
+        buttons: {
+            confirm: {
+                text: this.translate.instant('sweetalert.OKBUTTON'),
+                value: true,
+                visible: true,
+                className: "bg-primary",
+                closeModal: true,
+            }
+        }
+    }).then((isConfirm: any) => {
+        if (isConfirm) {
+          this.router.navigate(['/integrations', this.selectedCampId]);
+        }
+    });
+}
+  // using to get campaignList
+  public getCampaignList(): void {
+    this.campaignService.getCampaign().subscribe(res => {
+        this.campaignList = res;   
+        var name = "";
+        if(this.selectedCampId == ":id"){
+          this.selectedCampId = this.campaignList[0].id
+        }
+        this.campaignList.map((s,i)=>{
+          if(s.id == this.selectedCampId){
+            name = s.name
+          }
+        })
+        this.selectedCampaignName = name !== "" ? name : undefined ; 
+          this.getGaSetupByCampaignId()  
+          this.router.navigate(['/integrations', this.selectedCampId]); 
+    });
+}
+
+// using to get integration status of selected campaign Id
+public onCampaignSelect(event,selectedCampaign) {
+  this.selectedCampaignName = selectedCampaign.name
+  this.selectedCampId = selectedCampaign.id
+  this.router.navigate(['/integrations', this.selectedCampId]);
+  this.getGaSetupByCampaignId()
+}
 
 }

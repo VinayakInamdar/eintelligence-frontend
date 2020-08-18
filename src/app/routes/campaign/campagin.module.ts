@@ -5,7 +5,9 @@ import { Routes, RouterModule } from '@angular/router';
 import { SharedModule } from 'src/app/shared/shared.module';
 import { CampaginComponent } from './campagin/campagin.component';
 import { Ng2SmartTableModule } from 'ng2-smart-table';
+import { ChartsModule } from 'ng2-charts';
 import { OverviewComponent } from '../overview/overview/overview.component';
+import { KeywordsComponent } from '../keywords/keywords/keywords.component';
 
 
 
@@ -13,7 +15,8 @@ import { OverviewComponent } from '../overview/overview/overview.component';
 const routes: Routes = [
 
     { path: '', component: CampaginComponent },
-    { path: 'overview', component: OverviewComponent }
+    { path: 'overview', component: OverviewComponent },
+    { path: ':id/seo/keywords', component: KeywordsComponent }
 
 ];
 
@@ -21,9 +24,10 @@ const routes: Routes = [
     imports: [
         SharedModule,
         RouterModule.forChild(routes),
-        Ng2SmartTableModule
+        Ng2SmartTableModule,
+        ChartsModule
     ],
-    declarations: [CampaginComponent],
+    declarations: [KeywordsComponent],
     exports: [
         RouterModule
     ]

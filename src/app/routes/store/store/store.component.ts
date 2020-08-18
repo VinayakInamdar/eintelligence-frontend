@@ -18,6 +18,8 @@ export class StoreComponent implements OnInit {
   constructor(public router :Router, public productService : StoreService) { }
 
   ngOnInit(): void {
+
+    //using to get list of plans
     this.productService.getProducts().subscribe(
       products => {
         this.products = products;               

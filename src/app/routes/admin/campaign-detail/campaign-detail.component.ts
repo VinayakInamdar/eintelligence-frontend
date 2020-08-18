@@ -20,7 +20,7 @@ export class CampaignDetailComponent implements OnInit {
       this.getCampaignList();
       location.onPopState(() => {
 
-        console.log('pressed back!');
+        // console.log('pressed back!');
         // this.router.navigate(['/admin']);
 
     });
@@ -31,6 +31,8 @@ export class CampaignDetailComponent implements OnInit {
       this.campaignid = params.campaignid;
   });
   }
+
+  //to get campaignList to select campaign name
   public getCampaignList(): void {
     this.campaignService.getCampaign().subscribe(res => {
         let selectedcampaign = res.filter((s,i)=>{
@@ -39,15 +41,9 @@ export class CampaignDetailComponent implements OnInit {
           }
         })   
            this.selectedCampaign = selectedcampaign[0]    
-           console.log(this.selectedCampaign)  
     });
 
 }
-// public getCampaignById(id): void {
-//   this.campaignService.getCampaignById(id).subscribe(res => {
-//       this.campaignList = res;
-//       this.tableData = this.campaignList;            
-//   });
-// }
+
 
 }

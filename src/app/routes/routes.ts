@@ -99,6 +99,26 @@ export const routes: Routes = [
                 loadChildren: () => import('./overview/overview.module').then(m => m.OverviewModule)
             },
             {
+                path: 'audits',
+                component: LayoutComponent,
+                loadChildren: () => import('./audits/audits.module').then(m => m.AuditsModule)
+            },
+            {
+                path: 'auditreport',
+                component: LayoutComponent,
+                loadChildren: () => import('./auditreport/auditreport.module').then(m => m.AuditreportModule)
+            },
+            {
+                path: ':id/seo/keywords',
+                component: LayoutComponent,
+                loadChildren: () => import('./keywords/keywords.module').then(m => m.KeywordsModule)
+            },
+            {
+                path: 'addkeywords',
+                component: LayoutComponent,
+                loadChildren: () => import('./keywords/keywords.module').then(m => m.KeywordsModule)
+            },
+            {
                 path: 'integrations/:id',
                 component: LayoutComponent,
                 loadChildren: () => import('./integrations/integrations.module').then(m => m.IntegrationsModule)
