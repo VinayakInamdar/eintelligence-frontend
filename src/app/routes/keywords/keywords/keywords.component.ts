@@ -27,8 +27,8 @@ export class KeywordsComponent implements OnInit {
   selectedCampId : string;
   hovered : string = '';
   valForm: FormGroup;
-  serpList: import("c:/Users/rahik/CoreFrontend_Techovarya(2)/eintelligence-frontend/src/app/routes/keywords/serp.model").SerpDto[]
-  campaignList: import("c:/Users/rahik/CoreFrontend_Techovarya(2)/eintelligence-frontend/src/app/routes/campaign/campaign.model").Campaign[];
+  serpList: SerpDto[]
+  campaignList: Campaign[];
   settings = {
     actions:{add: false, edit:false, delete:false},
     columns: {

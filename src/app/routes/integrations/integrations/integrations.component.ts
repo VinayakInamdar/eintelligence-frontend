@@ -7,6 +7,7 @@ import { CampaignService } from '../../campaign/campaign.service';
 import { LocalDataSource } from 'ng2-smart-table';
 import { TranslateService } from '@ngx-translate/core';
 import { userInfo } from 'os';
+import { Campaign } from '../../campaign/campaign.model';
 const success = require('sweetalert');
 
 
@@ -32,7 +33,7 @@ export class IntegrationsComponent implements OnInit {
 
   isVisible:boolean= true;
   selectedCampaignName:string;
-  campaignList: import("c:/Users/rahik/CoreFrontend_Techovarya(2)/eintelligence-frontend/src/app/routes/campaign/campaign.model").Campaign[];
+  campaignList: Campaign[];
 
   
 
