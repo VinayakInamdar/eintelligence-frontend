@@ -87,9 +87,8 @@ export class OverviewComponent implements OnInit {
     { data: [], label: 'Sessions', borderCapStyle: 'square' },
   ];
 
-  lineChartLabels: Label[] = ['1 jan',  '3jan',  '5jan', '7jan','8 jan', '9 jan', '11 jan', '13 jan', '15 jan', '17 jan','19 jan','21 jan', '23 jan', '27 jan', '29 jan'];
+  lineChartLabels: Label[] = [];
 
-  //lineChartLabels: Label[] = this.dateLabels;
 
   lineChartOptions : ChartOptions  = {
     responsive: true,
@@ -154,14 +153,12 @@ export class OverviewComponent implements OnInit {
   goToOverview(): void{
     let id = this.route.snapshot.paramMap.get('id');
     this.selectedCampId = `${id}`;
-    // this.router.navigate(['/integrations',{id : id}]);
 
     this.router.navigate(['/integrations', this.selectedCampId]);
   }
 
  //using to view keyword list and also add new keyword
   goToKeywords(): void {
-    // this.router.navigate(['/keywords'])
     this.router.navigate([`/campaign/:id${this.selectedCampId}/seo/keywords`,])
   }
    // using to get analytics data of selected campaign Id
@@ -202,17 +199,14 @@ export class OverviewComponent implements OnInit {
       var two = s.substring( s.length -4, s.length - 2);
       var three = s.substring( s.length - 2 );
       var finalstring = one + '/' + two + '/' + three 
-      // console.log(one,two,three,finalstring)
       var date = new Date(finalstring)
       var date2 = date.toLocaleDateString("en-US", {month: 'long',day: 'numeric' })
-      // console.log(date)
       var arraydate = date2.split(' ')
       var odate = arraydate[1];
       var omon = arraydate[0];
       var finaldate = odate + " " + omon
       LineChartsdate.push(finaldate)
      })
-    //  console.log(LineChartsdate)
      this.lineChartLabels = LineChartsdate
 
   }
@@ -220,16 +214,12 @@ export class OverviewComponent implements OnInit {
     // using to get google analytics setup of selected campaign Id
   public getGaSetupByCampaignId(): void{
 
-  //   let id = this.route.snapshot.paramMap.get('id');
-  // this.selectedCampId = `${id}`;
      
     this.integrationsService.getGaSetupByCampaignId(this.selectedCampId).subscribe(
     
-      // this.states = this.selectService.getStates().filter((item) => item.countryid == countryid);
-
+    
       res => {
         this.googleAnalyticsAccountSetupList = res;
-        // console.log(res)
         if(this.googleAnalyticsAccountSetupList && this.googleAnalyticsAccountSetupList.length > 0 ){
 
 
@@ -342,7 +332,7 @@ export class OverviewComponent implements OnInit {
 
 // using to open create campaign view to add new campaign in db
  public onClick(event): any {
-  this.router.navigate(['/home/campagin']);
+  this.router.navigate(['/home/campaign']);
 }
 
 //using to open div on mouseover event

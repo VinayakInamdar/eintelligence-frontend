@@ -6,6 +6,8 @@ import { HttpClient } from '@angular/common/http';
 import { filter } from 'lodash';
 import { LocalDataSource } from 'ng2-smart-table';
 import { AuditsService } from '../../audits/audits.service';
+import { ToasterService, ToasterConfig } from 'angular2-toaster/angular2-toaster';
+import { ToastrService } from 'ngx-toastr';
 
 
 @Component({
@@ -16,9 +18,21 @@ import { AuditsService } from '../../audits/audits.service';
 export class HomeComponent implements OnInit {
     tableData: Campaign[];
     siteurl: string;
+    showProgressbar: boolean = false;
+    toaster: any;
+    toasterConfig: any;
+    toasterconfig: ToasterConfig = new ToasterConfig({
+        positionClass: 'toast-bottom-right',
+        showCloseButton: true
+    });
     constructor( public http: HttpClient, public campaignService: CampaignService, private router: Router,
-      public auditsService:AuditsService) { 
+      public auditsService:AuditsService,public toasterService: ToasterService,public toastr : ToastrService) { 
         this.getCampaignList();
+        this.toaster = {
+          type: 'success',
+          title: 'Audit report',
+          text: 'Your report is ready..'
+      };
     }
 
     settings = {
@@ -88,8 +102,9 @@ export class HomeComponent implements OnInit {
 }
     // using to run audit of entered url 
     public runAudit(event) {
+       this.toastr.info('Your Report is under progress...you can see your report when it is completed','Audit Report')
        this.auditsService.settingsTaskWebsite(this.siteurl).subscribe(res=>{
-        //  console.log(res)
+
        })
     }
 

@@ -31,19 +31,19 @@ export class AdminComponent implements OnInit {
       },
         columns: {
           agency_name: {
-            title: 'Agency Name',
+            title: 'AGENCY NAME',
             filter: false
           },
           fName: {
-            title: 'First Name',
+            title: 'FIRST NAME',
             filter: false
           },
           lName: {
-            title: 'Last Name',
+            title: 'LAST NAME',
             filter: false
           },
           email: {
-            title: 'Email',
+            title: 'EMAIL',
             filter: false
           }
         }

@@ -28,8 +28,6 @@ export class CampaignListComponent implements OnInit {
       this.getAgencyList();
       location.onPopState(() => {
 
-        // console.log('pressed back!');
-        // this.router.navigate(['/admin']);
 
     });
   }
@@ -37,23 +35,20 @@ export class CampaignListComponent implements OnInit {
   settings = {
       actions:{add: false, edit:false, delete:false},
       columns: {
-        id: {
-          title: 'id'
-        },
         name: {
-          title: 'name'
+          title: 'NAME'
         },
         webUrl: {
-          title: 'webUrl'
+          title: 'WEBURL'
         },
         moreTraffic: {
-          title: 'moreTraffic'
+          title: 'MORETRAFFIC'
         },
         sales: {
-          title: 'sales'
+          title: 'SALES'
         },
         leadGeneration: {
-          title: 'leadGeneration'
+          title: 'LEADGENERAION'
         }
       }
     };

@@ -1,12 +1,11 @@
-
-<div class="mb-3 clearfix"><h3>Campaign Details</h3>
-<mat-card class="example-card">
+<div class="mb-3 clearfix">
+  <h3>Campaign Details</h3>
+  <mat-card class="example-card">
     <mat-card-header>
-      <mat-card-title >Campaign Name: {{selectedCampaign.name}}</mat-card-title>
+      <mat-card-title>Campaign Name: {{selectedCampaign.name}}</mat-card-title>
       <mat-card-subtitle>Web Url : {{selectedCampaign.webUrl}}</mat-card-subtitle>
     </mat-card-header>
-    <!-- <img mat-card-image src="https://material.angular.io/assets/img/examples/shiba2.jpg" alt="Photo of a Shiba Inu"> -->
-    <mat-card-content style="padding: 1rem;">
+    <mat-card-content class="cardpadding">
       <p>LeadGeneration : {{selectedCampaign.leadGeneration}}</p>
       <p>More Traffic : {{selectedCampaign.moreTraffic}}</p>
       <p>Sales : {{selectedCampaign.sales}}</p>
@@ -15,8 +14,6 @@
       <p>Price : $59</p>
     </mat-card-content>
     <mat-card-actions>
-      <!-- <button mat-button>LIKE</button>
-      <button mat-button>SHARE</button> -->
     </mat-card-actions>
   </mat-card>
 </div>

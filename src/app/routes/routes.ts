@@ -123,6 +123,16 @@ export const routes: Routes = [
                 component: LayoutComponent,
                 loadChildren: () => import('./integrations/integrations.module').then(m => m.IntegrationsModule)
             },
+            {
+                path: 'privacy-policy',
+                // component: LayoutComponent,
+                loadChildren: () => import('./privacypolicy/privacypolicy.module').then(m => m.PrivacypolicyModule)
+            },
+            {
+                path: 'terms-and-conditions',
+                // component: LayoutComponent,
+                loadChildren: () => import('./terms-and-conditions/terms-and-conditions.module').then(m => m.TermsAndConditionsModule)
+            },
         ]
     },
     

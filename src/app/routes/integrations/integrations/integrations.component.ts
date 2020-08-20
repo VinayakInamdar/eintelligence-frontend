@@ -1,12 +1,9 @@
 import { Component, OnInit } from '@angular/core';
 import { IntegrationsService } from '../integrations.service';
-import { GoogleAccountSetups } from '../googleAccountSetups.model';
 import { ActivatedRoute, Router } from '@angular/router';
 import { GoogleAnalyticsAccountSetups } from '../googleAnalyticsAccount.model';
 import { CampaignService } from '../../campaign/campaign.service';
-import { LocalDataSource } from 'ng2-smart-table';
 import { TranslateService } from '@ngx-translate/core';
-import { userInfo } from 'os';
 import { Campaign } from '../../campaign/campaign.model';
 const success = require('sweetalert');
 
@@ -56,9 +53,6 @@ export class IntegrationsComponent implements OnInit {
 
   googleAuth(): void {
 
-    let id = this.route.snapshot.paramMap.get('id');
-    this.selectedCampId = `${id}`;
-
     this.integrationsService.googleAuth(this.selectedCampId).subscribe(
 
       res => {
@@ -75,8 +69,6 @@ export class IntegrationsComponent implements OnInit {
 
 
     this.integrationsService.getGaSetupByCampaignId(this.selectedCampId).subscribe(
-
-      // this.states = this.selectService.getStates().filter((item) => item.countryid == countryid);
 
       res => {
         this.googleAnalyticsAccountSetupList = res;
@@ -143,12 +135,8 @@ export class IntegrationsComponent implements OnInit {
 
   saveProfile(){
 
-    let id = this.route.snapshot.paramMap.get('id');
-    this.selectedCampId = `${id}`;
-
     this.integrationsService.updateGaAccountProfile( this.selectedProfile.id ,this.selectedCampId).subscribe(
 
-      // this.states = this.selectService.getStates().filter((item) => item.countryid == countryid);
 
       res => {
        this.successAlert()

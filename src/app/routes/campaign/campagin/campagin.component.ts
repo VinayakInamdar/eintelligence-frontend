@@ -46,31 +46,31 @@ export class CampaginComponent implements OnInit, AfterViewInit {
   hasActiveAccount: boolean = false;
   authorizeGaAccounts: any;
   hasAuthorize: boolean;
-  reportsData: any;
-  selectedCampaignName: string;
-  selectedCampId: string;
+  reportsData:any;
+  selectedCampaignName:string;
+  selectedCampId : string;
   campaignList: Campaign[];
   settings = {
     actions: { add: false, edit: false, delete: false },
     columns: {
       name: {
-        title: 'name',
+        title: 'NAME',
         filter: false
       },
       webUrl: {
-        title: 'webUrl',
+        title: 'WEBURL',
         filter: false
       },
       moreTraffic: {
-        title: 'moreTraffic',
+        title: 'MORETRAFFIC',
         filter: false
       },
       sales: {
-        title: 'sales',
+        title: 'SALES',
         filter: false
       },
       leadGeneration: {
-        title: 'leadGeneration',
+        title: 'LEADGENERATION',
         filter: false
       }
     }
@@ -133,7 +133,7 @@ export class CampaginComponent implements OnInit, AfterViewInit {
     { data: [], label: 'Sessions', borderCapStyle: 'square' },
   ];
 
-  lineChartLabels: Label[] = ['1 jan', '3jan', '5jan', '7jan', '8 jan', '9 jan', '11 jan', '13 jan', '15 jan', '17 jan', '19 jan', '21 jan', '23 jan', '27 jan', '29 jan'];
+  lineChartLabels: Label[] = [];
 
   //lineChartLabels: Label[] = this.dateLabels;
 
@@ -187,7 +187,6 @@ export class CampaginComponent implements OnInit, AfterViewInit {
     this.getCampaignList();
     location.onPopState(() => {
 
-      // console.log('pressed back!');
 
     });
 
@@ -225,18 +224,17 @@ export class CampaginComponent implements OnInit, AfterViewInit {
     this.router.navigate(['/integrations', this.selectedCampId]);
   }
 
-  // using to get analytics data of selected campaign Id
-  getAnalyticsData(): void {
+ // using to get analytics data of selected campaign Id
+  getAnalyticsData(): void{
 
-    this.overvieswService.getGaAnalyticsReports(this.selectedCampId, this.startDate, this.endDate).subscribe(
-      res => {
-        this.reportsData = res;
-        // console.log(this.reportsData)
-        this.dateLabels = this.reportsData.gaPreparedDataDto.date;
-
-        this.convertToLineChartsLabels(this.reportsData.gaPreparedDataDto.date)
-        this.convertToLineChartsData(this.reportsData.gaPreparedDataDto.sessions)
-
+    this.overvieswService.getGaAnalyticsReports(this.selectedCampId,this.startDate,this.endDate).subscribe(
+      res =>{
+          this.reportsData = res;
+           this.dateLabels = this.reportsData.gaPreparedDataDto.date;
+           
+           this.convertToLineChartsLabels(this.reportsData.gaPreparedDataDto.date)
+           this.convertToLineChartsData(this.reportsData.gaPreparedDataDto.sessions)
+           
       }
     );
 
@@ -282,8 +280,7 @@ export class CampaginComponent implements OnInit, AfterViewInit {
 
       res => {
         this.googleAnalyticsAccountSetupList = res;
-        // console.log(res)
-        if (this.googleAnalyticsAccountSetupList && this.googleAnalyticsAccountSetupList.length > 0) {
+        if(this.googleAnalyticsAccountSetupList && this.googleAnalyticsAccountSetupList.length > 0 ){
 
 
           this.gaAccounts = this.googleAnalyticsAccountSetupList.map(function (item) { return item.googleAccountSetups; });

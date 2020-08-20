@@ -7,9 +7,6 @@ import { SharedModule } from '../../shared/shared.module';
 import { ChartsModule } from 'ng2-charts';
 import { KeywordsComponent } from '../keywords/keywords/keywords.component';
 
-// const routes: Routes = [
-//   { path: 'keywords', component: KeywordsComponent },
-// ];
 @NgModule({
   declarations: [],
   imports: [
@@ -17,7 +14,6 @@ import { KeywordsComponent } from '../keywords/keywords/keywords.component';
     CommonModule,
     BrowserModule,
     ChartsModule,
-    // RouterModule.forChild(routes),
   ],
   exports :[
     Router

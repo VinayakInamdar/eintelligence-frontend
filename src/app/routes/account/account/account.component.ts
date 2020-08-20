@@ -168,7 +168,7 @@ billingInfo = new FormGroup({
       callbacks: {
           onChange: (contents, $editable) => {
               this.contents = contents;
-              // console.log(contents);
+
           }
       }
   });
@@ -184,11 +184,11 @@ billingInfo = new FormGroup({
   }
   
   openFile(){
-    console.log('hell')
+
     document.querySelector('input').click()
   }
   handle(e){
-    console.log('Change input file')
+
   }
   public openAttachment(filepicker) {
     document.getElementById(filepicker).click();
@@ -261,7 +261,7 @@ billingInfo = new FormGroup({
     const dialogRef = this.dialog.open(DialogContentExampleDialog);
 
     dialogRef.afterClosed().subscribe(result => {
-      console.log(`Dialog result: ${result}`);
+      
     });
   }
 

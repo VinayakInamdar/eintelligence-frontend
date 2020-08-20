@@ -20,8 +20,6 @@ export class CampaignDetailComponent implements OnInit {
       this.getCampaignList();
       location.onPopState(() => {
 
-        // console.log('pressed back!');
-        // this.router.navigate(['/admin']);
 
     });
   }

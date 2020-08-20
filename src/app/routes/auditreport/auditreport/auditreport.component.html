@@ -1,375 +1,328 @@
 <p>auditreport works!</p>
 <div id="report-content" class="preview">
-<div class="webview-report-header">
-<div class="pagewidth">
-<div class="brand-logo">
-            <a href="#" class="back-to-list" (click)="navigateBack($event)"><i class="svg-icon svg-back-icon"></i> Back to Audit</a>
-          
-    </div>
-<div class="button-container">
-            <a href="#" class="btn btn-primary" style="padding-right: 15px;">Save as PDF</a>
-            <span style="padding-right: 10px;"></span>
-        <a href="#" id="btn-print" class="btn btn-primary btn-print">Print</a>
-</div>
-</div>
-</div>
+    <div class="webview-report-header">
+        <div class="pagewidth">
+            <div class="brand-logo">
+                <a href="#" class="back-to-list" (click)="navigateBack($event)"><i class="svg-icon svg-back-icon"></i>
+                    Back to Audit</a>
 
-<div class="page"  *ngIf="on_page_seo != undefined">
-                                
-
-<div id="general-info-section" class="section-container">
-<div class="pagewidth">
-    <div class="column">
-        <!-- <div class="row clearfix">
-            <div class="col-sm-8">
-            <div class="report-title">
-                <h1>Audit for:</h1>
-                <a href="https://www.abhisi.com" target="_BLANK" rel="noreferrer">https://www.abhisi.com</a>                </div>
-            <div class="row">
-                <div class="col-sm-6 breakdown">
-                    <table class="table">
-                        <tbody>
-                            <tr>
-                                <td>Usability</td>
-                                <td>
-                                    <div class="mb-2">
-                                        <progressbar max="400" [value]="22" [type]="progressbartype" [striped]="true" [animate]="true"><i>22</i></progressbar>
-                                      </div>
-                            </td>
-                                <td>D</td>
-                            </tr>
-                            <tr>
-                                <td>Security</td>
-                                <td> 
-                                    <div class="mb-2">
-                                        <progressbar max="200" [value]="166" [type]="progressbartype" [striped]="true" [animate]="true"><i>166 / 200</i></progressbar>
-                                      </div>
-                                </td>
-                                <td>A</td>
-                            </tr>
-                            <tr>
-                                <td>Organic Traffic</td>
-                                <td> 
-                                    <div class="mb-2">
-                                        <progressbar max="200" [value]="166" [type]="progressbartype" [striped]="true" [animate]="true"><i>166 / 200</i></progressbar>
-                                      </div>
-                                </td>
-                                <td>C</td>
-                            </tr>
-                            <tr>
-                                <td>Paid Traffic</td>
-                                <td>   
-                                    
-                                    <div class="mb-2">
-                                    <progressbar max="200" [value]="166" [type]="progressbartype" [striped]="true" [animate]="true"><i>166 / 200</i></progressbar>
-                                  </div>
-                                
-                                </td>
-                                <td>F</td>
-                            </tr>
-                            <tr>
-                                <td>Social Activity</td>
-                                <td> 
-                                    
-                                    <div class="mb-2">
-                                        <progressbar max="200" [value]="166" [type]="progressbartype" [striped]="true" [animate]="true"><i>166 / 200</i></progressbar>
-                                      </div>
-                                
-                                </td>
-                                <td>D</td>
-                            </tr>
-                        </tbody>
-                    </table>
-                </div>
-                <div class="col-sm-6 overall-report-grade">
-                    <div class="overall-score-chart danger">
-                        <div class="overall-grade">
-                            <h3>D</h3>
-                            <p>42.9%</p>
-                        </div>
-                        <svg class="circle-chart-x" viewBox="0 0 34.83098862 34.83098862" width="150" height="150" xmlns="http://www.w3.org/2000/svg">
-            <circle class="circle-chart_background" stroke="#efefef" stroke-width="3" fill="none" cx="17.91549431" cy="17.91549431" r="14.91549431"></circle>
-            <circle class="circle-chart_circle" stroke="#D32F2F" stroke-width="3" stroke-dasharray="42.9,100" stroke-linecap="round" fill="none" cx="17.91549431" cy="18.01549431" r="14.91549431"></circle>
-            </svg>
-                    </div>
-                    <h4>Your website score</h4>
-                </div>
             </div>
+            <div class="button-container">
+                <a href="#" class="btn btn-primary pdfstyle">Save as PDF</a>
+                <span class="pdfspn"></span>
+                <a href="#" id="btn-print" class="btn btn-primary btn-print">Print</a>
             </div>
-            <div class="col-sm-4">
-            <div class="screenshot-desktop">
-                                                            <div class="screen-display-container">
-                        <img src="data:image/jpg;base64, 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" onerror="this.remove()">
-                    </div>
-                                    <div class="screen-glare-display"></div>
-            </div>
-            </div>
-            </div> -->
-            <div class="row clearfix">
-                <div class="col-sm-4 critical-issues">
-                <table class="table" cellpadding="0" cellspacing="0">
-                    <thead>
-                        <tr>
-                            <th>Critical</th>
-                            <th class="text-right">{{critical.organic_traffic + critical.security}}</th>
-                        </tr>
-                    </thead>
-                    <tbody>
-                                                                                    <tr>
-                                    <td>Organic Traffic</td>
-                                    <td class="text-right">{{critical.organic_traffic}}</td>
-                                </tr>
-                                                            <tr>
-                                    <td>Security</td>
-                                    <td class="text-right">{{critical.security}}</td>
-                                </tr>
-                                                                        </tbody>
-                </table>
-                </div>
-                <div class="col-sm-4 for-improvement">
-                <table class="table" cellpadding="0" cellspacing="0">
-                    <thead>
-                        <tr>
-                            <th>For Improvement</th>
-                            <th class="text-right">{{for_improvement.organic_traffic}}</th>
-                        </tr>
-                    </thead>
-                    <tbody>
-                                                                                    <tr>
-                                    <td>Organic Traffic</td>
-                                    <td class="text-right">{{for_improvement.organic_traffic}}</td>
-                                </tr>
-                                                                        </tbody>
-                </table>
-                </div>
-                <div class="col-sm-4 looking-good">
-                <table class="table" cellpadding="0" cellspacing="0">
-                    <thead>
-                        <tr>
-                            <th>Looking Good</th>
-                            <th class="text-right">{{looking_good.security + looking_good.organic_traffic}}</th>
-                        </tr>
-                    </thead>
-                    <tbody>
-                                                                                    <tr>
-                                    <td>Security</td>
-                                    <td class="text-right">{{looking_good.security}}</td>
-                                </tr>
-                                                            <tr>
-                                    <td>Organic Traffic</td>
-                                    <td class="text-right">{{looking_good.organic_traffic}}</td>
-                                </tr>
-                                                                        </tbody>
-                </table>
-                </div>
-                </div>
-    </div>
-
-
-</div>
-</div>
-
-<div id="security-section" class="section-container">
-<div class="pagewidth">
-<div class="column">
-<div class="section-header-wrapper row">
-<div class="col-sm-2 section-title">
-<h3>Security</h3>
-</div>
-<div class="col-sm-3 section-score">
-<h4>Average Score: <span class="badge looking-good">A</span></h4>
-</div>
-<div class="col-sm-7 section-score-breakdown">
-
-
-    <span class="badge critical" *ngIf="critical.security > 0">Critical <span>{{critical.security}}</span></span>
-    <span style="padding-right: 10px;"> </span>
-    <span class="badge looking-good" *ngIf="looking_good.security > 0">Looking Good <span>{{looking_good.security}}</span></span>
-</div>
-</div>
-
-<div class="row section-item-container">
-<div class="col-sm-2 section-title">
-            <span class="badge" [ngClass]="{'looking-good':securitySection.ssl === true,'critical':securitySection.ssl === false}"><i class="svg-icon check-circle-icon"></i>{{securitySection.ssl == true ? 'Looking Good' : 'Critical'}} </span>
-    </div>
-<div class="col-sm-3 section-score">
-<p>{{securitySection.ssl == true ? 'Safe SSL Security' : 'Not Safe SSL Security'}}</p>
-</div>
-<div class="col-sm-7 section-score-breakdown">
-<p>{{securitySection.ssl == true ? 'Your HTTPS is near perfection.' : 'Your HTTPS is not near perfection.'}}</p>
-</div>
-</div>
-
-
-<div class="row section-item-container">
-<div class="col-sm-2 section-title">
-            <span class="badge" [ngClass]="{'looking-good':securitySection.sslcertificate === true,'critical':securitySection.sslcertificate === false}"><i class="svg-icon check-circle-icon"></i>{{securitySection.sslcertificate == true ? 'Looking Good' : 'Critical'}} </span>
-    </div>
-<div class="col-sm-3 section-score">
-<p>{{securitySection.sslcertificate == true ? 'HTTPS active' : 'HTTPS not active'}}</p>
-</div>
-<div class="col-sm-7 section-score-breakdown">
-<p>{{securitySection.sslcertificate == true ? 'Congratulations, your website only accepts HTTPS connections. You are providing a safe experience for your visitors.' : 'Warning, your website does not accepts HTTPS connections. You are providing a unsafe experience for your visitors.'}}</p>
-</div>
-</div>
-
-</div>
-</div>
-</div>
-
-<div id="organic-traffic-section" class="section-container">
-<div class="pagewidth">
-<div class="column">
-<div class="section-header-wrapper row">
-<div class="col-sm-2 section-title">
-<h3>Organic Traffic</h3>
-</div>
-<div class="col-sm-3 section-score">
-<h4>Average Score: <span class="badge for-improvement">C</span></h4>
-</div>
-<div class="col-sm-7 section-score-breakdown">
-
-    <span class="badge critical" *ngIf="critical.organic_traffic > 0">Critical <span>{{critical.organic_traffic}}</span></span>
-    <span style="padding-right: 10px;"> </span>
-    <span class="badge for-improvement" *ngIf="for_improvement.organic_traffic > 0">For Improvement <span>{{for_improvement.organic_traffic}}</span></span>
-    <span style="padding-right: 10px;"> </span>
-    <span class="badge looking-good" *ngIf="looking_good.organic_traffic > 0">Looking Good <span>{{looking_good.organic_traffic}}</span></span>
-</div>
-</div>
-
-<div id="technical-seo">
-<h3 class="section-group-title">Technical SEO</h3>
-    <div class="row section-item-container">
-<div class="col-sm-2 section-title">
-            <span class="badge" [ngClass]="{'looking-good':technical_seo.have_sitemap === true,'critical':technical_seo.have_sitemap === false}"><i class="svg-icon check-circle-icon"></i>{{technical_seo.have_sitemap == true ? 'Looking Good' : 'Critical'}} </span>
-    </div>
-<div class="col-sm-3 section-score">
-<p>{{technical_seo.have_sitemap == true ? 'Sitemap.xml found' : 'Sitemap.xml not found'}}</p>
-</div>
-<div class="col-sm-7 section-score-breakdown">
-<p>{{technical_seo.have_sitemap == true ? 'Nice, your sitemap.xml can be found. It allows search engines to find all of your webpages easily.' : 'Unpleasant, your sitemap.xml can not be found. It does not allows search engines to find all of your webpages easily.'}}</p>
-</div>
-</div>
-
-    <div class="row section-item-container">
-<div class="col-sm-2 section-title">
-            <span class="badge" [ngClass]="{'looking-good':technical_seo.have_robots === true,'critical':technical_seo.have_robots === false}"><i class="svg-icon check-circle-icon"></i> {{technical_seo.have_robots == true ? 'Looking Good' : 'Critical'}}</span>
-    </div>
-<div class="col-sm-3 section-score">
-<p>{{technical_seo.have_robots == true ? 'Robots.txt allows Google' : 'Robots.txt does not allows Google'}}</p>
-</div>
-<div class="col-sm-7 section-score-breakdown">
-<p>{{technical_seo.have_robots == true ? 'Your robots.txt is well configured.' : 'Your robots.txt is not well configured.'}}</p>
-</div>
-</div>
-
-</div>
-
-<div id="on-page">
-<h3 class="section-group-title">On-Page SEO</h3>
-
-<div class="item-collapsible open">
-<div class="row section-item-container">
-<div class="col-sm-2 section-title">
-                    <span class="badge" [ngClass]="{'looking-good':on_page_seo.title_length >= 65,'for-improvement' : on_page_seo.title_length >= 35,'critical':on_page_seo.title_length >= 0}"><i class="svg-icon exclamation-icon"></i>{{on_page_seo.title_length >= 65 ? 'Looking Good' :on_page_seo.title_length >= 35 ? 'For Improvement' : 'Critical' }}</span>
-            </div>
-<div class="col-sm-3 section-score">
-<p>Title Tag Optimization</p>
-                    <p class="other-details">{{on_page_seo.title_length}} Characters</p>
-            </div>
-<div class="col-sm-6 section-score-breakdown">
-<p>Your title meta tag should be optimized.</p>
-                    <div class="meta-container other-details">
-        <p>{{on_page_seo.title}}</p>
-    </div>
-            </div>
-<div class="col-sm-1 section-toggle">
-<button class="btn-toggle"><i class="svg-icon toggle-icon"></i></button>
-</div>
-</div>
-</div>
-
-<div class="item-collapsible open">
-<div class="row section-item-container">
-<div class="col-sm-2 section-title">
-                    <span class="badge for-improvement" [ngClass]="{'looking-good':on_page_seo.meta_description_length >= 150,'for-improvement' : on_page_seo.meta_description_length >= 90,'critical':on_page_seo.title_length >= 0}"><i class="svg-icon exclamation-icon"></i>
-                        {{on_page_seo.meta_description_length >= 150 ? 'Looking Good' :on_page_seo.meta_description_length >= 90 ? 'For Improvement' : 'Critical' }}</span>
-            </div>
-<div class="col-sm-3 section-score">
-<p>Description Tag Length</p>
-                    <p class="other-details">{{on_page_seo.meta_description_length}} Characters</p>
-            </div>
-<div class="col-sm-6 section-score-breakdown">
-<p>Your description meta tag should be optimized.</p>
-                    <div class="meta-container other-details">
-        <p>{{on_page_seo.meta_description}}</p>
-    </div>
-            </div>
-<div class="col-sm-1 section-toggle">
-<button class="btn-toggle"><i class="svg-icon toggle-icon"></i></button>
-</div>
-</div>
-</div>
-
-<div class="item-collapsible open">
-<div class="row section-item-container">
-<div class="col-sm-2 section-title">
-                    <span class="badge" [ngClass]="{'looking-good':on_page_seo.h1_count + on_page_seo.h2_count + on_page_seo.h3_count >= 15,'for-improvement' : on_page_seo.h1_count + on_page_seo.h2_count + on_page_seo.h3_count >= 5,'critical':on_page_seo.h1_count + on_page_seo.h2_count + on_page_seo.h3_count >= 0}"><i class="svg-icon exclamation-icon"></i> 
-                        {{on_page_seo.h1_count + on_page_seo.h2_count + on_page_seo.h3_count >= 15 ? 'Looking Good' : on_page_seo.h1_count + on_page_seo.h2_count + on_page_seo.h3_count >= 5 ? 'For Improvement' : 'Critical' }}</span>
-            </div>
-<div class="col-sm-3 section-score">
-<p>Great, your headings is optimized</p>
-</div>
-<div class="col-sm-6 section-score-breakdown">
-<p>Headings are the titles and subtitles of your site. They are really important for search engines.</p>
-</div>
-<div class="col-sm-1 section-toggle">
-<button class="btn-toggle"><i class="svg-icon toggle-icon"></i></button>
-</div>
-</div>
-    <div class="row section-item-container other-details">
-<div class="col-sm-2 section-title">
-</div>
-<div class="col-sm-10 section-content">
-    <table class="table" cellspacing="0">
-                                    <tbody><tr>
-                <td>H1</td>
-                <td>
-                                                            <div class="progress" style="height: 19px;background: unset;">
-                            <div class="progress-bar" [style.width.%]="on_page_seo.h1_count * 10"></div>
-                            <span style="padding-top: 10px;padding-left: 10px;">{{on_page_seo.h1_count}} found</span>
-                        </div>
-                                                    </td>
-            </tr>
-                                    <tr>
-                <td>H2</td>
-                <td>
-                                                            <div class="progress" style="height: 19px;background: unset;">
-                            <div class="progress-bar" [style.width.%]="on_page_seo.h2_count * 10"></div>
-                            <span style="padding-top: 10px;padding-left: 10px;">{{on_page_seo.h2_count}} found</span>
-                        </div>
-                                                    </td>
-            </tr>
-                                    <tr>
-                <td>H3</td>
-                <td>
-                                                            <div class="progress" style="height: 19px;background: unset;">
-                            <div class="progress-bar" [style.width.%]="on_page_seo.h3_count * 10"></div>
-                            <span style="padding-top: 10px;padding-left: 10px;">{{on_page_seo.h3_count}} found</span>
-                        </div>
-                                                    </td>
-            </tr>
-                                    
-                            </tbody></table>
-</div>
-</div>
-</div>
-</div>
         </div>
     </div>
-</div>
 
-                                                            
+    <div class="page" >
+        <div *ngIf="showSpinner" id="loading">
+        </div>
 
-</div>
+        <div *ngIf="on_page_seo != undefined && !showSpinner"  id="general-info-section" class="section-container">
+            <div class="pagewidth">
+                <div class="column">
+                    <div class="row clearfix">
+                        <div class="col-sm-4 critical-issues">
+                            <table class="table" cellpadding="0" cellspacing="0">
+                                <thead>
+                                    <tr>
+                                        <th>Critical</th>
+                                        <th class="text-right">{{critical.organic_traffic + critical.security}}</th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    <tr>
+                                        <td>Organic Traffic</td>
+                                        <td class="text-right">{{critical.organic_traffic}}</td>
+                                    </tr>
+                                    <tr>
+                                        <td>Security</td>
+                                        <td class="text-right">{{critical.security}}</td>
+                                    </tr>
+                                </tbody>
+                            </table>
+                        </div>
+                        <div class="col-sm-4 for-improvement">
+                            <table class="table" cellpadding="0" cellspacing="0">
+                                <thead>
+                                    <tr>
+                                        <th>For Improvement</th>
+                                        <th class="text-right">{{for_improvement.organic_traffic}}</th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    <tr>
+                                        <td>Organic Traffic</td>
+                                        <td class="text-right">{{for_improvement.organic_traffic}}</td>
+                                    </tr>
+                                </tbody>
+                            </table>
+                        </div>
+                        <div class="col-sm-4 looking-good">
+                            <table class="table" cellpadding="0" cellspacing="0">
+                                <thead>
+                                    <tr>
+                                        <th>Looking Good</th>
+                                        <th class="text-right">{{looking_good.security + looking_good.organic_traffic}}
+                                        </th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    <tr>
+                                        <td>Security</td>
+                                        <td class="text-right">{{looking_good.security}}</td>
+                                    </tr>
+                                    <tr>
+                                        <td>Organic Traffic</td>
+                                        <td class="text-right">{{looking_good.organic_traffic}}</td>
+                                    </tr>
+                                </tbody>
+                            </table>
+                        </div>
+                    </div>
+                </div>
+
+
+            </div>
+        </div>
+
+        <div *ngIf="on_page_seo != undefined && !showSpinner" id="security-section" class="section-container">
+            <div class="pagewidth">
+                <div class="column">
+                    <div class="section-header-wrapper row">
+                        <div class="col-sm-2 section-title">
+                            <h3>Security</h3>
+                        </div>
+                        <div class="col-sm-3 section-score">
+                            <h4>Average Score: <span class="badge looking-good">A</span></h4>
+                        </div>
+                        <div class="col-sm-7 section-score-breakdown">
+
+
+                            <span class="badge critical" *ngIf="critical.security > 0">Critical
+                                <span>{{critical.security}}</span></span>
+                            <span class="criticalspan"> </span>
+                            <span class="badge looking-good" *ngIf="looking_good.security > 0">Looking Good
+                                <span>{{looking_good.security}}</span></span>
+                        </div>
+                    </div>
+
+                    <div class="row section-item-container">
+                        <div class="col-sm-2 section-title">
+                            <span class="badge"
+                                [ngClass]="{'looking-good':securitySection.ssl === true,'critical':securitySection.ssl === false}"><i
+                                    class="svg-icon check-circle-icon"></i>{{securitySection.ssl == true ? 'Looking Good' : 'Critical'}}
+                            </span>
+                        </div>
+                        <div class="col-sm-3 section-score">
+                            <p>{{securitySection.ssl == true ? 'Safe SSL Security' : 'Not Safe SSL Security'}}</p>
+                        </div>
+                        <div class="col-sm-7 section-score-breakdown">
+                            <p>{{securitySection.ssl == true ? 'Your HTTPS is near perfection.' : 'Your HTTPS is not near perfection.'}}
+                            </p>
+                        </div>
+                    </div>
+
+
+                    <div class="row section-item-container">
+                        <div class="col-sm-2 section-title">
+                            <span class="badge"
+                                [ngClass]="{'looking-good':securitySection.sslcertificate === true,'critical':securitySection.sslcertificate === false}"><i
+                                    class="svg-icon check-circle-icon"></i>{{securitySection.sslcertificate == true ? 'Looking Good' : 'Critical'}}
+                            </span>
+                        </div>
+                        <div class="col-sm-3 section-score">
+                            <p>{{securitySection.sslcertificate == true ? 'HTTPS active' : 'HTTPS not active'}}</p>
+                        </div>
+                        <div class="col-sm-7 section-score-breakdown">
+                            <p>{{securitySection.sslcertificate == true ? 'Congratulations, your website only accepts HTTPS connections. You are providing a safe experience for your visitors.' : 'Warning, your website does not accepts HTTPS connections. You are providing a unsafe experience for your visitors.'}}
+                            </p>
+                        </div>
+                    </div>
+
+                </div>
+            </div>
+        </div>
+
+        <div *ngIf="on_page_seo != undefined && !showSpinner" id="organic-traffic-section" class="section-container">
+            <div class="pagewidth">
+                <div class="column">
+                    <div class="section-header-wrapper row">
+                        <div class="col-sm-2 section-title">
+                            <h3>Organic Traffic</h3>
+                        </div>
+                        <div class="col-sm-3 section-score">
+                            <h4>Average Score: <span class="badge for-improvement">C</span></h4>
+                        </div>
+                        <div class="col-sm-7 section-score-breakdown">
+
+                            <span class="badge critical" *ngIf="critical.organic_traffic > 0">Critical
+                                <span>{{critical.organic_traffic}}</span></span>
+                            <span class="criticalspan"> </span>
+                            <span class="badge for-improvement" *ngIf="for_improvement.organic_traffic > 0">For
+                                Improvement <span>{{for_improvement.organic_traffic}}</span></span>
+                            <span class="criticalspan"> </span>
+                            <span class="badge looking-good" *ngIf="looking_good.organic_traffic > 0">Looking Good
+                                <span>{{looking_good.organic_traffic}}</span></span>
+                        </div>
+                    </div>
+
+                    <div id="technical-seo">
+                        <h3 class="section-group-title">Technical SEO</h3>
+                        <div class="row section-item-container">
+                            <div class="col-sm-2 section-title">
+                                <span class="badge"
+                                    [ngClass]="{'looking-good':technical_seo.have_sitemap === true,'critical':technical_seo.have_sitemap === false}"><i
+                                        class="svg-icon check-circle-icon"></i>{{technical_seo.have_sitemap == true ? 'Looking Good' : 'Critical'}}
+                                </span>
+                            </div>
+                            <div class="col-sm-3 section-score">
+                                <p>{{technical_seo.have_sitemap == true ? 'Sitemap.xml found' : 'Sitemap.xml not found'}}
+                                </p>
+                            </div>
+                            <div class="col-sm-7 section-score-breakdown">
+                                <p>{{technical_seo.have_sitemap == true ? 'Nice, your sitemap.xml can be found. It allows search engines to find all of your webpages easily.' : 'Unpleasant, your sitemap.xml can not be found. It does not allows search engines to find all of your webpages easily.'}}
+                                </p>
+                            </div>
+                        </div>
+
+                        <div class="row section-item-container">
+                            <div class="col-sm-2 section-title">
+                                <span class="badge"
+                                    [ngClass]="{'looking-good':technical_seo.have_robots === true,'critical':technical_seo.have_robots === false}"><i
+                                        class="svg-icon check-circle-icon"></i>
+                                    {{technical_seo.have_robots == true ? 'Looking Good' : 'Critical'}}</span>
+                            </div>
+                            <div class="col-sm-3 section-score">
+                                <p>{{technical_seo.have_robots == true ? 'Robots.txt allows Google' : 'Robots.txt does not allows Google'}}
+                                </p>
+                            </div>
+                            <div class="col-sm-7 section-score-breakdown">
+                                <p>{{technical_seo.have_robots == true ? 'Your robots.txt is well configured.' : 'Your robots.txt is not well configured.'}}
+                                </p>
+                            </div>
+                        </div>
+
+                    </div>
+
+                    <div id="on-page">
+                        <h3 class="section-group-title">On-Page SEO</h3>
+
+                        <div class="item-collapsible open">
+                            <div class="row section-item-container">
+                                <div class="col-sm-2 section-title">
+                                    <span class="badge"
+                                        [ngClass]="{'looking-good':on_page_seo.title_length >= 65,'for-improvement' : on_page_seo.title_length >= 35,'critical':on_page_seo.title_length >= 0}"><i
+                                            class="svg-icon exclamation-icon"></i>{{on_page_seo.title_length >= 65 ? 'Looking Good' :on_page_seo.title_length >= 35 ? 'For Improvement' : 'Critical' }}</span>
+                                </div>
+                                <div class="col-sm-3 section-score">
+                                    <p>Title Tag Optimization</p>
+                                    <p class="other-details">{{on_page_seo.title_length}} Characters</p>
+                                </div>
+                                <div class="col-sm-6 section-score-breakdown">
+                                    <p>Your title meta tag should be optimized.</p>
+                                    <div class="meta-container other-details">
+                                        <p>{{on_page_seo.title}}</p>
+                                    </div>
+                                </div>
+                                <div class="col-sm-1 section-toggle">
+                                    <button class="btn-toggle"><i class="svg-icon toggle-icon"></i></button>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="item-collapsible open">
+                            <div class="row section-item-container">
+                                <div class="col-sm-2 section-title">
+                                    <span class="badge for-improvement"
+                                        [ngClass]="{'looking-good':on_page_seo.meta_description_length >= 150,'for-improvement' : on_page_seo.meta_description_length >= 90,'critical':on_page_seo.title_length >= 0}"><i
+                                            class="svg-icon exclamation-icon"></i>
+                                        {{on_page_seo.meta_description_length >= 150 ? 'Looking Good' :on_page_seo.meta_description_length >= 90 ? 'For Improvement' : 'Critical' }}</span>
+                                </div>
+                                <div class="col-sm-3 section-score">
+                                    <p>Description Tag Length</p>
+                                    <p class="other-details">{{on_page_seo.meta_description_length}} Characters</p>
+                                </div>
+                                <div class="col-sm-6 section-score-breakdown">
+                                    <p>Your description meta tag should be optimized.</p>
+                                    <div class="meta-container other-details">
+                                        <p>{{on_page_seo.meta_description}}</p>
+                                    </div>
+                                </div>
+                                <div class="col-sm-1 section-toggle">
+                                    <button class="btn-toggle"><i class="svg-icon toggle-icon"></i></button>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="item-collapsible open">
+                            <div class="row section-item-container">
+                                <div class="col-sm-2 section-title">
+                                    <span class="badge"
+                                        [ngClass]="{'looking-good':on_page_seo.h1_count + on_page_seo.h2_count + on_page_seo.h3_count >= 15,'for-improvement' : on_page_seo.h1_count + on_page_seo.h2_count + on_page_seo.h3_count >= 5,'critical':on_page_seo.h1_count + on_page_seo.h2_count + on_page_seo.h3_count >= 0}"><i
+                                            class="svg-icon exclamation-icon"></i>
+                                        {{on_page_seo.h1_count + on_page_seo.h2_count + on_page_seo.h3_count >= 15 ? 'Looking Good' : on_page_seo.h1_count + on_page_seo.h2_count + on_page_seo.h3_count >= 5 ? 'For Improvement' : 'Critical' }}</span>
+                                </div>
+                                <div class="col-sm-3 section-score">
+                                    <p>Great, your headings is optimized</p>
+                                </div>
+                                <div class="col-sm-6 section-score-breakdown">
+                                    <p>Headings are the titles and subtitles of your site. They are really important for
+                                        search engines.</p>
+                                </div>
+                                <div class="col-sm-1 section-toggle">
+                                    <button class="btn-toggle"><i class="svg-icon toggle-icon"></i></button>
+                                </div>
+                            </div>
+                            <div class="row section-item-container other-details">
+                                <div class="col-sm-2 section-title">
+                                </div>
+                                <div class="col-sm-10 section-content">
+                                    <table class="table" cellspacing="0">
+                                        <tbody>
+                                            <tr>
+                                                <td>H1</td>
+                                                <td>
+                                                    <div class="progress progressheight">
+                                                        <div class="progress-bar"
+                                                            [style.width.%]="on_page_seo.h1_count * 10"></div>
+                                                        <span class="progressspan">{{on_page_seo.h1_count}} found</span>
+                                                    </div>
+                                                </td>
+                                            </tr>
+                                            <tr>
+                                                <td>H2</td>
+                                                <td>
+                                                    <div class="progress progressheight">
+                                                        <div class="progress-bar"
+                                                            [style.width.%]="on_page_seo.h2_count * 10"></div>
+                                                        <span class="progressspan">{{on_page_seo.h2_count}} found</span>
+                                                    </div>
+                                                </td>
+                                            </tr>
+                                            <tr>
+                                                <td>H3</td>
+                                                <td>
+                                                    <div class="progress progressheight">
+                                                        <div class="progress-bar"
+                                                            [style.width.%]="on_page_seo.h3_count * 10"></div>
+                                                        <span class="progressspan">{{on_page_seo.h3_count}} found</span>
+                                                    </div>
+                                                </td>
+                                            </tr>
+
+                                        </tbody>
+                                    </table>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+
+
+    </div>
 </div>

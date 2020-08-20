@@ -1,52 +1,38 @@
-<!--Card header-->
-
-<!-- <div class="row" style="padding: 5px; box-shadow: 2px 2px #e9e6e6; box-sizing: 5px;">
-    <div class="col-md-1"></div>
-    <div class="col-md-4">
-        <img src="../../../../assets/img/ei-logo.png" style="height: 70%">
-    </div>
-    <div class="col-md-3"></div>
-    <div class="col-md-4">
-        <div style="padding: 20px;">
-            <h4>Already have an account? &nbsp;<a routerLink="/https://localhost:44349/Account/Login?ReturnUrl=%2Fconnect%2Fauthorize%2Fcallback%3Fclient_id%3Dtourmanagementclient%26redirect_uri%3Dhttps%253A%252F%252Flocalhost%253A4200%252Fsignin-oidc%26response_type%3Did_token%2520token%26scope%3Dopenid%2520profile%2520roles%2520tourmanagementapi%26state%3D8e251cb953fe43be945adcbf98e50deb%26nonce%3D8794c0a7c9f5479b8f988b0f3be2d8a7">Login</a></h4>
-        </div>
-    </div>
-</div> -->
-
-
-<nav class="navbar navbar-default navbar-fixed-top bg-white" style="box-shadow: 2px 2px #e9e6e6;" role="navigation">
+<nav class="navbar navbar-default navbar-fixed-top bg-white boxshadow2px" role="navigation">
     <a class="navbar-brand" href="#">
-    <img src="../../../../assets/img/ei-logo.png" width="70%" height="70%" alt="">
+        <img src="../../../../assets/img/ei-logo.png" width="70%" height="70%" alt="">
     </a>
     <!-- <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarSupportedContent" >
       <span class="navbar-toggler-icon"></span>
     </button> -->
-  
+
     <!-- <div  class="collapse navbar-collapse" id="navbarSupportedContent"> -->
-        <ul class="nav navbar-nav" style="padding-right: 1%;">
-            <div class="row">
-            <li style="font-size: large;">Already have an account? 
-                <a routerLink="/https://localhost:44349/Account/Login?ReturnUrl=%2Fconnect%2Fauthorize%2Fcallback%3Fclient_id%3Dtourmanagementclient%26redirect_uri%3Dhttps%253A%252F%252Flocalhost%253A4200%252Fsignin-oidc%26response_type%3Did_token%2520token%26scope%3Dopenid%2520profile%2520roles%2520tourmanagementapi%26state%3D8e251cb953fe43be945adcbf98e50deb%26nonce%3D8794c0a7c9f5479b8f988b0f3be2d8a7">Login</a></li>
+    <ul class="nav navbar-nav paddingright1per">
+        <div class="row">
+            <li class="fontsizelarge">Already have an account?
+                <a
+                    routerLink="/https://localhost:44349/Account/Login?ReturnUrl=%2Fconnect%2Fauthorize%2Fcallback%3Fclient_id%3Dtourmanagementclient%26redirect_uri%3Dhttps%253A%252F%252Flocalhost%253A4200%252Fsignin-oidc%26response_type%3Did_token%2520token%26scope%3Dopenid%2520profile%2520roles%2520tourmanagementapi%26state%3D8e251cb953fe43be945adcbf98e50deb%26nonce%3D8794c0a7c9f5479b8f988b0f3be2d8a7">Login</a>
+            </li>
         </div>
-         </ul>
-     <!-- </div> -->
+    </ul>
+    <!-- </div> -->
 </nav>
 
 <!--card body signup form-->
-<div class="row" style="padding-top: 1%;">
+<div class="row paddingtop1per">
     <div class="col-md-4"></div>
     <div class="col-md-5">
-        <div class="card card-default shadow p-3 mb-5 bg-white rounded" style="border-top-width: 0px;">
+        <div class="card card-default shadow p-3 mb-5 bg-white rounded bordertopwidth0px">
             <div class="row">
                 <div class="col-md-1"></div>
                 <div class="col-md-10">
                     <div class="card-body">
-                        <p style="text-align: center; font-size: x-large; padding-top: 3px;">Create your Account</p><br>
+                        <p class="textaligncenter fontsizexlarge paddingtop3px">Create your Account</p><br>
                         <!-- <div class="row"> -->
                         <div class="text-center">
                             <div class="card">
                                 <div class="card-body">
-                                    <img src="../../../../assets/img/google.png" style="height: 20px;">&nbsp; Sign up
+                                    <img class="imgheight20px" src="../../../../assets/img/google.png">&nbsp; Sign up
                                     with Google
                                 </div>
                             </div>
@@ -64,9 +50,9 @@
                                 <div class="form-group">
                                     <div class="row">
                                         <label>EMAIL</label>
-                                        <p style="color: red;">*</p>
-                                        <input formControlName="email" class="form-control" type="email"
-                                            placeholder="Enter your email" style="height: 3.00rem;"/>
+                                        <p class="pcolorred">*</p>
+                                        <input formControlName="email" class="form-control inputheight3rem" type="email"
+                                            placeholder="Enter your email" />
                                         <span class="text-danger"
                                             *ngIf="valForm.controls['email'].hasError('required') && (valForm.controls['email'].dirty || valForm.controls['email'].touched)">
                                             {{'validation.EMAIL' | translate}}</span>
@@ -79,9 +65,9 @@
                                         <div class="col-md-5">
                                             <div class="row">
                                                 <label>FIRST NAME</label>
-                                                <p style="color: red;">*</p>
-                                                <input class="form-control" formControlName="fName"
-                                                    placeholder="i.e. Johhn" style="height: 3.00rem;"/>
+                                                <p class="pcolorred">*</p>
+                                                <input class="form-control inputheight3rem" formControlName="fName"
+                                                    placeholder="i.e. Johhn" />
                                                 <span class="text-danger"
                                                     *ngIf="valForm.controls['fName'].hasError('required') && (valForm.controls['fName'].dirty || valForm.controls['fName'].touched)">
                                                     {{'validation.NAMEISREQUIRED' | translate}}</span>
@@ -91,9 +77,9 @@
                                         <div class="col-md-5">
                                             <div class="row">
                                                 <label>LAST NAME</label>
-                                                <p style="color: red;">*</p>
-                                                <input class="form-control" formControlName="lName"
-                                                    placeholder="i.e. Doe" style="height: 3.00rem;"/>
+                                                <p class="pcolorred">*</p>
+                                                <input class="form-control inputheight3rem" formControlName="lName"
+                                                    placeholder="i.e. Doe" />
                                                 <span class="text-danger"
                                                     *ngIf="valForm.controls['lName'].hasError('required') && (valForm.controls['lName'].dirty || valForm.controls['lName'].touched)">
                                                     {{'validation.NAMEISREQUIRED' | translate}}</span>
@@ -102,35 +88,27 @@
                                     </div>
                                 </div>
                             </fieldset>
-
-                            <!-- <div class="form-group">
-                                    <div class="row">
-                                        <label>PASSWORD</label>
-                                        <p style="color: red;">*</p>
-                                        <input class="form-control " placeholder="Enter your password " type="password" />
-                                    </div>
-                                </div> 
-                            <div class="form-group">
-                                    <div class="inputwithicon">
-                                        <input class="form-control " placeholder="Enter your password " type="password" />
-                                        <i class="fa fa-eye-slash" aria-hidden="true"></i>
-                                    </div>
-                                </div> -->
-                            <!-- (click)="onClick()" -->
-                            <!-- <a routerLink="/register/success"> -->
                             <div class="text-center">
                                 <button class="mr-1 btn btn-primary btn-lg" type="submit" (click)="onClick()"
                                     [disabled]="!registerForm.form.valid">Create an Account</button>
                             </div>
                             <br>
                             <div class="text-center">
-                                <p>By logging in, you agree to SEOReseller's </p>
+                                <p>By logging in, you agree to e-Intelligence's
+ </p>
                             </div>
-                            <div class="text-center">
-                                <p style="color:#5D9CEC;">Terms of Use and
-                                    Privacy Policy</p>
+                            <div class="row text-center paddingleft115px">
+                                <a (click)="goToTermsAndConditions($event)"><p class="pcolorblue">Terms of Use  </p></a>
+                               <p class="paddingleft5px paddingright5px">and</p>
+                                <a (click)="goToPrivacyPolicy($event)"><p class="pcolorblue">  Privacy Policy</p></a>
                             </div>
+                            <!-- <div class="text-center">
+                                <a (click)="goToTermsAndConditions($event)"><p class="pcolorblue">Terms and Conditions</p></a>
+                            </div> -->
                         </form>
+                        <div class="text-center">                                            
+                            <p><span>&copy;</span><span> 2020 e-Intelligence</span> </p>
+                        </div>
                     </div>
                     <div class="col-md-1"></div>
                 </div>

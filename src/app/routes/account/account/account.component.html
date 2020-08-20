@@ -1,59 +1,60 @@
 <div class="row">
-    <div class="col-sm-3" style="padding: unset;" >
+    <div class="col-sm-3 accountdivpadding">
         <!-- max-width: 18%; -->
         <div class="card" [style.height.px]="maxHeight">
             <div class="card-body">
 
-                <p style="font-size: large;">Setting</p><br>
-                <a (click)="settingActive=1" [ngClass]="{'active': (settingActive == 1)}"
-                    style=" font-weight:3px; font-size:14px;"><em class="fa-1.9x icon-settings"></em> &nbsp;Account
+                <p class="accountfontsizel">Setting</p><br>
+                <a (click)="settingActive=1" [ngClass]="{'active': (settingActive == 1)}" class="accountfontwfonts"><em
+                        class="fa-1.9x icon-settings"></em> &nbsp;Account
                     Setting</a>
                 <hr>
-                <a (click)="settingActive=2" [ngClass]="{'active': (settingActive == 2)}"
-                    style=" font-weight:3px; font-size:14px;"><em class="fa-1.9x fas fa-code-branch"></em>
+                <a (click)="settingActive=2" [ngClass]="{'active': (settingActive == 2)}" class="accountfontwfonts"><em
+                        class="fa-1.9x fas fa-code-branch"></em>
                     &nbsp;Branding</a>
                 <hr>
-                <a (click)="settingActive=3" [ngClass]="{'active': (settingActive == 3)}"
-                    style=" font-weight:3px; font-size:14px;"><em
+                <a (click)="settingActive=3" [ngClass]="{'active': (settingActive == 3)}" class="accountfontwfonts"><em
                         class="fa-1x mr-2 fas fa-envelope-open"></em>&nbsp;Email Setting</a>
                 <hr>
-                <a (click)="settingActive=4" [ngClass]="{'active': (settingActive == 4)}"
-                    style=" font-weight:3px; font-size:14px;"><em class="fa-1x mr-2 fas fa-chalkboard"></em>&nbsp;White
+                <a (click)="settingActive=4" [ngClass]="{'active': (settingActive == 4)}" class="accountfontwfonts"><em
+                        class="fa-1x mr-2 fas fa-chalkboard"></em>&nbsp;White
                     Label Dashboard</a>
 
             </div>
         </div>
     </div>
     <div class="col-md-9">
-        <div *ngIf="settingActive == 1">  
+        <div *ngIf="settingActive == 1">
             <div class="card-body">
                 <div class="row">
                     <div class="col-md-9">
                         <div class="panel panel-default">
-                            <div class="panel-heading" style="padding:0px; margin-bottom: 0px;">
-                                <p style="padding-left: 3%; font-size: large; padding-top: 1%;">Company Information
+                            <div class="panel-heading accountpanelheading">
+                                <p class="accountformppaddingfontsize">Company Information
                                 </p>
                             </div>
                             <div class="panel-body">
-                                <form class="form-horizontal" [formGroup]="phoneForm"  (submit)="submitForm(phoneForm.value,'phoneform')">
+                                <form class="form-horizontal" [formGroup]="phoneForm"
+                                    (submit)="submitForm(phoneForm.value,'phoneform')">
                                     <div class="form-group row">
-                                        <label class="col-md-4 col-form-label" style="padding:3px 11px;">
-                                            COMPANY INFORMATION <span style="color: red;">*</span></label>
+                                        <label class="col-md-4 col-form-label accountlabelpadding">
+                                            COMPANY INFORMATION <span class="accountspancolor">*</span></label>
                                         <div class="col-md-8">
-                                            <input formControlName="companyinformation" class="form-control" style="height: 2.19rem;" />
+                                            <input formControlName="companyinformation"
+                                                class="form-control accountinputheight" />
                                             <span class="text-danger"
-                                *ngIf="phoneForm.controls['companyinformation'].hasError('required') && (phoneForm.controls['companyinformation'].dirty || phoneForm.controls['companyinformation'].touched)">
-                                {{'validation.NAMEISREQUIRED' | translate}}</span><br>
+                                                *ngIf="phoneForm.controls['companyinformation'].hasError('required') && (phoneForm.controls['companyinformation'].dirty || phoneForm.controls['companyinformation'].touched)">
+                                                {{'validation.NAMEISREQUIRED' | translate}}</span><br>
                                         </div>
                                     </div>
                                     <div class="form-group row">
                                         <label class="col-md-4 col-form-label">
-                                            WEBSITE <span style="color: red;">*</span></label>
+                                            WEBSITE <span class="accountspancolor">*</span></label>
                                         <div class="col-md-8">
-                                            <input formControlName="website"  class="form-control" style="height: 2.19rem;" />
+                                            <input formControlName="website" class="form-control accountinputheight" />
                                             <span class="text-danger"
-                                *ngIf="phoneForm.controls['website'].hasError('required') && (phoneForm.controls['website'].dirty || phoneForm.controls['website'].touched)">
-                                {{'validation.WEBSITEREQUIRED' | translate}}</span><br>
+                                                *ngIf="phoneForm.controls['website'].hasError('required') && (phoneForm.controls['website'].dirty || phoneForm.controls['website'].touched)">
+                                                {{'validation.WEBSITEREQUIRED' | translate}}</span><br>
                                         </div>
                                     </div>
                                     <div class="form-group row">
@@ -71,29 +72,24 @@
                                                 formControlName="phone">
                                             </ngx-intl-tel-input>
                                         </div>
-                                        <!-- <div class="col-md-8">
-                                            <input class="form-control" style="height: 2.19rem;" />
-                                        </div> -->
                                     </div>
                                     <div class="form-group ">
                                         <label class="col-md-4 col-form-label">
-                                            BUSINESS EMAIL<span style="color: red;">*</span></label>
+                                            BUSINESS EMAIL<span class="accountspancolor">*</span></label>
                                         <div class="col-md-8">
-                                            <input formControlName="email" class="form-control" style="height: 2.19rem;" />
+                                            <input formControlName="email" class="form-control accountinputheight" />
                                             <span class="text-danger"
-                                            *ngIf="phoneForm.controls['email'].hasError('required') && (phoneForm.controls['email'].dirty || phoneForm.controls['email'].touched)">
-                                            {{'validation.EMAIL' | translate}}</span><br>
+                                                *ngIf="phoneForm.controls['email'].hasError('required') && (phoneForm.controls['email'].dirty || phoneForm.controls['email'].touched)">
+                                                {{'validation.EMAIL' | translate}}</span><br>
                                         </div>
                                     </div>
                                     <div class="form-group ">
                                         <label class="col-md-4 col-form-label">
                                             TIMEZONE</label>
                                         <div class="col-md-8">
-                                            <!-- <input class="form-control" placeholder="First Name" style="height: 2.19rem;"/> -->
                                             <ngx-select [allowClear]="true" [items]="time" [disabled]="disabled"
                                                 (data)="refreshValue($event)" (select)="selectedstate($event)"
-                                                (removed)="removed($event)"
-                                                formControlName="timezone">
+                                                (removed)="removed($event)" formControlName="timezone">
                                             </ngx-select>
                                         </div>
                                     </div>
@@ -101,186 +97,152 @@
                                         <label class="col-md-4 col-form-label">
                                             ADDRESS</label>
                                         <div class="col-md-8">
-                                            <input formControlName="Address" class="form-control" style="height: 2.19rem;" />
+                                            <input formControlName="Address" class="form-control accountinputheight" />
                                         </div>
                                     </div>
                                     <div class="form-group ">
                                         <label class="col-md-4 col-form-label">
-                                            ZIP CODE <span style="color: red;">*</span></label>
+                                            ZIP CODE <span class="accountspancolor">*</span></label>
                                         <div class="col-md-3">
-                                            <input formControlName="zipcode" class="form-control" style="height: 2.19rem;" />
+                                            <input formControlName="zipcode" class="form-control accountinputheight" />
                                             <span class="text-danger"
-                                            *ngIf="phoneForm.controls['zipcode'].hasError('required') && (phoneForm.controls['zipcode'].dirty || phoneForm.controls['zipcode'].touched)">
-                                            {{'validation.ZIPCODE' | translate}}</span><br>
+                                                *ngIf="phoneForm.controls['zipcode'].hasError('required') && (phoneForm.controls['zipcode'].dirty || phoneForm.controls['zipcode'].touched)">
+                                                {{'validation.ZIPCODE' | translate}}</span><br>
                                         </div>
-                                        <label class="col-md-2 col-form-label" style="padding:3px 11px;">
-                                            CITY <span style="color: red;">*</span></label>
+                                        <label class="col-md-2 col-form-label accountlabelpadding">
+                                            CITY <span class="accountspancolor">*</span></label>
                                         <div class="col-md-3">
-                                            <input formControlName="city"  class="form-control" style="height: 2.19rem;" />
+                                            <input formControlName="city" class="form-control accountinputheight" />
                                             <span class="text-danger"
-                                            *ngIf="phoneForm.controls['city'].hasError('required') && (phoneForm.controls['city'].dirty || phoneForm.controls['city'].touched)">
-                                            {{'validation.CITYNAMEREQUIRED' | translate}}</span><br>
+                                                *ngIf="phoneForm.controls['city'].hasError('required') && (phoneForm.controls['city'].dirty || phoneForm.controls['city'].touched)">
+                                                {{'validation.CITYNAMEREQUIRED' | translate}}</span><br>
                                         </div>
                                     </div>
                                     <div class="form-group ">
                                         <label class="col-md-4 col-form-label">
-                                            STATE <span style="color: red;">*</span></label>
+                                            STATE <span class="accountspancolor">*</span></label>
                                         <div class="col-md-3">
-                                            <!-- <input class="form-control" placeholder="First Name" style="height: 2.19rem;"/> -->
                                             <ngx-select [allowClear]="true" [items]="state" [disabled]="disabled"
                                                 (data)="refreshValue($event)" (select)="selectedstate($event)"
-                                                (removed)="removed($event)"
-                                                formControlName="state">
+                                                (removed)="removed($event)" formControlName="state">
                                             </ngx-select>
                                             <span class="text-danger"
-                                            *ngIf="phoneForm.controls['state'].hasError('required') && (phoneForm.controls['state'].dirty || phoneForm.controls['state'].touched)">
-                                            {{'validation.STATENAMEREQUIRED' | translate}}</span><br>
+                                                *ngIf="phoneForm.controls['state'].hasError('required') && (phoneForm.controls['state'].dirty || phoneForm.controls['state'].touched)">
+                                                {{'validation.STATENAMEREQUIRED' | translate}}</span><br>
                                         </div>
-                                        <label class="col-md-2 col-form-label" style="padding:3px 11px;">
-                                            COUNTRY <span style="color: red;">*</span></label>
+                                        <label class="col-md-2 col-form-label accountlabelpadding">
+                                            COUNTRY <span class="accountspancolor">*</span></label>
                                         <div class="col-md-3">
-                                            <!-- <input class="form-control" style="height: 2.19rem;" /> -->
                                             <ngx-select [allowClear]="true" [items]="country" [disabled]="disabled"
                                                 (data)="refreshValue($event)" (select)="selectedstate($event)"
-                                                (removed)="removed($event)"
-                                                formControlName="country">
+                                                (removed)="removed($event)" formControlName="country">
                                             </ngx-select>
                                             <span class="text-danger"
-                                            *ngIf="phoneForm.controls['country'].hasError('required') && (phoneForm.controls['country'].dirty || phoneForm.controls['country'].touched)">
-                                            {{'validation.COUNTRYNAMEREQUIRED' | translate}}</span><br>
+                                                *ngIf="phoneForm.controls['country'].hasError('required') && (phoneForm.controls['country'].dirty || phoneForm.controls['country'].touched)">
+                                                {{'validation.COUNTRYNAMEREQUIRED' | translate}}</span><br>
                                         </div>
                                     </div>
                                     <div class="form-group ">
                                         <label class="col-md-4 col-form-label">
                                             COMPANY DESCRIPTION</label>
                                         <div class="col-md-8">
-                                            <textarea formControlName="companydescription" class="form-control" type="textarea"
-                                                placeholder="Name of the Work"></textarea>
+                                            <textarea formControlName="companydescription" class="form-control"
+                                                type="textarea" placeholder="Name of the Work"></textarea>
                                         </div>
                                     </div>
                                     <div>
-                                        <button class="mr-1 btn btn-sm float-right" type="submit"
-                                            style="background-color:#5D9CEC;color: white;">Save</button>
+                                        <button class="mr-1 btn btn-sm float-right accountbtnbgcolor"
+                                            type="submit">Save</button>
                                     </div>
                                 </form>
                             </div>
                         </div>
                     </div>
 
-                    <div class="col-md-3" style="padding: unset; padding-right: 1%;">
+                    <div class="col-md-3 accountdivpadding">
                         <div class="panel panel-default">
-                            <div class="panel-heading" style="padding:0px; margin-bottom: 0px;">
-                                <p style="padding-left: 3%; font-size: large; padding-top: 1%;">Profile Picture</p>
+                            <div class="panel-heading accountpanelheading">
+                                <p class="accountformppaddingfontsize">Profile Picture</p>
                             </div>
                             <div class="panel-body">
-                                <img id="previewimg" src="../../../../assets/img/userprofile.png"
-                                    style="width: 90%; padding-left: 15%;">
-                                <div class="text-center" style="padding-top: 5%;">
-                                   
-                                    <button class="mr-1 btn btn-md"
-                                        style="background-color:#5D9CEC;color: white;" (click)="openAttachment('filepicker')">Upload
-                                        
+                                <img class="accountimgwidthpadding" id="previewimg"
+                                    src="../../../../assets/img/userprofile.png">
+                                <div class="text-center accountdivpaddingtop">
+
+                                    <button class="mr-1 btn btn-md accountbtnbgcolor"
+                                        (click)="openAttachment('filepicker')">Upload
+
                                     </button>
-                                    <input type="file" style="display:none;" id="filepicker" (change)="fileChangeEvent($event,'img')">
+                                    <input class="accountinputdisplay" type="file" id="filepicker"
+                                        (change)="fileChangeEvent($event,'img')">
                                 </div>
-                                <!-- <div class="modal-body">
-                                    <input type="file" (change)="fileChangeEvent($event)" placeholder="Upload file..." />
-                                    <img id="preview" src="" alt="Preview">
-                                 </div> -->
                             </div>
                         </div>
 
                         <div class="panel panel-default">
-                            <div class="panel-heading" style="padding:0px; margin-bottom: 0px;">
-                                <p style="padding-left: 3%; font-size: large; padding-top: 1%;">Branding</p>
+                            <div class="panel-heading accountpanelheading">
+                                <p class="accountformppaddingfontsize">Branding</p>
                             </div>
                             <div class="panel-body">
-                                <img id="previewlogo" src="../../../../assets/img/userprofile.png"
-                                style="width: 90%; padding-left: 15%;">
-                                <div class="text-center" style="padding-top: 5%;">
-                                    <button class="mr-1 btn btn-md"
-                                    style="background-color:#5D9CEC;color: white;" (click)="openAttachment('filepicker1')">Upload
-                                    NEW LOGO
-                                </button>
-                                <!-- <a href="#" (click)="openAttachment('filepicker1')">UPLOAD NEW LOGO</a> -->
-                                <input type="file" style="display:none;" id="filepicker1" (change)="fileChangeEvent($event,'logo')">
-                            </div>
+                                <img class="accountimgwidthpadding" id="previewlogo"
+                                    src="../../../../assets/img/userprofile.png">
+                                <div class="text-center accountdivpaddingtop">
+                                    <button class="mr-1 btn btn-md" (click)="openAttachment('filepicker1')">Upload
+                                        NEW LOGO
+                                    </button>
+                                    <input class="accountinputdisplay" type="file" id="filepicker1"
+                                        (change)="fileChangeEvent($event,'logo')">
+                                </div>
                             </div>
                         </div>
                     </div>
 
                 </div>
-                <!-- <form action="">
-                            <div class="form-group">
-                                <label>Name</label>
-                                <input class="form-control" type="text" />
-                            </div>
-                            <div class="form-group">
-                                <label>Bio</label>
-                                <textarea class="form-control" rows="3"></textarea>
-                            </div>
-                            <div class="form-group">
-                                <label>URL</label>
-                                <input class="form-control" type="text" />
-                            </div>
-                            <div class="form-group">
-                                <label>Company</label>
-                                <input class="form-control" type="text" />
-                            </div>
-                            <div class="form-group">
-                                <label>Location</label>
-                                <input class="form-control" type="text" />
-                            </div>
-                            <button class="btn btn-info" type="button">Update settings</button>
-                            <p>
-                                <small class="text-muted">* Integer fermentum accumsan metus, id sagittis ipsum
-                                    molestie
-                                    vitae</small>
-                            </p>
-                        </form> -->
             </div>
             <div class="card-body">
                 <div class="row">
                     <div class="col-md-9">
                         <div class="panel panel-default">
-                            <div class="panel-heading" style="padding:0px; margin-bottom: 0px;">
-                                <div class="row" style="padding:3px; margin-bottom: 0px;">
-                                    <p class="col-md-10" style="padding-left: 3%; font-size: large; padding-top: 1%;">Profile Information
+                            <div class="panel-heading accountpanelheading">
+                                <div class="row accountdivpaddingmargin">
+                                    <p class="col-md-10 accountformppaddingfontsize">Profile Information
                                     </p>
-          
+
                                 </div>
-                                
-                                
+
+
                             </div>
                             <div class="panel-body">
-                                <form class="form-horizontal" [formGroup]="profileInfo"  (submit)="submitForm(profileInfo.value,'profileinfoform')">
+                                <form class="form-horizontal" [formGroup]="profileInfo"
+                                    (submit)="submitForm(profileInfo.value,'profileinfoform')">
                                     <div class="form-group row">
-                                        <label class="col-md-4 col-form-label" style="padding:3px 11px;">
-                                            FIRST NAME <span style="color: red;">*</span></label>
+                                        <label class="col-md-4 col-form-label accountlabelpadding">
+                                            FIRST NAME <span class="accountspancolor">*</span></label>
                                         <div class="col-md-3">
-                                            <input formControlName="firstname" class="form-control" style="height: 2.19rem;" />
+                                            <input formControlName="firstname"
+                                                class="form-control accountinputheight" />
                                             <span class="text-danger"
-                                *ngIf="profileInfo.controls['firstname'].hasError('required') && (profileInfo.controls['firstname'].dirty || profileInfo.controls['firstname'].touched)">
-                                {{'validation.NAMEISREQUIRED' | translate}}</span><br>
+                                                *ngIf="profileInfo.controls['firstname'].hasError('required') && (profileInfo.controls['firstname'].dirty || profileInfo.controls['firstname'].touched)">
+                                                {{'validation.NAMEISREQUIRED' | translate}}</span><br>
                                         </div>
-                                        <label class="col-md-2 col-form-label" style="padding:3px 11px;">
-                                            LAST NAME <span style="color: red;">*</span></label>
+                                        <label class="col-md-2 col-form-label accountlabelpadding">
+                                            LAST NAME <span class="accountspancolor">*</span></label>
                                         <div class="col-md-3">
-                                            <input formControlName="lastname" class="form-control" style="height: 2.19rem;" />
+                                            <input formControlName="lastname" class="form-control accountinputheight" />
                                             <span class="text-danger"
-                                *ngIf="profileInfo.controls['lastname'].hasError('required') && (profileInfo.controls['lastname'].dirty || profileInfo.controls['lastname'].touched)">
-                                {{'validation.NAMEISREQUIRED' | translate}}</span><br>
+                                                *ngIf="profileInfo.controls['lastname'].hasError('required') && (profileInfo.controls['lastname'].dirty || profileInfo.controls['lastname'].touched)">
+                                                {{'validation.NAMEISREQUIRED' | translate}}</span><br>
                                         </div>
                                     </div>
 
                                     <div class="form-group ">
                                         <label class="col-md-4 col-form-label">
-                                         EMAIL<span style="color: red;">*</span></label>
+                                            EMAIL<span class="accountspancolor">*</span></label>
                                         <div class="col-md-8">
-                                            <input formControlName="email" class="form-control" style="height: 2.19rem;" />
+                                            <input formControlName="email" class="form-control accountinputheight" />
                                             <span class="text-danger"
-                                            *ngIf="profileInfo.controls['email'].hasError('required') && (profileInfo.controls['email'].dirty || profileInfo.controls['email'].touched)">
-                                            {{'validation.EMAIL' | translate}}</span><br>
+                                                *ngIf="profileInfo.controls['email'].hasError('required') && (profileInfo.controls['email'].dirty || profileInfo.controls['email'].touched)">
+                                                {{'validation.EMAIL' | translate}}</span><br>
                                         </div>
                                     </div>
                                     <div class="form-group row">
@@ -298,93 +260,67 @@
                                                 formControlName="phone">
                                             </ngx-intl-tel-input>
                                         </div>
-                                        <!-- <div class="col-md-8">
-                                            <input class="form-control" style="height: 2.19rem;" />
-                                        </div> -->
                                     </div>
                                     <div>
-                                        <button class="mr-1 btn btn-sm float-left" (click)="openModalWithComponent($event)"
-                                        style="background-color:#5D9CEC;color: white;">Change Password</button>
-                                        <button class="mr-1 btn btn-sm float-right" type="submit"
-                                            style="background-color:#5D9CEC;color: white;">Save</button>
+                                        <button class="mr-1 btn btn-sm float-left accountbtnbgcolor"
+                                            (click)="openModalWithComponent($event)">Change Password</button>
+                                        <button class="mr-1 btn btn-sm float-right accountbtnbgcolor"
+                                            type="submit">Save</button>
                                     </div>
                                 </form>
                             </div>
                         </div>
                     </div>
 
-                   
+
 
                 </div>
-                <!-- <form action="">
-                            <div class="form-group">
-                                <label>Name</label>
-                                <input class="form-control" type="text" />
-                            </div>
-                            <div class="form-group">
-                                <label>Bio</label>
-                                <textarea class="form-control" rows="3"></textarea>
-                            </div>
-                            <div class="form-group">
-                                <label>URL</label>
-                                <input class="form-control" type="text" />
-                            </div>
-                            <div class="form-group">
-                                <label>Company</label>
-                                <input class="form-control" type="text" />
-                            </div>
-                            <div class="form-group">
-                                <label>Location</label>
-                                <input class="form-control" type="text" />
-                            </div>
-                            <button class="btn btn-info" type="button">Update settings</button>
-                            <p>
-                                <small class="text-muted">* Integer fermentum accumsan metus, id sagittis ipsum
-                                    molestie
-                                    vitae</small>
-                            </p>
-                        </form> -->
             </div>
             <div class="card-body">
                 <div class="row">
                     <div class="col-md-9">
                         <div class="panel panel-default">
-                            <div class="panel-heading" style="padding:0px; margin-bottom: 0px;">
-                                <div class="row" style="padding:3px; margin-bottom: 0px;">
-                                    <p class="col-md-10" style="padding-left: 3%; font-size: large; padding-top: 1%;">Billing Information
+                            <div class="panel-heading accountpanelheading">
+                                <div class="row accountdivpaddingmargin">
+                                    <p class="col-md-10 accountformppaddingfontsize">Billing Information
                                     </p>
-                                    <div style="padding-top: 0.5rem;padding-left: 3.5rem;">
-                                        <i (click)="isCollapsed = !isCollapsed"
-                                            [attr.aria-expanded]="!isCollapsed" aria-controls="collapseBasic1" [ngClass]="{'fas fa-chevron-down': isCollapsed,'fa fa-chevron-up': !isCollapsed}"></i>
+                                    <div class="accountdivpaddingtopleft">
+                                        <i (click)="isCollapsed = !isCollapsed" [attr.aria-expanded]="!isCollapsed"
+                                            aria-controls="collapseBasic1"
+                                            [ngClass]="{'fas fa-chevron-down': isCollapsed,'fa fa-chevron-up': !isCollapsed}"></i>
                                     </div>
-          
+
                                 </div>
                             </div>
                             <div class="panel-body" id="collapseBasic1" [collapse]="isCollapsed" [isAnimated]="true">
-                                <form class="form-horizontal" [formGroup]="billingInfo"  (submit)="submitForm(billingInfo.value,'billinginfoform')">
+                                <form class="form-horizontal" [formGroup]="billingInfo"
+                                    (submit)="submitForm(billingInfo.value,'billinginfoform')">
                                     <div class="form-group-now">
                                         <section class="example-section">
-                                            <mat-checkbox class="example-margin" (change)="setAsCompanyInformation($event.checked)">SAME AS COMPANY INFORMATION</mat-checkbox>
-                                          </section>
+                                            <mat-checkbox class="example-margin"
+                                                (change)="setAsCompanyInformation($event.checked)">SAME AS COMPANY
+                                                INFORMATION</mat-checkbox>
+                                        </section>
                                     </div>
                                     <div class="form-group row">
-                                        <label class="col-md-4 col-form-label" style="padding:3px 11px;">
-                                            COMPANY INFORMATION <span style="color: red;">*</span></label>
+                                        <label class="col-md-4 col-form-label accountlabelpadding">
+                                            COMPANY INFORMATION <span class="accountspancolor">*</span></label>
                                         <div class="col-md-8">
-                                            <input formControlName="companyinformation" class="form-control" style="height: 2.19rem;" />
+                                            <input formControlName="companyinformation"
+                                                class="form-control accountinputheight" />
                                             <span class="text-danger"
-                                *ngIf="billingInfo.controls['companyinformation'].hasError('required') && (billingInfo.controls['companyinformation'].dirty || billingInfo.controls['companyinformation'].touched)">
-                                {{'validation.NAMEISREQUIRED' | translate}}</span><br>
+                                                *ngIf="billingInfo.controls['companyinformation'].hasError('required') && (billingInfo.controls['companyinformation'].dirty || billingInfo.controls['companyinformation'].touched)">
+                                                {{'validation.NAMEISREQUIRED' | translate}}</span><br>
                                         </div>
                                     </div>
                                     <div class="form-group row">
                                         <label class="col-md-4 col-form-label">
-                                            WEBSITE <span style="color: red;">*</span></label>
+                                            WEBSITE <span class="accountspancolor">*</span></label>
                                         <div class="col-md-8">
-                                            <input formControlName="website"  class="form-control" style="height: 2.19rem;" />
+                                            <input formControlName="website" class="form-control accountinputheight" />
                                             <span class="text-danger"
-                                *ngIf="billingInfo.controls['website'].hasError('required') && (billingInfo.controls['website'].dirty || billingInfo.controls['website'].touched)">
-                                {{'validation.WEBSITEREQUIRED' | translate}}</span><br>
+                                                *ngIf="billingInfo.controls['website'].hasError('required') && (billingInfo.controls['website'].dirty || billingInfo.controls['website'].touched)">
+                                                {{'validation.WEBSITEREQUIRED' | translate}}</span><br>
                                         </div>
                                     </div>
                                     <div class="form-group row">
@@ -402,91 +338,84 @@
                                                 formControlName="phone">
                                             </ngx-intl-tel-input>
                                         </div>
-                                        <!-- <div class="col-md-8">
-                                            <input class="form-control" style="height: 2.19rem;" />
-                                        </div> -->
                                     </div>
                                     <div class="form-group ">
                                         <label class="col-md-4 col-form-label">
-                                            BUSINESS EMAIL<span style="color: red;">*</span></label>
+                                            BUSINESS EMAIL<span class="accountspancolor">*</span></label>
                                         <div class="col-md-8">
-                                            <input formControlName="email" class="form-control" style="height: 2.19rem;" />
+                                            <input formControlName="email" class="form-control accountinputheight" />
                                             <span class="text-danger"
-                                            *ngIf="billingInfo.controls['email'].hasError('required') && (billingInfo.controls['email'].dirty || billingInfo.controls['email'].touched)">
-                                            {{'validation.EMAIL' | translate}}</span><br>
+                                                *ngIf="billingInfo.controls['email'].hasError('required') && (billingInfo.controls['email'].dirty || billingInfo.controls['email'].touched)">
+                                                {{'validation.EMAIL' | translate}}</span><br>
                                         </div>
                                     </div>
                                     <div class="form-group ">
                                         <label class="col-md-4 col-form-label">
                                             ADDRESS</label>
                                         <div class="col-md-8">
-                                            <input formControlName="Address" class="form-control" style="height: 2.19rem;" />
+                                            <input formControlName="Address" class="form-control accountinputheight" />
                                         </div>
                                     </div>
                                     <div class="form-group ">
                                         <label class="col-md-4 col-form-label">
-                                            ZIP CODE <span style="color: red;">*</span></label>
+                                            ZIP CODE <span class="accountspancolor">*</span></label>
                                         <div class="col-md-3">
-                                            <input formControlName="zipcode" class="form-control" style="height: 2.19rem;" />
+                                            <input formControlName="zipcode" class="form-control accountinputheight" />
                                             <span class="text-danger"
-                                            *ngIf="billingInfo.controls['zipcode'].hasError('required') && (billingInfo.controls['zipcode'].dirty || billingInfo.controls['zipcode'].touched)">
-                                            {{'validation.ZIPCODE' | translate}}</span><br>
+                                                *ngIf="billingInfo.controls['zipcode'].hasError('required') && (billingInfo.controls['zipcode'].dirty || billingInfo.controls['zipcode'].touched)">
+                                                {{'validation.ZIPCODE' | translate}}</span><br>
                                         </div>
-                                        <label class="col-md-2 col-form-label" style="padding:3px 11px;">
-                                            CITY <span style="color: red;">*</span></label>
+                                        <label class="col-md-2 col-form-label accountlabelpadding">
+                                            CITY <span class="accountspancolor">*</span></label>
                                         <div class="col-md-3">
-                                            <input formControlName="city"  class="form-control" style="height: 2.19rem;" />
+                                            <input formControlName="city" class="form-control accountinputheight" />
                                             <span class="text-danger"
-                                            *ngIf="billingInfo.controls['city'].hasError('required') && (billingInfo.controls['city'].dirty || billingInfo.controls['city'].touched)">
-                                            {{'validation.CITYNAMEREQUIRED' | translate}}</span><br>
+                                                *ngIf="billingInfo.controls['city'].hasError('required') && (billingInfo.controls['city'].dirty || billingInfo.controls['city'].touched)">
+                                                {{'validation.CITYNAMEREQUIRED' | translate}}</span><br>
                                         </div>
                                     </div>
                                     <div class="form-group ">
                                         <label class="col-md-4 col-form-label">
-                                            STATE <span style="color: red;">*</span></label>
+                                            STATE <span class="accountspancolor">*</span></label>
                                         <div class="col-md-3">
-                                            <!-- <input class="form-control" placeholder="First Name" style="height: 2.19rem;"/> -->
                                             <ngx-select [allowClear]="true" [items]="state" [disabled]="disabled"
                                                 (data)="refreshValue($event)" (select)="selectedstate($event)"
-                                                (removed)="removed($event)"
-                                                formControlName="state">
+                                                (removed)="removed($event)" formControlName="state">
                                             </ngx-select>
                                             <span class="text-danger"
-                                            *ngIf="billingInfo.controls['state'].hasError('required') && (billingInfo.controls['state'].dirty || billingInfo.controls['state'].touched)">
-                                            {{'validation.STATENAMEREQUIRED' | translate}}</span><br>
+                                                *ngIf="billingInfo.controls['state'].hasError('required') && (billingInfo.controls['state'].dirty || billingInfo.controls['state'].touched)">
+                                                {{'validation.STATENAMEREQUIRED' | translate}}</span><br>
                                         </div>
-                                        <label class="col-md-2 col-form-label" style="padding:3px 11px;">
-                                            COUNTRY <span style="color: red;">*</span></label>
+                                        <label class="col-md-2 col-form-label accountlabelpadding">
+                                            COUNTRY <span class="accountspancolor">*</span></label>
                                         <div class="col-md-3">
-                                            <!-- <input class="form-control" style="height: 2.19rem;" /> -->
                                             <ngx-select [allowClear]="true" [items]="country" [disabled]="disabled"
                                                 (data)="refreshValue($event)" (select)="selectedstate($event)"
-                                                (removed)="removed($event)"
-                                                formControlName="country">
+                                                (removed)="removed($event)" formControlName="country">
                                             </ngx-select>
                                             <span class="text-danger"
-                                            *ngIf="billingInfo.controls['country'].hasError('required') && (billingInfo.controls['country'].dirty || billingInfo.controls['country'].touched)">
-                                            {{'validation.COUNTRYNAMEREQUIRED' | translate}}</span><br>
+                                                *ngIf="billingInfo.controls['country'].hasError('required') && (billingInfo.controls['country'].dirty || billingInfo.controls['country'].touched)">
+                                                {{'validation.COUNTRYNAMEREQUIRED' | translate}}</span><br>
                                         </div>
                                     </div>
                                     <div class="form-group ">
                                         <label class="col-md-4 col-form-label">
                                             COMPANY DESCRIPTION</label>
                                         <div class="col-md-8">
-                                            <textarea formControlName="companydescription" class="form-control" type="textarea"
-                                                placeholder="Name of the Work"></textarea>
+                                            <textarea formControlName="companydescription" class="form-control"
+                                                type="textarea" placeholder="Name of the Work"></textarea>
                                         </div>
                                     </div>
                                     <div>
-                                        <button class="mr-1 btn btn-sm float-right" type="submit"
-                                            style="background-color:#5D9CEC;color: white;">Save</button>
+                                        <button class="mr-1 btn btn-sm float-right accountbtnbgcolor"
+                                            type="submit">Save</button>
                                     </div>
                                 </form>
                             </div>
                         </div>
                     </div>
 
-                
+
                 </div>
                 <!-- <form action="">
                             <div class="form-group">
@@ -522,30 +451,29 @@
             <!-- </div> -->
             <!-- <div class="col-md-2"></div> -->
 
-            <!-- </div> -->          
+            <!-- </div> -->
         </div>
         <div *ngIf="settingActive == 2">
             <div class="card b">
-                <div class="card-header" style="font-size: large;">Branding</div>
+                <div class="card-header accountfontsizel">Branding</div>
                 <div class="card-body">
                     <div class="row">
                         <div class="col-md-12">
                             <div class="panel panel-default">
-                                <div class="panel-heading" style="padding:0px; margin-bottom: 0px;">
-                                    <p style="padding-left: 2%; font-size: large; padding-top: 1%;">Company Description
+                                <div class="panel-heading accountpanelheading">
+                                    <p class="accountppaddingtopleft">Company Description
                                     </p>
                                 </div>
                                 <div class="panel-body">
                                     <form class="form-horizontal">
                                         <div class="form-group row">
                                             <div class="col-md-12">
-                                                <p style="font-size: medium; padding-top: 1%;">This description will
+                                                <p class="accountpfontsize">This description will
                                                     appear on the About us page of your documents.</p>
                                                 <div class="panel b">
                                                     <!-- <div id="summernote"><p>Hello Summernote</p></div> -->
-                                                    <div class="panel-heading" style="padding:0px; margin-bottom: 0px;">
-                                                        <p
-                                                            style="padding-left: 2%; font-size: medium; padding-top: 1%;">
+                                                    <div class="panel-heading accountpanelheading">
+                                                        <p class="accountpfontsize">
                                                             <abbr title="Bold (Ctrl+B)"><button type="button"
                                                                     class="btn btn-secondary btn-sm"><i
                                                                         class="fa fa-bold"
@@ -564,23 +492,25 @@
                                                         </p>
                                                     </div>
                                                     <div class="pannel-body">
-                                                        <textarea id="descriptionEducation" #descriptionEducation class="form-control" placeholder="Enter a message"
+                                                        <textarea id="descriptionEducation" #descriptionEducation
+                                                            class="form-control" placeholder="Enter a message"
                                                             rows="7"></textarea>
 
                                                     </div>
-                                                    <div class="pannel-footer" style="height: 20px;">
-                                                        <p style="padding-left: 2%; font-size: small;">body p
+                                                    <div class="pannel-footer height20px">
+                                                        <p class="accountppaddingleftfontsize">body p
                                                         </p>
                                                     </div>
 
                                                 </div>
                                                 <div>
-                                                    <p style="font-size: small;">Characters remaining:{{1600 - descriptionEducation.value.length}}
+                                                    <p class="fontsizesmall">Characters
+                                                        remaining:{{1600 - descriptionEducation.value.length}}
                                                     </p>
                                                 </div>
                                                 <div>
-                                                    <button class="mr-1 btn btn-sm float-right" type="submit"
-                                                        style="background-color:#5D9CEC;color: white;">Save</button>
+                                                    <button class="mr-1 btn btn-sm float-right accountbtnbgcolor"
+                                                        type="submit">Save</button>
                                                 </div>
                                             </div>
                                         </div>
@@ -595,15 +525,14 @@
         </div>
         <div *ngIf="settingActive == 3">
             <div class="card b">
-                <div class="card-header" style="font-size: large;">Email Setting</div>
+                <div class="card-header accountfontsizel">Email Setting</div>
                 <div class="card-body">
                     <div class="row">
                         <div class="col-md-12">
                             <div class="panel panel-default">
-                                <div class="panel-heading" style="padding:0px; margin-bottom: 0px;">
-                                    <p style="padding-left: 3%; font-size: medium; padding-top: 1%;">Email Address
-                                        <i class="mr-2 fa fa-info-circle float-right" style="padding-top: 1px;"
-                                            aria-hidden="true"
+                                <div class="panel-heading accountpanelheading">
+                                    <p class="accountpfontsize paddingleft3">Email Address
+                                        <i class="mr-2 fa fa-info-circle float-right paddingtop1" aria-hidden="true"
                                             popover="Email providers allow a certain amount of emails sent per day. Emails sent through the dashboard will be deducted from the integrated email's quota.&nbsp;
                                          We recommend using Gmail/Google accounts when integrating your personal emails. Our dashboard currently doesn't support Outlook.com accounts"
                                             popoverTitle="Email Quotes" placement="bottom"></i>
@@ -617,12 +546,12 @@
                                                 Email Address</label>
                                             <div class="col-md-9">
                                                 <div>
-                                                    <input class="form-control" placeholder="Email Address" readonly
-                                                        style="height: 2.19rem;" />
+                                                    <input class="form-control accountinputheight"
+                                                        placeholder="Email Address" readonly />
                                                 </div><br>
                                                 <div>
-                                                    <button class="mr-1 btn btn-sm float-right" type="submit"
-                                                        style="background-color:#5D9CEC;color: white;">Add</button>
+                                                    <button class="mr-1 btn btn-sm float-right accountbtnbgcolor"
+                                                        type="submit">Add</button>
                                                 </div>
                                             </div>
                                         </div>
@@ -633,28 +562,24 @@
                             </div>
                             <div class="panel panel-default">
 
-                                <div class="panel-heading" style="padding:0px; margin-bottom: 0px;">
-                                    <p style="padding-left: 3%; font-size: medium; padding-top: 1%;">Email Signature
+                                <div class="panel-heading accountpanelheading">
+                                    <p class="accountpfontsize paddingleft3">Email Signature
                                     </p>
                                 </div>
                                 <div class="panel-body">
                                     <form class="form-horizontal">
                                         <div class="form-group row">
-                                            <label class="col-md-2 col-form-label" style="font-size: medium;">
+                                            <label class="col-md-2 col-form-label fontsizemedium">
                                                 Email Signature</label>
                                             <div class="col-md-10">
-                                                <div style="font-size: small;">
+                                                <div class="fontsizesmall">
                                                     <p>This is an auto-generated signature for your convenience. Please
                                                         feel free to edit and save to have it appear on the footer of
                                                         your emails.</p>
                                                 </div><br>
                                                 <div class="panel b">
-                                                    <div class="panel-heading" style="padding:0px; margin-bottom: 0px;">
-                                                        <!-- <div id="summernote" class="summernote"> -->
-                                                            <!-- <span>Rich text presentation here..</span> -->
-                                                        <!-- </div> -->
-                                                        <p
-                                                            style="padding-left: 2%; font-size: medium; padding-top: 1%;">
+                                                    <div class="panel-heading accountpanelheading">
+                                                        <p class="fontsizemedium paddingleft2paddintop1">
                                                             <abbr title="Bold (Ctrl+B)"><button type="button"
                                                                     class="btn btn-secondary btn-sm"><i
                                                                         class="fa fa-bold"
@@ -681,25 +606,25 @@
                                                             <textarea class="form-control" placeholder="Enter a message"
                                                                 rows="7"></textarea>
 
-                                                        </div> 
-                                                         <div class="pannel-footer" style="height: 20px;">
-                                                            <p style="padding-left: 2%; font-size: small;">body p
+                                                        </div>
+                                                        <div class="pannel-footer height20px">
+                                                            <p class="accountppaddingleftfontsize">body p
                                                             </p>
                                                         </div>
                                                     </div>
-                                                    </div>
+                                                </div>
                                                 <div>
-                                                    <p style="font-size: small;">Please make sure to include your
+                                                    <p class="fontsizesmall">Please make sure to include your
                                                         company address on your email signature.
                                                     </p>
                                                 </div>
                                                 <div>
-                                                    <button class="mr-1 btn btn-sm float-right" type="submit"
-                                                        style="background-color:#5D9CEC;color: white;">Save</button>
+                                                    <button class="mr-1 btn btn-sm float-right accountbtnbgcolor"
+                                                        type="submit">Save</button>
                                                 </div>
                                             </div>
                                         </div>
-                                    
+
                                     </form>
                                 </div>
                             </div>
@@ -712,17 +637,16 @@
         <div *ngIf="settingActive == 4">
             <form action="">
                 <div class="card b">
-                    <div class="card-header" style="font-size: large;">White Label Dashboard</div>
-                    <div class="card-body bb" style="padding-top: 5%;">
+                    <div class="card-header accountfontsizel">White Label Dashboard</div>
+                    <div class="card-body bb accountdivpaddingtop">
                         <div class="col-md-2 text-center">
-                            <h3 style="background-color:#F56A3F;color: white;">Method</h3>
+                            <h3 class="h3bgcolor">Method</h3>
                         </div>
                         <div class="col-md-10">
-                            <h3 style="font-size: medium;">Setup via Subdomain
+                            <h3 class="fontsizemedium">Setup via Subdomain
                             </h3>
                         </div>
                     </div>
-                    <!-- <hr style="color:#F56A3F;"> -->
                     <div class="card-body">
                         <div class="col-md-2">
                             <i class="fa fa-server" aria-hidden="true"></i>
@@ -748,43 +672,43 @@
                         <h3>Follow the applicable instructions:</h3>
                     </div>
                     <div class="row">
-                        <div class="col-sm-3" style="padding-right: 2%;">
-                            <div class="panel" style="border-color: lightgrey;">
+                        <div class="col-sm-3 paddingright2per">
+                            <div class="panel accountdivborder">
                                 <div class="panel-body">
-                                    <img src="../../../../assets/img/panel.png" style="width: 85%; height: 45px;">
+                                    <img class="accountimgwidth" src="../../../../assets/img/panel.png">
                                 </div>
-                                <div class="panel-footer text-center" style="background-color: blue;">
-                                    <a style="color: white; font-size: small;">cPanel User Guide</a>
+                                <div class="panel-footer text-center divbgcolorblue">
+                                    <a class="fontsizesmallcolorwhite">cPanel User Guide</a>
                                 </div>
                             </div>
                         </div>
                         <div class="col-sm-3">
-                            <div class="panel" style="border-color: lightgrey;">
+                            <div class="panel accountdivborder">
                                 <div class="panel-body">
-                                    <img src="../../../../assets/img/GoDady1.jpg" style="width: 85%; height: 45px;">
+                                    <img class="accountimgwidth" src="../../../../assets/img/GoDady1.jpg">
                                 </div>
-                                <div class="panel-footer text-center" style="background-color: blue;">
-                                    <a style="color: white; font-size: small;">cPanel User Guide</a>
+                                <div class="panel-footer text-center divbgcolorblue">
+                                    <a class="fontsizesmallcolorwhite">cPanel User Guide</a>
                                 </div>
                             </div>
                         </div>
                         <div class="col-sm-3">
-                            <div class="panel" style="border-color: lightgrey;">
+                            <div class="panel accountdivborder">
                                 <div class="panel-body">
-                                    <img src="../../../../assets/img/Nmaecheap.png" style="width: 85%; height: 45px;">
+                                    <img class="accountimgwidth" src="../../../../assets/img/Nmaecheap.png">
                                 </div>
-                                <div class="panel-footer text-center" style="background-color: blue;">
-                                    <a style="color: white; font-size: small;">cPanel User Guide</a>
+                                <div class="panel-footer text-center divbgcolorblue">
+                                    <a class="fontsizesmallcolorwhite">cPanel User Guide</a>
                                 </div>
                             </div>
                         </div>
                         <div class="col-sm-3">
-                            <div class="panel" style="border-color: lightgrey;">
+                            <div class="panel accountdivborder">
                                 <div class="panel-body">
-                                    <img src="../../../../assets/img/PLESK.png" style="width: 85%; height: 45px;">
+                                    <img class="accountimgwidth" src="../../../../assets/img/PLESK.png">
                                 </div>
-                                <div class="panel-footer text-center" style="background-color: blue;">
-                                    <a style="color: white; font-size: small;">cPanel User Guide</a>
+                                <div class="panel-footer text-center divbgcolorblue">
+                                    <a class="fontsizesmallcolorwhite">cPanel User Guide</a>
                                 </div>
                             </div>
                         </div>

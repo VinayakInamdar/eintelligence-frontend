@@ -23,6 +23,7 @@ export class KeywordsComponent implements OnInit {
   @ViewChild('staticTabs', { static: false }) staticTabs: TabsetComponent;
   @ViewChild('tagInput') tagInputRef: ElementRef;
   tags: string[] = [];
+  showSpinner:boolean = false;
   selectedCampaignName:string;
   selectedCampId : string;
   hovered : string = '';
@@ -116,9 +117,8 @@ export class KeywordsComponent implements OnInit {
     { data: [], label: 'Sessions', borderCapStyle: 'square' },
   ];
 
-  lineChartLabels: Label[] = ['1 jan',  '3jan',  '5jan', '7jan','8 jan', '9 jan', '11 jan', '13 jan', '15 jan', '17 jan','19 jan','21 jan', '23 jan', '27 jan', '29 jan'];
+  lineChartLabels: Label[] = [];
 
-  //lineChartLabels: Label[] = this.dateLabels;
 
   lineChartOptions : ChartOptions  = {
     responsive: true,
@@ -203,6 +203,7 @@ export class KeywordsComponent implements OnInit {
 
       this.campaignModel = new Campaign();
       this.bsInlineRangeValue = [new Date(new Date().setDate(new Date().getDate() - 31)), new Date()];
+      this.getCampaignList();
       this.getSerpList();
       if(this.router.url.includes('/keywords')){
         this.url = this.router.url
@@ -211,7 +212,6 @@ export class KeywordsComponent implements OnInit {
       }
       location.onPopState(() => {
 
-        // console.log('pressed back!');
 
     });
       
@@ -234,6 +234,22 @@ export class KeywordsComponent implements OnInit {
     this.selectedCampId = `${id.substring(3)}`;
 
   }
+  // using to get campaignList
+  public getCampaignList(): void {
+    this.campaignService.getCampaign().subscribe(res => {
+        this.campaignList = res;   
+        var name = "";
+        if(this.selectedCampId == ":id"){
+          this.selectedCampId = this.campaignList[0].id
+        }
+        this.campaignList.map((s,i)=>{
+          if(s.id == this.selectedCampId){
+            name = s.name
+          }
+        })
+        this.selectedCampaignName = name !== "" ? name : undefined ; 
+    });
+}
 
   // using to get list of keyword list
   public getSerpList(): void {
@@ -287,11 +303,12 @@ onSearch(query: string = '') {
     keywordDto.Keyword = result['keyword'].split('\n')
     keywordDto.Location = result['location']
     keywordDto.Tags = this.tags
-    
+    this.showSpinner = true
     this.campaignService.addNewKeyword(keywordDto.CampaignID,keywordDto.Keyword,keywordDto.Location,keywordDto.Tags).subscribe((res) => {
-        // console.log(res)
          event.preventDefault();
+         this.showSpinner = false
          this.successAlert()
+         
        
       });
   }
