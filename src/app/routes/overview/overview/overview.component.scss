@@ -38,7 +38,7 @@
     border-left: 1px solid #ECECEC;
     float: left;
     width: 11%;
-    padding: 30px!important;
+    padding: 10px!important;
     margin: 0;
     box-sizing: border-box;
     -webkit-box-sizing: border-box;
@@ -47,8 +47,9 @@
 
  .stat-box .stat-label{
      font-size: 10px;
-    text-align: center;
-    min-height: 40px;
+     text-align: center;
+     min-height: 40px;
+    
  }
 
  .chart-container {
@@ -114,10 +115,6 @@
 .fontsizemedium {
     font-size: medium;
 }
-// .stat-label {
-//     font-size: 10px;
-//     min-height: 30px;
-// }
 .text-blue {
     color: #0f9ed6!important;
     font-size: 20px;
@@ -209,7 +206,7 @@ li:hover span.only-show-on-hover  {
     font-size: large;padding-bottom:  5px;padding-top: 30px;
 }
 .overviewpvs {
-    padding-top: 10px;
+    padding-top: 8px;
 }
 .overviewintegrateanalyticscolor {
     color: white;

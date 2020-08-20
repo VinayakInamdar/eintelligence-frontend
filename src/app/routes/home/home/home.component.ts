@@ -102,8 +102,9 @@ export class HomeComponent implements OnInit {
 }
     // using to run audit of entered url 
     public runAudit(event) {
+       this.toastr.info('Your Report is under progress...you can see your report when it is completed','Audit Report')
        this.auditsService.settingsTaskWebsite(this.siteurl).subscribe(res=>{
-        console.log(res)
+
        })
     }
 

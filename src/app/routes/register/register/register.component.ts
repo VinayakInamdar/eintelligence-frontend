@@ -36,12 +36,8 @@ export class RegisterComponent implements OnInit {
 
     // this.registerModel = new Register();
     this.userModel = new User();
-    //console.log(this.route.params.subscribe());
 
-    this.valForm = fb.group({
-      // 'fName': [this.registerModel.fName, Validators.required],
-      // 'lName': [this.registerModel.lName, Validators.required],
-      // 'email': [this.registerModel.email, Validators.required],  
+    this.valForm = fb.group({ 
 
       'fName': [this.userModel.fName, Validators.required],
       'lName': [this.userModel.lName, Validators.required],

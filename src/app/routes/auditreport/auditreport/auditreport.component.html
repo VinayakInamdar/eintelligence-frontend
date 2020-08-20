@@ -14,12 +14,12 @@
             </div>
         </div>
     </div>
-    <div *ngIf="showSpinner" id="loading">
-    </div>
-    <div class="page" *ngIf="on_page_seo != undefined && !showSpinner">
 
+    <div class="page" >
+        <div *ngIf="showSpinner" id="loading">
+        </div>
 
-        <div  id="general-info-section" class="section-container">
+        <div *ngIf="on_page_seo != undefined && !showSpinner"  id="general-info-section" class="section-container">
             <div class="pagewidth">
                 <div class="column">
                     <div class="row clearfix">
@@ -87,7 +87,7 @@
             </div>
         </div>
 
-        <div id="security-section" class="section-container">
+        <div *ngIf="on_page_seo != undefined && !showSpinner" id="security-section" class="section-container">
             <div class="pagewidth">
                 <div class="column">
                     <div class="section-header-wrapper row">
@@ -145,7 +145,7 @@
             </div>
         </div>
 
-        <div id="organic-traffic-section" class="section-container">
+        <div *ngIf="on_page_seo != undefined && !showSpinner" id="organic-traffic-section" class="section-container">
             <div class="pagewidth">
                 <div class="column">
                     <div class="section-header-wrapper row">

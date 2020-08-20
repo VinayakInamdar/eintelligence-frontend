@@ -49,28 +49,28 @@ export class CampaginComponent implements OnInit,AfterViewInit {
   reportsData:any;
   selectedCampaignName:string;
   selectedCampId : string;
-  campaignList: import("c:/Users/rahik/CoreFrontend_Techovarya(2)/eintelligence-frontend/src/app/routes/campaign/campaign.model").Campaign[];
+  campaignList: Campaign[];
   settings = {
     actions:{add: false, edit:false, delete:false},
     columns: {
       name: {
-        title: 'name',
+        title: 'NAME',
         filter: false
       },
       webUrl: {
-        title: 'webUrl',
+        title: 'WEBURL',
         filter: false
       },
       moreTraffic: {
-        title: 'moreTraffic',
+        title: 'MORETRAFFIC',
         filter: false
       },
       sales: {
-        title: 'sales',
+        title: 'SALES',
         filter: false
       },
       leadGeneration: {
-        title: 'leadGeneration',
+        title: 'LEADGENERATION',
         filter: false
       }
     }
@@ -187,7 +187,6 @@ export class CampaginComponent implements OnInit,AfterViewInit {
       this.getCampaignList();
       location.onPopState(() => {
 
-        // console.log('pressed back!');
 
     });
       
@@ -231,7 +230,6 @@ export class CampaginComponent implements OnInit,AfterViewInit {
     this.overvieswService.getGaAnalyticsReports(this.selectedCampId,this.startDate,this.endDate).subscribe(
       res =>{
           this.reportsData = res;
-          // console.log(this.reportsData)
            this.dateLabels = this.reportsData.gaPreparedDataDto.date;
            
            this.convertToLineChartsLabels(this.reportsData.gaPreparedDataDto.date)
@@ -282,7 +280,6 @@ export class CampaginComponent implements OnInit,AfterViewInit {
     
       res => {
         this.googleAnalyticsAccountSetupList = res;
-        // console.log(res)
         if(this.googleAnalyticsAccountSetupList && this.googleAnalyticsAccountSetupList.length > 0 ){
 
 

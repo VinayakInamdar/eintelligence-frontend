@@ -28,8 +28,6 @@ export class CampaignListComponent implements OnInit {
       this.getAgencyList();
       location.onPopState(() => {
 
-        // console.log('pressed back!');
-        // this.router.navigate(['/admin']);
 
     });
   }

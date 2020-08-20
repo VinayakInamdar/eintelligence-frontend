@@ -16,7 +16,7 @@
                             aria-labelledby="button-basic">
                             <li role="menuitem" *ngFor="let campaign of campaignList"
                                 [ngClass]="{'active': selectedCampId == campaign.id}"><a class="dropdown-item"
-                                    (click)="onCampaignSelect($event,campaign)" href="#">{{campaign.name}}</a></li>
+                                    (click)="onCampaignSelect($event,campaign)" href="javascript:void(0);">{{campaign.name}}</a></li>
                         </ul>
                     </div>
                 </div>
@@ -24,61 +24,61 @@
             </div>
             <ul id="page_menu" class="campaign-menu pull-right overviewcamppadding">
                 <li id="overview_menu" class="no-third-nav" data-third-menu="">
-                    <a href="#" class="btn" (mouseenter)="showDiv($event,'false','undefined')">
+                    <a href="javascript:void(0);" class="btn" (mouseenter)="showDiv($event,'false','undefined')">
                         <span class="fontsizesmall">Overview</span>
                     </a>
 
                 </li>
                 <li id="seo_menu" class="" data-third-menu="seo_menu_index">
-                    <a href="#" class="btn" (mouseenter)="showDiv($event,'true','seo')">
+                    <a href="javascript:void(0);" class="btn" (mouseenter)="showDiv($event,'true','seo')">
                         <span class="fontsizesmall">SEO</span>
                     </a>
 
                 </li>
                 <li id="local_seo_menu" class="active-link" data-third-menu="location_menu_index">
-                    <a href="#" class="btn" (mouseenter)="showDiv($event,'true','gmb')">
+                    <a href="javascript:void(0);" class="btn" (mouseenter)="showDiv($event,'true','gmb')">
                         <span class="fontsizesmall">GMB</span>
                     </a>
 
                 </li>
                 <li id="reputation_menu" class="" data-third-menu="repman_menu_index">
-                    <a href="#" class="btn" (mouseenter)="showDiv($event,'false','undefined')">
+                    <a href="javascript:void(0);" class="btn" (mouseenter)="showDiv($event,'false','undefined')">
                         <span class="fontsizesmall">Reputation</span>
                     </a>
 
                 </li>
                 <li id="analytics_menu" class="" data-third-menu="analytics_menu_index">
-                    <a href="#" class="btn" (mouseenter)="showDiv($event,'true','analytics')">
+                    <a href="javascript:void(0);" class="btn" (mouseenter)="showDiv($event,'true','analytics')">
                         <span class="fontsizesmall">Analytics</span>
                     </a>
 
                 </li>
                 <li id="contacts_menu" class="" data-third-menu="">
-                    <a href="#" class="btn" (mouseenter)="showDiv($event,'false','undefined')">
+                    <a href="javascript:void(0);" class="btn" (mouseenter)="showDiv($event,'false','undefined')">
                         <span class="fontsizesmall">Contacts</span>
                     </a>
 
                 </li>
                 <li id="ppc_menu" class="" data-third-menu="ppc_menu_index">
-                    <a href="#" class="btn" (mouseenter)="showDiv($event,'true','ppc')">
+                    <a href="javascript:void(0);" class="btn" (mouseenter)="showDiv($event,'true','ppc')">
                         <span class="fontsizesmall">PPC</span>
                     </a>
 
                 </li>
                 <li id="report_builder_menu" class="" data-third-menu="">
-                    <a href="#" class="btn" (mouseenter)="showDiv($event,'false','undefined')">
+                    <a href="javascript:void(0);" class="btn" (mouseenter)="showDiv($event,'false','undefined')">
                         <span class="fontsizesmall">Reports</span>
                     </a>
 
                 </li>
                 <li id="projects_menu" class="" data-third-menu="">
-                    <a href="#" class="btn" (mouseenter)="showDiv($event,'false','undefined')">
+                    <a href="javascript:void(0);" class="btn" (mouseenter)="showDiv($event,'false','undefined')">
                         <span class="fontsizesmall">Projects</span>
                     </a>
 
                 </li>
                 <li id="settings_menu" class="" data-third-menu="campaign_settings_menu_index">
-                    <a href="#" class="btn" (mouseenter)="showDiv($event,'true','settings')">
+                    <a href="javascript:void(0);" class="btn" (mouseenter)="showDiv($event,'true','settings')">
                         <span class="fontsizesmall">Settings</span>
                     </a>
 
@@ -91,7 +91,7 @@
         <div *ngIf="showdiv && show=='seo'" class="third-level-menu-item pagewidth clearfix seo_menu_index active">
             <ul id="page_menu" class="campaign-menu pull-right ">
                 <li id="overview_menu" class="no-third-nav" data-third-menu="">
-                    <a href="#" class="btn">
+                    <a href="javascript:void(0);" class="btn">
                         <span class="fontsizesmall">On Page</span>
                     </a>
 
@@ -103,19 +103,19 @@
 
                 </li>
                 <li id="local_seo_menu" class="active-link" data-third-menu="location_menu_index">
-                    <a href="#" class="btn">
+                    <a href="javascript:void(0);" class="btn">
                         <span class="fontsizesmall">Monthly Trend</span>
                     </a>
 
                 </li>
                 <li id="reputation_menu" class="" data-third-menu="repman_menu_index">
-                    <a href="#" class="btn">
+                    <a href="javascript:void(0);" class="btn">
                         <span class="fontsizesmall">Reputation</span>
                     </a>
 
                 </li>
                 <li id="analytics_menu" class="" data-third-menu="analytics_menu_index">
-                    <a href="#" class="btn">
+                    <a href="javascript:void(0);" class="btn">
                         <span class="fontsizesmall">Links Built</span>
                     </a>
 
@@ -125,25 +125,25 @@
         <div *ngIf="showdiv && show=='gmb'" class="pagewidth clearfix ">
             <ul id="page_menu" class="campaign-menu pull-right overviewcamppadding">
                 <li id="overview_menu" class="no-third-nav" data-third-menu="">
-                    <a href="#" class="btn">
+                    <a href="javascript:void(0);" class="btn">
                         <span class="fontsizesmall">Overview</span>
                     </a>
 
                 </li>
                 <li id="seo_menu" class="" data-third-menu="seo_menu_index">
-                    <a href="#" class="btn">
+                    <a href="javascript:void(0);" class="btn">
                         <span class="fontsizesmall">Business Information</span>
                     </a>
 
                 </li>
                 <li id="local_seo_menu" class="active-link" data-third-menu="location_menu_index">
-                    <a href="#" class="btn">
+                    <a href="javascript:void(0);" class="btn">
                         <span class="fontsizesmall">Reviwes</span>
                     </a>
 
                 </li>
                 <li id="reputation_menu" class="" data-third-menu="repman_menu_index">
-                    <a href="#" class="btn">
+                    <a href="javascript:void(0);" class="btn">
                         <span class="fontsizesmall">Posts</span>
                     </a>
 
@@ -153,25 +153,25 @@
         <div *ngIf="showdiv && show=='analytics'" class="pagewidth clearfix ">
             <ul id="page_menu" class="campaign-menu pull-right overviewcamppadding">
                 <li id="overview_menu" class="no-third-nav" data-third-menu="">
-                    <a href="#" class="btn">
+                    <a href="javascript:void(0);" class="btn">
                         <span class="fontsizesmall">Acquistion</span>
                     </a>
 
                 </li>
                 <li id="seo_menu" class="" data-third-menu="seo_menu_index">
-                    <a href="#" class="btn">
+                    <a href="javascript:void(0);" class="btn">
                         <span class="fontsizesmall">Audience</span>
                     </a>
 
                 </li>
                 <li id="local_seo_menu" class="active-link" data-third-menu="location_menu_index">
-                    <a href="#" class="btn">
+                    <a href="javascript:void(0);" class="btn">
                         <span class="fontsizesmall">Behavior</span>
                     </a>
 
                 </li>
                 <li id="reputation_menu" class="" data-third-menu="repman_menu_index">
-                    <a href="#" class="btn">
+                    <a href="javascript:void(0);" class="btn">
                         <span class="fontsizesmall">Conversations</span>
                     </a>
 
@@ -181,25 +181,25 @@
         <div *ngIf="showdiv && show=='ppc'" class="pagewidth clearfix ">
             <ul id="page_menu" class="campaign-menu pull-right overviewcamppadding">
                 <li id="overview_menu" class="no-third-nav" data-third-menu="">
-                    <a href="#" class="btn">
+                    <a href="javascript:void(0);" class="btn">
                         <span class="fontsizesmall">Campaign</span>
                     </a>
 
                 </li>
                 <li id="seo_menu" class="" data-third-menu="seo_menu_index">
-                    <a href="#" class="btn">
+                    <a href="javascript:void(0);" class="btn">
                         <span class="fontsizesmall">AdGroups</span>
                     </a>
 
                 </li>
                 <li id="local_seo_menu" class="active-link" data-third-menu="location_menu_index">
-                    <a href="#" class="btn">
+                    <a href="javascript:void(0);" class="btn">
                         <span class="fontsizesmall">Ads</span>
                     </a>
 
                 </li>
                 <li id="reputation_menu" class="" data-third-menu="repman_menu_index">
-                    <a href="#" class="btn">
+                    <a href="javascript:void(0);" class="btn">
                         <span class="fontsizesmall">Keywords</span>
                     </a>
 
@@ -209,31 +209,31 @@
         <div *ngIf="showdiv && show=='settings'" class="pagewidth clearfix ">
             <ul id="page_menu" class="campaign-menu pull-right overviewcamppadding">
                 <li id="overview_menu" class="no-third-nav" data-third-menu="">
-                    <a href="#" class="btn">
+                    <a href="javascript:void(0);" class="btn">
                         <span class="fontsizesmall">Intake Forms</span>
                     </a>
 
                 </li>
                 <li id="seo_menu" class="" data-third-menu="seo_menu_index">
-                    <a href="#" class="btn">
+                    <a href="javascript:void(0);" class="btn">
                         <span class="fontsizesmall">Campaign Settings</span>
                     </a>
 
                 </li>
                 <li id="local_seo_menu" class="active-link" data-third-menu="location_menu_index">
-                    <a href="#" class="btn">
+                    <a href="javascript:void(0);" class="btn">
                         <span class="fontsizesmall">Competitors</span>
                     </a>
 
                 </li>
                 <li id="reputation_menu" class="" data-third-menu="repman_menu_index">
-                    <a href="#" class="btn">
+                    <a href="javascript:void(0);" class="btn">
                         <span class="fontsizesmall">Integrations</span>
                     </a>
 
                 </li>
                 <li id="analytics_menu" class="" data-third-menu="analytics_menu_index">
-                    <a href="#" class="btn">
+                    <a href="javascript:void(0);" class="btn">
                         <span class="fontsizesmall">Campaign Users</span>
                     </a>
 
@@ -267,7 +267,7 @@
                                 aria-labelledby="button-basic">
                                 <li role="menuitem" *ngFor="let label of dropdownlabels"
                                     [ngClass]="{'active': selectedLabel == label.id}"><a class="dropdown-item"
-                                        (click)="onLabelSelect($event,label)" href="#">{{label.label}}</a></li>
+                                        (click)="onLabelSelect($event,label)" href="javascript:void(0);">{{label.label}}</a></li>
                             </ul>
                         </div>
                     </div>
@@ -283,7 +283,7 @@
                                 aria-labelledby="button-basic">
                                 <li role="menuitem" *ngFor="let label of dropdownlabels1"
                                     [ngClass]="{'active': selectedLabel1 == label.id}"><a class="dropdown-item"
-                                        (click)="onLabelSelect1($event,label)" href="#">{{label.label}}</a></li>
+                                        (click)="onLabelSelect1($event,label)" href="javascript:void(0);">{{label.label}}</a></li>
                             </ul>
                         </div>
                     </div>

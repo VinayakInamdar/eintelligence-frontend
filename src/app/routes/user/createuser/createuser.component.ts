@@ -53,7 +53,6 @@ export class CreateUserComponent implements OnInit {
          public route: ActivatedRoute, public router: Router) {
 
         this.userModel = new User();
-        console.log(this.route.params.subscribe());
 
         this.valForm = fb.group({
             'fName': [this.userModel.fName, Validators.required],

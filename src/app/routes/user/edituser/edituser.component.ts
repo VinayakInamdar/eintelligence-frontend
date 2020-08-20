@@ -37,7 +37,6 @@ export class EditUserComponent implements OnInit {
         public toasterService: ToasterService, public route: ActivatedRoute, public router: Router) {
 
         this.userModel = new User();
-        console.log(this.route.params.subscribe());
         this.valForm = fb.group({
             'fName': [this.userModel.fName, Validators.required],
             'lName': [this.userModel.lName, Validators.required],

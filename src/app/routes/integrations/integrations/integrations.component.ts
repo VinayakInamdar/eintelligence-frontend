@@ -4,6 +4,7 @@ import { ActivatedRoute, Router } from '@angular/router';
 import { GoogleAnalyticsAccountSetups } from '../googleAnalyticsAccount.model';
 import { CampaignService } from '../../campaign/campaign.service';
 import { TranslateService } from '@ngx-translate/core';
+import { Campaign } from '../../campaign/campaign.model';
 const success = require('sweetalert');
 
 
@@ -29,7 +30,7 @@ export class IntegrationsComponent implements OnInit {
 
   isVisible:boolean= true;
   selectedCampaignName:string;
-  campaignList: import("c:/Users/rahik/CoreFrontend_Techovarya(2)/eintelligence-frontend/src/app/routes/campaign/campaign.model").Campaign[];
+  campaignList: Campaign[];
 
   
 
@@ -68,8 +69,6 @@ export class IntegrationsComponent implements OnInit {
 
 
     this.integrationsService.getGaSetupByCampaignId(this.selectedCampId).subscribe(
-
-      // this.states = this.selectService.getStates().filter((item) => item.countryid == countryid);
 
       res => {
         this.googleAnalyticsAccountSetupList = res;
@@ -138,7 +137,6 @@ export class IntegrationsComponent implements OnInit {
 
     this.integrationsService.updateGaAccountProfile( this.selectedProfile.id ,this.selectedCampId).subscribe(
 
-      // this.states = this.selectService.getStates().filter((item) => item.countryid == countryid);
 
       res => {
        this.successAlert()

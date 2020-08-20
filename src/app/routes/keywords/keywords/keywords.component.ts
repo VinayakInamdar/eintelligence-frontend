@@ -28,8 +28,8 @@ export class KeywordsComponent implements OnInit {
   selectedCampId : string;
   hovered : string = '';
   valForm: FormGroup;
-  serpList: import("c:/Users/rahik/CoreFrontend_Techovarya(2)/eintelligence-frontend/src/app/routes/keywords/serp.model").SerpDto[]
-  campaignList: import("c:/Users/rahik/CoreFrontend_Techovarya(2)/eintelligence-frontend/src/app/routes/campaign/campaign.model").Campaign[];
+  serpList: SerpDto[]
+  campaignList: Campaign[];
   settings = {
     actions:{add: false, edit:false, delete:false},
     columns: {
@@ -117,9 +117,8 @@ export class KeywordsComponent implements OnInit {
     { data: [], label: 'Sessions', borderCapStyle: 'square' },
   ];
 
-  lineChartLabels: Label[] = ['1 jan',  '3jan',  '5jan', '7jan','8 jan', '9 jan', '11 jan', '13 jan', '15 jan', '17 jan','19 jan','21 jan', '23 jan', '27 jan', '29 jan'];
+  lineChartLabels: Label[] = [];
 
-  //lineChartLabels: Label[] = this.dateLabels;
 
   lineChartOptions : ChartOptions  = {
     responsive: true,
@@ -213,7 +212,6 @@ export class KeywordsComponent implements OnInit {
       }
       location.onPopState(() => {
 
-        // console.log('pressed back!');
 
     });
       
@@ -307,7 +305,6 @@ onSearch(query: string = '') {
     keywordDto.Tags = this.tags
     this.showSpinner = true
     this.campaignService.addNewKeyword(keywordDto.CampaignID,keywordDto.Keyword,keywordDto.Location,keywordDto.Tags).subscribe((res) => {
-        // console.log(res)
          event.preventDefault();
          this.showSpinner = false
          this.successAlert()
