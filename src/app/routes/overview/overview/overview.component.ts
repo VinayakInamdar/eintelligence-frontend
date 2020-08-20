@@ -341,7 +341,7 @@ export class OverviewComponent implements OnInit {
 
 // using to open create campaign view to add new campaign in db
  public onClick(event): any {
-  this.router.navigate(['/home/campagin']);
+  this.router.navigate(['/home/campaign']);
 }
 
 //using to open div on mouseover event

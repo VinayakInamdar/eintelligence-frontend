@@ -23,6 +23,7 @@ export class KeywordsComponent implements OnInit {
   @ViewChild('staticTabs', { static: false }) staticTabs: TabsetComponent;
   @ViewChild('tagInput') tagInputRef: ElementRef;
   tags: string[] = [];
+  showSpinner:boolean = false;
   selectedCampaignName:string;
   selectedCampId : string;
   hovered : string = '';
@@ -203,6 +204,7 @@ export class KeywordsComponent implements OnInit {
 
       this.campaignModel = new Campaign();
       this.bsInlineRangeValue = [new Date(new Date().setDate(new Date().getDate() - 31)), new Date()];
+      this.getCampaignList();
       this.getSerpList();
       if(this.router.url.includes('/keywords')){
         this.url = this.router.url
@@ -234,6 +236,22 @@ export class KeywordsComponent implements OnInit {
     this.selectedCampId = `${id.substring(3)}`;
 
   }
+  // using to get campaignList
+  public getCampaignList(): void {
+    this.campaignService.getCampaign().subscribe(res => {
+        this.campaignList = res;   
+        var name = "";
+        if(this.selectedCampId == ":id"){
+          this.selectedCampId = this.campaignList[0].id
+        }
+        this.campaignList.map((s,i)=>{
+          if(s.id == this.selectedCampId){
+            name = s.name
+          }
+        })
+        this.selectedCampaignName = name !== "" ? name : undefined ; 
+    });
+}
 
   // using to get list of keyword list
   public getSerpList(): void {
@@ -287,11 +305,13 @@ onSearch(query: string = '') {
     keywordDto.Keyword = result['keyword'].split('\n')
     keywordDto.Location = result['location']
     keywordDto.Tags = this.tags
-    
+    this.showSpinner = true
     this.campaignService.addNewKeyword(keywordDto.CampaignID,keywordDto.Keyword,keywordDto.Location,keywordDto.Tags).subscribe((res) => {
         // console.log(res)
          event.preventDefault();
+         this.showSpinner = false
          this.successAlert()
+         
        
       });
   }

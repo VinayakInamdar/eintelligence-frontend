@@ -16,6 +16,7 @@ export class AuditreportComponent implements OnInit {
   securitySection : object;
   selectedTaskId: string;
   organicTrafficSection: [object];
+  showSpinner:boolean = false;
   technical_seo : object;
   on_page_seo : object;
   summary = 'summary';
@@ -50,6 +51,7 @@ export class AuditreportComponent implements OnInit {
 
   // using to get onPageReport of selected taskId
   getOnPageReport() {
+    this.showSpinner = true;
  this.auditsService.getOnPageData(this.selectedTaskId).subscribe(res=>{
       var technical_seo = {}
       var on_page_seo = {}
@@ -82,6 +84,7 @@ export class AuditreportComponent implements OnInit {
         // this.organicTrafficSection.push(this.on_page_seo)
       })
       this.calculateReportData()
+      this.showSpinner = false;
     })
   }
 

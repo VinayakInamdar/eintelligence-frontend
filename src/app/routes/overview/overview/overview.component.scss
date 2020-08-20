@@ -141,7 +141,7 @@
 }
 ul#page_menu {
     position: absolute;
-    top: 0;
+    top: 8px;
     right: 0;
     list-style: none;
     margin: 0;
@@ -188,4 +188,38 @@ li:hover span.only-show-on-hover  {
           color: 'red';
         }
     }
+}
+
+.overviewmaindiv {
+    padding: 4%;
+}
+.overviewbtnwidth {
+    width:auto ;
+}
+.overviewulheightmax {
+    max-height: 300px;overflow: auto;
+}
+.overviewcamppadding {
+    padding-top: 5px;
+}
+.overviewdivfontsizesmall {
+    font-size:small;
+}
+.overviewdivfontspadding {
+    font-size: large;padding-bottom:  5px;padding-top: 30px;
+}
+.overviewpvs {
+    padding-top: 10px;
+}
+.overviewintegrateanalyticscolor {
+    color: white;
+}
+.overviewintegrateanalyticsbgcolor {
+    background-color: white;
+}
+.overviewdivborder {
+    border: black 2px;
+}
+.overviewh3marginbottom {
+    margin-bottom:0
 }

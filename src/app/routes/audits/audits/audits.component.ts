@@ -1,11 +1,9 @@
 import { Component, OnInit, EventEmitter, Output, Input } from '@angular/core';
-import {IAudits} from '../audits.modal';
 import { HttpClient } from '@angular/common/http';
 import { CampaignService } from '../../campaign/campaign.service';
 import { Router } from '@angular/router';
 import { AuditsService } from '../audits.service';
 import { LocalDataSource } from 'ng2-smart-table';
-import {NgClass} from '@angular/common';
 import { AuditBadge } from './auditbadge.component';
 
 @Component({

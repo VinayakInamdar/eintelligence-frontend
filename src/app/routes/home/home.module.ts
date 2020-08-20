@@ -12,6 +12,9 @@ import { OverviewComponent } from '../overview/overview/overview.component';
 import { ChartsModule } from 'ng2-charts';
 import { AuditsComponent } from '../audits/audits/audits.component';
 import { AuditreportComponent } from '../auditreport/auditreport/auditreport.component';
+import {ToasterModule, ToasterService,ToasterConfig } from 'angular2-toaster/angular2-toaster';
+import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
+import { ToastrModule } from 'ngx-toastr';
 
 
 const routes: Routes = [
@@ -33,11 +36,16 @@ const routes: Routes = [
         FileUploadModule,
         FormsModule,
         NgxSelectModule,
-        ChartsModule
+        ChartsModule,
+        ToasterModule,
+        ToastrModule.forRoot()
     ],
     declarations: [HomeComponent, CampaginComponent,OverviewComponent,AuditsComponent,AuditreportComponent],
     exports: [
         RouterModule
+    ],
+    providers: [
+        ToasterService
     ]
 })
 export class HomeModule { }

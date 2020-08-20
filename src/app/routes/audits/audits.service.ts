@@ -28,7 +28,7 @@ getAudits(): Observable<any[]> {
 // using to get onPageReport of selected taskId
  getOnPageData(taskID: string): Observable<any[]> {
     return this.http.post<any[]>(`${this.Url}audits/GetOnPageByTaskId`,{} ,{
-      params: new HttpParams().set("taskID", '4888178178')
+      params: new HttpParams().set("taskID", taskID)
    });
   }
 }

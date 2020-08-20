@@ -72,4 +72,10 @@ export class RegisterComponent implements OnInit {
   public onClick(): any {
     this.router.navigate(['/success']);
   }
+  public goToPrivacyPolicy () {
+    this.router.navigate(['/privacy-policy'])
+  }
+  public goToTermsAndConditions () {
+    this.router.navigate(['/terms-and-conditions'])
+  }
 }

@@ -1,12 +1,9 @@
 import { Component, OnInit } from '@angular/core';
 import { IntegrationsService } from '../integrations.service';
-import { GoogleAccountSetups } from '../googleAccountSetups.model';
 import { ActivatedRoute, Router } from '@angular/router';
 import { GoogleAnalyticsAccountSetups } from '../googleAnalyticsAccount.model';
 import { CampaignService } from '../../campaign/campaign.service';
-import { LocalDataSource } from 'ng2-smart-table';
 import { TranslateService } from '@ngx-translate/core';
-import { userInfo } from 'os';
 const success = require('sweetalert');
 
 
@@ -54,9 +51,6 @@ export class IntegrationsComponent implements OnInit {
   public integrationData : any;
 
   googleAuth(): void {
-
-    let id = this.route.snapshot.paramMap.get('id');
-    this.selectedCampId = `${id}`;
 
     this.integrationsService.googleAuth(this.selectedCampId).subscribe(
 
@@ -141,9 +135,6 @@ export class IntegrationsComponent implements OnInit {
   }
 
   saveProfile(){
-
-    let id = this.route.snapshot.paramMap.get('id');
-    this.selectedCampId = `${id}`;
 
     this.integrationsService.updateGaAccountProfile( this.selectedProfile.id ,this.selectedCampId).subscribe(
 

@@ -43,9 +43,4 @@ export class CampaignService {
     });
     
   }
-  // getCampaignById(campaignId): Observable<Campaign[]> {
-  //   return this.http.get<Campaign[]>(this.Url + '/googleanalyticsaccounts',{
-  //     params: new HttpParams().set('pageSize', '1').set('searchQuery',  'CampaignID ==' + campaignId)
-  //   })
-  // }
 }

@@ -133,7 +133,7 @@ export class CampaginComponent implements OnInit,AfterViewInit {
     { data: [], label: 'Sessions', borderCapStyle: 'square' },
   ];
 
-  lineChartLabels: Label[] = ['1 jan',  '3jan',  '5jan', '7jan','8 jan', '9 jan', '11 jan', '13 jan', '15 jan', '17 jan','19 jan','21 jan', '23 jan', '27 jan', '29 jan'];
+  lineChartLabels: Label[] = [];
 
   //lineChartLabels: Label[] = this.dateLabels;
 
