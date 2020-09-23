@@ -177,7 +177,7 @@ export class IntegrationsComponent implements OnInit {
           }
         })
         this.selectedCampaignName = name !== "" ? name : undefined ; 
-          this.getGaSetupByCampaignId()  
+          // this.getGaSetupByCampaignId()  
           this.router.navigate(['/integrations', this.selectedCampId]); 
     });
 }

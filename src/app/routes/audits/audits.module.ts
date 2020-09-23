@@ -4,7 +4,7 @@ import { Routes, RouterModule } from '@angular/router';
 import { Ng2SmartTableModule } from 'ng2-smart-table';
 import { CommonModule } from '@angular/common';
 import { AuditreportComponent } from '../auditreport/auditreport/auditreport.component';
-
+import { ToastrModule } from 'ngx-toastr';
 const routes: Routes = [
   { path: '', component: AuditreportComponent },
 ];
@@ -16,7 +16,8 @@ const routes: Routes = [
     CommonModule,
     Ng2SmartTableModule,
     RouterModule.forChild(routes),
-    SharedModule
+    SharedModule,
+    ToastrModule.forRoot()
   ]
 })
 export class AuditsModule { }

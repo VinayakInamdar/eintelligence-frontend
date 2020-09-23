@@ -16,14 +16,53 @@
     </div>
 
     <div class="page" >
-        <div *ngIf="showSpinner" id="loading">
+        <!-- <div  id="loading">
+        </div> -->
+        <div *ngIf="showSpinner"  class="la-line-scale la-2x linescaleloadercolortopleft">
+            <div></div>
+            <div></div>
+            <div></div>
+            <div></div>
+            <div></div>
         </div>
 
         <div *ngIf="on_page_seo != undefined && !showSpinner"  id="general-info-section" class="section-container">
             <div class="pagewidth">
                 <div class="column">
-                    <div class="row clearfix">
-                        <div class="col-sm-4 critical-issues">
+            <div class="report-title">
+                <h1>Audit for:</h1>
+                <a [href]="domain" target="_BLANK" rel="noreferrer">{{domain}}</a> 
+                           
+            </div>
+            <div class="row"></div>
+            <div class="col-lg-6 breakdown right20px top5px">
+                <table class="table" style="padding-right: 20px;">
+                    <tbody>
+                        <tr>
+                            <td>Security</td>
+                            <td class="wd-sm"><div class="px-2 paddingtop5px" >
+                                <progressbar  class="m-0 progress-xs progress" type="success" value="80"   max="100">   
+                              <bar  aria-valuemin="0" role="progressbar"   class="progress-bar progress-bar-success bg-success" aria-valuenow="80" aria-valuetext="80%" style="height: 100%; width: 80%;"></bar>
+                            </progressbar></div></td>
+                            <td>A</td>
+                        </tr>
+                        <tr>
+                            <td>Organic Traffic</td>
+                            <td class="wd-sm"><div class="px-2 paddingtop5px">
+                                <progressbar  class="m-0 progress-xs progress" type="success" value="80"   max="100">   
+                              <bar  aria-valuemin="0" role="progressbar"   class="progress-bar progress-bar-success bg-success" aria-valuenow="80" aria-valuetext="80%" style="height: 100%; width: 80%;"></bar>
+                            </progressbar></div></td>
+                            <td>C</td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+
+                <!-- <div class="column"> -->
+                    
+
+                    <div class="row col-md-12 right20px top5px">
+                        <div class="col-md-4 critical-issues">
                             <table class="table" cellpadding="0" cellspacing="0">
                                 <thead>
                                     <tr>
@@ -43,7 +82,7 @@
                                 </tbody>
                             </table>
                         </div>
-                        <div class="col-sm-4 for-improvement">
+                        <div class="col-md-4 for-improvement">
                             <table class="table" cellpadding="0" cellspacing="0">
                                 <thead>
                                     <tr>
@@ -59,7 +98,7 @@
                                 </tbody>
                             </table>
                         </div>
-                        <div class="col-sm-4 looking-good">
+                        <div class="col-md-4 looking-good">
                             <table class="table" cellpadding="0" cellspacing="0">
                                 <thead>
                                     <tr>
@@ -81,9 +120,9 @@
                             </table>
                         </div>
                     </div>
-                </div>
+                <!-- </div> -->
 
-
+            </div>
             </div>
         </div>
 
@@ -286,8 +325,9 @@
                                                 <td>
                                                     <div class="progress progressheight">
                                                         <div class="progress-bar"
-                                                            [style.width.%]="on_page_seo.h1_count * 10"></div>
-                                                        <span class="progressspan">{{on_page_seo.h1_count}} found</span>
+                                                        [matTooltip]="(on_page_seo.h1_count)+('  found') "
+                                                            [style.width.%]="on_page_seo.h1_count * 5"></div>
+                                                        <span class="progressspan"></span>
                                                     </div>
                                                 </td>
                                             </tr>
@@ -296,8 +336,9 @@
                                                 <td>
                                                     <div class="progress progressheight">
                                                         <div class="progress-bar"
-                                                            [style.width.%]="on_page_seo.h2_count * 10"></div>
-                                                        <span class="progressspan">{{on_page_seo.h2_count}} found</span>
+                                                        [matTooltip]="(on_page_seo.h2_count)+('  found') "
+                                                            [style.width.%]="on_page_seo.h2_count * 5"></div>
+                                                        <span class="progressspan"></span>
                                                     </div>
                                                 </td>
                                             </tr>
@@ -306,8 +347,9 @@
                                                 <td>
                                                     <div class="progress progressheight">
                                                         <div class="progress-bar"
-                                                            [style.width.%]="on_page_seo.h3_count * 10"></div>
-                                                        <span class="progressspan">{{on_page_seo.h3_count}} found</span>
+                                                        [matTooltip]="(on_page_seo.h3_count)+('  found') "
+                                                            [style.width.%]="on_page_seo.h3_count * 5"></div>
+                                                        <span class="progressspan"></span>
                                                     </div>
                                                 </td>
                                             </tr>

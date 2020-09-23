@@ -5,19 +5,19 @@
             <div class="card-body">
 
                 <p class="accountfontsizel">Setting</p><br>
-                <a (click)="settingActive=1" [ngClass]="{'active': (settingActive == 1)}" class="accountfontwfonts"><em
-                        class="fa-1.9x icon-settings"></em> &nbsp;Account
+                <a (click)="changeSettingActive($event,1)" [ngClass]="{'active': (settingActive == 1)}"
+                    class="accountfontwfonts"><em class="fa-1.9x icon-settings"></em> &nbsp;Account
                     Setting</a>
                 <hr>
-                <a (click)="settingActive=2" [ngClass]="{'active': (settingActive == 2)}" class="accountfontwfonts"><em
-                        class="fa-1.9x fas fa-code-branch"></em>
+                <a (click)="changeSettingActive($event,2)" [ngClass]="{'active': (settingActive == 2)}"
+                    class="accountfontwfonts"><em class="fa-1.9x fas fa-code-branch"></em>
                     &nbsp;Branding</a>
                 <hr>
-                <a (click)="settingActive=3" [ngClass]="{'active': (settingActive == 3)}" class="accountfontwfonts"><em
-                        class="fa-1x mr-2 fas fa-envelope-open"></em>&nbsp;Email Setting</a>
+                <a (click)="changeSettingActive($event,3)" [ngClass]="{'active': (settingActive == 3)}"
+                    class="accountfontwfonts"><em class="fa-1x mr-2 fas fa-envelope-open"></em>&nbsp;Email Setting</a>
                 <hr>
-                <a (click)="settingActive=4" [ngClass]="{'active': (settingActive == 4)}" class="accountfontwfonts"><em
-                        class="fa-1x mr-2 fas fa-chalkboard"></em>&nbsp;White
+                <a (click)="changeSettingActive($event,4)" [ngClass]="{'active': (settingActive == 4)}"
+                    class="accountfontwfonts"><em class="fa-1x mr-2 fas fa-chalkboard"></em>&nbsp;White
                     Label Dashboard</a>
 
             </div>
@@ -34,16 +34,15 @@
                                 </p>
                             </div>
                             <div class="panel-body">
-                                <form class="form-horizontal" [formGroup]="phoneForm"
-                                    (submit)="submitForm(phoneForm.value,'phoneform')">
+                                <form class="form-horizontal" [formGroup]="companyInfoForm"
+                                    (submit)="submitForm(companyInfoForm.value,'companyInfoForm')">
                                     <div class="form-group row">
                                         <label class="col-md-4 col-form-label accountlabelpadding">
-                                            COMPANY INFORMATION <span class="accountspancolor">*</span></label>
+                                            COMPANY NAME <span class="accountspancolor">*</span></label>
                                         <div class="col-md-8">
-                                            <input formControlName="companyinformation"
-                                                class="form-control accountinputheight" />
+                                            <input formControlName="name" class="form-control accountinputheight" />
                                             <span class="text-danger"
-                                                *ngIf="phoneForm.controls['companyinformation'].hasError('required') && (phoneForm.controls['companyinformation'].dirty || phoneForm.controls['companyinformation'].touched)">
+                                                *ngIf="companyInfoForm.controls['name'].hasError('required') && (companyInfoForm.controls['name'].dirty || companyInfoForm.controls['name'].touched)">
                                                 {{'validation.NAMEISREQUIRED' | translate}}</span><br>
                                         </div>
                                     </div>
@@ -53,7 +52,7 @@
                                         <div class="col-md-8">
                                             <input formControlName="website" class="form-control accountinputheight" />
                                             <span class="text-danger"
-                                                *ngIf="phoneForm.controls['website'].hasError('required') && (phoneForm.controls['website'].dirty || phoneForm.controls['website'].touched)">
+                                                *ngIf="companyInfoForm.controls['website'].hasError('required') && (companyInfoForm.controls['website'].dirty || companyInfoForm.controls['website'].touched)">
                                                 {{'validation.WEBSITEREQUIRED' | translate}}</span><br>
                                         </div>
                                     </div>
@@ -75,11 +74,11 @@
                                     </div>
                                     <div class="form-group ">
                                         <label class="col-md-4 col-form-label">
-                                            BUSINESS EMAIL<span class="accountspancolor">*</span></label>
+                                            BUSINESS EMAIL<span class="accountspancolor"></span></label>
                                         <div class="col-md-8">
                                             <input formControlName="email" class="form-control accountinputheight" />
                                             <span class="text-danger"
-                                                *ngIf="phoneForm.controls['email'].hasError('required') && (phoneForm.controls['email'].dirty || phoneForm.controls['email'].touched)">
+                                                *ngIf="companyInfoForm.controls['email'].hasError('required') && (companyInfoForm.controls['email'].dirty || companyInfoForm.controls['email'].touched)">
                                                 {{'validation.EMAIL' | translate}}</span><br>
                                         </div>
                                     </div>
@@ -95,26 +94,26 @@
                                     </div>
                                     <div class="form-group ">
                                         <label class="col-md-4 col-form-label">
-                                            ADDRESS</label>
+                                            Address</label>
                                         <div class="col-md-8">
-                                            <input formControlName="Address" class="form-control accountinputheight" />
+                                            <input formControlName="address" class="form-control accountinputheight" />
                                         </div>
                                     </div>
                                     <div class="form-group ">
                                         <label class="col-md-4 col-form-label">
                                             ZIP CODE <span class="accountspancolor">*</span></label>
                                         <div class="col-md-3">
-                                            <input formControlName="zipcode" class="form-control accountinputheight" />
+                                            <input formControlName="zipCode" class="form-control accountinputheight" />
                                             <span class="text-danger"
-                                                *ngIf="phoneForm.controls['zipcode'].hasError('required') && (phoneForm.controls['zipcode'].dirty || phoneForm.controls['zipcode'].touched)">
-                                                {{'validation.ZIPCODE' | translate}}</span><br>
+                                                *ngIf="companyInfoForm.controls['zipCode'].hasError('required') && (companyInfoForm.controls['zipCode'].dirty || companyInfoForm.controls['zipCode'].touched)">
+                                                {{'validation.zipCode' | translate}}</span><br>
                                         </div>
                                         <label class="col-md-2 col-form-label accountlabelpadding">
                                             CITY <span class="accountspancolor">*</span></label>
                                         <div class="col-md-3">
                                             <input formControlName="city" class="form-control accountinputheight" />
                                             <span class="text-danger"
-                                                *ngIf="phoneForm.controls['city'].hasError('required') && (phoneForm.controls['city'].dirty || phoneForm.controls['city'].touched)">
+                                                *ngIf="companyInfoForm.controls['city'].hasError('required') && (companyInfoForm.controls['city'].dirty || companyInfoForm.controls['city'].touched)">
                                                 {{'validation.CITYNAMEREQUIRED' | translate}}</span><br>
                                         </div>
                                     </div>
@@ -127,7 +126,7 @@
                                                 (removed)="removed($event)" formControlName="state">
                                             </ngx-select>
                                             <span class="text-danger"
-                                                *ngIf="phoneForm.controls['state'].hasError('required') && (phoneForm.controls['state'].dirty || phoneForm.controls['state'].touched)">
+                                                *ngIf="companyInfoForm.controls['state'].hasError('required') && (companyInfoForm.controls['state'].dirty || companyInfoForm.controls['state'].touched)">
                                                 {{'validation.STATENAMEREQUIRED' | translate}}</span><br>
                                         </div>
                                         <label class="col-md-2 col-form-label accountlabelpadding">
@@ -138,7 +137,7 @@
                                                 (removed)="removed($event)" formControlName="country">
                                             </ngx-select>
                                             <span class="text-danger"
-                                                *ngIf="phoneForm.controls['country'].hasError('required') && (phoneForm.controls['country'].dirty || phoneForm.controls['country'].touched)">
+                                                *ngIf="companyInfoForm.controls['country'].hasError('required') && (companyInfoForm.controls['country'].dirty || companyInfoForm.controls['country'].touched)">
                                                 {{'validation.COUNTRYNAMEREQUIRED' | translate}}</span><br>
                                         </div>
                                     </div>
@@ -146,8 +145,8 @@
                                         <label class="col-md-4 col-form-label">
                                             COMPANY DESCRIPTION</label>
                                         <div class="col-md-8">
-                                            <textarea formControlName="companydescription" class="form-control"
-                                                type="textarea" placeholder="Name of the Work"></textarea>
+                                            <textarea formControlName="description" class="form-control" type="textarea"
+                                                placeholder="Name of the Work"></textarea>
                                         </div>
                                     </div>
                                     <div>
@@ -306,10 +305,9 @@
                                         <label class="col-md-4 col-form-label accountlabelpadding">
                                             COMPANY INFORMATION <span class="accountspancolor">*</span></label>
                                         <div class="col-md-8">
-                                            <input formControlName="companyinformation"
-                                                class="form-control accountinputheight" />
+                                            <input formControlName="name" class="form-control accountinputheight" />
                                             <span class="text-danger"
-                                                *ngIf="billingInfo.controls['companyinformation'].hasError('required') && (billingInfo.controls['companyinformation'].dirty || billingInfo.controls['companyinformation'].touched)">
+                                                *ngIf="billingInfo.controls['name'].hasError('required') && (billingInfo.controls['name'].dirty || billingInfo.controls['name'].touched)">
                                                 {{'validation.NAMEISREQUIRED' | translate}}</span><br>
                                         </div>
                                     </div>
@@ -341,7 +339,7 @@
                                     </div>
                                     <div class="form-group ">
                                         <label class="col-md-4 col-form-label">
-                                            BUSINESS EMAIL<span class="accountspancolor">*</span></label>
+                                            BUSINESS EMAIL<span class="accountspancolor"></span></label>
                                         <div class="col-md-8">
                                             <input formControlName="email" class="form-control accountinputheight" />
                                             <span class="text-danger"
@@ -353,17 +351,17 @@
                                         <label class="col-md-4 col-form-label">
                                             ADDRESS</label>
                                         <div class="col-md-8">
-                                            <input formControlName="Address" class="form-control accountinputheight" />
+                                            <input formControlName="address" class="form-control accountinputheight" />
                                         </div>
                                     </div>
                                     <div class="form-group ">
                                         <label class="col-md-4 col-form-label">
                                             ZIP CODE <span class="accountspancolor">*</span></label>
                                         <div class="col-md-3">
-                                            <input formControlName="zipcode" class="form-control accountinputheight" />
+                                            <input formControlName="zipCode" class="form-control accountinputheight" />
                                             <span class="text-danger"
-                                                *ngIf="billingInfo.controls['zipcode'].hasError('required') && (billingInfo.controls['zipcode'].dirty || billingInfo.controls['zipcode'].touched)">
-                                                {{'validation.ZIPCODE' | translate}}</span><br>
+                                                *ngIf="billingInfo.controls['zipCode'].hasError('required') && (billingInfo.controls['zipCode'].dirty || billingInfo.controls['zipCode'].touched)">
+                                                {{'validation.zipCode' | translate}}</span><br>
                                         </div>
                                         <label class="col-md-2 col-form-label accountlabelpadding">
                                             CITY <span class="accountspancolor">*</span></label>
@@ -402,8 +400,8 @@
                                         <label class="col-md-4 col-form-label">
                                             COMPANY DESCRIPTION</label>
                                         <div class="col-md-8">
-                                            <textarea formControlName="companydescription" class="form-control"
-                                                type="textarea" placeholder="Name of the Work"></textarea>
+                                            <textarea formControlName="description" class="form-control" type="textarea"
+                                                placeholder="Name of the Work"></textarea>
                                         </div>
                                     </div>
                                     <div>
@@ -465,7 +463,7 @@
                                     </p>
                                 </div>
                                 <div class="panel-body">
-                                    <form class="form-horizontal">
+                                    <form class="form-horizontal" [formGroup]="brandingInfoForm">
                                         <div class="form-group row">
                                             <div class="col-md-12">
                                                 <p class="accountpfontsize">This description will
@@ -493,8 +491,8 @@
                                                     </div>
                                                     <div class="pannel-body">
                                                         <textarea id="descriptionEducation" #descriptionEducation
-                                                            class="form-control" placeholder="Enter a message"
-                                                            rows="7"></textarea>
+                                                            class="form-control" placeholder="Enter a message" rows="7"
+                                                            formControlName="branding"></textarea>
 
                                                     </div>
                                                     <div class="pannel-footer height20px">
@@ -510,7 +508,8 @@
                                                 </div>
                                                 <div>
                                                     <button class="mr-1 btn btn-sm float-right accountbtnbgcolor"
-                                                        type="submit">Save</button>
+                                                        type="submit"
+                                                        (click)="submitForm(brandingInfoForm.value,'brandingInfoForm')">Save</button>
                                                 </div>
                                             </div>
                                         </div>
@@ -540,14 +539,15 @@
                                     </p>
                                 </div>
                                 <div class="panel-body">
-                                    <form class="form-horizontal">
+                                    <form class="form-horizontal" [formGroup]="emailSettingsForm">
                                         <div class="form-group row text-center">
                                             <label class="col-md-3 col-form-label">
                                                 Email Address</label>
                                             <div class="col-md-9">
                                                 <div>
-                                                    <input class="form-control accountinputheight"
-                                                        placeholder="Email Address" readonly />
+                                                    <input formControlName="emailAdd"
+                                                        class="form-control accountinputheight"
+                                                        placeholder="Email Address" />
                                                 </div><br>
                                                 <div>
                                                     <button class="mr-1 btn btn-sm float-right accountbtnbgcolor"
@@ -567,7 +567,7 @@
                                     </p>
                                 </div>
                                 <div class="panel-body">
-                                    <form class="form-horizontal">
+                                    <form class="form-horizontal" [formGroup]="emailSettingsForm">
                                         <div class="form-group row">
                                             <label class="col-md-2 col-form-label fontsizemedium">
                                                 Email Signature</label>
@@ -604,7 +604,7 @@
 
                                                         <div class="pannel-body">
                                                             <textarea class="form-control" placeholder="Enter a message"
-                                                                rows="7"></textarea>
+                                                                formControlName="emailSign" rows="7"></textarea>
 
                                                         </div>
                                                         <div class="pannel-footer height20px">
@@ -620,7 +620,8 @@
                                                 </div>
                                                 <div>
                                                     <button class="mr-1 btn btn-sm float-right accountbtnbgcolor"
-                                                        type="submit">Save</button>
+                                                        type="submit"
+                                                        (click)="submitForm(emailSettingsForm.value,'emailSettingsForm')">Save</button>
                                                 </div>
                                             </div>
                                         </div>

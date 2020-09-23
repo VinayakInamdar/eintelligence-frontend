@@ -2,7 +2,7 @@ import { Injectable } from '@angular/core';
 import { HttpClient, HttpErrorResponse } from '@angular/common/http';
 import { Observable, throwError } from 'rxjs';
 import { CompanyInformation } from './account/companyinformation.model';
-import { catchError,tap } from 'rxjs/operators';
+import { catchError,tap, combineAll } from 'rxjs/operators';
 import { environment } from 'src/environments/environment';
 
 @Injectable({
@@ -26,6 +26,15 @@ export class AccountService {
    );
  
  }
+  
+ 
+ getCompany(companyId : string): Observable<CompanyInformation[]> {
+  return this.http.get<CompanyInformation[]>(this.Url + 'companys/' + companyId)
+}
+
+  updateCompany(companyId : string,selectedCompany: any) : Observable<CompanyInformation[]> {
+    return this.http.put<CompanyInformation[]>(this.Url + 'companys/' + companyId,selectedCompany)
+  }
 
      private handleError(err: HttpErrorResponse) {
        // in a real world app, we may send the server to some remote logging infrastructure

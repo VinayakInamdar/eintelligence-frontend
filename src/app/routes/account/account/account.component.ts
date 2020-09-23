@@ -4,8 +4,12 @@ import { FormGroup, FormControl, Validators } from '@angular/forms';
 import { SearchCountryField, TooltipLabel, CountryISO, NgxIntlTelInputComponent } from 'ngx-intl-tel-input';
 import { CompanyInformation } from './companyinformation.model';
 import { MatDialog, MatDialogRef } from '@angular/material/dialog';
+import { AccountService } from '../account.service';
+import { strict } from 'assert';
+import { TranslateService } from '@ngx-translate/core';
 declare var $: any;
 
+const success = require('sweetalert');
 // Tooltips fix for summernote
 // https://github.com/Financial-Times/polyfill-library/issues/164#issuecomment-486977672
 const origToString = Object.prototype.toString;
@@ -22,6 +26,7 @@ Object.prototype.toString = function() {
   styleUrls: ['./account.component.scss']
 })
 export class AccountComponent implements OnInit {
+ 
   @ViewChild('ngxintlbil', { static: false }) ngxintlbil: NgxIntlTelInputComponent;
   @ViewChild('ngxintlcom', { static: false }) ngxintlcom: NgxIntlTelInputComponent;
   separateDialCode = true;
@@ -32,18 +37,18 @@ export class AccountComponent implements OnInit {
   isCollapsed = true;
   preferredCountries: CountryISO[] = [CountryISO.UnitedStates, CountryISO.UnitedKingdom];
   
-  phoneForm = new FormGroup({
-    companyinformation: new FormControl(undefined, [Validators.required]),
+  companyInfoForm = new FormGroup({
+    name: new FormControl(undefined, [Validators.required]),
     website: new FormControl(undefined, [Validators.required]),
     phone: new FormControl(undefined, [Validators.required]),
-    email: new FormControl(undefined, [Validators.required]),
+    email: new FormControl(undefined),
     timezone: new FormControl(undefined, [Validators.required]),
-    Address: new FormControl(undefined, [Validators.required]),
-    zipcode: new FormControl(undefined, [Validators.required]),
+    address: new FormControl(undefined, [Validators.required]),
+    zipCode: new FormControl(undefined, [Validators.required]),
     city: new FormControl(undefined, [Validators.required]),
     state: new FormControl(undefined, [Validators.required]),
     country: new FormControl(undefined, [Validators.required]),
-    companydescription: new FormControl(undefined, [Validators.required]),
+    description: new FormControl(undefined, [Validators.required]),
     
   });
   profileInfo = new FormGroup({
@@ -53,16 +58,23 @@ export class AccountComponent implements OnInit {
     phone: new FormControl(undefined, [Validators.required]),
 })
 billingInfo = new FormGroup({
-  companyinformation: new FormControl(undefined, [Validators.required]),
+  name: new FormControl(undefined, [Validators.required]),
   website: new FormControl(undefined, [Validators.required]),
   phone: new FormControl(undefined, [Validators.required]),
-  email: new FormControl(undefined, [Validators.required]),
-  Address: new FormControl(undefined, [Validators.required]),
-  zipcode: new FormControl(undefined, [Validators.required]),
+  email: new FormControl(undefined),
+  address: new FormControl(undefined, [Validators.required]),
+  zipCode: new FormControl(undefined, [Validators.required]),
   city: new FormControl(undefined, [Validators.required]),
   state: new FormControl(undefined, [Validators.required]),
   country: new FormControl(undefined, [Validators.required]),
-  companydescription: new FormControl(undefined, [Validators.required]),
+  description: new FormControl(undefined, [Validators.required]),
+})
+brandingInfoForm = new FormGroup({
+  branding : new FormControl(undefined,[Validators.required])
+})
+emailSettingsForm = new FormGroup({
+  emailAdd:new FormControl(undefined,[Validators.required]),
+  emailSign:new FormControl(undefined,[Validators.required])
 })
   settingActive = 1;
 
@@ -76,6 +88,7 @@ billingInfo = new FormGroup({
     'South Carolina', 'South Dakota', 'Sublimity', 'Tennessee', 'Texas', 'Trimble', 'Utah', 'Vermont',
     'Virginia', 'Washington', 'West Virginia', 'Wisconsin', 'Wyoming'];
   changeText: boolean;
+  companyinformation: any;
 
   //state dropdown list refresh
   public refreshValue(value: any): void {
@@ -140,8 +153,9 @@ billingInfo = new FormGroup({
     'Montenegro', 'Congo Democratic'];
 
 
-  constructor(public router: Router,public dialog: MatDialog) { 
+  constructor(private translate: TranslateService,public router: Router,public dialog: MatDialog,private accountService: AccountService,) { 
     this.changeText = false;
+    this.getCompany()
   }
 
   public itemsCategories: Array<string> = ['coding', 'less', 'sass', 'angularjs', 'node', 'expressJS'];
@@ -182,6 +196,22 @@ billingInfo = new FormGroup({
 
 
   }
+
+  getCompany() {
+    this.accountService.getCompany('0B5EBAE4-D00D-42CA-210D-08D81765C85B').subscribe(
+      res=>{
+        console.log(res)
+        for (let c in this.companyInfoForm.controls) {
+          this.companyInfoForm.controls[c].setValue(res[c])
+      }
+      for (let c in this.brandingInfoForm.controls) {
+        this.brandingInfoForm.controls[c].setValue(res[c])
+    }
+        
+        this.companyinformation = res
+      }
+    )
+  }
   
   openFile(){
 
@@ -215,12 +245,12 @@ billingInfo = new FormGroup({
     if(value){
       for (let c in this.billingInfo.controls) {
         if(c == "phone"){
-          var value = this.phoneForm.controls.phone.value.number
+          var value = this.companyInfoForm.controls.phone.value.number
           this.ngxintlbil.selectedCountry = this.ngxintlcom.selectedCountry
           this.billingInfo.controls.phone.setValue(value)  
         }
         else {
-          this.billingInfo.controls[c].setValue(this.phoneForm.controls[c].value);
+          this.billingInfo.controls[c].setValue(this.companyInfoForm.controls[c].value);
         }
 
     }
@@ -239,23 +269,162 @@ billingInfo = new FormGroup({
   }
   submitForm(value: any,formtype: string) {
     
-    var result: CompanyInformation = Object.assign({}, value);
-    if(formtype == "phoneform"){
-      for (let c in this.phoneForm.controls) {
-        this.phoneForm.controls[c].markAsTouched();
+    var result = Object.assign({}, value);
+     if(this.settingActive == 1){
+      if(formtype == "companyInfoForm"){
+        if(this.companyInfoForm.valid){
+          var companyId = '0B5EBAE4-D00D-42CA-210D-08D81765C85B';
+          result['Id'] = '0B5EBAE4-D00D-42CA-210D-08D81765C85B';
+          result['name'] = result.name
+          result['description'] = result.description
+          result['phone'] = result.phone['internationalNumber']
+          this.companyinformation = result
+          this.companyinformation['branding'] = this.brandingInfoForm.controls['branding'].value
+          this.accountService.updateCompany(companyId,this.companyinformation).subscribe(
+            res=>{
+              console.log(res)
+              this.successAlert()
+            }
+          )
+        }
+        else {
+          for (let c in this.companyInfoForm.controls) {
+            this.companyInfoForm.controls[c].markAsTouched();
+        }
+        }
+      
+   
+      }
+      else if (formtype == "profileinfoform") {
+        for (let c in this.profileInfo.controls) {
+          this.profileInfo.controls[c].markAsTouched();
+      }
+      }
+      else {
+        for (let c in this.billingInfo.controls) {
+          this.billingInfo.controls[c].markAsTouched();
+      }
+      }
     }
+    else if(this.settingActive == 2){
+      if(formtype == "brandingInfoForm"){
+        if(this.brandingInfoForm.valid){
+          var companyId = '0B5EBAE4-D00D-42CA-210D-08D81765C85B';
+          this.companyinformation['branding'] = value.branding
+          this.accountService.updateCompany(companyId,this.companyinformation).subscribe(
+            res=>{
+              console.log(res)
+              this.successAlert()
+            }
+          )
+        }
+        else {
+          for (let c in this.companyInfoForm.controls) {
+            this.companyInfoForm.controls[c].markAsTouched();
+        }
+        }
+      
+   
+      }
+      else if (formtype == "profileinfoform") {
+        for (let c in this.profileInfo.controls) {
+          this.profileInfo.controls[c].markAsTouched();
+      }
+      }
+      else {
+        for (let c in this.billingInfo.controls) {
+          this.billingInfo.controls[c].markAsTouched();
+      }
+      }
     }
-    else if (formtype == "profileinfoform") {
-      for (let c in this.profileInfo.controls) {
-        this.profileInfo.controls[c].markAsTouched();
+    else if(this.settingActive == 3){
+      if(formtype == "emailSettingsForm"){
+        if(this.emailSettingsForm.valid){
+          var companyId = '0B5EBAE4-D00D-42CA-210D-08D81765C85B';
+          result['Id'] = '0B5EBAE4-D00D-42CA-210D-08D81765C85B';
+          result['email'] = value.emailAdd
+          // this.accountService.updateCompany(companyId,result).subscribe(
+          //   res=>{
+          //     console.log(res)
+          //     this.successAlert()
+          //   }
+          // )
+        }
+        else {
+          for (let c in this.companyInfoForm.controls) {
+            this.companyInfoForm.controls[c].markAsTouched();
+        }
+        }
+      
+   
+      }
+      else if (formtype == "profileinfoform") {
+        for (let c in this.profileInfo.controls) {
+          this.profileInfo.controls[c].markAsTouched();
+      }
+      }
+      else {
+        for (let c in this.billingInfo.controls) {
+          this.billingInfo.controls[c].markAsTouched();
+      }
+      }
     }
+    else if(this.settingActive == 4){
+      if(formtype == "companyInfoForm"){
+        if(this.companyInfoForm.valid){
+          var companyId = '0B5EBAE4-D00D-42CA-210D-08D81765C85B';
+          result['Id'] = '0B5EBAE4-D00D-42CA-210D-08D81765C85B';
+          result['name'] = result.name
+          result['description'] = result.description
+          result['phone'] = result.phone['internationalNumber']
+          this.accountService.updateCompany(companyId,result).subscribe(
+            res=>{
+              console.log(res)
+              this.successAlert()
+            }
+          )
+        }
+        else {
+          for (let c in this.companyInfoForm.controls) {
+            this.companyInfoForm.controls[c].markAsTouched();
+        }
+        }
+      
+   
+      }
+      else if (formtype == "profileinfoform") {
+        for (let c in this.profileInfo.controls) {
+          this.profileInfo.controls[c].markAsTouched();
+      }
+      }
+      else {
+        for (let c in this.billingInfo.controls) {
+          this.billingInfo.controls[c].markAsTouched();
+      }
+      }
     }
-    else {
-      for (let c in this.billingInfo.controls) {
-        this.billingInfo.controls[c].markAsTouched();
-    }
-    }
+    
   }
+    // using to open sweetalert to show success dialog
+    successAlert() {
+      success({
+        icon: this.translate.instant('sweetalert.SUCCESSICON'),
+        title: this.translate.instant('message.UPDATEMSG'),
+        buttons: {
+          confirm: {
+            text: this.translate.instant('sweetalert.OKBUTTON'),
+            value: true,
+            visible: true,
+            className: "bg-primary",
+            closeModal: true,
+          }
+        }
+      }).then((isConfirm: any) => {
+        if (isConfirm) {
+          // this.router.navigate(['/home']);
+        }
+      });
+    }
   openModalWithComponent(event) {
     event.preventDefault()
     const dialogRef = this.dialog.open(DialogContentExampleDialog);
@@ -263,6 +432,13 @@ billingInfo = new FormGroup({
     dialogRef.afterClosed().subscribe(result => {
       
     });
+  }
+
+  public changeSettingActive(event,value) {
+    this.settingActive = value
+    for (let c in this.companyInfoForm.controls) {
+      this.companyInfoForm.controls[c].setValue(this.companyinformation[c])
+  }
   }
 
   

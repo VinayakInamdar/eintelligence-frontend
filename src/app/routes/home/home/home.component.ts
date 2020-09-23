@@ -8,6 +8,7 @@ import { LocalDataSource } from 'ng2-smart-table';
 import { AuditsService } from '../../audits/audits.service';
 import { ToasterService, ToasterConfig } from 'angular2-toaster/angular2-toaster';
 import { ToastrService } from 'ngx-toastr';
+import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 
 
 @Component({
@@ -20,19 +21,26 @@ export class HomeComponent implements OnInit {
     siteurl: string;
     showProgressbar: boolean = false;
     toaster: any;
+    valForm: FormGroup;
+    public myreg = '(https?://)?([\\da-z.-]+)\\.([a-z.]{2,6})[/\\w .-]*/?';
     toasterConfig: any;
     toasterconfig: ToasterConfig = new ToasterConfig({
         positionClass: 'toast-bottom-right',
         showCloseButton: true
     });
     constructor( public http: HttpClient, public campaignService: CampaignService, private router: Router,
-      public auditsService:AuditsService,public toasterService: ToasterService,public toastr : ToastrService) { 
+      public auditsService:AuditsService,public toasterService: ToasterService,public toastr : ToastrService
+      ,fb: FormBuilder,) { 
         this.getCampaignList();
         this.toaster = {
           type: 'success',
           title: 'Audit report',
           text: 'Your report is ready..'
       };
+
+      this.valForm = fb.group({
+        'webUrl': [undefined,[Validators.required,Validators.pattern(this.myreg)]],     
+    })
     }
 
     settings = {
@@ -101,11 +109,17 @@ export class HomeComponent implements OnInit {
   
 }
     // using to run audit of entered url 
-    public runAudit(event) {
-       this.toastr.info('Your Report is under progress...you can see your report when it is completed','Audit Report')
-       this.auditsService.settingsTaskWebsite(this.siteurl).subscribe(res=>{
+    public runAudit(event,value) {
+      if (this.valForm.invalid) {
+        this.valForm.get('webUrl').markAsTouched();
+      }
+      else {
+        this.toastr.info('Your Report is under progress...you can see your report when it is completed','Audit Report')
+        this.auditsService.settingsTaskWebsite(this.siteurl).subscribe(res=>{
+ 
+        })
+      }
 
-       })
     }
 
     //using to open create campaign view to create new campaign in db
@@ -116,8 +130,11 @@ export class HomeComponent implements OnInit {
       // using to view analytics report of selected campaign Id
       userRowSelect(campaign: any) : void{
 
-        this.router.navigate(['/home/overview', {id : campaign.data.id}]);
+        this.router.navigate(['/campaign', {id : campaign.data.id}],{queryParams: {
+          view: 'showReport'
+        },});
         
              
       }
+  
 }

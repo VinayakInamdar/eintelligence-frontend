@@ -5,7 +5,7 @@ import { OverviewComponent } from './overview/overview.component';
 import { BrowserModule } from '@angular/platform-browser';
 import { SharedModule } from '../../shared/shared.module';
 import { ChartsModule } from 'ng2-charts';
-import { KeywordsComponent } from '../keywords/keywords/keywords.component';
+import { KeywordsComponent } from '../seo/keywords/keywords.component';
 
 @NgModule({
   declarations: [],

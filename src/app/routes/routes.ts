@@ -109,15 +109,15 @@ export const routes: Routes = [
                 loadChildren: () => import('./auditreport/auditreport.module').then(m => m.AuditreportModule)
             },
             {
-                path: ':id/seo/keywords',
+                path: ':id/analytics',
                 component: LayoutComponent,
-                loadChildren: () => import('./keywords/keywords.module').then(m => m.KeywordsModule)
+                loadChildren: () => import('./analytics/analytics.module').then(m => m.AnalyticsModule)
             },
-            {
-                path: 'addkeywords',
-                component: LayoutComponent,
-                loadChildren: () => import('./keywords/keywords.module').then(m => m.KeywordsModule)
-            },
+            // {
+            //     path: 'addkeywords',
+            //     component: LayoutComponent,
+            //     loadChildren: () => import('./keywords/keywords.module').then(m => m.KeywordsModule)
+            // },
             {
                 path: 'integrations/:id',
                 component: LayoutComponent,

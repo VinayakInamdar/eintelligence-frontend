@@ -1,0 +1,728 @@
+<div class="row" *ngIf="settingActive == 1 && !showSpinner">
+    <div class="col-md-2"></div>
+    <div class="col-md-8 keywordpaddingleft paddingtop8px"><a href="javascript:void(0);" (click)="settingActive=0">
+            <em class="fa-2x mr-2 fas fa-times"></em></a>
+    </div>
+    <div class="col-md-2"> </div>
+</div>
+
+<div *ngIf="settingActive == 1;" class="row w3-container w3-center w3-animate-right paddingtopdiv">
+    <div class="col-md-2"> </div>
+    <div class="col-md-8">
+        <form [formGroup]="valForm" class="form-horizontal card formh" (keydown.enter)="$event.preventDefault()"
+            (submit)="submitForm(valForm.value)" novalidate="">
+            <tabset [justified]="true" #staticTabs>
+                <tab class="tabh">
+                    <ng-template tabHeading>
+                        <p class="tabp">Campaign Name</p>
+                    </ng-template>
+
+                    <div class="row">
+                        <div class="col-md-1"></div>
+                        <div class="col-md-10 paddingtopcampname">
+                            <h1> Name Your Campagin</h1>
+                            <h3> Your client's campaign name</h3>
+                            <hr>
+                            <label>CAMPAIGN NAME</label>
+                            <input #name_field class="form-control campinputh" formControlName="name"
+                                placeholder="Name of your campaign">
+                            <span class="text-danger"
+                                *ngIf="valForm.controls['name'].hasError('required') && (valForm.controls['name'].dirty || valForm.controls['name'].touched)">
+                                {{'validation.NAMEISREQUIRED' | translate}}</span>
+                            <br>
+                            <div class="text-center">
+                                <button class="mr-1 btn btn-primary btn-lg" type="submit"
+                                    (click)="goToNextTab($event,name_field.value,'name',1)">Next </button>
+                            </div>
+                        </div>
+                        <div class="col-md-1"></div>
+                    </div>
+
+                </tab>
+                <tab class="tabh" tab="2">
+                    <ng-template tabHeading>
+                        <p class="tabp">Website</p>
+                    </ng-template>
+                    <div class="row">
+                        <div class="col-md-1"></div>
+                        <div class="col-md-10 paddingtopcampname">
+                            <h1>Enter a Website</h1>
+                            <h3> Provide your client's website to launch your new campaign</h3>
+                            <hr>
+                            <label>WEBSITE URL</label>
+                            <div class="form-group row">
+                                <input #webUrl_field class="form-control campinputh" type="url"
+                                    placeholder="http:// or https://" formControlName="webUrl"
+                                    [formControl]="valForm.controls['webUrl']" />
+                                <span class="text-danger"
+                                    *ngIf="valForm.controls['webUrl'].hasError('required') && (valForm.controls['webUrl'].dirty || valForm.controls['webUrl'].touched)">
+                                    {{'validation.URLREQUIRED' | translate}}</span>
+                                <span class="text-danger"
+                                    *ngIf="valForm.controls['webUrl'].hasError('pattern') && (valForm.controls['webUrl'].dirty || valForm.controls['webUrl'].touched)">
+                                    {{'validation.URLVALIDATION' | translate}}</span>
+                            </div>
+
+                            <div class="row">
+                                <div class="col-md-3">
+                                    <button class="mr-1 btn btn-secondary btn-lg" type="submit"
+                                        (click)="goToPreviousTab($event,0)">
+                                        < Go Back</button>
+                                </div>
+                                <div class="col-md-6"></div>
+                                <div class="col-md-3">
+                                    <button class="mr-1 btn btn-primary btn-lg" type="submit"
+                                        (click)="goToNextTab($event,webUrl_field.value,'webUrl',2)">Next
+                                        ></button>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col-md-1"></div>
+                    </div>
+                </tab>
+                <tab class="tabh">
+                    <ng-template tabHeading>
+                        <p class="tabp">Goals</p>
+                    </ng-template>
+                    <div class="row">
+                        <div class="col-md-12" class="goaldiv">
+                            <h1> What would you like to accomplish?</h1>
+                            <h3> Set the goal of your campaign by selecting one or all. (Optional)</h3>
+                            <hr>
+                            <div class="row">
+                                <div class="col-md-4">
+                                    <div class="card card-default shadow p-2 mb-2 bg-white rounded goalsubh">
+                                        <div class="card-body form-check-inline text-center">
+                                            <div class="col-md-1">
+                                                <input formControlName="moreTraffic" class="form-check-input"
+                                                    type="checkbox" value="">
+                                            </div>
+                                            <div class="col-md-11">
+                                                <em class="fa-2x mr-2 fas fa-globe"></em><br>
+                                                <p class="goalfonsize">MORE TRAFFIC</p>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="col-md-4">
+                                    <div class="card card-default shadow p-2 mb-2 bg-white rounded goalsubh">
+                                        <div class="card-body form-check-inline text-center">
+                                            <div class="col-md-1">
+                                                <input type="checkbox" formControlName="sales" class="form-check-input"
+                                                    value="">
+                                            </div>
+                                            <div class="col-md-11">
+                                                <em class="fa-2x mr-2 fas fa-store"></em><br>
+                                                <p class="goalfonsize">SALES</p>
+                                            </div>
+
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="col-md-4">
+                                    <div class="card card-default shadow p-2 mb-2 bg-white rounded">
+                                        <div class="card-body form-check-inline text-center">
+
+                                            <div class="col-md-1">
+                                                <input type="checkbox" formControlName="leadGeneration"
+                                                    class="form-check-input" value="">
+                                            </div>
+                                            <div class="col-md-11">
+                                                <em class="fa-2x mr-2 fas fa-users"></em><br>
+                                                <p class="goalfonsize">LEAD GENERATION</p>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div><br>
+                            <div class="row">
+                                <div class="col-md-3">
+                                    <button class="mr-1 btn btn-secondary btn-lg" type="submit"
+                                        (click)="goToPreviousTab($event,1)">
+                                        < Go Back</button>
+                                </div>
+                                <div class="col-md-5"></div>
+                                <div class="col-md-4">
+                                    <!-- <a routerLink="./home"> -->
+                                    <button class="mr-1 btn btn-primary btn-lg" type="submit"
+                                        (click)="successAlert()">Create
+                                        campaign</button>
+                                    <!-- </a> -->
+                                </div>
+                            </div>
+                        </div>
+
+                    </div>
+                </tab>
+            </tabset>
+        </form>
+    </div>
+    <div class="col-md-2"></div>
+</div>
+<div class="row overviewmaindiv">
+    <div class="row keywordmaindiv" *ngIf="settingActive == 0;">
+        <div class="grey-container" *ngIf="settingActive == 0;">
+            <div class="pagewidth clearfix ">
+                <div class="campaign-selector-container ">
+                    <div class="btn-group">
+                        <div class="btn-add-new-campaign btn btn-default">
+                            <i class="fa fa-plus" aria-hidden="true" (click)="settingActive=1"></i>
+                        </div>
+                        <div class="btn-group" dropdown>
+                            <button id="button-basic" dropdownToggle type="input" class="btn keywordbtnwidth"
+                                aria-controls="dropdown-basic">
+                                {{selectedCampaignName !== undefined ? selectedCampaignName : 'select your campaign'}}
+                                <span class="caret"> </span>
+                            </button>
+                            <ul id="dropdown-basic" *dropdownMenu class="dropdown-menu keywordulmaxheight" role="menu"
+                                aria-labelledby="button-basic">
+                                <li role="menuitem" *ngFor="let campaign of campaignList"
+                                    [ngClass]="{'active': selectedCampId == campaign.id}"><a class="dropdown-item"
+                                        (click)="onCampaignSelect($event,campaign)" href="#">{{campaign.name}}</a></li>
+                            </ul>
+                        </div>
+                    </div>
+
+                </div>
+                <ul id="page_menu" class="campaign-menu pull-right keyworddiv1paddingtop">
+                    <li id="overview_menu" class="no-third-nav" data-third-menu="">
+                        <a href="javascript:void(0);" class="btn" (mouseenter)="showDiv($event,'false','undefined')">
+                            <span class="fontsizesmall">Overview</span>
+                        </a>
+
+                    </li>
+                    <li id="seo_menu" class="" data-third-menu="seo_menu_index">
+                        <a href="javascript:void(0);" class="btn" (mouseenter)="showDiv($event,'true','seo')"
+                            (click)="goToSeoOverview($event)">
+                            <span class="fontsizesmall">SEO</span>
+                        </a>
+
+                    </li>
+                    <li id="local_seo_menu" class="active-link" data-third-menu="location_menu_index">
+                        <a href="javascript:void(0);" class="btn" (mouseenter)="showDiv($event,'true','gmb')">
+                            <span class="fontsizesmall">GMB</span>
+                        </a>
+
+                    </li>
+                    <li id="reputation_menu" class="" data-third-menu="repman_menu_index">
+                        <a href="javascript:void(0);" class="btn" (mouseenter)="showDiv($event,'false','undefined')">
+                            <span class="fontsizesmall">Reputation</span>
+                        </a>
+
+                    </li>
+                    <li id="analytics_menu" class="" data-third-menu="analytics_menu_index">
+                        <a href="javascript:void(0);" class="btn" (mouseenter)="showDiv($event,'true','analytics')"
+                            (click)="goToAnalyticsOverview($event)">
+                            <span class="fontsizesmall">Analytics</span>
+                        </a>
+
+                    </li>
+                    <li id="contacts_menu" class="" data-third-menu="">
+                        <a href="javascript:void(0);" class="btn" (mouseenter)="showDiv($event,'false','undefined')">
+                            <span class="fontsizesmall">Contacts</span>
+                        </a>
+
+                    </li>
+                    <li id="ppc_menu" class="" data-third-menu="ppc_menu_index">
+                        <a href="javascript:void(0);" class="btn" (mouseenter)="showDiv($event,'true','ppc')">
+                            <span class="fontsizesmall">PPC</span>
+                        </a>
+
+                    </li>
+                    <li id="report_builder_menu" class="" data-third-menu="">
+                        <a href="javascript:void(0);" class="btn" (mouseenter)="showDiv($event,'false','undefined')">
+                            <span class="fontsizesmall">Reports</span>
+                        </a>
+
+                    </li>
+                    <li id="projects_menu" class="" data-third-menu="">
+                        <a href="javascript:void(0);" class="btn" (mouseenter)="showDiv($event,'false','undefined')">
+                            <span class="fontsizesmall">Projects</span>
+                        </a>
+
+                    </li>
+                    <li id="settings_menu" class="" data-third-menu="campaign_settings_menu_index">
+                        <a href="javascript:void(0);" class="btn" (mouseenter)="showDiv($event,'true','settings')">
+                            <span class="fontsizesmall">Settings</span>
+                        </a>
+
+                    </li>
+                </ul>
+            </div>
+
+        </div>
+
+        <div *ngIf="showdiv && settingActive == 0;" class="grey-container solid box-shadow-header keyworddivfonts">
+            <div *ngIf="showdiv && show=='seo'" class="third-level-menu-item pagewidth clearfix seo_menu_index active">
+                <ul id="page_menu" class="campaign-menu pull-right">
+                    <li id="overview_menu" class="paddingclass"
+                        [ngClass]="{'activeborderbottom': hovered == 'seo_onpage'}" data-third-menu="">
+                        <a href="javascript:void(0);" class="btn" (mouseenter)="hovered = 'seo_onpage'"
+                            (mouseleave)="hovered = 'analytics'">
+                            <span class="fontsizesmall">On Page</span>
+                        </a>
+
+                    </li>
+                    <li class="paddingclass" [ngClass]="{'activeborderbottom': hovered == 'seo_keyword'}"
+                        data-third-menu="seo_menu_index">
+                        <a href="javascript:void(0);" class="btn" (click)="goToAddNewKeywords($event)"
+                            (mouseenter)="hovered = 'seo_keyword'" (mouseleave)="hovered = ''">
+                            <span class="fontsizesmall">Keyword Rankings</span>
+                        </a>
+
+                    </li>
+                    <li id="local_seo_menu" class="paddingclass"
+                        [ngClass]="{'activeborderbottom': hovered == 'seo_trend'}"
+                        data-third-menu="location_menu_index">
+                        <a href="javascript:void(0);" class="btn" (mouseenter)="hovered = 'seo_trend'"
+                            (mouseleave)="hovered = ''">
+                            <span class="fontsizesmall">Monthly Trend</span>
+                        </a>
+
+                    </li>
+                    <li id="reputation_menu" class="paddingclass"
+                        [ngClass]="{'activeborderbottom': hovered == 'seo_reputation'}"
+                        data-third-menu="repman_menu_index">
+                        <a href="javascript:void(0);" class="btn" (mouseenter)="hovered = 'seo_reputation'"
+                            (mouseleave)="hovered = ''">
+                            <span class="fontsizesmall">Reputation</span>
+                        </a>
+
+                    </li>
+                    <li id="analytics_menu" class="paddingclass"
+                        [ngClass]="{'activeborderbottom': hovered == 'seo_linkbuilt'}"
+                        data-third-menu="analytics_menu_index">
+                        <a href="javascript:void(0);" class="btn" (mouseenter)="hovered = 'seo_linkbuilt'"
+                            (mouseleave)="hovered = ''">
+                            <span class="fontsizesmall">Links Built</span>
+                        </a>
+
+                    </li>
+                </ul>
+            </div>
+            <div *ngIf="showdiv && show=='gmb'" class="pagewidth clearfix ">
+                <ul id="page_menu" class="campaign-menu pull-right keyworddiv1paddingtop">
+                    <li id="overview_menu" class="paddingclass"
+                        [ngClass]="{'activeborderbottom': hovered == 'gmb_overview'}" data-third-menu="">
+                        <a href="javascript:void(0);" class="btn" (mouseenter)="hovered = 'gmb_overview'"
+                            (mouseleave)="hovered = ''">
+                            <span class="fontsizesmall">Overview</span>
+                        </a>
+
+                    </li>
+                    <li id="seo_menu" class="paddingclass"
+                        [ngClass]="{'activeborderbottom': hovered == 'gmb_businessinfo'}"
+                        data-third-menu="seo_menu_index">
+                        <a href="javascript:void(0);" class="btn" (mouseenter)="hovered = 'gmb_businessinfo'"
+                            (mouseleave)="hovered = ''">
+                            <span class="fontsizesmall">Business Information</span>
+                        </a>
+
+                    </li>
+                    <li id="local_seo_menu" class="paddingclass"
+                        [ngClass]="{'activeborderbottom': hovered == 'gmb_reviews'}"
+                        data-third-menu="location_menu_index">
+                        <a href="javascript:void(0);" class="btn" (mouseenter)="hovered = 'gmb_reviews'"
+                            (mouseleave)="hovered = ''">
+                            <span class="fontsizesmall">Reviwes</span>
+                        </a>
+
+                    </li>
+                    <li id="reputation_menu" class="paddingclass"
+                        [ngClass]="{'activeborderbottom': hovered == 'gmb_posts'}" data-third-menu="repman_menu_index">
+                        <a href="javascript:void(0);" class="btn" (mouseenter)="hovered = 'gmb_posts'"
+                            (mouseleave)="hovered = ''">
+                            <span class="fontsizesmall">Posts</span>
+                        </a>
+
+                    </li>
+                </ul>
+            </div>
+            <div *ngIf="showdiv && show=='analytics'" class="pagewidth clearfix ">
+                <ul id="page_menu" class="campaign-menu pull-right keyworddiv1paddingtop">
+                    <li id="overview_menu" class="no-third-nav paddingclass" data-third-menu=""
+                        [ngClass]="{'activeborderbottom': acqusitionsubmenu == true}">
+                        <a href="javascript:void(0);" class="btn"
+                            (mouseenter)="acqusitionsubmenu=true;audiencesubmenu=false;behaviorsubmenu=false;conversionsubmenu=false"
+                            (click)="goToAcquisiton($event)">
+                            <span class="fontsizesmall">Acquistion</span>
+                        </a>
+
+                    </li>
+                    <li *ngIf="acqusitionsubmenu" id="overview_menu" class="no-third-nav paddingclass"
+                        [ngClass]="{'activeborderbottom': acqusitionsubmenu == true}" data-third-menu="">
+                        <a href="javascript:void(0);" class="btn" (click)="goToAcquisitonTrafficSources($event)">
+                            <span class="fontsizesmall">Traffic Sources</span>
+                        </a>
+
+                    </li>
+                    <li *ngIf="acqusitionsubmenu" id="overview_menu" class="no-third-nav paddingclass"
+                        [ngClass]="{'activeborderbottom': acqusitionsubmenu == true}" data-third-menu="">
+                        <a href="javascript:void(0);" class="btn" (click)="goToAcquisitonSourcesMediums($event)">
+                            <span class="fontsizesmall">Sources/Mediums</span>
+                        </a>
+
+                    </li>
+                    <li *ngIf="acqusitionsubmenu" id="overview_menu" class="no-third-nav paddingclass"
+                        [ngClass]="{'activeborderbottom': acqusitionsubmenu == true}" data-third-menu="">
+                        <a href="javascript:void(0);" class="btn" (click)="goToAcquisitonCampaigns($event)">
+                            <span class="fontsizesmall">Campaigns</span>
+                        </a>
+
+                    </li>
+                    <li id="overview_menu" class="no-third-nav paddingclass" data-third-menu=""
+                        [ngClass]="{'activeborderbottom': audiencesubmenu == true}">
+                        <a href="javascript:void(0);" class="btn"
+                            (mouseenter)="audiencesubmenu=true;acqusitionsubmenu=false;behaviorsubmenu=false;conversionsubmenu=false">
+                            <span class="fontsizesmall">Audience</span>
+                        </a>
+
+                    </li>
+                    <li *ngIf="audiencesubmenu" id="overview_menu" class="no-third-nav paddingclass"
+                        [ngClass]="{'activeborderbottom': audiencesubmenu == true}" data-third-menu="">
+                        <a href="javascript:void(0);" class="btn" (click)="goToAudienceDeviceCategory($event)">
+                            <span class="fontsizesmall">Device Category</span>
+                        </a>
+
+                    </li>
+                    <li *ngIf="audiencesubmenu" id="overview_menu" class="no-third-nav paddingclass"
+                        [ngClass]="{'activeborderbottom': audiencesubmenu == true}" data-third-menu="">
+                        <a href="javascript:void(0);" class="btn" (click)="goToAudienceGeoLocation($event)">
+                            <span class="fontsizesmall">Geo Locations</span>
+                        </a>
+
+                    </li>
+                    <li *ngIf="audiencesubmenu" id="overview_menu" class="no-third-nav paddingclass"
+                        [ngClass]="{'activeborderbottom': audiencesubmenu == true}" data-third-menu="">
+                        <a href="javascript:void(0);" class="btn" (click)="goToAudienceLanguages($event)">
+                            <span class="fontsizesmall">Languages</span>
+                        </a>
+
+                    </li>
+                    <li id="overview_menu" class="no-third-nav paddingclass" data-third-menu=""
+                        [ngClass]="{'activeborderbottom': behaviorsubmenu == true}">
+                        <a href="javascript:void(0);" class="btn"
+                            (mouseenter)="behaviorsubmenu=true;audiencesubmenu=false;acqusitionsubmenu=false;conversionsubmenu=false"
+                            (click)="goToBehavior($event)">
+                            <span class="fontsizesmall">Behavior</span>
+                        </a>
+
+                    </li>
+                    <li *ngIf="behaviorsubmenu" id="overview_menu" class="no-third-nav paddingclass"
+                        [ngClass]="{'activeborderbottom': behaviorsubmenu == true}" data-third-menu="">
+                        <a href="javascript:void(0);" class="btn" (click)="goToBehaviorLandingPages($event)">
+                            <span class="fontsizesmall">Landing Pages</span>
+                        </a>
+
+                    </li>
+                    <li *ngIf="behaviorsubmenu" id="overview_menu" class="no-third-nav paddingclass"
+                        [ngClass]="{'activeborderbottom': behaviorsubmenu == true}" data-third-menu="">
+                        <a href="javascript:void(0);" class="btn" (click)="goToBehaviorEvent($event)">
+                            <span class="fontsizesmall">Events</span>
+                        </a>
+
+                    </li>
+                    <li *ngIf="behaviorsubmenu" id="overview_menu" class="no-third-nav paddingclass"
+                        [ngClass]="{'activeborderbottom': behaviorsubmenu == true}" data-third-menu="">
+                        <a href="javascript:void(0);" class="btn" (click)="goToBehaviorSiteSpeed($event)">
+                            <span class="fontsizesmall">Site Speed</span>
+                        </a>
+
+                    </li>
+                    <li id="overview_menu" class="no-third-nav paddingclass" data-third-menu=""
+                        [ngClass]="{'activeborderbottom': conversionsubmenu == true}">
+                        <a href="javascript:void(0);" class="btn"
+                            (mouseenter)="conversionsubmenu=true;behaviorsubmenu=false;audiencesubmenu=false;acqusitionsubmenu=false"
+                            (click)="goToConversions($event)">
+                            <span class="fontsizesmall">Conversions</span>
+                        </a>
+
+                    </li>
+                    <li *ngIf="conversionsubmenu" id="overview_menu" class="no-third-nav paddingclass"
+                        [ngClass]="{'activeborderbottom': conversionsubmenu == true}" data-third-menu="">
+                        <a href="javascript:void(0);" class="btn" (click)="goToConversionseCommerce($event)">
+                            <span class="fontsizesmall">eCommerce</span>
+                        </a>
+
+                    </li>
+                    <li *ngIf="conversionsubmenu" id="overview_menu" class="no-third-nav paddingclass"
+                        [ngClass]="{'activeborderbottom': conversionsubmenu == true}" data-third-menu="">
+                        <a href="javascript:void(0);" class="btn" (click)="goToConversionsGoals($event)">
+                            <span class="fontsizesmall">Goal Conversions</span>
+                        </a>
+
+                    </li>
+                </ul>
+            </div>
+            <div *ngIf="showdiv && show=='ppc'" class="pagewidth clearfix ">
+                <ul id="page_menu" class="campaign-menu pull-right keyworddiv1paddingtop">
+                    <li id="overview_menu" class="paddingclass"
+                        [ngClass]="{'activeborderbottom': hovered == 'ppc_campaign'}" data-third-menu="">
+                        <a href="javascript:void(0);" class="btn" (mouseenter)="hovered = 'ppc_campaign'"
+                            (mouseleave)="hovered = ''">
+                            <span class="fontsizesmall">Campaign</span>
+                        </a>
+
+                    </li>
+                    <li id="seo_menu" class="paddingclass" [ngClass]="{'activeborderbottom': hovered == 'ppc_adgroups'}"
+                        data-third-menu="seo_menu_index">
+                        <a href="javascript:void(0);" class="btn" (mouseenter)="hovered = 'ppc_adgroups'"
+                            (mouseleave)="hovered = ''">
+                            <span class="fontsizesmall">AdGroups</span>
+                        </a>
+
+                    </li>
+                    <li id="local_seo_menu" class="paddingclass"
+                        [ngClass]="{'activeborderbottom': hovered == 'ppc_ads'}" data-third-menu="location_menu_index">
+                        <a href="javascript:void(0);" class="btn" (mouseenter)="hovered = 'ppc_ads'"
+                            (mouseleave)="hovered = ''">
+                            <span class="fontsizesmall">Ads</span>
+                        </a>
+
+                    </li>
+                    <li id="reputation_menu" class="paddingclass"
+                        [ngClass]="{'activeborderbottom': hovered == 'ppc_keywords'}"
+                        data-third-menu="repman_menu_index">
+                        <a href="javascript:void(0);" class="btn" (mouseenter)="hovered = 'ppc_keywords'"
+                            (mouseleave)="hovered = ''">
+                            <span class="fontsizesmall">Keywords</span>
+                        </a>
+
+                    </li>
+                </ul>
+            </div>
+            <div *ngIf="showdiv && show=='settings'" class="pagewidth clearfix ">
+                <ul id="page_menu" class="campaign-menu pull-right keyworddiv1paddingtop">
+                    <li id="overview_menu" class="paddingclass"
+                        [ngClass]="{'activeborderbottom': hovered == 'settings_intakeinfo'}" data-third-menu="">
+                        <a href="javascript:void(0);" class="btn" (mouseenter)="hovered = 'settings_intakeinfo'"
+                            (mouseleave)="hovered = ''">
+                            <span class="fontsizesmall">Intake Forms</span>
+                        </a>
+
+                    </li>
+                    <li id="seo_menu" class="paddingclass"
+                        [ngClass]="{'activeborderbottom': hovered == 'settings_campaign'}"
+                        data-third-menu="seo_menu_index">
+                        <a href="javascript:void(0);" class="btn" (mouseenter)="hovered = 'settings_campaign'"
+                            (mouseleave)="hovered = ''">
+                            <span class="fontsizesmall">Campaign Settings</span>
+                        </a>
+
+                    </li>
+                    <li id="local_seo_menu" class="paddingclass"
+                        [ngClass]="{'activeborderbottom': hovered == 'settings_competitors'}"
+                        data-third-menu="location_menu_index">
+                        <a href="javascript:void(0);" class="btn" (mouseenter)="hovered = 'settings_competitors'"
+                            (mouseleave)="hovered = ''">
+                            <span class="fontsizesmall">Competitors</span>
+                        </a>
+
+                    </li>
+                    <li id="reputation_menu" class="paddingclass"
+                        [ngClass]="{'activeborderbottom': hovered == 'settings_integrations'}"
+                        data-third-menu="repman_menu_index">
+                        <a href="javascript:void(0);" class="btn" (mouseenter)="hovered = 'settings_integrations'"
+                            (mouseleave)="hovered = ''">
+                            <span class="fontsizesmall">Integrations</span>
+                        </a>
+
+                    </li>
+                    <li id="analytics_menu" class="paddingclass"
+                        [ngClass]="{'activeborderbottom': hovered == 'settings_campaignusers'}"
+                        data-third-menu="analytics_menu_index">
+                        <a href="javascript:void(0);" class="btn" (mouseenter)="hovered = 'settings_campaignusers'"
+                            (mouseleave)="hovered = ''">
+                            <span class="fontsizesmall">Campaign Users</span>
+                        </a>
+
+                    </li>
+                </ul>
+            </div>
+
+
+
+        </div>
+    </div>
+    <div class="paddingtop25px paddingleft15px marginbottom0">
+        <div class="alert alert-info" *ngIf="!hasActiveAccount && !hasAuthorize">
+            You need to integrate your Google Analytics account to see Goal Conversions.
+        </div>
+    </div>
+    <div class="col-lg-12" *ngIf="settingActive == 0;"
+        (mouseenter)="showDiv($event,'true','analytics','behaviorsubmenu')">
+
+        <div class="overviewdivfontspadding"></div>
+
+        <div class="card card-default shadow bg-white rounded">
+            <div class="card-header">
+                <div class="row borderBtm padding5">
+                    <h3 class="col-xs-12 col-12 col-md-5 paddingtop5px"> Analytics Page (Landing Pages)</h3>
+                    <div class="col-xs-12 col-12 col-md-3 form-group">
+                        <input type="input" placeholder="Select DateRange" class="form-control" bsDaterangepicker
+                            (bsValueChange)="onDateRangeSelect($event)"
+                            [bsConfig]="{ ranges: ranges, containerClass: 'theme-blue' }"
+                            [bsValue]="bsInlineRangeValue">
+                    </div>
+                    <div class="btn-group">
+                        <div class="btn-group" dropdown>
+                            <button id="button-basic" dropdownToggle type="input" class="btn overviewbtnwidth"
+                                aria-controls="dropdown-basic">
+                                {{selctedLabelName !== undefined ? selctedLabelName : 'select Label'}}
+                                <span class="caret"> </span>
+                            </button>
+                            <ul id="dropdown-basic" *dropdownMenu class="dropdown-menu overviewulheightmax" role="menu"
+                                aria-labelledby="button-basic">
+                                <li role="menuitem" *ngFor="let label of dropdownlabels"
+                                    [ngClass]="{'active': selectedLabel == label.id}"><a class="dropdown-item"
+                                        (click)="onLabelSelect($event,label)"
+                                        href="javascript:void(0);">{{label.label}}</a></li>
+                            </ul>
+                        </div>
+                    </div>
+                    <p class="overviewpvs">VS</p>
+                    <div class="btn-group">
+                        <div class="btn-group" dropdown>
+                            <button id="button-basic" dropdownToggle type="input" class="btn overviewbtnwidth"
+                                aria-controls="dropdown-basic">
+                                {{selctedLabelName1 !== undefined ? selctedLabelName1 : 'select Matrix'}}
+                                <span class="caret"> </span>
+                            </button>
+                            <ul id="dropdown-basic" *dropdownMenu class="dropdown-menu overviewulheightmax" role="menu"
+                                aria-labelledby="button-basic">
+                                <li role="menuitem" *ngFor="let label of dropdownlabels1"
+                                    [ngClass]="{'active': selectedLabel1 == label.id}"><a class="dropdown-item"
+                                        (click)="onLabelSelect1($event,label)"
+                                        href="javascript:void(0);">{{label.label}}</a></li>
+                            </ul>
+                        </div>
+                    </div>
+
+                </div>
+
+            </div>
+            <div class="card-body row">
+                <div class="chart-wrapper mx-auto chart-container" *ngIf="hasActiveAccount && hasAuthorize">
+                    <div *ngIf="showSpinnerBaseChart" class="la-line-scale  linescaleloadercolortopleft">
+                        <div></div>
+                        <div></div>
+                        <div></div>
+                        <div></div>
+                        <div></div>
+                    </div>
+                    <canvas *ngIf="!showSpinnerBaseChart" baseChart [datasets]="lineChartData"
+                        [labels]="lineChartLabels" [options]="lineChartOptions" [colors]="lineChartColors"
+                        [legend]="lineChartLegend" [chartType]="lineChartType" [plugins]="lineChartPlugins"
+                        [fullWidth]="true">
+                    </canvas>
+                </div>
+
+
+                <!-- *ngIf="!hasActiveAccount && !hasAuthorize" -->
+                <div class="widget-overlay" *ngIf="!hasActiveAccount && !hasAuthorize">
+                    <div class="widget-overlay-content text-center">
+                        <h2 class="overviewintegrateanalyticscolor">Integrate Analytics</h2>
+                        <div class="text-center btn-container">
+                            <a class="btn overviewintegrateanalyticsbgcolor" (click)="goToOverview()"> <span></span>
+                                &nbsp;&nbsp;Integrate Google Analytics</a>
+                            <!-- <img src="assets/img/ga.png"> -->
+                        </div>
+                    </div>
+
+                </div>
+
+            </div>
+        </div>
+    </div>
+
+
+
+    <div class="col-lg-12" *ngIf="settingActive == 0;">
+
+
+
+        <div class="card card-default shadow bg-white rounded">
+
+            <div class="overviewdivborder">
+                <div class="row">
+
+                    <div class="card-body stat-container clearfix">
+                        <div id="sessions-stat" class="stat-box">
+                            <div class="stat-label text-uppercase">Sessions</div>
+                            <div class="stat-value text-center">
+                                <h3 class="text-blue overviewh3marginbottom" *ngIf="reportsData !== undefined">
+                                    {{reportsData.googleCustomDataDto.sessions | number}}</h3>
+                            </div>
+                        </div>
+                        <div id="newUsers-stat" class="stat-box">
+                            <div class="stat-label text-uppercase">Users</div>
+                            <div class="stat-value text-center">
+                                <h3 class="text-blue overviewh3marginbottom" *ngIf="reportsData !== undefined">
+                                    {{reportsData.googleCustomDataDto.users | number}}</h3>
+                            </div>
+                        </div>
+                        <div id="percentNewSessions-stat" class="stat-box">
+                            <div class="stat-label text-uppercase">%New Session</div>
+                            <div class="stat-value text-center">
+                                <h3 class="text-blue overviewh3marginbottom" *ngIf="reportsData !== undefined">
+                                    {{(reportsData.googleCustomDataDto.percentNewSessions | number) + '%'}}</h3>
+                            </div>
+                        </div>
+                        <div id="bounceRate-stat" class="stat-box">
+                            <div class="stat-label text-uppercase">Bounce Rate</div>
+                            <div class="stat-value text-center">
+                                <h3 class="text-blue overviewh3marginbottom" *ngIf="reportsData !== undefined">
+                                    {{reportsData.googleCustomDataDto.bounceRate | number}}</h3>
+                            </div>
+                        </div>
+                        <div id="pageviews-stat" class="stat-box">
+                            <div class="stat-label text-uppercase">Pageviews</div>
+                            <div class="stat-value text-center">
+                                <h3 class="text-blue overviewh3marginbottom" *ngIf="reportsData !== undefined">
+                                    {{reportsData.googleCustomDataDto.pageviews | number}}</h3>
+                            </div>
+                        </div>
+                        <div id="pageviewsPerSession-stat" class="stat-box">
+                            <div class="stat-label text-uppercase">Pages/Session</div>
+                            <div class="stat-value text-center">
+                                <h3 class="text-blue overviewh3marginbottom" *ngIf="reportsData !== undefined">
+                                    {{reportsData.googleCustomDataDto.pageviewsPerSession | number}}</h3>
+                            </div>
+                        </div>
+                        <div id="avgSessionDuration-stat" class="stat-box">
+                            <div class="stat-label text-uppercase">Avg Sess. Duration</div>
+                            <div class="stat-value text-center">
+                                <h3 class="text-blue overviewh3marginbottom" *ngIf="reportsData !== undefined">
+                                    {{reportsData.googleCustomDataDto.avgSessionDuration | convertTohhmmss}}</h3>
+                            </div>
+                        </div>
+                        <div id="goalCompletions-stat" class="stat-box">
+                            <div class="stat-label text-uppercase">Goal Completion</div>
+                            <div class="stat-value text-center">
+                                <h3 class="text-blue overviewh3marginbottom" *ngIf="reportsData !== undefined">
+                                    {{reportsData.googleCustomDataDto.goalCompletionsAll | number}}</h3>
+                            </div>
+                        </div>
+                        <div id="goalConversionRate-stat" class="stat-box">
+                            <div class="stat-label text-uppercase">Conversion Rate</div>
+                            <div class="stat-value text-center">
+                                <h3 class="text-blue overviewh3marginbottom" *ngIf="reportsData !== undefined">
+                                    {{reportsData.googleCustomDataDto.goalConversionRateAll | number}}</h3>
+                            </div>
+                        </div>
+                    </div>
+
+
+
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="col-md-12">
+        <div class="card card-default shadow p-3 mb-5 bg-white rounded">
+            <div class="table-responsive">
+                <ng2-smart-table [settings]="settings" [source]="source" (userRowSelect)="userRowSelect($event)">
+                </ng2-smart-table>
+            </div>
+        </div>
+    </div>
+</div>
