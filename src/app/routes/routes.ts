@@ -124,6 +124,21 @@ export const routes: Routes = [
                 loadChildren: () => import('./integrations/integrations.module').then(m => m.IntegrationsModule)
             },
             {
+                path: 'leads',
+                component: LayoutComponent,
+                loadChildren: () => import('./leads/leads.module').then(m => m.LeadsModule)
+            },
+            {
+                path: 'todo',
+                component: LayoutComponent,
+                loadChildren: () => import('./todolist/todolist.module').then(m => m.TodolistModule)
+            },
+            {
+                path: 'proposal',
+                component: LayoutComponent,
+                loadChildren: () => import('./proposal/proposal.module').then(m => m.ProposalModule)
+            },
+            {
                 path: 'privacy-policy',
                 // component: LayoutComponent,
                 loadChildren: () => import('./privacypolicy/privacypolicy.module').then(m => m.PrivacypolicyModule)

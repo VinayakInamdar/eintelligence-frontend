@@ -1,0 +1,57 @@
+
+<div  style="height: 300px;width: 500px;display: flex;flex-direction: column;">
+    <div style="border-bottom:#5D9CEC;">
+        <button type="button" class="bootbox-close-button close" data-dismiss="modal" aria-hidden="true" (click)="onClose($event)">×</button>
+        <h2 class="dialog-title">Please choose a client</h2>
+        <div style="font-size: smaller;">Select a client for which you want to create a proposal</div>
+    </div>
+    <hr class="solid">
+    <div>
+<!-- <div class="form-group row"> -->
+    <form class="form-horizontal" [formGroup]="passwordform"  (submit)="submitForm(passwordform.value)">
+        <div class="form-group col-md-12" style="display: flex;flex-direction: column;"> 
+            <div class="col-md-12" style="display: flex;flex-direction: column;">
+                <label for="user_password" class="col-sm-4 col-form-label"><span class="accountspancolor">*</span>Related</label>
+                <!-- <div class="col-md-10">
+                    <input type="password" formControlName="password" class="form-control" style="height: 2.19rem;width: max-content;" />
+                    <span class="text-danger" style="font-size: small;"
+            *ngIf="passwordform.controls['password'].hasError('required') && (passwordform.controls['password'].dirty || passwordform.controls['password'].touched)">
+            {{'validation.PASSWORDISREQUIRED' | translate}}</span><br>
+                </div> -->
+                <select class="col-md-12 form-control" formControlName="related">
+                    <option disabled>Select Oppo Suits</option>
+                    <option>Choose oppo suit</option>
+                  </select>
+            </div>
+            <div class="col-md-12" style="display: flex;flex-direction: column;">
+                <label for="user_password" class="col-sm-4 col-form-label"><span class="accountspancolor">*</span>Lead</label>
+                <!-- <div class="col-md-10">
+                    <input type="password" formControlName="password" class="form-control" style="height: 2.19rem;width: max-content;" />
+                    <span class="text-danger" style="font-size: small;"
+            *ngIf="passwordform.controls['password'].hasError('required') && (passwordform.controls['password'].dirty || passwordform.controls['password'].touched)">
+            {{'validation.PASSWORDISREQUIRED' | translate}}</span><br>
+                </div> -->
+                <select class="col-md-12 form-control" formControlName="lead">
+                    <option disabled>Click to choose</option>
+                    <option>Choose oppo suit</option>
+                  </select>
+            </div>
+            
+        </div>
+    
+    </form>
+<!-- </div> -->
+
+    </div>
+    <hr class="solid">
+  <div class="col-md-12" style="display: flex;flex-direction: row;justify-content: space-evenly;">
+    <div class="col-md-8"></div>
+    <div class="col-md-4">
+        <button class="mr-1 btn btn-sm float-right" (click)="onClose($event)"
+        style="background-color:#5D9CEC;color: white;">Close</button>
+        <button class="mr-1 btn btn-sm float-right" type="submit" (click)="submitForm(passwordform.value)"
+                                                style="background-color:#5D9CEC;color: white;">Save</button>
+
+    </div>
+  </div>
+</div>

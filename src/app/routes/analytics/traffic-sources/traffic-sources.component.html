@@ -610,7 +610,7 @@
                         <div></div>
                         <div></div>
                     </div>
-                    <canvas *ngIf="!showSpinnerBaseChart" baseChart [datasets]="lineChartData"
+                    <canvas id="trafficSourceChart" *ngIf="!showSpinnerBaseChart" baseChart [datasets]="lineChartData"
                         [labels]="lineChartLabels" [options]="lineChartOptions" [colors]="lineChartColors"
                         [legend]="lineChartLegend" [chartType]="lineChartType" [plugins]="lineChartPlugins"
                         [fullWidth]="true">

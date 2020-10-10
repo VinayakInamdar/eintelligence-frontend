@@ -42,6 +42,7 @@ import { ContentEditDirective } from './directives/content-edit/content-edit.dir
 import { CardFilterPipe } from './pipes/card-filter.pipe';
 import { ConvertTohhmmssPipe } from './pipes/convert-tohhmmss.pipe';
 
+
 // https://angular.io/styleguide#!#04-10
 @NgModule({
     imports: [

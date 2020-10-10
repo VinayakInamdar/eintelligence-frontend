@@ -1,0 +1,291 @@
+<div class="row">
+    <div class="col-md-12 divflex">
+        <div *ngIf="settingActive==3" class="col-md-12 divflex1">
+            <div class="col-md-12 divflexwithfontsize">
+                <div class="col-md-10 divflex3"> Add New Lead</div>
+                <div class="col-md-2 divflex4">
+                    <a href="javascript:void(0);" (click)="changeSettingActive(1)">
+                        <em class="fa-2x mr-1 fas fa-times"></em></a>
+                </div>
+            </div>
+
+            <accordion class="col-md-12" style="padding-top: 15px;" [isAnimated]="true" [closeOthers]="oneAtATime">
+                <accordion-group [isOpen]="isOpenFirst" #firstAccordian>
+                    <button class="btn btn-link btn-block clearfix" accordion-heading type="button">
+                        <i class="fa fa-user pull-left float-left" style="padding-top: 4px;"></i>
+                        <div class="pull-left float-left" style="padding-left: 10px;">Lead Information</div>
+                        <i [ngClass]="{'fa-minus-square':firstAccordian?.isOpen,'fa-plus-square':!firstAccordian?.isOpen}"
+                            class="fa float-right pull-right"></i>
+                    </button>
+                    <!-- <div class="panel-body"> -->
+                    <form class="form-horizontal" [formGroup]="profileInfo"
+                        (submit)="submitForm(profileInfo.value,'profileinfoform')">
+                        <div class="form-group col-md-12" style="display: flex;flex-direction: row;flex-wrap: wrap;">
+                            <div class="col-md-4" style="display: flex;flex-direction: column;">
+                                <label class="col-md-4 col-form-label">
+                                    NAME <span class="accountspancolor">*</span></label>
+                                <div class="col-md-8">
+                                    <input formControlName="firstname" class="form-control accountinputheight" />
+                                    <span class="text-danger"
+                                        *ngIf="profileInfo.controls['firstname'].hasError('required') && (profileInfo.controls['firstname'].dirty || profileInfo.controls['firstname'].touched)">
+                                        {{'validation.NAMEISREQUIRED' | translate}}</span><br>
+                                </div>
+                            </div>
+
+                            <div class="col-md-4" style="display: flex;flex-direction: column;">
+                                <label class="col-md-4 col-form-label">
+                                    EMAIL</label>
+                                <div class="col-md-8">
+                                    <input formControlName="email" class="form-control accountinputheight" />
+                                </div>
+                            </div>
+                            <div class="col-md-4" style="display: flex;flex-direction: column;">
+                                <label class="col-md-4 col-form-label">
+                                    Phone</label>
+                                <div class="col-md-8">
+                                    <input formControlName="phone" class="form-control accountinputheight" />
+                                </div>
+                            </div>
+                            <div class="col-md-4" style="display: flex;flex-direction: column;">
+                                <label class="col-md-4 col-form-label">
+                                    Position</label>
+                                <div class="col-md-8">
+                                    <input formControlName="position" class="form-control accountinputheight" />
+                                </div>
+                            </div>
+                            <div class="col-md-4" style="display: flex;flex-direction: column;">
+                                <label class="col-md-4 col-form-label">
+                                    Company</label>
+                                <div class="col-md-8">
+                                    <input formControlName="company" class="form-control accountinputheight" />
+                                </div>
+                            </div>
+                            <div class="col-md-4" style="display: flex;flex-direction: column;">
+                                <label class="col-md-4 col-form-label">
+                                    Deal Size</label>
+                                <div class="col-md-8">
+                                    <input formControlName="dealsize" class="form-control accountinputheight" />
+                                </div>
+                            </div>
+
+                        </div>
+                    </form>
+                </accordion-group>
+                <accordion-group [isOpen]="isOpenSecond" #secondAccordian>
+                    <button class="btn btn-link btn-block clearfix" accordion-heading type="button">
+                        <i class="fa fa-user pull-left float-left" style="padding-top: 4px;"></i>
+                        <div class="pull-left float-left" style="padding-left: 10px;">Lead Billing Information</div>
+                        <i [ngClass]="{'fa-plus-square':!secondAccordian?.isOpen,'fa-minus-square':secondAccordian?.isOpen}"
+                            class="fa float-right pull-right"></i>
+                    </button>
+                </accordion-group>
+                <accordion-group [isOpen]="isOpenThird" #thirdAccordian>
+                    <button class="btn btn-link btn-block clearfix" accordion-heading type="button">
+                        <i class="fa fa-user pull-left float-left" style="padding-top: 4px;"></i>
+                        <div class="pull-left float-left" style="padding-left: 10px;">Others</div>
+                        <i [ngClass]="{'fa-plus-square':!thirdAccordian?.isOpen,'fa-minus-square':thirdAccordian?.isOpen}"
+                            class="fa float-right pull-right"></i>
+                    </button>
+                </accordion-group>
+                <accordion-group [isOpen]="isOpenFour" #fourthAccordian>
+                    <button class="btn btn-link btn-block clearfix" accordion-heading type="button">
+                        <i class="fa fa-handshake pull-left float-left" style="padding-top: 4px;"></i>
+                        <div class="pull-left float-left" style="padding-left: 10px;">Customer Handling</div>
+                        <i [ngClass]="{'fa-plus-square':!fourthAccordian?.isOpen,'fa-minus-square':fourthAccordian?.isOpen}"
+                            class="fa float-right pull-right"></i>
+                    </button>
+                </accordion-group>
+            </accordion>
+
+        </div>
+        <div *ngIf="settingActive!=3" class="col-md-12"
+            style="display: flex;flex-direction: row;align-items: flex-start;justify-content: flex-start;">
+            <div class="col-md-6 divflexwithfontsize">
+                Proposal {{settingActive == 1 ? '(Kanban)' : '(List)' }}
+            </div>
+
+            <div class="col-md-6 divflex4">
+                <div class="col-md-2" style="display: none;">
+                    <button type="button" class="btn btn-default"
+                        style="background-color: white;box-shadow:0px 2px gray;"><i class="fa fa-list"></i>
+                        List</button>
+                </div>
+                <div class="col-md-2">
+                    <button type="button" class="btn btn-default"
+                        style="background-color: white;box-shadow:0px 2px gray;" [ngClass]="{'active':settingActive==2}"
+                        (click)="changeSettingActive(2)"><i class="fa fa-list"></i> List</button>
+                </div>
+                <div class="col-md-2">
+                    <button type="button" class="btn btn-default"
+                        style="background-color: white;box-shadow:0px 2px gray;" [ngClass]="{'active':settingActive==1}"
+                        (click)="changeSettingActive(1)"><i class="fa fa-list"></i> Kanban</button>
+                </div>
+
+
+            </div>
+
+        </div>
+        <div *ngIf="settingActive!=3" class="col-md-12"
+            style="display: flex;flex-direction: row;align-items: flex-start;justify-content: flex-start;padding-top: 13px;">
+            <div class="col-md-1">
+                <button type="button" class="btn btn-default"
+                    style="background-color: white;box-shadow:0px 2px gray;"><i class="fa fa-list"></i></button>
+            </div>
+            <div class="col-md-3 search-container">
+                <input #search class="form-control ng-valid ng-dirty ng-valid-parse ng-touched ng-empty searchcampw"
+                    type="text" placeholder="Search for campaigns" (keyup)="onSearch(search.value)">
+
+            </div>
+            <div class="col-md-2"></div>
+
+            <div class="col-md-6"
+                style="display: flex;flex-direction: row;justify-content:flex-end;padding-right: 30px;">
+                <div class="col-md-2">
+                    <button type="button" class="btn btn-default"
+                        style="background-color: white;box-shadow:0px 2px gray;"><i class="fa fa-list"></i>More</button>
+                </div>
+                <div class="col-md-2">
+                    <button type="button" class="btn btn-default"
+                        style="background-color: white;box-shadow:0px 2px gray;">More <i
+                            class="fa fa-list"></i></button>
+                </div>
+                <div class="col-md-2" style="padding-left: 10px;">
+                    <button type="button" class="btn btn-primary" style="box-shadow:0px 2px gray;"
+                        (click)="openModalWithComponent($event)">New Proposal</button>
+                </div>
+
+
+
+            </div>
+
+        </div>
+        <div *ngIf="settingActive==1" class="col-md-12"
+            style="display: flex;flex-direction: row;align-items: flex-start;justify-content: flex-start;padding-top: 26px;">
+
+
+            <div class="col-md-12" style="display: flex;flex-direction: row;justify-content:space-evenly;">
+                <div class="dropdown">
+                    <div class="btn btn-danger dropdown-toggle" style="width: 200px;" type="button"
+                        data-toggle="dropdown"
+                        style="display: flex;flex-direction: row;justify-content: space-between;width: 220px;">
+                        Draft
+                        <div style="padding-top: 0px;"><span class="caret"></span></div>
+                    </div>
+                    <ul class="dropdown-menu" style="padding: 5px;width: 200px;">
+                        <li style="display: flex;flex-direction: row;justify-content: space-between;">
+                            <div style="font-size: medium;">Mission Marvel</div>
+                        </li>
+                        <li style="display: flex;flex-direction: row;justify-content: space-between;">
+                            <div style="font-size:small;">Marvel Entertainment Inc.</div>
+                        </li>
+                        <li style="display: flex;flex-direction: row;justify-content: space-between;">
+                            <div style="font-size:small;">2020-09-29</div>
+                        </li>
+                    </ul>
+                </div>
+                <div class="dropdown">
+                    <div class="btn btn-warning dropdown-toggle" style="width: 200px;" type="button"
+                        data-toggle="dropdown"
+                        style="display: flex;flex-direction: row;justify-content: space-between;width: 220px;">
+                        Sent
+                        <div style="padding-top: 0px;"><span class="caret"></span></div>
+                    </div>
+                    <ul class="dropdown-menu" style="padding: 5px;width: 200px;">
+                        <li style="display: flex;flex-direction: row;justify-content: space-between;">
+                            <div style="font-size: medium;">Bruce Wayne</div>
+                            <div style="font-size: medium;"><i class="fa fa-user"></i></div>
+                        </li>
+                        <li style="display: flex;flex-direction: row;justify-content: space-between;">
+                            <div style="font-size:small;">Justice League Inc.</div>
+                        </li>
+                        <li style="display: flex;flex-direction: row;justify-content: space-between;">
+                            <div style="font-size:small;">3 days ago</div>
+                            <div style="font-size:small;">$ 50,000.00</div>
+                        </li>
+                    </ul>
+                </div>
+                <div class="dropdown">
+                    <div class="btn btn-primary dropdown-primary" style="width: 200px;" type="button"
+                        data-toggle="dropdown"
+                        style="display: flex;flex-direction: row;justify-content: space-between;width: 220px;">
+                        Open
+                        <div style="padding-top: 0px;"><span class="caret"></span></div>
+                    </div>
+                    <ul class="dropdown-menu" style="padding: 5px;width: 200px;">
+                        <li style="display: flex;flex-direction: row;justify-content: space-between;">
+                            <div style="font-size: medium;">Bruce Wayne</div>
+                            <div style="font-size: medium;"><i class="fa fa-user"></i></div>
+                        </li>
+                        <li style="display: flex;flex-direction: row;justify-content: space-between;">
+                            <div style="font-size:small;">Justice League Inc.</div>
+                        </li>
+                        <li style="display: flex;flex-direction: row;justify-content: space-between;">
+                            <div style="font-size:small;">3 days ago</div>
+                            <div style="font-size:small;">$ 50,000.00</div>
+                        </li>
+                    </ul>
+                </div>
+                <div class="dropdown">
+                    <div class="btn btn-info dropdown-toggle" style="width: 200px;" type="button" data-toggle="dropdown"
+                        style="display: flex;flex-direction: row;justify-content: space-between;width: 220px;">
+                        Revised
+                        <div style="padding-top: 0px;"><span class="caret"></span></div>
+                    </div>
+                    <ul class="dropdown-menu" style="padding: 5px;width: 200px;">
+                        <li style="display: flex;flex-direction: row;justify-content: space-between;">
+                            <div style="font-size: medium;">Bruce Wayne</div>
+                            <div style="font-size: medium;"><i class="fa fa-user"></i></div>
+                        </li>
+                        <li style="display: flex;flex-direction: row;justify-content: space-between;">
+                            <div style="font-size:small;">Justice League Inc.</div>
+                        </li>
+                        <li style="display: flex;flex-direction: row;justify-content: space-between;">
+                            <div style="font-size:small;">3 days ago</div>
+                            <div style="font-size:small;">$ 50,000.00</div>
+                        </li>
+                    </ul>
+                </div>
+                <div class="dropdown">
+                    <div class="btn btn-success dropdown-toggle" style="width: 200px;" type="button"
+                        data-toggle="dropdown"
+                        style="display: flex;flex-direction: row;justify-content: space-between;width: 220px;">
+                        Declined
+                        <div style="padding-top: 0px;"><span class="caret"></span></div>
+                    </div>
+                    <ul class="dropdown-menu" style="padding: 5px;width: 200px;">
+                        <li style="display: flex;flex-direction: row;justify-content: space-between;">
+                            <div style="font-size: medium;">Bruce Wayne</div>
+                            <div style="font-size: medium;"><i class="fa fa-user"></i></div>
+                        </li>
+                        <li style="display: flex;flex-direction: row;justify-content: space-between;">
+                            <div style="font-size:small;">Justice League Inc.</div>
+                        </li>
+                        <li style="display: flex;flex-direction: row;justify-content: space-between;">
+                            <div style="font-size:small;">3 days ago</div>
+                            <div style="font-size:small;">$ 50,000.00</div>
+                        </li>
+                    </ul>
+                </div>
+            </div>
+
+        </div>
+        <div *ngIf="settingActive==2" class="col-md-12"
+            style="display: flex;flex-direction: row;align-items: flex-start;justify-content: flex-start;padding-top: 26px;">
+
+            <div class="row col-md-12">
+                <div class="col-md-1"></div>
+                <div class="col-md-10">
+                    <div class="card card-default shadow p-3 mb-5 bg-white rounded">
+                        <div class="table-responsive">
+                            <ng2-smart-table [settings]="settings" [source]="source"
+                                (userRowSelect)="userRowSelect($event)">
+                            </ng2-smart-table>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-md-1"></div>
+            </div>
+
+        </div>
+    </div>
+</div>

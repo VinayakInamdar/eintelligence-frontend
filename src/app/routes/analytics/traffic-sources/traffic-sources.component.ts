@@ -305,6 +305,11 @@ export class TrafficSourcesComponent implements OnInit {
             this.convertToLineChartsLabels(this.reportsData.gaPreparedDataDto.date)
             this.convertToLineChartsData(this.reportsData.gaPreparedDataDto.sessions)
             this.showSpinnerBaseChart = false;
+            var trafficsourcecharthtml = document.getElementById('trafficSourceChart')
+            var html = trafficsourcecharthtml.outerHTML;
+            var data = { html : html}
+            var json = JSON.stringify(data)
+            localStorage.setItem('trafficSourceChartHtml',json)
           })
       }
     );
