@@ -21,7 +21,7 @@ export class AuditsService {
 //using to get list of audits
 getAudits(): Observable<any[]> {
   return this.http.get<any[]>(this.Url + 'audits/',{
-    params: new HttpParams().set('pageSize', '50')
+    params: new HttpParams().set('pageSize', '1000')
   })
 }
 

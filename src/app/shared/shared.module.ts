@@ -5,7 +5,6 @@ import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { RouterModule } from '@angular/router';
 import { TranslateModule } from '@ngx-translate/core';
 import { ToastrModule } from 'ngx-toastr';
-import { NgCircleProgressModule } from 'ng-circle-progress';
 import { AccordionModule } from 'ngx-bootstrap/accordion';
 import { AlertModule } from 'ngx-bootstrap/alert';
 import { ButtonsModule } from 'ngx-bootstrap/buttons';
@@ -68,8 +67,7 @@ import { ConvertTohhmmssPipe } from './pipes/convert-tohhmmss.pipe';
         PopoverModule.forRoot(),
         TypeaheadModule.forRoot(),
         ToastrModule.forRoot(),
-        MaterialModule,
-        NgCircleProgressModule.forRoot({})
+        MaterialModule
     ],
     providers: [
         ColorsService
@@ -131,8 +129,7 @@ import { ConvertTohhmmssPipe } from './pipes/convert-tohhmmss.pipe';
         ContextMenuComponent,
         ContentEditDirective,
         MaterialModule,
-        CardFilterPipe,
-        NgCircleProgressModule,
+        CardFilterPipe,      
         ConvertTohhmmssPipe,
     ]
 })

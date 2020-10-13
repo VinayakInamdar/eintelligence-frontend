@@ -26,14 +26,14 @@ export class CampaignService {
   // using to get list of campaign
   getCampaign(): Observable<any[]> {
     return this.http.get<any[]>(this.Url + '/campaigns',{
-      params: new HttpParams().set('pageSize', '50')
+      params: new HttpParams().set('pageSize', '1000')
     })
   }
 
   // using to get list of keywords
   getSerp(): Observable<any[]> {
     return this.http.get<any[]>(this.Url + '/serps',{
-      params: new HttpParams().set('pageSize', '50')
+      params: new HttpParams().set('pageSize', '1000')
     })
   }
   // using to add new keyword in selected campaign Id
