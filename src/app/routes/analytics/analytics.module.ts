@@ -9,9 +9,25 @@ import { FileUploadModule } from 'ng2-file-upload';
 import { NgxSelectModule } from 'ngx-select-ex';
 import { AnalyticsComponent } from './analytics/analytics.component';
 import { NgxIntlTelInputModule } from 'ngx-intl-tel-input';
+import { ChartsModule } from 'ng2-charts';
+import { AcquisitionComponent } from './acquisition/acquisition.component';
+import { TrafficSourcesComponent } from './traffic-sources/traffic-sources.component';
+import { SourcesMediumsComponent } from './sources-mediums/sources-mediums.component';
+import { CampaignsComponent } from './campaigns/campaigns.component';
+import { AudienceComponent } from './audience/audience.component';
+import { DeviceCategoryComponent } from './device-category/device-category.component';
+import { GeoLocationsComponent } from './geo-locations/geo-locations.component';
+import { LanguagesComponent } from './languages/languages.component';
+import { BehaviorComponent } from './behavior/behavior.component';
+import { LandingPagesComponent } from './landing-pages/landing-pages.component';
+import { EventsComponent } from './events/events.component';
+import { SiteSpeedComponent } from './site-speed/site-speed.component';
+import { ConversionsComponent } from './conversions/conversions.component';
+import { EcommerceComponent } from './ecommerce/ecommerce.component';
+import { GoalsComponent } from './goals/goals.component';
 
 const routes: Routes = [
-  { path: '', component: AnalyticsComponent }
+  { path: '', component: AnalyticsComponent },
 ];
 
 @NgModule({
@@ -27,9 +43,10 @@ const routes: Routes = [
     FileUploadModule,
     FormsModule,
     NgxSelectModule,
-    NgxIntlTelInputModule
+    NgxIntlTelInputModule,
+    ChartsModule
   ],
-  declarations: [AnalyticsComponent],
+  declarations: [SourcesMediumsComponent, CampaignsComponent, AudienceComponent, DeviceCategoryComponent, GeoLocationsComponent, LanguagesComponent, BehaviorComponent, LandingPagesComponent, EventsComponent, SiteSpeedComponent, ConversionsComponent, EcommerceComponent, GoalsComponent],
   exports: [
     RouterModule,
 ],

@@ -76,7 +76,7 @@ export class EditUserComponent implements OnInit {
                 title: this.translate.instant('toaster.success.TITLE'),
                 text: this.translate.instant('message.UPDATEMSG'),
             };
-            this.toasterService.pop(this.toaster.type, this.toaster.title, this.toaster.text);
+            // this.toasterService.pop(this.toaster.type, this.toaster.title, this.toaster.text);
             this.updateAlert();
 
         });

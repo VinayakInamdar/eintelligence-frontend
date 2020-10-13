@@ -109,19 +109,34 @@ export const routes: Routes = [
                 loadChildren: () => import('./auditreport/auditreport.module').then(m => m.AuditreportModule)
             },
             {
-                path: ':id/seo/keywords',
+                path: ':id/analytics',
                 component: LayoutComponent,
-                loadChildren: () => import('./keywords/keywords.module').then(m => m.KeywordsModule)
+                loadChildren: () => import('./analytics/analytics.module').then(m => m.AnalyticsModule)
             },
-            {
-                path: 'addkeywords',
-                component: LayoutComponent,
-                loadChildren: () => import('./keywords/keywords.module').then(m => m.KeywordsModule)
-            },
+            // {
+            //     path: 'addkeywords',
+            //     component: LayoutComponent,
+            //     loadChildren: () => import('./keywords/keywords.module').then(m => m.KeywordsModule)
+            // },
             {
                 path: 'integrations/:id',
                 component: LayoutComponent,
                 loadChildren: () => import('./integrations/integrations.module').then(m => m.IntegrationsModule)
+            },
+            {
+                path: 'leads',
+                component: LayoutComponent,
+                loadChildren: () => import('./leads/leads.module').then(m => m.LeadsModule)
+            },
+            {
+                path: 'todo',
+                component: LayoutComponent,
+                loadChildren: () => import('./todolist/todolist.module').then(m => m.TodolistModule)
+            },
+            {
+                path: 'proposal',
+                component: LayoutComponent,
+                loadChildren: () => import('./proposal/proposal.module').then(m => m.ProposalModule)
             },
             {
                 path: 'privacy-policy',

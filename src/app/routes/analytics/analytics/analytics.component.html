@@ -1,21 +1,914 @@
-<div class="row maindiv">
-    <div class="col-md-1"></div>
-    <div class="col-md-3 ganalytis">Google Analytics</div>
-    <div class="col-md-6"></div>
-    <div class="col-md-2">
-        <button class="mr-1 btn btn-primary btn-lg" type="button" (click)="onClick()">Authorize</button>
+<div class="row" *ngIf="settingActive == 1;">
+    <div class="col-md-2"></div>
+    <div class="col-md-8 closebtn paddingtop8px"><a href="javascript:void(0);"
+            (click)="closeCreateCampaignComponent($event)">
+            <em class="fa-2x mr-2 fas fa-times"></em></a>
     </div>
+    <div class="col-md-2"> </div>
 </div>
-<hr>
-<br>
-<div class="row">
-    <div class="col-md-1"></div>
-    <div class="col-md-10">
-        <div class="card card-default shadow p-3 mb-5 bg-white rounded">
-            <div class="table-responsive">
+
+<div *ngIf="settingActive == 1;" class="row w3-container w3-center w3-animate-right paddingtopdiv">
+    <div class="col-md-2"> </div>
+    <div class="col-md-8">
+        <form [formGroup]="valForm" class="form-horizontal card formh" (keydown.enter)="$event.preventDefault()"
+            (submit)="submitForm(valForm.value)" novalidate="">
+            <tabset [justified]="true" #staticTabs>
+                <tab class="tabh">
+                    <ng-template tabHeading>
+                        <p class="tabp">Campaign Name</p>
+                    </ng-template>
+
+                    <div class="row">
+                        <div class="col-md-1"></div>
+                        <div class="col-md-10 paddingtopcampname">
+                            <h1> Name Your Campagin</h1>
+                            <h3> Your client's campaign name</h3>
+                            <hr>
+                            <label>CAMPAIGN NAME</label>
+                            <input #name_field class="form-control campinputh" formControlName="name"
+                                placeholder="Name of your campaign">
+                            <span class="text-danger"
+                                *ngIf="valForm.controls['name'].hasError('required') && (valForm.controls['name'].dirty || valForm.controls['name'].touched)">
+                                {{'validation.NAMEISREQUIRED' | translate}}</span>
+                            <br>
+                            <div class="text-center">
+                                <button class="mr-1 btn btn-primary btn-lg" type="submit"
+                                    (click)="goToNextTab($event,name_field.value,'name',1)">Next </button>
+                            </div>
+                        </div>
+                        <div class="col-md-1"></div>
+                    </div>
+
+                </tab>
+                <tab class="tabh" tab="2">
+                    <ng-template tabHeading>
+                        <p class="tabp">Website</p>
+                    </ng-template>
+                    <div class="row">
+                        <div class="col-md-1"></div>
+                        <div class="col-md-10 paddingtopcampname">
+                            <h1>Enter a Website</h1>
+                            <h3> Provide your client's website to launch your new campaign</h3>
+                            <hr>
+                            <label>WEBSITE URL</label>
+                            <div class="form-group row">
+                                <input #webUrl_field class="form-control campinputh" type="url"
+                                    placeholder="http:// or https://" formControlName="webUrl"
+                                    [formControl]="valForm.controls['webUrl']" />
+                                <span class="text-danger"
+                                    *ngIf="valForm.controls['webUrl'].hasError('required') && (valForm.controls['webUrl'].dirty || valForm.controls['webUrl'].touched)">
+                                    {{'validation.URLREQUIRED' | translate}}</span>
+                                <span class="text-danger"
+                                    *ngIf="valForm.controls['webUrl'].hasError('pattern') && (valForm.controls['webUrl'].dirty || valForm.controls['webUrl'].touched)">
+                                    {{'validation.URLVALIDATION' | translate}}</span>
+                            </div>
+
+                            <div class="row">
+                                <div class="col-md-3">
+                                    <button class="mr-1 btn btn-secondary btn-lg" type="submit"
+                                        (click)="goToPreviousTab($event,0)">
+                                        < Go Back</button>
+                                </div>
+                                <div class="col-md-6"></div>
+                                <div class="col-md-3">
+                                    <button class="mr-1 btn btn-primary btn-lg" type="submit"
+                                        (click)="goToNextTab($event,webUrl_field.value,'webUrl',2)">Next
+                                        ></button>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col-md-1"></div>
+                    </div>
+                </tab>
+                <tab class="tabh">
+                    <ng-template tabHeading>
+                        <p class="tabp">Goals</p>
+                    </ng-template>
+                    <div class="row">
+                        <div class="col-md-12" class="goaldiv">
+                            <h1> What would you like to accomplish?</h1>
+                            <h3> Set the goal of your campaign by selecting one or all. (Optional)</h3>
+                            <hr>
+                            <div class="row">
+                                <div class="col-md-4">
+                                    <div class="card card-default shadow p-2 mb-2 bg-white rounded goalsubh">
+                                        <div class="card-body form-check-inline text-center">
+                                            <div class="col-md-1">
+                                                <input formControlName="moreTraffic" class="form-check-input"
+                                                    type="checkbox" value="">
+                                            </div>
+                                            <div class="col-md-11">
+                                                <em class="fa-2x mr-2 fas fa-globe"></em><br>
+                                                <p class="goalfonsize">MORE TRAFFIC</p>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="col-md-4">
+                                    <div class="card card-default shadow p-2 mb-2 bg-white rounded goalsubh">
+                                        <div class="card-body form-check-inline text-center">
+                                            <div class="col-md-1">
+                                                <input type="checkbox" formControlName="sales" class="form-check-input"
+                                                    value="">
+                                            </div>
+                                            <div class="col-md-11">
+                                                <em class="fa-2x mr-2 fas fa-store"></em><br>
+                                                <p class="goalfonsize">SALES</p>
+                                            </div>
+
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="col-md-4">
+                                    <div class="card card-default shadow p-2 mb-2 bg-white rounded">
+                                        <div class="card-body form-check-inline text-center">
+
+                                            <div class="col-md-1">
+                                                <input type="checkbox" formControlName="leadGeneration"
+                                                    class="form-check-input" value="">
+                                            </div>
+                                            <div class="col-md-11">
+                                                <em class="fa-2x mr-2 fas fa-users"></em><br>
+                                                <p class="goalfonsize">LEAD GENERATION</p>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div><br>
+                            <div class="row">
+                                <div class="col-md-3">
+                                    <button class="mr-1 btn btn-secondary btn-lg" type="submit"
+                                        (click)="goToPreviousTab($event,1)">
+                                        < Go Back</button>
+                                </div>
+                                <div class="col-md-5"></div>
+                                <div class="col-md-4">
+                                    <!-- <a routerLink="./home"> -->
+                                    <button class="mr-1 btn btn-primary btn-lg" type="submit"
+                                        (click)="successAlert()">Create
+                                        campaign</button>
+                                    <!-- </a> -->
+                                </div>
+                            </div>
+                        </div>
+
+                    </div>
+                </tab>
+            </tabset>
+        </form>
+    </div>
+    <div class="col-md-2"></div>
+</div>
+
+
+
+
+
+
+
+
+<div class="row maindiv" *ngIf="settingActive == 3;">
+    <div class="grey-container">
+        <div class="pagewidth clearfix ">
+            <div class="campaign-selector-container ">
+                <div class="btn-group">
+                    <div class="btn-add-new-campaign btn btn-default">
+                        <i class="fa fa-plus" aria-hidden="true" (click)="onClick($event)"></i>
+                    </div>
+                    <div class="btn-group" dropdown>
+                        <button id="button-basic" dropdownToggle type="input" class="btn campselectedname"
+                            aria-controls="dropdown-basic">
+                            {{selectedCampaignName !== undefined ? selectedCampaignName : 'select your campaign'}}
+                            <span class="caret"> </span>
+                        </button>
+                        <ul id="dropdown-basic" *dropdownMenu class="dropdown-menu camplisth" role="menu"
+                            aria-labelledby="button-basic">
+                            <li role="menuitem" *ngFor="let campaign of campaignList"
+                                [ngClass]="{'active': selectedCampId == campaign.id}"><a class="dropdown-item"
+                                    (click)="onCampaignSelect($event,campaign)" href="#">{{campaign.name}}</a></li>
+                        </ul>
+                    </div>
+                </div>
+
+            </div>
+            <ul id="page_menu">
+                <li id="overview_menu" class="no-third-nav" data-third-menu="">
+                    <a href="javascript:void(0);" class="btn" (mouseenter)="showDiv($event,'false','undefined')">
+                        <span class="fontsizesmall">Overview</span>
+                    </a>
+
+                </li>
+                <li id="seo_menu" class="" data-third-menu="seo_menu_index">
+                    <a href="javascript:void(0);" class="btn" (mouseenter)="showDiv($event,'true','seo')"
+                        (click)="goToSeoOverview($event)">
+                        <span class="fontsizesmall">SEO</span>
+                    </a>
+
+                </li>
+                <li id="local_seo_menu" class="active-link" data-third-menu="location_menu_index">
+                    <a href="javascript:void(0);" class="btn" (mouseenter)="showDiv($event,'true','gmb')">
+                        <span class="fontsizesmall">GMB</span>
+                    </a>
+
+                </li>
+                <li id="reputation_menu" class="" data-third-menu="repman_menu_index">
+                    <a href="javascript:void(0);" class="btn" (mouseenter)="showDiv($event,'false','undefined')">
+                        <span class="fontsizesmall">Reputation</span>
+                    </a>
+
+                </li>
+                <li id="analytics_menu" class="" data-third-menu="analytics_menu_index">
+                    <a href="javascript:void(0);" class="btn" (mouseenter)="showDiv($event,'true','analytics')">
+                        <span class="fontsizesmall">Analytics</span>
+                    </a>
+
+                </li>
+                <li id="contacts_menu" class="" data-third-menu="">
+                    <a href="javascript:void(0);" class="btn" (mouseenter)="showDiv($event,'false','undefined')">
+                        <span class="fontsizesmall">Contacts</span>
+                    </a>
+
+                </li>
+                <li id="ppc_menu" class="" data-third-menu="ppc_menu_index">
+                    <a href="javascript:void(0);" class="btn" (mouseenter)="showDiv($event,'true','ppc')">
+                        <span class="fontsizesmall">PPC</span>
+                    </a>
+
+                </li>
+                <li id="report_builder_menu" class="" data-third-menu="">
+                    <a href="javascript:void(0);" class="btn" (mouseenter)="showDiv($event,'false','undefined')">
+                        <span class="fontsizesmall">Reports</span>
+                    </a>
+
+                </li>
+                <li id="projects_menu" class="" data-third-menu="">
+                    <a href="javascript:void(0);" class="btn" (mouseenter)="showDiv($event,'false','undefined')">
+                        <span class="fontsizesmall">Projects</span>
+                    </a>
+
+                </li>
+                <li id="settings_menu" class="" data-third-menu="campaign_settings_menu_index">
+                    <a href="javascript:void(0);" class="btn" (mouseenter)="showDiv($event,'true','settings')">
+                        <span class="fontsizesmall">Settings</span>
+                    </a>
+
+                </li>
+            </ul>
+        </div>
+
+    </div>
+    <div *ngIf="showdiv" class="grey-container solid box-shadow-header campaigndivfontsize">
+        <div *ngIf="showdiv && show=='seo'" class="third-level-menu-item pagewidth clearfix seo_menu_index active">
+            <ul id="page_menu" class="campaign-menu pull-right campulpaddingtop campaigndivfontsize">
+                <li id="overview_menu" class="no-third-nav" data-third-menu="">
+                    <a href="javascript:void(0);" class="btn">
+                        <span class="fontsizesmall">On Page</span>
+                    </a>
+
+                </li>
+                <li id="seo_menu" class="" data-third-menu="seo_menu_index">
+                    <a href="javascript:void(0);" class="btn" (click)="goToKeywords($event)">
+                        <span class="fontsizesmall">Keyword Rankings</span>
+                    </a>
+
+                </li>
+                <li id="local_seo_menu" class="active-link" data-third-menu="location_menu_index">
+                    <a href="javascript:void(0);" class="btn">
+                        <span class="fontsizesmall">Monthly Trend</span>
+                    </a>
+
+                </li>
+                <li id="reputation_menu" class="" data-third-menu="repman_menu_index">
+                    <a href="javascript:void(0);" class="btn">
+                        <span class="fontsizesmall">Reputation</span>
+                    </a>
+
+                </li>
+                <li id="analytics_menu" class="" data-third-menu="analytics_menu_index">
+                    <a href="javascript:void(0);" class="btn">
+                        <span class="fontsizesmall">Links Built</span>
+                    </a>
+
+                </li>
+            </ul>
+        </div>
+        <div *ngIf="showdiv && show=='gmb'" class="pagewidth clearfix ">
+            <ul id="page_menu" class="campaign-menu pull-right campulpaddingtop">
+                <li id="overview_menu" class="no-third-nav" data-third-menu="">
+                    <a href="javascript:void(0);" class="btn">
+                        <span class="fontsizesmall">Overview</span>
+                    </a>
+
+                </li>
+                <li id="seo_menu" class="" data-third-menu="seo_menu_index">
+                    <a href="javascript:void(0);" class="btn">
+                        <span class="fontsizesmall">Business Information</span>
+                    </a>
+
+                </li>
+                <li id="local_seo_menu" class="active-link" data-third-menu="location_menu_index">
+                    <a href="javascript:void(0);" class="btn">
+                        <span class="fontsizesmall">Reviwes</span>
+                    </a>
+
+                </li>
+                <li id="reputation_menu" class="" data-third-menu="repman_menu_index">
+                    <a href="javascript:void(0);" class="btn">
+                        <span class="fontsizesmall">Posts</span>
+                    </a>
+
+                </li>
+            </ul>
+        </div>
+        <div *ngIf="showdiv && show=='analytics'" class="pagewidth clearfix ">
+            <ul id="page_menu" class="campaign-menu pull-right campulpaddingtop">
+                <li id="overview_menu" class="no-third-nav paddingclass" data-third-menu="">
+                    <a href="javascript:void(0);" class="btn"
+                        (mouseenter)="acqusitionsubmenu=true;audiencesubmenu=false;behaviorsubmenu=false;conversionsubmenu=false"
+                        (click)="goToAcquisiton($event)">
+                        <span class="fontsizesmall">Acquistion</span>
+                    </a>
+
+                </li>
+                <li *ngIf="acqusitionsubmenu" id="overview_menu" class="no-third-nav paddingclass"
+                    [ngClass]="{'liactivebgcolor':acqusitionsubmenu == true}" data-third-menu="">
+                    <a href="javascript:void(0);" class="btn" (click)="goToAcquisitonTrafficSources($event)">
+                        <span class="fontsizesmall">Traffic Sources</span>
+                    </a>
+
+                </li>
+                <li *ngIf="acqusitionsubmenu" id="overview_menu" class="no-third-nav paddingclass"
+                    [ngClass]="{'liactivebgcolor':acqusitionsubmenu == true}" data-third-menu="">
+                    <a href="javascript:void(0);" class="btn" (click)="goToAcquisitonSourcesMediums($event)">
+                        <span class="fontsizesmall">Sources/Mediums</span>
+                    </a>
+
+                </li>
+                <li *ngIf="acqusitionsubmenu" id="overview_menu" class="no-third-nav paddingclass"
+                    [ngClass]="{'liactivebgcolor':acqusitionsubmenu == true}" data-third-menu="">
+                    <a href="javascript:void(0);" class="btn" (click)="goToAcquisitonCampaigns($event)">
+                        <span class="fontsizesmall">Campaigns</span>
+                    </a>
+
+                </li>
+                <li id="overview_menu" class="no-third-nav paddingclass" data-third-menu="">
+                    <a href="javascript:void(0);" class="btn"
+                        (mouseenter)="audiencesubmenu=true;acqusitionsubmenu=false;behaviorsubmenu=false;conversionsubmenu=false"
+                        (click)="goToAudience($event)">
+                        <span class="fontsizesmall">Audience</span>
+                    </a>
+
+                </li>
+                <li *ngIf="audiencesubmenu" id="overview_menu" class="no-third-nav paddingclass"
+                    [ngClass]="{'liactivebgcolor':audiencesubmenu == true}" data-third-menu="">
+                    <a href="javascript:void(0);" class="btn" (click)="goToAudienceDeviceCategory($event)">
+                        <span class="fontsizesmall">Device Category</span>
+                    </a>
+
+                </li>
+                <li *ngIf="audiencesubmenu" id="overview_menu" class="no-third-nav paddingclass"
+                    [ngClass]="{'liactivebgcolor':audiencesubmenu == true}" data-third-menu="">
+                    <a href="javascript:void(0);" class="btn" (click)="goToAudienceGeoLocations($event)">
+                        <span class="fontsizesmall">Geo Locations</span>
+                    </a>
+
+                </li>
+                <li *ngIf="audiencesubmenu" id="overview_menu" class="no-third-nav paddingclass"
+                    [ngClass]="{'liactivebgcolor':audiencesubmenu == true}" data-third-menu="">
+                    <a href="javascript:void(0);" class="btn" (click)="goToAudienceLanguages($event)">
+                        <span class="fontsizesmall">Languages</span>
+                    </a>
+
+                </li>
+                <li id="overview_menu" class="no-third-nav paddingclass" data-third-menu=""
+                    [ngClass]="{'activeborderbottom': behaviorsubmenu == true}">
+                    <a href="javascript:void(0);" class="btn"
+                        (mouseenter)="behaviorsubmenu=true;audiencesubmenu=false;acqusitionsubmenu=false;conversionsubmenu=false"
+                        (click)="goToBehavior($event)">
+                        <span class="fontsizesmall">Behavior</span>
+                    </a>
+
+                </li>
+                <li *ngIf="behaviorsubmenu" id="overview_menu" class="no-third-nav paddingclass"
+                    [ngClass]="{'activeborderbottom': behaviorsubmenu == true}" data-third-menu="">
+                    <a href="javascript:void(0);" class="btn" (click)="goToBehaviorLandingPages($event)">
+                        <span class="fontsizesmall">Landing Pages</span>
+                    </a>
+
+                </li>
+                <li *ngIf="behaviorsubmenu" id="overview_menu" class="no-third-nav paddingclass"
+                    [ngClass]="{'activeborderbottom': behaviorsubmenu == true}" data-third-menu="">
+                    <a href="javascript:void(0);" class="btn" (click)="goToBehaviorEvent($event)">
+                        <span class="fontsizesmall">Events</span>
+                    </a>
+
+                </li>
+                <li *ngIf="behaviorsubmenu" id="overview_menu" class="no-third-nav paddingclass"
+                    [ngClass]="{'activeborderbottom': behaviorsubmenu == true}" data-third-menu="">
+                    <a href="javascript:void(0);" class="btn" (click)="goToBehaviorSiteSpeed($event)">
+                        <span class="fontsizesmall">Site Speed</span>
+                    </a>
+
+                </li>
+                <li id="overview_menu" class="no-third-nav paddingclass" data-third-menu=""
+                    [ngClass]="{'activeborderbottom': conversionsubmenu == true}">
+                    <a href="javascript:void(0);" class="btn"
+                        (mouseenter)="conversionsubmenu=true;behaviorsubmenu=false;audiencesubmenu=false;acqusitionsubmenu=false"
+                        (click)="goToConversions($event)">
+                        <span class="fontsizesmall">Conversions</span>
+                    </a>
+
+                </li>
+                <li *ngIf="conversionsubmenu" id="overview_menu" class="no-third-nav paddingclass"
+                    [ngClass]="{'activeborderbottom': conversionsubmenu == true}" data-third-menu="">
+                    <a href="javascript:void(0);" class="btn" (click)="goToConversionseCommerce($event)">
+                        <span class="fontsizesmall">eCommerce</span>
+                    </a>
+
+                </li>
+                <li *ngIf="conversionsubmenu" id="overview_menu" class="no-third-nav paddingclass"
+                    [ngClass]="{'activeborderbottom': conversionsubmenu == true}" data-third-menu="">
+                    <a href="javascript:void(0);" class="btn" (click)="goToConversionsGoals($event)">
+                        <span class="fontsizesmall">Goal Conversions</span>
+                    </a>
+
+                </li>
+            </ul>
+        </div>
+        <div *ngIf="showdiv && show=='ppc'" class="pagewidth clearfix ">
+            <ul id="page_menu" class="campaign-menu pull-right campulpaddingtop">
+                <li id="overview_menu" class="no-third-nav" data-third-menu="">
+                    <a href="javascript:void(0);" class="btn">
+                        <span class="fontsizesmall">Campaign</span>
+                    </a>
+
+                </li>
+                <li id="seo_menu" class="" data-third-menu="seo_menu_index">
+                    <a href="javascript:void(0);" class="btn">
+                        <span class="fontsizesmall">AdGroups</span>
+                    </a>
+
+                </li>
+                <li id="local_seo_menu" class="active-link" data-third-menu="location_menu_index">
+                    <a href="javascript:void(0);" class="btn">
+                        <span class="fontsizesmall">Ads</span>
+                    </a>
+
+                </li>
+                <li id="reputation_menu" class="" data-third-menu="repman_menu_index">
+                    <a href="javascript:void(0);" class="btn">
+                        <span class="fontsizesmall">Keywords</span>
+                    </a>
+
+                </li>
+            </ul>
+        </div>
+        <div *ngIf="showdiv && show=='settings'" class="pagewidth clearfix ">
+            <ul id="page_menu" class="campaign-menu pull-right campulpaddingtop">
+                <li id="overview_menu" class="no-third-nav" data-third-menu="">
+                    <a href="javascript:void(0);" class="btn">
+                        <span class="fontsizesmall">Intake Forms</span>
+                    </a>
+
+                </li>
+                <li id="seo_menu" class="" data-third-menu="seo_menu_index">
+                    <a href="javascript:void(0);" class="btn">
+                        <span class="fontsizesmall">Campaign Settings</span>
+                    </a>
+
+                </li>
+                <li id="local_seo_menu" class="active-link" data-third-menu="location_menu_index">
+                    <a href="javascript:void(0);" class="btn">
+                        <span class="fontsizesmall">Competitors</span>
+                    </a>
+
+                </li>
+                <li id="reputation_menu" class="" data-third-menu="repman_menu_index">
+                    <a href="javascript:void(0);" class="btn">
+                        <span class="fontsizesmall">Integrations</span>
+                    </a>
+
+                </li>
+                <li id="analytics_menu" class="" data-third-menu="analytics_menu_index">
+                    <a href="javascript:void(0);" class="btn">
+                        <span class="fontsizesmall">Campaign Users</span>
+                    </a>
+
+                </li>
+            </ul>
+        </div>
+    </div>
+
+    <div class="col-lg-12">
+
+        <div class="maindivanalyticsoverview"></div>
+
+        <div class="card card-default shadow bg-white rounded" (mouseenter)="showDiv($event,'true','analytics')">
+            <div class="card-header">
+                <div class="row borderBtm padding5">
+                    <h2 class="col-xs-12 col-12 col-md-5">Analytics Overview</h2>
+                    <div class="col-xs-12 col-12 col-md-3 form-group">
+                        <input type="input" placeholder="Select DateRange" class="form-control" bsDaterangepicker
+                            (bsValueChange)="onDateRangeSelect($event)"
+                            [bsConfig]="{ ranges: ranges, containerClass: 'theme-blue' }"
+                            [bsValue]="bsInlineRangeValue">
+                    </div>
+                    <div class="col-xs-12 col-12 col-md-3"></div>
+                    <div class="col-xs-12 col-12 col-md-1 fontsize15px">
+                        <i class="fa fa-info-circle paddingtop10px paddingleft20px"
+                            matTooltip="User interactions on the webiste within a given time frame"></i>
+                    </div>
+                    <!-- <div class="btn-group">
+                        <div class="btn-group" dropdown>
+                            <button id="button-basic" dropdownToggle type="input" class="btn campselectedname"
+                                aria-controls="dropdown-basic">
+                                {{selctedLabelName !== undefined ? selctedLabelName : 'select Label'}}
+                                <span class="caret"> </span>
+                            </button>
+                            <ul id="dropdown-basic" *dropdownMenu class="dropdown-menu camplisth" role="menu"
+                                aria-labelledby="button-basic">
+                                <li role="menuitem" *ngFor="let label of dropdownlabels"
+                                    [ngClass]="{'active': selectedLabel == label.id}"><a class="dropdown-item"
+                                        (click)="onLabelSelect($event,label)" href="javascript:void(0);">{{label.label}}</a></li>
+                            </ul>
+                        </div>
+                    </div> -->
+                    <!-- <p class="camph4">VS</p> -->
+                    <!-- <div class="btn-group">
+                        <div class="btn-group" dropdown>
+                            <button id="button-basic" dropdownToggle type="input" class="btn campselectedname"
+                                aria-controls="dropdown-basic">
+                                {{selctedLabelName1 !== undefined ? selctedLabelName1 : 'select Matrix'}}
+                                <span class="caret"> </span>
+                            </button>
+                            <ul id="dropdown-basic" *dropdownMenu class="dropdown-menu camplisth" role="menu"
+                                aria-labelledby="button-basic">
+                                <li role="menuitem" *ngFor="let label of dropdownlabels1"
+                                    [ngClass]="{'active': selectedLabel1 == label.id}"><a class="dropdown-item"
+                                        (click)="onLabelSelect1($event,label)" href="javascript:void(0);">{{label.label}}</a></li>
+                            </ul>
+                        </div>
+                    </div> -->
+
+                </div>
+
+            </div>
+            <div class="card-body row">
+                <div class="chart-wrapper mx-auto chart-container" *ngIf="hasActiveAccount && hasAuthorize">
+                    <div *ngIf="showSpinnerBaseChart" class="la-line-scale  linescaleloadercolortopleft">
+                        <div></div>
+                        <div></div>
+                        <div></div>
+                        <div></div>
+                        <div></div>
+                    </div>
+                    <canvas *ngIf="!showSpinnerBaseChart" baseChart [datasets]="lineChartData"
+                        [labels]="lineChartLabels" [options]="lineChartOptions" [colors]="lineChartColors"
+                        [legend]="lineChartLegend" [chartType]="lineChartType" [plugins]="lineChartPlugins"
+                        [fullWidth]="true">
+                    </canvas>
+                </div>
+
+
+                <!-- *ngIf="!hasActiveAccount && !hasAuthorize" -->
+                <div class="widget-overlay" *ngIf="!hasActiveAccount && !hasAuthorize">
+                    <div class="widget-overlay-content text-center">
+                        <h2 class="colorintegrateanalytics">Integrate Analytics</h2>
+                        <div class="text-center btn-container">
+                            <a class="btn ganalyticsbackgcolor" (click)="goToOverview()"> <span></span>
+                                &nbsp;&nbsp;Integrate Google Analytics</a>
+                            <!-- <img src="assets/img/ga.png"> -->
+                        </div>
+                    </div>
+
+                </div>
 
             </div>
         </div>
     </div>
-    <div class="col-md-1"></div>
+
+    <div class="col-lg-12">
+        <div class="col-lg-4">
+
+
+
+            <div class="card card-default shadow bg-white rounded height400px">
+                <div class="card-header">
+                    <div class="row borderBtm padding5">
+                        <h2 class="col-xs-12 col-12 col-md-10 fontsize15px">Channels</h2>
+                        <div class="col-xs-12 col-12 col-md-1 fontsize15px">
+                            <i class="fa fa-info-circle paddingtop10px"
+                                matTooltip="Groupings of different traffic sources"></i>
+                        </div>
+                    </div>
+
+                </div>
+                <div class="widget-content">
+                    <div *ngIf="showSpinnerSiteAnalysisContent" class="la-line-scale  linescaleloadercolortopleft">
+                        <div></div>
+                        <div></div>
+                        <div></div>
+                        <div></div>
+                        <div></div>
+                    </div>
+                    <div *ngIf=" !showSpinnerSiteAnalysisContent">
+                        <canvas id='dougnutChart' baseChart [chartType]="'doughnut'" [options]="doughnutOptions"
+                            [datasets]="doughnutData.datasets" [labels]="doughnutData.labels" [legend]="true"
+                            height="250"></canvas>
+                        <div class="btn-container footer-buttonsabsolute text-center">
+                            <a href="javascript:void(0)" class="btn btn-link"
+                                (click)="goToAcquisitonTrafficSources($event)">See More</a>
+                            &nbsp;&nbsp;&nbsp;
+                        </div>
+                    </div>
+                </div>
+
+            </div>
+        </div>
+        <div class="col-lg-4">
+
+
+
+            <div class="card card-default shadow bg-white rounded height400px">
+                <div class="card-header">
+                    <div class="row borderBtm padding5">
+                        <h2 class="col-xs-12 col-12 col-md-10 fontsize15px">Top Landing Pages</h2>
+                        <div class="col-xs-12 col-12 col-md-1 fontsize15px">
+                            <i class="fa fa-info-circle paddingtop10px"
+                                matTooltip="Most popular landing pages on the website"></i>
+                        </div>
+                    </div>
+
+                </div>
+                <div class="widget-content">
+                    <div *ngIf="showSpinnerSiteAnalysisContent" class="la-line-scale  linescaleloadercolortopleft">
+                        <div></div>
+                        <div></div>
+                        <div></div>
+                        <div></div>
+                        <div></div>
+                    </div>
+                    <div *ngIf=" !showSpinnerSiteAnalysisContent"
+                        class="site-analysis-content">
+                        <div class="row" *ngFor="let landingPages of top5landingPagesData ">
+                            <div class="col-md-9">
+                                <h4 class="text-link">{{landingPages.name}}</h4>
+                            </div>
+                            <div class="col-md-3 text-right">
+                                <span class="badge badge-blue text-smaller text-bold">{{landingPages.pageviews}}</span>
+                            </div>
+                        </div>
+                        <div class="btn-container footer-buttonsabsolute text-center">
+                            <a href="javascript:void(0)" class="btn btn-link"
+                                (click)="goToBehaviorLandingPages($event)">See More</a>
+                            &nbsp;&nbsp;&nbsp;
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="col-lg-4">
+
+
+
+            <div class="card card-default shadow bg-white rounded height400px">
+                <div class="card-header">
+                    <div class="row borderBtm padding5">
+                        <h2 class="col-xs-12 col-12 col-md-10 fontsize15px">Goal Conversions</h2>
+                        <div class="col-xs-12 col-12 col-md-1 fontsize15px">
+                            <i class="fa fa-info-circle paddingtop10px"
+                                matTooltip="Metric used to measure a completed activity for a specific action"></i>
+                        </div>
+                    </div>
+
+                </div>
+                <div class="widget-content">
+                    <div *ngIf="showSpinnerSiteAnalysisContent" class="la-line-scale  linescaleloadercolortopleft">
+                        <div></div>
+                        <div></div>
+                        <div></div>
+                        <div></div>
+                        <div></div>
+                    </div>
+                    <div *ngIf=" !showSpinnerSiteAnalysisContent"
+                        class="site-analysis-content">
+                        <div class="empty-widget-container text-center">
+                            <div class="empty-widget-icon"></div>
+                            <h3>No data to show yet.</h3>
+                            <p>Goal Conversions will show here.</p>
+                        </div>
+                        <div class="btn-container footer-buttonsabsolute text-center">
+                            <a href="javascript:void(0)" class="btn btn-link" (click)="goToConversionsGoals($event)">See
+                                More</a>
+                            &nbsp;&nbsp;&nbsp;
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="col-lg-12">
+        <div class="col-lg-4">
+
+
+
+            <div class="card card-default shadow bg-white rounded height400px">
+                <div class="card-header">
+                    <div class="row borderBtm padding5">
+                        <h2 class="col-xs-12 col-12 col-md-10 fontsize15px">Geo Location</h2>
+                        <div class="col-xs-12 col-12 col-md-1 fontsize15px">
+                            <i class="fa fa-info-circle paddingtop10px"
+                                matTooltip="Geographical data to show where most of the traffic comes from"></i>
+                        </div>
+                    </div>
+
+                </div>
+                <div class="widget-content">
+                    <div *ngIf="showSpinnerSiteAnalysisContent" class="la-line-scale  linescaleloadercolortopleft">
+                        <div></div>
+                        <div></div>
+                        <div></div>
+                        <div></div>
+                        <div></div>
+                    </div>
+                    <div *ngIf=" !showSpinnerSiteAnalysisContent">
+
+                        <div class="row" *ngFor="let geolocation of top5geoLocationsData ">
+                            <div class="col-md-6">
+                                <h4 class="text-blue">{{geolocation.name}}</h4>
+                            </div>
+                            <div class="col-md-2 text-right">
+                                {{geolocation.sessions}}
+                            </div>
+                            <div class="col-md-4">
+                                <div class="progress">
+                                    <div data-percentage="0%" [style.width.%]="geolocation.sessions/10"
+                                        class="progress-bar progress-bar-blue" role="progressbar" aria-valuemin="0"
+                                        aria-valuemax="1000"></div>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="btn-container footer-buttonsabsolute text-center">
+                            <a href="javascript:void(0)" class="btn btn-link"
+                                (click)="goToAudienceGeoLocations($event)">See More</a>
+                            &nbsp;&nbsp;&nbsp;
+                        </div>
+                    </div>
+
+                </div>
+            </div>
+        </div>
+        <div class="col-lg-4">
+
+
+
+            <div class="card card-default shadow bg-white rounded height400px">
+                <div class="card-header">
+                    <div class="row borderBtm padding5">
+                        <h2 class="col-xs-12 col-12 col-md-10 fontsize15px">Top Languages</h2>
+                        <div class="col-xs-12 col-12 col-md-1 fontsize15px">
+                            <i class="fa fa-info-circle paddingtop10px"
+                                matTooltip="Distribution of users according to language"></i>
+                        </div>
+                    </div>
+
+                </div>
+                <div class="widget-content">
+                    <div *ngIf="showSpinnerSiteAnalysisContent" class="la-line-scale  linescaleloadercolortopleft">
+                        <div></div>
+                        <div></div>
+                        <div></div>
+                        <div></div>
+                        <div></div>
+                    </div>
+                    <div *ngIf=" !showSpinnerSiteAnalysisContent"
+                        class="site-analysis-content">
+                        <div class="row" *ngFor="let languages of top5languagesData">
+                            <div class="col-md-6">
+                                <h4 class="text-link">{{languages.name}}</h4>
+                            </div>
+                            <div class="col-md-6 text-right">
+                                <span class="badge badge-blue text-smaller text-bold">{{languages.users}}</span>
+                            </div>
+                        </div>
+                        <div class="btn-container footer-buttonsabsolute text-center">
+                            <a href="javascript:void(0)" class="btn btn-link"
+                                (click)="goToAudienceLanguages($event)">See More</a>
+                            &nbsp;&nbsp;&nbsp;
+                        </div>
+                    </div>
+                </div>
+
+            </div>
+        </div>
+        <div class="col-lg-4">
+
+
+
+            <div class="card card-default shadow bg-white rounded height400px">
+                <div class="card-header">
+                    <div class="row borderBtm padding5">
+                        <h2 class="col-xs-12 col-12 col-md-10 fontsize15px">Device Category</h2>
+                        <div class="col-xs-12 col-12 col-md-1 fontsize15px">
+                            <i class="fa fa-info-circle paddingtop10px"
+                                matTooltip="Distribution of users according to device used in accessing the site"></i>
+                        </div>
+                    </div>
+
+                </div>
+                <div class="widget-content">
+                    <div *ngIf="showSpinnerSiteAnalysisContent" class="la-line-scale  linescaleloadercolortopleft">
+                        <div></div>
+                        <div></div>
+                        <div></div>
+                        <div></div>
+                        <div></div>
+                    </div>
+                    <div *ngIf=" !showSpinnerSiteAnalysisContent">
+                        <div>
+                            <canvas id='dougnutChart1' baseChart [chartType]="'doughnut'" [options]="doughnutOptions1"
+                                [datasets]="doughnutData1.datasets" [labels]="doughnutData1.labels" [legend]="true"
+                                height="250"></canvas>
+                        </div>
+                        <div class="btn-container footer-buttonsabsolute text-center">
+                            <a href="javascript:void(0)" class="btn btn-link"
+                                (click)="goToAudienceDeviceCategory($event)">See More</a>
+                            &nbsp;&nbsp;&nbsp;
+                        </div>
+                    </div>
+                </div>
+
+            </div>
+        </div>
+    </div>
+
+    <!-- <div class="col-lg-4">
+
+
+
+        <div class="card card-default shadow bg-white rounded height400px">
+            <div class="card-header">
+                <div class="row borderBtm padding5">
+                    <h2 class="col-xs-12 col-12 col-md-6 fontsize15px">Backlinks Analysis</h2>
+                    <div class="col-xs-12 col-12 col-md-4 fontsize15px">
+                    <i class="fa fa-info-circle paddingtop8px paddingleft220px" 
+                    matTooltip="Displays elements that are crucial to website performance"></i>
+                </div>
+                </div>
+
+            </div>
+            <div class="widget-content">
+                <div class="backlinks-analysis-content">
+                    <div class="row">
+                        <div class="col-md-6">
+                            <h4 class="text-blue fontsize15px">Indexed Domains</h4>
+                        </div>
+                        <div class="col-md-6 text-right">
+                            <span class="badge badge-blue text-smaller text-bold">2</span>
+                        </div>
+                    </div>
+                    <div class="row">
+                        <div class="col-md-6">
+                            <h4 class="text-blue fontsize15px">Total Backlinks</h4>
+                        </div>
+                        <div class="col-md-6 text-right">
+                            <span class="badge badge-blue text-smaller text-bold">6</span>
+                        </div>
+                    </div>
+                    <div class="row">
+                        <div class="col-md-6">
+                            <h4 class="text-blue fontsize15px">Citation Flow</h4>
+                        </div>
+                        <div class="col-md-6 text-right">
+                            <span class="badge badge-blue text-smaller text-bold">11</span>
+                        </div>
+                    </div>
+                    <div class="row">
+                        <div class="col-md-6">
+                            <h4 class="text-blue fontsize15px">Referrring Domains</h4>
+                        </div>
+                        <div class="col-md-6 text-right">
+                            <span class="badge badge-blue text-smaller text-bold">4</span>
+                        </div>
+                    </div>
+                    <div class="row">
+                        <div class="col-md-6">
+                            <h4 class="text-blue fontsize15px">Referrring IP</h4>
+                        </div>
+                        <div class="col-md-6 text-right">
+                            <span class="badge badge-blue text-smaller text-bold">4</span>
+                        </div>
+                    </div>
+                    <div class="row">
+                        <div class="col-md-6">
+                            <h4 class="text-blue fontsize15px">Referring Subnet</h4>
+                        </div>
+                        <div class="col-md-6 text-right">
+                            <span class="badge badge-blue text-smaller text-bold">4</span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div> -->
 </div>

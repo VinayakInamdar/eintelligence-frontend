@@ -48,6 +48,23 @@ const Integrations = {
     icon: "fas fa-cogs"
 };
 
+const Leads = {
+    text: 'Leads',
+    link: '/leads',
+    icon: "fa fa-book"
+};
+
+const Proposal = {
+    text: 'Proposal',
+    link: '/proposal',
+    icon: "fas fa-sticky-note"
+};
+const Todolist = {
+    text: 'Todo',
+    link: '/todo',
+    icon: "fas fa-list-alt"
+};
+
 // const Register = {
 //     text: 'Register',
 //     link: '/register',
@@ -83,5 +100,8 @@ export const menu = [
     Store,
     Admin,
     Campaign,
-    Integrations
+    Integrations,
+    Leads,
+    Proposal,
+    Todolist,
 ];

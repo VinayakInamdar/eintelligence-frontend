@@ -26,7 +26,7 @@ export class HeaderComponent implements OnInit {
     constructor(public menu: MenuService, public userblockService: UserblockService, public settings: SettingsService, public injector: Injector) {
 
         // show only a few items on demo
-        this.menuItems = menu.getMenu().slice(0, 4); // for horizontal layout
+        this.menuItems = menu.getMenu().slice(Math.max(menu.getMenu().length - 3,1)); // for horizontal layout
 
     }
 

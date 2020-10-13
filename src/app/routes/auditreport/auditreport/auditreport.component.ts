@@ -21,6 +21,7 @@ export class AuditreportComponent implements OnInit {
   on_page_seo : object;
   summary = 'summary';
   pages = 'pages';
+  domain: string;
   looking
   critical : object = {
     organic_traffic : '',
@@ -60,6 +61,7 @@ export class AuditreportComponent implements OnInit {
            ssl: s.ssl,
            sslcertificate : s.ssl_certificate_valid
          }
+         this.domain = 'https://www.' + s.domain
 
           this.technical_seo = {
             have_sitemap : s.have_sitemap,
