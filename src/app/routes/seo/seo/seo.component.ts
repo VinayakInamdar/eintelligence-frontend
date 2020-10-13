@@ -779,27 +779,49 @@ export class SeoComponent implements OnInit {
     var array4 = []
     var array5 = []
     this.trafficsourcedate = { display: [], medium: [], referral: [], social: [], source: [] }
-    reportDates[0]['date'].map((s, i) => {
-      var date = this.changeDatesFormat(s, i)
-      array1.push({ date: date, sessions: reportDates[0]['sessions'][i] })
-    }, this.trafficsourcedate.display = array1)
-    reportDates[1]['date'].map((s, i) => {
-      var date = this.changeDatesFormat(s, i)
-      array2.push({ date: date, sessions: reportDates[1]['sessions'][i] })
-    }, this.trafficsourcedate.medium = array2)
-    reportDates[2]['date'].map((s, i) => {
-      var date = this.changeDatesFormat(s, i)
-      array3.push({ date: date, sessions: reportDates[2]['sessions'][i] })
-    }, this.trafficsourcedate.referral = array3)
 
-    reportDates[3]['date'].map((s, i) => {
-      var date = this.changeDatesFormat(s, i)
-      array4.push({ date: date, sessions: reportDates[3]['sessions'][i] })
-    }, this.trafficsourcedate.social = array4)
-    reportDates[4]['date'].map((s, i) => {
-      var date = this.changeDatesFormat(s, i)
-      array5.push({ date: date, sessions: reportDates[4]['sessions'][i] })
-    }, this.trafficsourcedate.source = array5)
+    if(reportDates.length == 1 && reportDates[0]['date']){
+      reportDates[0]['date'].map((s, i) => {
+        var date = this.changeDatesFormat(s, i)
+        array1.push({ date: date, sessions: reportDates[0]['sessions'][i] })
+      }, this.trafficsourcedate.display = array1)
+    }
+
+    if(reportDates.length == 2 && reportDates[1]['date']){
+      reportDates[1]['date'].map((s, i) => {
+        var date = this.changeDatesFormat(s, i)
+        array2.push({ date: date, sessions: reportDates[1]['sessions'][i] })
+      }, this.trafficsourcedate.medium = array2)
+    }
+
+    if(reportDates.length == 3 && reportDates[2]['date']){
+      reportDates[2]['date'].map((s, i) => {
+        var date = this.changeDatesFormat(s, i)
+        array3.push({ date: date, sessions: reportDates[2]['sessions'][i] })
+      }, this.trafficsourcedate.referral = array3)
+    }
+
+    if(reportDates.length == 4 && reportDates[3]['date']){
+      reportDates[3]['date'].map((s, i) => {
+        var date = this.changeDatesFormat(s, i)
+        array4.push({ date: date, sessions: reportDates[3]['sessions'][i] })
+      }, this.trafficsourcedate.social = array4)
+    }
+
+    if(reportDates.length == 5 && reportDates[4]['date']){
+      reportDates[4]['date'].map((s, i) => {
+        var date = this.changeDatesFormat(s, i)
+        array5.push({ date: date, sessions: reportDates[4]['sessions'][i] })
+      }, this.trafficsourcedate.source = array5)
+    }
+
+  
+   
+   
+    
+
+    
+    
     var from = new Date(this.startDate);
     var to = new Date(this.endDate);
     var dates = []
@@ -927,8 +949,8 @@ export class SeoComponent implements OnInit {
           return s.taskId
         }
       })
-
-      var taskId = selectedCampTaskId[0].taskId
+    if(selectedCampTaskId[0]){
+      var taskId = selectedCampTaskId[0].taskId;
       this.selectedCampaignTaskId = taskId.toString()
       this.auditsService.getOnPageData(this.selectedCampaignTaskId).subscribe(res => {
         var technical_seo = {}
@@ -944,6 +966,8 @@ export class SeoComponent implements OnInit {
         })
         this.showSpinnerSiteAnalysisContent = false;
       })
+      }
+     
 
     })
   }

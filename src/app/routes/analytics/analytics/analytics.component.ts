@@ -633,22 +633,26 @@ export class AnalyticsComponent implements OnInit {
         }
       })
 
-      var taskId = selectedCampTaskId[0].taskId
-      this.selectedCampaignTaskId = taskId.toString()
-      this.auditsService.getOnPageData(this.selectedCampaignTaskId).subscribe(res => {
-        var technical_seo = {}
-        var on_page_seo = {}
-        res['summary'].map((s, i) => {
-          this.securitySection = {
-            ssl: s.ssl,
-            sslcertificate: s.ssl_certificate_valid,
-            have_sitemap: s.have_sitemap,
-            have_robots: s.have_robots
-          }
-
+      if(selectedCampTaskId[0]){
+        var taskId = selectedCampTaskId[0].taskId;
+        this.selectedCampaignTaskId = taskId.toString()
+        this.auditsService.getOnPageData(this.selectedCampaignTaskId).subscribe(res => {
+          var technical_seo = {}
+          var on_page_seo = {}
+          res['summary'].map((s, i) => {
+            this.securitySection = {
+              ssl: s.ssl,
+              sslcertificate: s.ssl_certificate_valid,
+              have_sitemap: s.have_sitemap,
+              have_robots: s.have_robots
+            }
+  
+          })
+  
         })
+      }
 
-      })
+     
 
     })
   }

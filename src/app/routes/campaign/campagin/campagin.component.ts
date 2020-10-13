@@ -452,8 +452,35 @@ export class CampaginComponent implements OnInit, AfterViewInit {
       res => {
         this.campaignService.GetTrafficSourcesReports(this.selectedCampId, this.startDate, this.endDate).subscribe(
           trafficsourcers => {
-            var array = [trafficsourcers['display'], trafficsourcers['medium'], trafficsourcers['referral'],
-            trafficsourcers['social'], trafficsourcers['source']]
+            var array = [];
+
+            
+            
+            if(trafficsourcers['display'] != null ){
+                array.push(trafficsourcers['display']);
+            }
+            if(trafficsourcers['medium']){
+              array.push(trafficsourcers['medium']);
+            }
+
+            if(trafficsourcers['referral']){
+              array.push(trafficsourcers['referral']);
+            }
+
+            if(trafficsourcers['social']){
+              array.push(trafficsourcers['social']);
+            }
+
+            if(trafficsourcers['source']){
+
+              array.push(trafficsourcers['source']);
+            }
+
+            if(trafficsourcers['display']){
+              array.push(trafficsourcers['display']);
+            }
+            
+
             this.convertToLineChartsLabels(array)
 
           })
@@ -493,27 +520,45 @@ export class CampaginComponent implements OnInit, AfterViewInit {
     var array4 = []
     var array5 = []
     this.trafficsourcedate = { display: [], medium: [], referral: [], social: [], source: [] }
-    reportDates[0]['date'].map((s, i) => {
-      var date = this.changeDatesFormat(s, i)
-      array1.push({ date: date, sessions: reportDates[0]['sessions'][i] })
-    }, this.trafficsourcedate.display = array1)
-    reportDates[1]['date'].map((s, i) => {
-      var date = this.changeDatesFormat(s, i)
-      array2.push({ date: date, sessions: reportDates[1]['sessions'][i] })
-    }, this.trafficsourcedate.medium = array2)
-    reportDates[2]['date'].map((s, i) => {
-      var date = this.changeDatesFormat(s, i)
-      array3.push({ date: date, sessions: reportDates[2]['sessions'][i] })
-    }, this.trafficsourcedate.referral = array3)
 
-    reportDates[3]['date'].map((s, i) => {
-      var date = this.changeDatesFormat(s, i)
-      array4.push({ date: date, sessions: reportDates[3]['sessions'][i] })
-    }, this.trafficsourcedate.social = array4)
+    if(reportDates.length == 1 && reportDates[0]['date']){
+      reportDates[0]['date'].map((s, i) => {
+        var date = this.changeDatesFormat(s, i)
+        array1.push({ date: date, sessions: reportDates[0]['sessions'][i] })
+      }, this.trafficsourcedate.display = array1)
+    }
+
+if(reportDates.length == 2 && reportDates[1]['date']){
+  reportDates[1]['date'].map((s, i) => {
+    var date = this.changeDatesFormat(s, i)
+    array2.push({ date: date, sessions: reportDates[1]['sessions'][i] })
+  }, this.trafficsourcedate.medium = array2)
+}
+
+if(reportDates.length == 3 && reportDates[2]['date']){
+  reportDates[2]['date'].map((s, i) => {
+    var date = this.changeDatesFormat(s, i)
+    array3.push({ date: date, sessions: reportDates[2]['sessions'][i] })
+  }, this.trafficsourcedate.referral = array3)
+
+}
+
+if(reportDates.length == 4 && reportDates[3]['date']){
+  reportDates[3]['date'].map((s, i) => {
+    var date = this.changeDatesFormat(s, i)
+    array4.push({ date: date, sessions: reportDates[3]['sessions'][i] })
+  }, this.trafficsourcedate.social = array4)
+}
+   
+  if(reportDates.length == 5 &&  reportDates[4]['date']){
     reportDates[4]['date'].map((s, i) => {
       var date = this.changeDatesFormat(s, i)
       array5.push({ date: date, sessions: reportDates[4]['sessions'][i] })
     }, this.trafficsourcedate.source = array5)
+  }
+
+   
+    
     var from = new Date(this.startDate);
     var to = new Date(this.endDate);
     var dates = []
@@ -640,22 +685,25 @@ export class CampaginComponent implements OnInit, AfterViewInit {
         }
       })
 
-      var taskId = selectedCampTaskId[0].taskId
-      this.selectedCampaignTaskId = taskId.toString()
-      this.auditsService.getOnPageData(this.selectedCampaignTaskId).subscribe(res => {
-        var technical_seo = {}
-        var on_page_seo = {}
-        res['summary'].map((s, i) => {
-          this.securitySection = {
-            ssl: s.ssl,
-            sslcertificate: s.ssl_certificate_valid,
-            have_sitemap: s.have_sitemap,
-            have_robots: s.have_robots
-          }
-
+      if(selectedCampTaskId[0]){
+        var taskId = selectedCampTaskId[0].taskId;
+        this.selectedCampaignTaskId = taskId.toString()
+        this.auditsService.getOnPageData(this.selectedCampaignTaskId).subscribe(res => {
+          var technical_seo = {}
+          var on_page_seo = {}
+          res['summary'].map((s, i) => {
+            this.securitySection = {
+              ssl: s.ssl,
+              sslcertificate: s.ssl_certificate_valid,
+              have_sitemap: s.have_sitemap,
+              have_robots: s.have_robots
+            }
+  
+          })
+          this.showSpinnerSiteAnalysisContent = false;
         })
-        this.showSpinnerSiteAnalysisContent = false;
-      })
+      }
+     
 
     })
   }
@@ -693,7 +741,7 @@ export class CampaginComponent implements OnInit, AfterViewInit {
   }
 
   // using to navigate to overview page to view anlytics of selected campaign
-  public onCampaignSelect(selectedCampaign) {
+  public onCampaignSelect(event,selectedCampaign) {
     this.selectedCampaignName = selectedCampaign.name
     this.selectedCampId = selectedCampaign.id
     this.router.navigate(['/campaign', { id: this.selectedCampId }]);

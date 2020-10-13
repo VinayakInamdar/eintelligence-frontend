@@ -299,7 +299,16 @@ export class AcquisitionComponent implements OnInit {
         this.campaignService.GetCampaignReports(this.selectedCampId, this.startDate, this.endDate).subscribe(
           campaignres => {
             this.reportsData = res;
-            var campaignreport = [campaignres['campaignNotSet'], campaignres['campaign'][0],]
+            
+            var campaignreport = [];
+            if(campaignres['campaignNotSet']){
+              campaignreport.push(campaignres['campaignNotSet']);
+            }
+
+            if(campaignres['campaign'] && campaignres['campaign'].length == 1 && campaignres['campaign'][0]){
+              campaignreport.push(campaignres['campaign'][0]);
+            }
+            
             this.dateLabels = this.reportsData.gaPreparedDataDto.date;
             this.source = new LocalDataSource(campaignreport);
             this.convertToLineChartsLabels(this.reportsData.gaPreparedDataDto.date)
