@@ -1,55 +1,56 @@
 
 const Home = {
-    text: 'Home',
+    text: 'Dashboard',
     link: '/home',
     icon: 'fas fa-home',
 };
-const User = {
-    text: 'User',
-    link: '/user',
-    icon: "fa fa-user"
-};
-const Account = {
-    text: 'Account',
-    link: '/account',
-    icon: "fa fa-user-plus",
-    // submenu: [
-    //     {
-    //         text: 'Account Setting',
-    //          link: '/account/accountsetting'
-    //     },
-    //     {
-    //         text: 'Branding',
-    //         link: '/account/branding'
-    //     }
-    // ]
-};
+// const User = {
+//     text: 'User',
+//     link: '/user',
+//     icon: "fa fa-user"
+// };
+// const Account = {
+//     text: 'Account',
+//     link: '/account',
+//     icon: "fa fa-user-plus",
+//     // submenu: [
+//     //     {
+//     //         text: 'Account Setting',
+//     //          link: '/account/accountsetting'
+//     //     },
+//     //     {
+//     //         text: 'Branding',
+//     //         link: '/account/branding'
+//     //     }
+//     // ]
+// };
 
-const Store = {
-    text: 'Store',
+const Fulfillment = {
+    text: 'Fulfillment',
     link: '/store',
     icon: "fas fa-store"
 };
-const Admin = {
-    text: 'Admin',
-    link: '/admin',
-    icon: "fas fa-user-shield"
-};
+
+// const Admin = {
+//     text: 'Admin',
+//     link: '/admin',
+//     icon: "fas fa-user-shield"
+// };
 
 const Campaign = {
-    text: 'Campaign',
+    text: 'Projects',
     link: '/campaign',
     icon: "fa fa-bullhorn"
 };
 
-const Integrations = {
-    text: 'Integrnations',
-    link: '/integrations/:id',
-    icon: "fas fa-cogs"
-};
+// const Integrations = {
+//     text: 'Integrnations',
+//     link: '/integrations/:id',
+//     icon: "fas fa-cogs"
+// };
 
 const Leads = {
-    text: 'Leads',
+    text: 'CRM',
     link: '/leads',
     icon: "fa fa-book"
 };
@@ -60,10 +61,18 @@ const Proposal = {
     icon: "fas fa-sticky-note"
 };
 const Todolist = {
-    text: 'Todo',
+    text: 'Tasks',
     link: '/todo',
     icon: "fas fa-list-alt"
 };
+
+const Reports = {
+    text: 'Reports',
+    link: '/reports',
+    icon: "fas fa-list-alt"
+};
+
+
 
 // const Register = {
 //     text: 'Register',
@@ -95,13 +104,17 @@ const headingMain = {
 export const menu = [
     headingMain,
     Home,
-    User,
-    Account,
-    Store,
-    Admin,
     Campaign,
-    Integrations,
+    Fulfillment, 
+    Reports,
+   // User,
+    //Account,
+  //  Store,
+    //Admin,
+   
+   //Integrations,
     Leads,
     Proposal,
-    Todolist,
+    Todolist
+   
 ];

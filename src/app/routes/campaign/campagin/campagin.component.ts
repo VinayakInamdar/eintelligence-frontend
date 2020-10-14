@@ -295,7 +295,7 @@ export class CampaginComponent implements OnInit, AfterViewInit {
       pointHoverBorderColor: 'white'
     },];
 
-  barOptions = {
+  barOptions = {  
     scaleShowVerticalLines: false,
     responsive: true,
     legend: {

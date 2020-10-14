@@ -28,6 +28,62 @@ export class HomeComponent implements OnInit {
         positionClass: 'toast-bottom-right',
         showCloseButton: true
     });
+    public pieChartLabels1 = ['Positive', 'Negative', 'Neutral'];
+    public pieChartData1 = [5, 1, 1];
+    public pieChartType1 = 'pie';
+    public pieOptions1 = { 
+      legend: {
+      display: false
+            }
+    };
+ 
+    public pieChartLabels2 = ['Positive', 'Negative', 'Neutral'];
+    public pieChartData2 = ['75' , '36', '55'];
+    public pieChartType2 = 'pie';
+    public pieOptions2 = { 
+      legend: {
+      display: false
+            }
+    };
+
+
+    public pieChartLabels3 = ['Positive', 'Negative', 'Neutral'];
+    public pieChartData3 = ['85', '75', '65'];
+    public pieChartType3 = 'pie';
+    public pieOptions3 = { 
+      legend: {
+      display: false
+            }
+    };
+
+    public pieChartLabels4 = ['Positive', 'Negative', 'Neutral'];
+    public pieChartData4 = ['45', '66', '59'];
+    public pieChartType4 = 'pie';
+    public pieOptions4 = { 
+      legend: {
+      display: false
+            }
+    };
+
+    public pieChartLabels5 = ['Positive', 'Negative', 'Neutral'];
+    public pieChartData5 = ['45', '88', '52'];
+    public pieChartType5 = 'pie';
+    public pieOptions5 = { 
+      legend: {
+      display: false
+            }
+    };
+
+    public pieChartLabels6 = ['Positive', 'Negative', 'Neutral'];
+    public pieChartData6 = ['25', '66', '70'];
+    public pieChartType6 = 'pie';
+    public pieOptions6 = { 
+      legend: {
+      display: false
+            }
+    };
+
+
     constructor( public http: HttpClient, public campaignService: CampaignService, private router: Router,
       public auditsService:AuditsService,public toasterService: ToasterService,public toastr : ToastrService
       ,fb: FormBuilder,) { 
@@ -54,16 +110,20 @@ export class HomeComponent implements OnInit {
             title: 'WEBURL',
             filter: false
           },
-          moreTraffic: {
-            title: 'MORE TRAFFIC',
+          ranking: {
+            title: 'RANKING',
             filter : false
           },
-          sales: {
-            title: 'SALES',
+          traffic: {
+            title: 'TRAFFIC',
             filter : false
           },
-          leadGeneration: {
-            title: 'LEAD GENERATION',
+          socialMedia: {
+            title: 'SOCIAL MEDIA',
+            filter : false
+          },
+          googleLeads: {
+            title: 'GOOGLE LEADS',
             filter : false
           }
         }
@@ -77,8 +137,32 @@ export class HomeComponent implements OnInit {
       //  using to get campaignList
     public getCampaignList(): void {
         this.campaignService.getCampaign().subscribe(res => {
-            this.campaignList = res;
+
+         res[0].ranking = 2;
+         res[1].ranking = 3;
+         res[2].ranking = 0;
+         res[3].ranking = -1;     
+         
+         res[0].traffic = '75%';
+         res[1].traffic = '36%';
+         res[2].traffic = '55%';
+         res[3].traffic = '56%';  
+
+
+         res[0].socialMedia ='85%'
+         res[1].socialMedia = '75%'
+         res[2].socialMedia = '45%'
+         res[3].socialMedia = '65%' 
+
+         res[0].googleLeads = '45%'
+         res[1].googleLeads = '45%'
+         res[2].googleLeads = '75%'
+         res[3].googleLeads = '25%'  
+            
+         this.campaignList = res;            
             this.tableData = this.campaignList;
+
+
             this.source = new LocalDataSource(this.campaignList)             
         });
     }

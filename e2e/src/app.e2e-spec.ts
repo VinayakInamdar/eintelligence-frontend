@@ -10,7 +10,7 @@ describe('ng2angle App', () => {
 
   it('should display Angle in h1 tag', () => {
     page.navigateTo();
-    expect(page.getParagraphText()).toEqual('e-I Dashboard');
+    expect(page.getParagraphText()).toEqual('White Label Board');
   });
 
   afterEach(async () => {
