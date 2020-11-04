@@ -9,6 +9,9 @@ import { AuditsService } from '../../audits/audits.service';
 import { ToasterService, ToasterConfig } from 'angular2-toaster/angular2-toaster';
 import { ToastrService } from 'ngx-toastr';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
+import { OpenIdConnectService } from '../../../shared/services/open-id-connect.service';
+import { AccountService } from '../../account/account.service';
+
 
 
 @Component({
@@ -28,6 +31,10 @@ export class HomeComponent implements OnInit {
         positionClass: 'toast-bottom-right',
         showCloseButton: true
     });
+
+    CompanyID:string;
+    companyinformation:any;
+
     public pieChartLabels1 = ['Positive', 'Negative', 'Neutral'];
     public pieChartData1 = [5, 1, 1];
     public pieChartType1 = 'pie';
@@ -86,8 +93,9 @@ export class HomeComponent implements OnInit {
 
     constructor( public http: HttpClient, public campaignService: CampaignService, private router: Router,
       public auditsService:AuditsService,public toasterService: ToasterService,public toastr : ToastrService
-      ,fb: FormBuilder,) { 
+      ,fb: FormBuilder,private openIdConnectService: OpenIdConnectService,private accountService: AccountService) { 
         this.getCampaignList();
+        this.getCompany();
         this.toaster = {
           type: 'success',
           title: 'Audit report',
@@ -130,12 +138,33 @@ export class HomeComponent implements OnInit {
       };
       source: LocalDataSource;
       public campaignList: Campaign[];
+      
 
     ngOnInit() {
+    }
+
+    getCompany() {
+
+      var userId = this.openIdConnectService.user.profile.sub;
+      this.accountService.getCompany(userId).subscribe(
+        res=>{
+          
+          if(res){
+            this.companyinformation = res
+            this.CompanyID = this.companyinformation.companyID;
+
+            localStorage.setItem('companyID', this.CompanyID);
+
+           
+          }
+         
+        }
+      )
     }
     
       //  using to get campaignList
     public getCampaignList(): void {
+      var userid = this.openIdConnectService.user.profile.sub;
         this.campaignService.getCampaign().subscribe(res => {
 
          res[0].ranking = 2;

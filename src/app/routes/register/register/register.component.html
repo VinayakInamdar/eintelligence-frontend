@@ -62,6 +62,19 @@
                             <fieldset>
                                 <div class="form-group">
                                     <div class="row">
+                                        <label>PASSWORD</label>
+                                        <p class="pcolorred">*</p>
+                                        <input formControlName="password" class="form-control inputheight3rem" type="password"
+                                            placeholder="Enter new password" />
+                                        <span class="text-danger"
+                                            *ngIf="valForm.controls['password'].hasError('required') && (valForm.controls['password'].dirty || valForm.controls['password'].touched)">
+                                            {{'validation.PASSWORD' | translate}}</span>
+                                    </div>
+                                </div>
+                            </fieldset>
+                            <fieldset>
+                                <div class="form-group">
+                                    <div class="row">
                                         <div class="col-md-5">
                                             <div class="row">
                                                 <label>FIRST NAME</label>

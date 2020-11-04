@@ -13,8 +13,14 @@ export class AuditsService {
 
   // using to audit given url 
   settingsTaskWebsite(websiteUrl: string): Observable<any[]> {
+    var companyID;
+    if(localStorage.getItem('companyID') ){
+       companyID = localStorage.getItem('companyID'); 
+    }else{
+       companyID = null;
+    }
     return this.http.post<any[]>(`${this.Url}audits/SettingTasks`,{} ,{
-      params: new HttpParams().set("websiteUrl", websiteUrl)
+      params: new HttpParams().set("websiteUrl", websiteUrl).set("CompanyID",companyID)
    });
 } 
 

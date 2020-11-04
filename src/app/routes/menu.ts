@@ -4,26 +4,26 @@ const Home = {
     link: '/home',
     icon: 'fas fa-home',
 };
-// const User = {
-//     text: 'User',
-//     link: '/user',
-//     icon: "fa fa-user"
-// };
-// const Account = {
-//     text: 'Account',
-//     link: '/account',
-//     icon: "fa fa-user-plus",
-//     // submenu: [
-//     //     {
-//     //         text: 'Account Setting',
-//     //          link: '/account/accountsetting'
-//     //     },
-//     //     {
-//     //         text: 'Branding',
-//     //         link: '/account/branding'
-//     //     }
-//     // ]
-// };
+const User = {
+    text: 'User',
+    link: '/user',
+    icon: "fa fa-user"
+};
+const Account = {
+    text: 'Account',
+    link: '/account',
+    icon: "fa fa-user-plus",
+    // submenu: [
+    //     {
+    //         text: 'Account Setting',
+    //          link: '/account/accountsetting'
+    //     },
+    //     {
+    //         text: 'Branding',
+    //         link: '/account/branding'
+    //     }
+    // ]
+};
 
 const Fulfillment = {
     text: 'Fulfillment',
@@ -107,8 +107,8 @@ export const menu = [
     Campaign,
     Fulfillment, 
     Reports,
-   // User,
-    //Account,
+    User,
+    Account,
   //  Store,
     //Admin,
    

@@ -20,13 +20,20 @@ export class CampaignService {
   
   // using to create new campaign in db 
   createCampaign(campaignSetupData: Campaign): Observable<Campaign> {
+    if(localStorage.getItem('companyID') ){
+      campaignSetupData.companyID = localStorage.getItem('companyID'); 
+    }
+    
     return this.http.post<Campaign>(this.Url + 'campaigns', campaignSetupData);
   }
 
   // using to get list of campaign
   getCampaign(): Observable<any[]> {
-    return this.http.get<any[]>(this.Url + '/campaigns',{
-      params: new HttpParams().set('pageSize', '1000')
+    if(localStorage.getItem('companyID') ){
+      var companyID = localStorage.getItem('companyID'); 
+    }
+    return this.http.get<any[]>(this.Url + 'campaigns',{
+      params: new HttpParams().set('pageSize', '1000').set('SearchQuery','CompanyID='+companyID)
     })
   }
 

@@ -7,6 +7,7 @@ import { MatDialog, MatDialogRef } from '@angular/material/dialog';
 import { AccountService } from '../account.service';
 import { strict } from 'assert';
 import { TranslateService } from '@ngx-translate/core';
+import { OpenIdConnectService } from '../../../shared/services/open-id-connect.service';
 declare var $: any;
 
 const success = require('sweetalert');
@@ -153,9 +154,10 @@ emailSettingsForm = new FormGroup({
     'Montenegro', 'Congo Democratic'];
 
 
-  constructor(private translate: TranslateService,public router: Router,public dialog: MatDialog,private accountService: AccountService,) { 
+  constructor(private translate: TranslateService,public router: Router,public dialog: MatDialog,private accountService: AccountService, private openIdConnectService: OpenIdConnectService) { 
     this.changeText = false;
-    this.getCompany()
+    this.getCompany();
+    
   }
 
   public itemsCategories: Array<string> = ['coding', 'less', 'sass', 'angularjs', 'node', 'expressJS'];
@@ -174,6 +176,7 @@ emailSettingsForm = new FormGroup({
   valueTag;
   valueReview;
   contents: string;
+  CompanyID : string;
 
   ngOnInit(): void {
     $('#summernote').summernote({
@@ -198,9 +201,12 @@ emailSettingsForm = new FormGroup({
   }
 
   getCompany() {
-    this.accountService.getCompany('0B5EBAE4-D00D-42CA-210D-08D81765C85B').subscribe(
+
+    var userId = this.openIdConnectService.user.profile.sub;
+    this.accountService.getCompany(userId).subscribe(
       res=>{
         console.log(res)
+        
         for (let c in this.companyInfoForm.controls) {
           this.companyInfoForm.controls[c].setValue(res[c])
       }
@@ -209,6 +215,7 @@ emailSettingsForm = new FormGroup({
     }
         
         this.companyinformation = res
+        this.CompanyID = this.companyinformation.companyID;
       }
     )
   }
@@ -273,14 +280,14 @@ emailSettingsForm = new FormGroup({
      if(this.settingActive == 1){
       if(formtype == "companyInfoForm"){
         if(this.companyInfoForm.valid){
-          var companyId = '0B5EBAE4-D00D-42CA-210D-08D81765C85B';
-          result['Id'] = '0B5EBAE4-D00D-42CA-210D-08D81765C85B';
+          
+          result['id'] = this.CompanyID;
           result['name'] = result.name
           result['description'] = result.description
           result['phone'] = result.phone['internationalNumber']
           this.companyinformation = result
           this.companyinformation['branding'] = this.brandingInfoForm.controls['branding'].value
-          this.accountService.updateCompany(companyId,this.companyinformation).subscribe(
+          this.accountService.updateCompany(this.CompanyID,this.companyinformation).subscribe(
             res=>{
               console.log(res)
               this.successAlert()
@@ -309,9 +316,9 @@ emailSettingsForm = new FormGroup({
     else if(this.settingActive == 2){
       if(formtype == "brandingInfoForm"){
         if(this.brandingInfoForm.valid){
-          var companyId = '0B5EBAE4-D00D-42CA-210D-08D81765C85B';
+        
           this.companyinformation['branding'] = value.branding
-          this.accountService.updateCompany(companyId,this.companyinformation).subscribe(
+          this.accountService.updateCompany(this.CompanyID,this.companyinformation).subscribe(
             res=>{
               console.log(res)
               this.successAlert()
@@ -340,8 +347,8 @@ emailSettingsForm = new FormGroup({
     else if(this.settingActive == 3){
       if(formtype == "emailSettingsForm"){
         if(this.emailSettingsForm.valid){
-          var companyId = '0B5EBAE4-D00D-42CA-210D-08D81765C85B';
-          result['Id'] = '0B5EBAE4-D00D-42CA-210D-08D81765C85B';
+          
+          result['Id'] = this.CompanyID;
           result['email'] = value.emailAdd
           // this.accountService.updateCompany(companyId,result).subscribe(
           //   res=>{
@@ -372,12 +379,12 @@ emailSettingsForm = new FormGroup({
     else if(this.settingActive == 4){
       if(formtype == "companyInfoForm"){
         if(this.companyInfoForm.valid){
-          var companyId = '0B5EBAE4-D00D-42CA-210D-08D81765C85B';
-          result['Id'] = '0B5EBAE4-D00D-42CA-210D-08D81765C85B';
+      
+          result['Id'] = this.CompanyID;
           result['name'] = result.name
           result['description'] = result.description
           result['phone'] = result.phone['internationalNumber']
-          this.accountService.updateCompany(companyId,result).subscribe(
+          this.accountService.updateCompany(this.CompanyID,result).subscribe(
             res=>{
               console.log(res)
               this.successAlert()

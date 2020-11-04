@@ -28,12 +28,12 @@ export class AccountService {
  }
   
  
- getCompany(companyId : string): Observable<CompanyInformation[]> {
-  return this.http.get<CompanyInformation[]>(this.Url + 'companys/' + companyId)
+ getCompany(userId:string): Observable<CompanyInformation[]> {
+  return this.http.get<CompanyInformation[]>(`${this.Url}companys/GetCompanyDetails?userId=` + userId)
 }
 
   updateCompany(companyId : string,selectedCompany: any) : Observable<CompanyInformation[]> {
-    return this.http.put<CompanyInformation[]>(this.Url + 'companys/' + companyId,selectedCompany)
+    return this.http.put<CompanyInformation[]>(this.Url + 'companys/' + companyId, selectedCompany)
   }
 
      private handleError(err: HttpErrorResponse) {

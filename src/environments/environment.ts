@@ -27,7 +27,7 @@ export const environment = {
 // };
 
 // export const environment = {
-//   production: true,
+//   production: false,
 //   apiUrl: 'https://eintelligencebackend.azurewebsites.net/api/',
 //   openIdConnectSettings: {
 //     authority: 'https://eintelligenceidentity.azurewebsites.net/',

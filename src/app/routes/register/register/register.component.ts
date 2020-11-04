@@ -42,6 +42,7 @@ export class RegisterComponent implements OnInit {
       'fName': [this.userModel.fName, Validators.required],
       'lName': [this.userModel.lName, Validators.required],
       'email': [this.userModel.email, Validators.required],
+      'password': [this.userModel.password, Validators.required]
     })
   }
 
@@ -59,7 +60,7 @@ export class RegisterComponent implements OnInit {
     // this.registerService.createRegiter(result).subscribe((res: Register) => {
     //   this.registerModel = res;
     // });
-    debugger
+
     var result: User = Object.assign({}, value);
     this.userService.createUser(result).subscribe((res: User) => {
       this.userModel = res;

@@ -60,6 +60,10 @@ export class UserComponent implements OnInit {
           email: {
             title: 'Email',
             filter: false
+          },
+          password:{
+            title: 'Password',
+            filter: false
           }
         }
       }; 
@@ -97,6 +101,10 @@ export class UserComponent implements OnInit {
         },
         {
           field: 'email',
+          search: query
+        },
+        {
+          field: 'password',
           search: query
         }
       ], false); 
