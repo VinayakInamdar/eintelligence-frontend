@@ -63,6 +63,16 @@ export class IntegrationsComponent implements OnInit {
 
   };
 
+  googleAdsAuth(): void{
+    this.integrationsService.googleAdsAuth(this.selectedCampId).subscribe(
+
+      googleAuthUrl => {
+           window.location = googleAuthUrl;
+     });  
+
+
+  }
+
     // using to get google analytics setup of selected campaign Id
   public getGaSetupByCampaignId(): void{
 

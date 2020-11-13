@@ -6,6 +6,7 @@ import { HttpClient, HttpParams } from '@angular/common/http';
 import { environment } from '../../../environments/environment';
 import { Campaign } from './campaign.model';
 import { SerpDto } from '../seo/serp.model';
+import { OpenIdConnectService } from 'src/app/shared/services/open-id-connect.service';
 
 @Injectable({
   providedIn: 'root'
@@ -16,7 +17,7 @@ export class CampaignService {
   campaignList: Campaign[];
   Url = environment.apiUrl;
 
-  constructor(private http: HttpClient) { }
+  constructor(private http: HttpClient,private openIdConnectService: OpenIdConnectService) { }
   
   // using to create new campaign in db 
   createCampaign(campaignSetupData: Campaign): Observable<Campaign> {
@@ -28,13 +29,21 @@ export class CampaignService {
   }
 
   // using to get list of campaign
+  // getCampaign(): Observable<any[]> {
+  //   if(localStorage.getItem('companyID') ){
+  //     var companyID = localStorage.getItem('companyID'); 
+  //   }
+  //   return this.http.get<any[]>(this.Url + 'campaigns',{
+  //     params: new HttpParams().set('pageSize', '1000')
+  //   })
+  // }
+
   getCampaign(): Observable<any[]> {
-    if(localStorage.getItem('companyID') ){
-      var companyID = localStorage.getItem('companyID'); 
-    }
-    return this.http.get<any[]>(this.Url + 'campaigns',{
-      params: new HttpParams().set('pageSize', '1000').set('SearchQuery','CompanyID='+companyID)
-    })
+    
+      return this.http.get<any[]>(`${this.Url}campaigns/GetCampaignByUserId?userId=` + localStorage.getItem('userID'))
+    
+    
+    
   }
 
   // using to get list of keywords

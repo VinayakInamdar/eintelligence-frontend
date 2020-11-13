@@ -53,10 +53,10 @@ export class AccountComponent implements OnInit {
     
   });
   profileInfo = new FormGroup({
-    firstname: new FormControl(undefined, [Validators.required]),
-    lastname: new FormControl(undefined, [Validators.required]),
+    fName: new FormControl(undefined, [Validators.required]),
+    lName: new FormControl(undefined, [Validators.required]),
     email: new FormControl(undefined, [Validators.required]),
-    phone: new FormControl(undefined, [Validators.required]),
+    phoneNumber: new FormControl(undefined, [Validators.required]),
 })
 billingInfo = new FormGroup({
   name: new FormControl(undefined, [Validators.required]),
@@ -90,6 +90,7 @@ emailSettingsForm = new FormGroup({
     'Virginia', 'Washington', 'West Virginia', 'Wisconsin', 'Wyoming'];
   changeText: boolean;
   companyinformation: any;
+  user:any;
 
   //state dropdown list refresh
   public refreshValue(value: any): void {
@@ -157,6 +158,7 @@ emailSettingsForm = new FormGroup({
   constructor(private translate: TranslateService,public router: Router,public dialog: MatDialog,private accountService: AccountService, private openIdConnectService: OpenIdConnectService) { 
     this.changeText = false;
     this.getCompany();
+    this.getUser();
     
   }
 
@@ -198,6 +200,23 @@ emailSettingsForm = new FormGroup({
 
 
 
+  }
+
+
+
+  getUser() {
+
+    var userId = this.openIdConnectService.user.profile.sub;
+    this.accountService.getUser(userId).subscribe(
+      res1=>{
+        console.log(res1);
+        for (let c in this.profileInfo.controls) {
+          this.profileInfo.controls[c].setValue(res1[c])
+      }
+                      
+        
+      }
+    )
   }
 
   getCompany() {
@@ -303,9 +322,27 @@ emailSettingsForm = new FormGroup({
    
       }
       else if (formtype == "profileinfoform") {
-        for (let c in this.profileInfo.controls) {
-          this.profileInfo.controls[c].markAsTouched();
-      }
+        if(this.companyInfoForm.valid){
+          
+          var userid = this.openIdConnectService.user.profile.sub;
+          result['fName'] = result.fName
+          result['lName'] = result.lName
+          result['email'] = result.email
+          result['phoneNumber'] = result.phoneNumber['internationalNumber']
+          this.user = result
+         
+          this.accountService.updateUser(userid,this.user).subscribe(
+            res=>{
+              console.log(res)
+              this.successAlert()
+            }
+          )
+        }else{
+          for (let c in this.profileInfo.controls) {
+            this.profileInfo.controls[c].markAsTouched();
+        }
+        }
+       
       }
       else {
         for (let c in this.billingInfo.controls) {

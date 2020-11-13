@@ -154,6 +154,7 @@ export class HomeComponent implements OnInit {
             this.CompanyID = this.companyinformation.companyID;
 
             localStorage.setItem('companyID', this.CompanyID);
+            localStorage.setItem('userID',userId);
 
            
           }
@@ -166,27 +167,108 @@ export class HomeComponent implements OnInit {
     public getCampaignList(): void {
       var userid = this.openIdConnectService.user.profile.sub;
         this.campaignService.getCampaign().subscribe(res => {
+          
 
-         res[0].ranking = 2;
-         res[1].ranking = 3;
-         res[2].ranking = 0;
-         res[3].ranking = -1;     
+        //   res.forEach((item) => {
+        //     item.ranking = 1;
+        //     item.traffic = "75%";
+        //     item.googleLeads="45%";
+        //     item.socialMedia="85%";
+            
+        // });
+
+        for (let i = 0; i < res.length; i++) {
+         if(i==1){
+          res[i].ranking = 2;
+          res[i].traffic = "75%";
+          res[i].googleLeads="45%";
+          res[i].socialMedia="85%";
+         }else if(i==2){
+          res[i].ranking = 1;
+          res[i].traffic = "66%";
+          res[i].googleLeads="48%";
+          res[i].socialMedia="65%";
+
+         }else if(i==0){
+          res[i].ranking = 1;
+          res[i].traffic = "44%";
+          res[i].googleLeads="49%";
+          res[i].socialMedia="55%";
+
+         }
+         else if(i==3){
+          res[i].ranking = 1;
+          res[i].traffic = "77%";
+          res[i].googleLeads="66%";
+          res[i].socialMedia="91%";
+           
+         }
+         else if(i==4){
+          res[i].ranking = 5;
+          res[i].traffic = "41%";
+          res[i].googleLeads="45%";
+          res[i].socialMedia="85%";
+        }
+        else if(i==5){
+          res[i].ranking = 1;
+          res[i].traffic = "33%";
+          res[i].googleLeads="95%";
+          res[i].socialMedia="65%";
+        }
+        else if(i==6){
+          res[i].ranking = 6;
+          res[i].traffic = "68%";
+          res[i].googleLeads="78%";
+          res[i].socialMedia="81%";
+        }
+        else if(i==7){
+          res[i].ranking = 3;
+          res[i].traffic = "86%";
+          res[i].googleLeads="66%";
+          res[i].socialMedia="29%";
+        }
+        else if(i==8){
+          res[i].ranking = 1;
+          res[i].traffic = "71%";
+          res[i].googleLeads="61%";
+          res[i].socialMedia="51%";
+        }
+        else if(i==9){
+          res[i].ranking = 1;
+          res[i].traffic = "99%";
+          res[i].googleLeads="92%";
+          res[i].socialMedia="85%";
+        }
+        else if(i > 10){
+          res[i].ranking = 1;
+          res[i].traffic = "25%";
+          res[i].googleLeads="45%";
+          res[i].socialMedia="85%";
+        }
+
+
+        }
+
+        //  res[0].ranking = 2;
+        //  res[1].ranking = 3;
+        //  res[2].ranking = 0;
+        //  res[3].ranking = -1;     
          
-         res[0].traffic = '75%';
-         res[1].traffic = '36%';
-         res[2].traffic = '55%';
-         res[3].traffic = '56%';  
+        //  res[0].traffic = '75%';
+        //  res[1].traffic = '36%';
+        //  res[2].traffic = '55%';
+        //  res[3].traffic = '56%';  
 
 
-         res[0].socialMedia ='85%'
-         res[1].socialMedia = '75%'
-         res[2].socialMedia = '45%'
-         res[3].socialMedia = '65%' 
+        //  res[0].socialMedia ='85%'
+        //  res[1].socialMedia = '75%'
+        //  res[2].socialMedia = '45%'
+        //  res[3].socialMedia = '65%' 
 
-         res[0].googleLeads = '45%'
-         res[1].googleLeads = '45%'
-         res[2].googleLeads = '75%'
-         res[3].googleLeads = '25%'  
+        //  res[0].googleLeads = '45%'
+        //  res[1].googleLeads = '45%'
+        //  res[2].googleLeads = '75%'
+        //  res[3].googleLeads = '25%'  
             
          this.campaignList = res;            
             this.tableData = this.campaignList;

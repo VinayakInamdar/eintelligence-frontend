@@ -43,11 +43,11 @@ const Campaign = {
     icon: "fa fa-bullhorn"
 };
 
-// const Integrations = {
-//     text: 'Integrnations',
-//     link: '/integrations/:id',
-//     icon: "fas fa-cogs"
-// };
+ const Integrations = {
+    text: 'Integrnations',
+     link: '/integrations/:id',
+     icon: "fas fa-cogs"
+ };
 
 const Leads = {
     text: 'CRM',
@@ -112,7 +112,7 @@ export const menu = [
   //  Store,
     //Admin,
    
-   //Integrations,
+   Integrations,
     Leads,
     Proposal,
     Todolist

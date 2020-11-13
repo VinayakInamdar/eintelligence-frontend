@@ -26,9 +26,16 @@ export class IntegrationsService {
   googleAuth(id: string): Observable<any> {
     
    var res =this.http.post<any>(`${this.Url}googleanalyticsaccounts/AuthGoogleAnalyticsAccount?id=` + id, {});
-
+   
    return res;
   }
+
+  googleAdsAuth(id: string): Observable<any> {
+    
+    var res =this.http.post<any>(`${this.Url}googleanalyticsaccounts/AuthGoogleAdsAccount?id=` + id, {});
+ 
+    return res;
+   }
 
   // using to get google analytics setup of selected campaign Id
 getGaSetupByCampaignId(campaignId: string): Observable<GoogleAnalyticsAccountSetups[]> {

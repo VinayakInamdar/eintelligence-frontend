@@ -218,18 +218,18 @@
                                         <label class="col-md-4 col-form-label accountlabelpadding">
                                             FIRST NAME <span class="accountspancolor">*</span></label>
                                         <div class="col-md-3">
-                                            <input formControlName="firstname"
+                                            <input formControlName="fName"
                                                 class="form-control accountinputheight" />
                                             <span class="text-danger"
-                                                *ngIf="profileInfo.controls['firstname'].hasError('required') && (profileInfo.controls['firstname'].dirty || profileInfo.controls['firstname'].touched)">
+                                                *ngIf="profileInfo.controls['fName'].hasError('required') && (profileInfo.controls['fName'].dirty || profileInfo.controls['fName'].touched)">
                                                 {{'validation.NAMEISREQUIRED' | translate}}</span><br>
                                         </div>
                                         <label class="col-md-2 col-form-label accountlabelpadding">
                                             LAST NAME <span class="accountspancolor">*</span></label>
                                         <div class="col-md-3">
-                                            <input formControlName="lastname" class="form-control accountinputheight" />
+                                            <input formControlName="lName" class="form-control accountinputheight" />
                                             <span class="text-danger"
-                                                *ngIf="profileInfo.controls['lastname'].hasError('required') && (profileInfo.controls['lastname'].dirty || profileInfo.controls['lastname'].touched)">
+                                                *ngIf="profileInfo.controls['lName'].hasError('required') && (profileInfo.controls['lName'].dirty || profileInfo.controls['lName'].touched)">
                                                 {{'validation.NAMEISREQUIRED' | translate}}</span><br>
                                         </div>
                                     </div>
@@ -255,8 +255,8 @@
                                                 [searchCountryField]="[SearchCountryField.Iso2, SearchCountryField.Name]"
                                                 [selectFirstCountry]="false" [selectedCountryISO]="CountryISO.India"
                                                 [tooltipField]="TooltipLabel.Name" [phoneValidation]="true"
-                                                [separateDialCode]="separateDialCode" name="phone"
-                                                formControlName="phone">
+                                                [separateDialCode]="separateDialCode" name="phoneNumber"
+                                                formControlName="phoneNumber">
                                             </ngx-intl-tel-input>
                                         </div>
                                     </div>

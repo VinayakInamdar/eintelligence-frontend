@@ -1,9 +1,13 @@
 import { Injectable } from '@angular/core';
-import { HttpClient, HttpErrorResponse } from '@angular/common/http';
+import { HttpClient, HttpErrorResponse, HttpParams } from '@angular/common/http';
 import { Observable, throwError } from 'rxjs';
 import { CompanyInformation } from './account/companyinformation.model';
 import { catchError,tap, combineAll } from 'rxjs/operators';
 import { environment } from 'src/environments/environment';
+import { UserInfo } from 'os';
+import { User } from '../user/user.model';
+
+
 
 @Injectable({
   providedIn: 'root'
@@ -26,11 +30,39 @@ export class AccountService {
    );
  
  }
+
+//  getUser(userId:string): Observable<CompanyInformation[]> {
+//   // return this.http.get<CompanyInformation[]>(`${this.Url}companys/GetCompanyDetails?userId=` + userId)
+
+//   return this.http.get<any[]>(this.Url + 'aspusers',{
+//     params: {
+//       searchQuery: 'Id=' + userId + ' && pageSize=' + 1000
+//      }
+//   })
+// }
+
+// params: {
+//   searchQuery: 'Id==\"' + userId + '\" && pageSize==\"' + 1000 + '\" ' , orderBy: "UpdatedOn desc"
+// }
   
+
+    
+
+getUser(userId:string): Observable<User[]> {
+  return this.http.get<User[]>(`${this.Url}aspusers/GetUserDetails?userId=` + userId)
+}
+
  
  getCompany(userId:string): Observable<CompanyInformation[]> {
   return this.http.get<CompanyInformation[]>(`${this.Url}companys/GetCompanyDetails?userId=` + userId)
 }
+
+
+updateUser(userId : string,selectedUser: any) : Observable<User[]> {
+  return this.http.put<User[]>(this.Url + 'aspusers/' + userId, selectedUser)
+}
+
+
 
   updateCompany(companyId : string,selectedCompany: any) : Observable<CompanyInformation[]> {
     return this.http.put<CompanyInformation[]>(this.Url + 'companys/' + companyId, selectedCompany)
