@@ -37,7 +37,7 @@ export class ListComponent implements OnInit {
 
 
   allowCardReplacement(dragEvent: DragEvent) {
-    debugger
+    
     dragEvent.dataTransfer.dropEffect = 'move';
     dragEvent.preventDefault();
   }

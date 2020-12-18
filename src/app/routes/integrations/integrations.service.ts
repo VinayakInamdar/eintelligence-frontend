@@ -25,14 +25,16 @@ export class IntegrationsService {
 
   googleAuth(id: string): Observable<any> {
     
-   var res =this.http.post<any>(`${this.Url}googleanalyticsaccounts/AuthGoogleAnalyticsAccount?id=` + id, {});
+    let companyid= localStorage.getItem('companyID');
+   var res =this.http.post<any>(`${this.Url}googleanalyticsaccounts/AuthGoogleAnalyticsAccount?id=` + id+`&CompanyId=` + companyid, {});
    
    return res;
   }
 
   googleAdsAuth(id: string): Observable<any> {
     
-    var res =this.http.post<any>(`${this.Url}googleanalyticsaccounts/AuthGoogleAdsAccount?id=` + id, {});
+    let companyid= localStorage.getItem('companyID');
+    var res =this.http.post<any>(`${this.Url}googleanalyticsaccounts/AuthGoogleAdsAccount?id=` + id+`&CompanyId=` + companyid, {});
  
     return res;
    }

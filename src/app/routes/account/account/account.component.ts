@@ -298,7 +298,7 @@ emailSettingsForm = new FormGroup({
     var result = Object.assign({}, value);
      if(this.settingActive == 1){
       if(formtype == "companyInfoForm"){
-        if(this.companyInfoForm.valid){
+        //if(this.companyInfoForm.valid){
           
           result['id'] = this.CompanyID;
           result['name'] = result.name
@@ -312,12 +312,12 @@ emailSettingsForm = new FormGroup({
               this.successAlert()
             }
           )
-        }
-        else {
-          for (let c in this.companyInfoForm.controls) {
-            this.companyInfoForm.controls[c].markAsTouched();
-        }
-        }
+        //}
+        // else {
+        //   for (let c in this.companyInfoForm.controls) {
+        //     this.companyInfoForm.controls[c].markAsTouched();
+        // }
+        // }
       
    
       }

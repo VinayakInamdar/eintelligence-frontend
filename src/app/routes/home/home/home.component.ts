@@ -144,12 +144,13 @@ export class HomeComponent implements OnInit {
     }
 
     getCompany() {
-
+      
       var userId = this.openIdConnectService.user.profile.sub;
       this.accountService.getCompany(userId).subscribe(
         res=>{
           
           if(res){
+            
             this.companyinformation = res
             this.CompanyID = this.companyinformation.companyID;
 

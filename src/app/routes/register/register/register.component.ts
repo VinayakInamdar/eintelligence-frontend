@@ -63,6 +63,7 @@ export class RegisterComponent implements OnInit {
 
     var result: User = Object.assign({}, value);
     this.userService.createUser(result).subscribe((res: User) => {
+      
       this.userModel = res;
     });
   }

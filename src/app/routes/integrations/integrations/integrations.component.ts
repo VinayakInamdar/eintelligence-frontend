@@ -52,10 +52,11 @@ export class IntegrationsComponent implements OnInit {
   public integrationData : any;
 
   googleAuth(): void {
-
+    
     this.integrationsService.googleAuth(this.selectedCampId).subscribe(
 
       res => {
+        
         this.integrationData = res; 
         this.getGaSetupByCampaignId();
 
@@ -81,6 +82,7 @@ export class IntegrationsComponent implements OnInit {
     this.integrationsService.getGaSetupByCampaignId(this.selectedCampId).subscribe(
 
       res => {
+        
         this.googleAnalyticsAccountSetupList = res;
         if(this.googleAnalyticsAccountSetupList && this.googleAnalyticsAccountSetupList.length > 0 ){
 
@@ -175,7 +177,9 @@ export class IntegrationsComponent implements OnInit {
 }
   // using to get campaignList
   public getCampaignList(): void {
+    
     this.campaignService.getCampaign().subscribe(res => {
+      
         this.campaignList = res;   
         var name = "";
         if(this.selectedCampId == ":id"){

@@ -6,7 +6,7 @@
 .divider hr{
     margin-left: auto;
     margin-right: auto;
-    width: 40%;
+    width: 50%;
 }
 .left{
     float: left;
@@ -28,6 +28,7 @@
 }
 .paddingtop1per {
     padding-top: 1%;
+    width:90%;
 }
 .bordertopwidth0px {
     border-top-width: 0px;
@@ -61,4 +62,16 @@
 }
 .paddingleft115px {
     padding-left: 115px;
+}
+
+.form-group {
+ 
+    margin-top: 3px;  
+}
+.labelcss{
+    font-weight:500;
+    font-size: 9pt;
+}
+.form-control{
+    margin-top: 0px;
 }
