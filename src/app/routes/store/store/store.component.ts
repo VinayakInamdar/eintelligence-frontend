@@ -28,5 +28,8 @@ export class StoreComponent implements OnInit {
       
     );
   }
+  public onClick(planid): any {
+    this.router.navigate(['/checkout',planid]);
+  }
 
 }

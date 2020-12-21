@@ -4,24 +4,23 @@
         <div class="card" [style.height.px]="maxHeight">
             <div class="card-body">
                 <p class="storepfontsize">Services</p><br>
-                <a (click)="settingActive=1" [ngClass]="{'active': (settingActive == 1)}" class="storeafontwfonts"><em
-                        class="fa-1.9x fas fa-code-branch"></em>
+                <a (click)="settingActive=1" [ngClass]="{'active': (settingActive == 1)}" class="storeafontwfonts">
                     &nbsp;Link Building</a>
-                <hr>
-                <a (click)="settingActive=2" [ngClass]="{'active': (settingActive == 2)}" class="storeafontwfonts"><em
-                        class="fa-1.9x fas fa-code-branch"></em>
+    <br>
+    <br>
+                <a (click)="settingActive=2" [ngClass]="{'active': (settingActive == 2)}" class="storeafontwfonts">
                     &nbsp;Content Writing Packages</a>
-                <hr>
-                <a (click)="settingActive=3" [ngClass]="{'active': (settingActive == 3)}" class="storeafontwfonts"><em
-                        class="fa-1.9x fas fa-code-branch"></em>
+                    <br>
+                    <br>
+                <a (click)="settingActive=3" [ngClass]="{'active': (settingActive == 3)}" class="storeafontwfonts">
                     &nbsp;Local SEO Packages (Monthly Recurring)</a>
-                <hr>
-                <a (click)="settingActive=4" [ngClass]="{'active': (settingActive == 4)}" class="storeafontwfonts"><em
-                        class="fa-1.9x fas fa-code-branch"></em>
+                    <br>
+                    <br>
+                <a (click)="settingActive=4" [ngClass]="{'active': (settingActive == 4)}" class="storeafontwfonts">
                     &nbsp;Business SEO Packages</a>
-                <hr>
-                <a (click)="settingActive=5" [ngClass]="{'active': (settingActive == 5)}" class="storeafontwfonts"><em
-                        class="fa-1.9x fas fa-code-branch"></em>
+                    <br>
+                    <br>
+                <a (click)="settingActive=5" [ngClass]="{'active': (settingActive == 5)}" class="storeafontwfonts">
                     &nbsp;Website Design Packages</a>
 
             </div>
@@ -50,7 +49,7 @@
                                         </ul>
                                     </div>
                                     <div class="product-buttons-box">
-                                        <button class="btn btn-success btn-block btn-lg checkout-btn">
+                                        <button class="btn btn-success btn-block btn-lg checkout-btn"  (click)="onClick(plan.planId)">
                                             BUY NOW for {{plan.price}}
                                             <span data-toggle="popover"><i class="fa fa-info-circle"></i></span>
                                         </button>
@@ -81,7 +80,7 @@
                                         </ul>
                                     </div>
                                     <div class="product-buttons-box">
-                                        <button class="btn btn-success btn-block btn-lg checkout-btn">
+                                        <button class="btn btn-success btn-block btn-lg checkout-btn"  (click)="onClick()">
                                             BUY NOW for {{plan.price}}
                                             <span data-toggle="popover"><i class="fa fa-info-circle"></i></span>
                                         </button>

@@ -89,7 +89,7 @@ export const routes: Routes = [
                 loadChildren: () => import('./admin/admin.module').then(m => m.AdminModule)
             },
             {
-                path: 'checkout',
+                path: 'checkout/:id',
                 component: LayoutComponent,
                 loadChildren: () => import('./store/checkout/checkout.module').then(m => m.CheckoutModule)
             },

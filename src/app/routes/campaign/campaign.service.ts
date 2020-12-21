@@ -39,11 +39,7 @@ export class CampaignService {
   // }
 
   getCampaign(): Observable<any[]> {
-    
       return this.http.get<any[]>(`${this.Url}campaigns/GetCampaignByUserId?userId=` + localStorage.getItem('userID'))
-    
-    
-    
   }
 
   // using to get list of keywords

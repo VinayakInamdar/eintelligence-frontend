@@ -5,7 +5,7 @@ label{
     width: 153%;
 }
 .active{
-color:blue;
+color:#1FADD9;
 }
 
 img{
@@ -125,6 +125,8 @@ img{
 }
 .storeafontwfonts {
   font-weight:3px; font-size:14px;
+  cursor: pointer;
+  // 1FADD9
 }
 .storeproductdivheight {
   height: auto;
@@ -140,4 +142,10 @@ img{
 }
 .storeproductdivheightmax {
   height: max-content;
+}
+.card-body{
+cursor: context-menu;
+}
+a:hover {
+  color: #1FADD9;
 }
