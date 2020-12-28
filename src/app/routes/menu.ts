@@ -30,7 +30,11 @@ const Fulfillment = {
     link: '/store',
     icon: "fas fa-store"
 };
-
+const Products = {
+    text: 'Products',
+    link: '/products',
+    icon: "fas fa-store"
+};
 // const Admin = {
 //     text: 'Admin',
 //     link: '/admin',
@@ -115,6 +119,7 @@ export const menu = [
    Integrations,
     Leads,
     Proposal,
-    Todolist
+    Todolist,
+    Products
    
 ];

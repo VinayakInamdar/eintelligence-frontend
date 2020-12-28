@@ -4,6 +4,7 @@
 export const environment = {
   production: false,
   apiUrl: 'https://localhost:44357/api/',
+  stripe_key: 'pk_test_51I0iLaEKoP0zJ89QGXq8ihvypBEzyryF6Y5Hiro0UDcPLQeCTzA0v8S6lYv2DNBZZS3LxICWKJATbOxzdUCOl73p00Her3EA2b',
   openIdConnectSettings: {
     authority: 'https://localhost:44349/',
     client_id: 'tourmanagementclient',

@@ -1,7 +1,6 @@
 import { NgModule } from '@angular/core';
 import { CommonModule } from '@angular/common';
-
-import { StoreComponent } from './store/store.component';
+import { ProductsComponent } from './products/products.component';
 import { SharedModule } from 'src/app/shared/shared.module';
 import { RouterModule, Routes } from '@angular/router';
 import { Ng2SmartTableModule } from 'ng2-smart-table';
@@ -10,13 +9,14 @@ import { HttpClientModule } from '@angular/common/http';
 import { FileUploadModule } from 'ng2-file-upload';
 import { NgxSelectModule } from 'ngx-select-ex';
 import { NgxIntlTelInputModule } from 'ngx-intl-tel-input';
+import { AccordionModule } from 'ngx-bootstrap/accordion';
 
 const routes: Routes = [
-  { path: '', component: StoreComponent }
+  { path: '', component: ProductsComponent }
 ];
 
 @NgModule({
-  declarations: [  StoreComponent],
+  declarations: [ProductsComponent],
   imports: [
     CommonModule,
     SharedModule,
@@ -28,10 +28,12 @@ const routes: Routes = [
     FileUploadModule,
     FormsModule,
     NgxSelectModule,
-    NgxIntlTelInputModule
+    NgxIntlTelInputModule,
+    AccordionModule.forRoot(),
   ],
-  exports : [
-    RouterModule
-  ],
+ 
+  exports: [
+    RouterModule,
+],
 })
-export class StoreModule { }
+export class ProductsModule { }

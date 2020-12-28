@@ -6,110 +6,100 @@
                 <p class="storepfontsize">Services</p>
                 <br>
                 <a (click)="settingActive=1" [ngClass]="{'active': (settingActive == 1)}" class="storeafontwfonts">
-                    <em class="fa-1.9x fas fa-code-branch"></em>
                     &nbsp;Link Building</a>
-                <hr>
+                <br>
+                <br>
                 <a (click)="settingActive=2" [ngClass]="{'active': (settingActive == 2)}" class="storeafontwfonts">
-                    <em class="fa-1.9x fas fa-code-branch"></em>
                     &nbsp;Content Writing Packages</a>
-                <hr>
+                <br>
+                <br>
                 <a (click)="settingActive=3" [ngClass]="{'active': (settingActive == 3)}" class="storeafontwfonts">
-                    <em class="fa-1.9x fas fa-code-branch"></em>
                     &nbsp;Local SEO Packages (Monthly Recurring)</a>
-                <hr>
+                <br>
+                <br>
                 <a (click)="settingActive=4" [ngClass]="{'active': (settingActive == 4)}" class="storeafontwfonts">
-                    <em class="fa-1.9x fas fa-code-branch"></em>
                     &nbsp;Business SEO Packages</a>
-                <hr>
+                <br>
+                <br>
                 <a (click)="settingActive=5" [ngClass]="{'active': (settingActive == 5)}" class="storeafontwfonts">
-                    <em class="fa-1.9x fas fa-code-branch"></em>
                     &nbsp;Website Design Packages</a>
 
             </div>
         </div>
     </div>
     <div class="col-md-5">
-        <div  *ngFor="let product of products">
-            <div class="card b cart-container">
-                <div class="container mt-4 storeproductdivheight">
-                    <div class="row pad-18">
-                        <div class="col-md-12 item" *ngFor="let plan of product.plans" >
-                            <div class="card item-card card-block" [style.height.px]="maxHeight/1.2">
-                                <h3 class="card-title font-weight-bold text-left">{{plan.name}}</h3>
-                                <p class="">{{plan.title}}</p>
-                                <p class="service-link">
-                                    {{plan.subTitle}}
-                                </p>
-                                <hr>
-                                <div class="product-attributes-box card-body storesubdivpaddinginitial">
-                                    <ul class="list-group list-group-flush storeulpaddingtop" *ngFor="let feature of plan.features">
-                                        <li class="text-left storelistyle">{{feature}}</li>
-                                    </ul>
-                                </div>
+        <div>
+
+            <div class="container mt-4 storeproductdivheight">
+                <div class="row pad-18">
+                    <div class="col-md-12 item" *ngFor="let plan of plans">
+                        <div class="card item-card card-block" [style.height.px]="maxHeight/1.2">
+                            <h3 class="card-title font-weight-bold text-left">{{plan.name}}</h3>
+                            <p class="">{{plan.name}}</p>
+                            <p class="service-link">
+                                {{plan.subtitle}}
+                            </p>
+                            <hr>
+                            <div class="product-attributes-box card-body storesubdivpaddinginitial">
+                                <ul class="list-group list-group-flush storeulpaddingtop" >
+                                    <li class="text-left storelistyle">{{plan.features}}</li>
+                                </ul>
                             </div>
                         </div>
                     </div>
                 </div>
             </div>
+
         </div>
     </div>
-    <div class="col-md-3" >
-        <div *ngFor="let product of products">
-            <div class="card b cart-container cursorContextMenu"  >
-                <div class="container mt-4 storeproductdivheight">
-                    <div class="row pad-18">
-                        <div class="col-md-12 item" *ngFor="let plan of product.plans">
-                            <h4 class="d-flex justify-content-between align-items-center mb-3">
-                                <span class="text-muted">Your cart</span>
-                                <span class="badge badge-secondary badge-pill">3</span>
-                            </h4>
-                            <ul class="list-group mb-3">
-                                <li class="list-group-item d-flex justify-content-between lh-condensed">
-                                    <div>
-                                        <h6 class="my-0">Product name</h6>
-                                        <small class="text-muted">Brief description</small>
-                                    </div>
-                                    <span class="text-muted">$12</span>
-                                </li>
-                                <li class="list-group-item d-flex justify-content-between lh-condensed">
-                                    <div>
-                                        <h6 class="my-0">Second product</h6>
-                                        <small class="text-muted">Brief description</small>
-                                    </div>
-                                    <span class="text-muted">$8</span>
-                                </li>
-                                <li class="list-group-item d-flex justify-content-between lh-condensed">
-                                    <div>
-                                        <h6 class="my-0">Third item</h6>
-                                        <small class="text-muted">Brief description</small>
-                                    </div>
-                                    <span class="text-muted">$5</span>
-                                </li>
-                                <li class="list-group-item d-flex justify-content-between bg-light">
-                                    <div class="text-success">
-                                        <h6 class="my-0">Promo code</h6>
-                                        <small>EXAMPLECODE</small>
-                                    </div>
-                                    <span class="text-success">-$5</span>
-                                </li>
-                                <li class="list-group-item d-flex justify-content-between">
-                                    <span>Total (USD)</span>
-                                    <strong>$20</strong>
-                                </li>
-                            </ul>
-
-                            <form class="card p-2">
-                                <div class="product-buttons-box">
-                                    <button class="btn btn-success btn-block btn-lg checkout-btn"  (click)="makePayment()" >                                        BUY NOW for {{plan.price}}
-                                        <span data-toggle="popover">
-                                            <i class="fa fa-info-circle"></i>
-                                        </span>
-                                    </button>
-                                </div>
-                            </form>
+    <div class="col-lg-3 checkoutdiv">
+        <div>
+            <div class="card b mb-2" *ngFor="let plan of plans">
+                <div class="card-header bb">
+                    <h4 class="card-title">Order Summnary</h4>
+                </div>
+                <div class="card-body bt">
+                    <h4 class="b0">Order #</h4>
+                </div>
+                <table class="table">
+                    <tbody>
+                        <tr>
+                            <td>Plan Name</td>
+                            <td>
+                                <div class="text-right text-bold">{{plan.name}}</div>
+                            </td>
+                        </tr>
+                        <tr>
+                            <td>Price</td>
+                            <td>
+                                <div class="text-right text-bold">{{plan.price}}</div>
+                            </td>
+                        </tr>
+                        <tr>
+                            <td>Tax</td>
+                            <td>
+                                <div class="text-right text-bold">$0</div>
+                            </td>
+                        </tr>
+                    </tbody>
+                </table>
+                <div class="card-body">
+                    <div class="clearfix">
+                        <div class="float-right text-right">
+                            <div class="text-bold">{{plan.price}}</div>
+                            <div class="text-sm">USD</div>
                         </div>
+                        <div class="float-left text-bold text-dark">ORDER TOTAL</div>
                     </div>
+                </div>
+                <div class="card-body">
+                    <p>
+                        <button class="btn btn-primary btn-block" (click)="makePayment();" type="button">CHECKOUT</button>
+                    </p>
+                    <span class="text-muted text-sm">* Terms and conditions</span>
                 </div>
             </div>
         </div>
-</div>
+
+    </div>
+   

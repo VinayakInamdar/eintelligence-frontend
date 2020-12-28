@@ -3,32 +3,55 @@
         <!-- max-width: 18%; -->
         <div class="card" [style.height.px]="maxHeight">
             <div class="card-body">
-                <p class="storepfontsize">Services</p><br>
-                <a (click)="settingActive=1" [ngClass]="{'active': (settingActive == 1)}" class="storeafontwfonts">
-                    &nbsp;Link Building</a>
-    <br>
-    <br>
-                <a (click)="settingActive=2" [ngClass]="{'active': (settingActive == 2)}" class="storeafontwfonts">
-                    &nbsp;Content Writing Packages</a>
+                <p class="storepfontsize">Services</p>
+                <br>
+                <div *ngFor="let product of products">
+                    <a (click)="productId=product.id" [ngClass]="{'active': (settingActive == 1)}" class="storeafontwfonts">
+                        &nbsp;{{product.name}}</a>
                     <br>
                     <br>
-                <a (click)="settingActive=3" [ngClass]="{'active': (settingActive == 3)}" class="storeafontwfonts">
-                    &nbsp;Local SEO Packages (Monthly Recurring)</a>
-                    <br>
-                    <br>
-                <a (click)="settingActive=4" [ngClass]="{'active': (settingActive == 4)}" class="storeafontwfonts">
-                    &nbsp;Business SEO Packages</a>
-                    <br>
-                    <br>
-                <a (click)="settingActive=5" [ngClass]="{'active': (settingActive == 5)}" class="storeafontwfonts">
-                    &nbsp;Website Design Packages</a>
+                </div>
 
+                <br>
             </div>
         </div>
     </div>
     <div class="col-md-9">
+            <div class="card b cart-container">
+                <div class="card-header storepfontsize"></div>
+                <div class="container mt-2 storeproductdivheight">
+                    <div class="row pad-18">
 
-        <div *ngFor="let product of products">
+                        <div class="col-md-3 col-sm-6 item" *ngFor="let plan of plans">
+                            <div *ngIf="plan.productId == productId">
+
+                                <div class="card item-card card-block" [style.height.px]="maxHeight/1.2">
+                                    <h3 class="card-title font-weight-bold text-left">{{plan.name}}</h3>
+                                    <p class="">{{plan.title}}</p>
+                                    <p class="service-link">
+                                        {{plan.subtitle}}
+                                    </p>
+                                    <hr>
+                                    <div class="product-attributes-box card-body storesubdivpaddinginitial">
+                                        <ul class="list-group list-group-flush storeulpaddingtop" >
+                                            <li class="text-left storelistyle">{{plan.features}}</li>
+                                        </ul>
+                                    </div>
+                                    <div class="product-buttons-box">
+                                        <button class="btn btn-success btn-block btn-lg checkout-btn" (click)="onClick(plan.id)">
+                                            BUY NOW for {{plan.price}}
+                                            <span data-toggle="popover">
+                                                <i class="fa fa-info-circle"></i>
+                                            </span>
+                                        </button>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        <!-- <div *ngFor="let product of products">
             <div *ngIf="settingActive == 1 && product.id == 1">
                 <div class="card b cart-container">
                     <div class="card-header storepfontsize">{{product.name}}</div>
@@ -43,15 +66,16 @@
                                     </p>
                                     <hr>
                                     <div class="product-attributes-box card-body storesubdivpaddinginitial">
-                                        <ul class="list-group list-group-flush storeulpaddingtop"
-                                            *ngFor="let feature of plan.features">
+                                        <ul class="list-group list-group-flush storeulpaddingtop" *ngFor="let feature of plan.features">
                                             <li class="text-left storelistyle">{{feature}}</li>
                                         </ul>
                                     </div>
                                     <div class="product-buttons-box">
-                                        <button class="btn btn-success btn-block btn-lg checkout-btn"  (click)="onClick(plan.planId)">
+                                        <button class="btn btn-success btn-block btn-lg checkout-btn" (click)="onClick(product.id,plan.planId)">
                                             BUY NOW for {{plan.price}}
-                                            <span data-toggle="popover"><i class="fa fa-info-circle"></i></span>
+                                            <span data-toggle="popover">
+                                                <i class="fa fa-info-circle"></i>
+                                            </span>
                                         </button>
                                     </div>
                                 </div>
@@ -74,15 +98,16 @@
                                     </p>
                                     <hr>
                                     <div class="product-attributes-box card-body storesubdivpaddinginitial">
-                                        <ul class="list-group list-group-flush storeulpaddingtop"
-                                            *ngFor="let feature of plan.features">
+                                        <ul class="list-group list-group-flush storeulpaddingtop" *ngFor="let feature of plan.features">
                                             <li class="text-left storelistyle">{{feature}}</li>
                                         </ul>
                                     </div>
                                     <div class="product-buttons-box">
-                                        <button class="btn btn-success btn-block btn-lg checkout-btn"  (click)="onClick()">
+                                        <button class="btn btn-success btn-block btn-lg checkout-btn" (click)="onClick()">
                                             BUY NOW for {{plan.price}}
-                                            <span data-toggle="popover"><i class="fa fa-info-circle"></i></span>
+                                            <span data-toggle="popover">
+                                                <i class="fa fa-info-circle"></i>
+                                            </span>
                                         </button>
                                     </div>
                                 </div>
@@ -105,15 +130,16 @@
                                     </p>
                                     <hr>
                                     <div class="product-attributes-box card-body storesubdivpaddinginitial">
-                                        <ul class="list-group list-group-flush storeulpaddingtop"
-                                            *ngFor="let feature of plan.features">
+                                        <ul class="list-group list-group-flush storeulpaddingtop" *ngFor="let feature of plan.features">
                                             <li class="text-left storelistyle">{{feature}}</li>
                                         </ul>
                                     </div>
                                     <div class="product-buttons-box">
                                         <button class="btn btn-success btn-block btn-lg checkout-btn">
                                             BUY NOW for {{plan.price}}
-                                            <span data-toggle="popover"><i class="fa fa-info-circle"></i></span>
+                                            <span data-toggle="popover">
+                                                <i class="fa fa-info-circle"></i>
+                                            </span>
                                         </button>
                                         <div class="product-resell-price-box text-center">
                                             <span>Recommended Agency Price : {{plan.recommended_agency_price}}</span>
@@ -130,8 +156,7 @@
                     <div class="card-header storepfontsize">{{product.name}}</div>
                     <div class="container mt-2 storeproductdivheight">
                         <div class="row pad-18">
-                            <div class="col-md-4 col-sm-6 item storeproductdivheightmax"
-                                *ngFor="let plan of product.plans">
+                            <div class="col-md-4 col-sm-6 item storeproductdivheightmax" *ngFor="let plan of product.plans">
                                 <div class="card item-card card-block">
                                     <h3 class="card-title font-weight-bold mt-3 mb-3 text-left">{{plan.name}}</h3>
                                     <p class="">{{plan.title}}</p>
@@ -140,15 +165,16 @@
                                     </p>
                                     <hr>
                                     <div class="product-attributes-box card-body storesubdivpaddinginitial">
-                                        <ul class="list-group list-group-flush storeulpaddingtop"
-                                            *ngFor="let feature of plan.features">
+                                        <ul class="list-group list-group-flush storeulpaddingtop" *ngFor="let feature of plan.features">
                                             <li class="text-left storelistyle">{{feature}}</li>
                                         </ul>
                                     </div>
                                     <div class="product-buttons-box storeulpaddingtop">
                                         <button class="btn btn-success btn-block btn-lg checkout-btn">
                                             BUY NOW for {{plan.price}}
-                                            <span data-toggle="popover"><i class="fa fa-info-circle"></i></span>
+                                            <span data-toggle="popover">
+                                                <i class="fa fa-info-circle"></i>
+                                            </span>
                                         </button>
                                     </div>
                                     <div class="product-resell-price-box text-center">
@@ -165,8 +191,7 @@
                     <div class="card-header storepfontsize">{{product.name}}</div>
                     <div class="container mt-2 storeproductdivheight">
                         <div class="row pad-18">
-                            <div class="col-md-6 col-sm-6 item storeproductdivheightmax"
-                                *ngFor="let plan of product.plans">
+                            <div class="col-md-6 col-sm-6 item storeproductdivheightmax" *ngFor="let plan of product.plans">
                                 <div class="card item-card card-block" [style.height.px]="maxHeight + 50">
                                     <h3 class="card-title font-weight-bold mt-3 mb-3 text-left">{{plan.name}}</h3>
                                     <p class="">{{plan.title}}</p>
@@ -175,15 +200,16 @@
                                     </p>
                                     <hr>
                                     <div class="product-attributes-box card-body storesubdivpaddinginitial">
-                                        <ul class="list-group list-group-flush storeulpaddingtop"
-                                            *ngFor="let feature of plan.features">
+                                        <ul class="list-group list-group-flush storeulpaddingtop" *ngFor="let feature of plan.features">
                                             <li class="text-left storelistyle">{{feature}}</li>
                                         </ul>
                                     </div>
                                     <div class="product-buttons-box storeulpaddingtop">
                                         <button class="btn btn-success btn-block btn-lg checkout-btn">
                                             BUY NOW for {{plan.price}}
-                                            <span data-toggle="popover"><i class="fa fa-info-circle"></i></span>
+                                            <span data-toggle="popover">
+                                                <i class="fa fa-info-circle"></i>
+                                            </span>
                                         </button>
                                     </div>
                                 </div>
@@ -192,7 +218,7 @@
                     </div>
                 </div>
             </div>
-        </div>
+        </div> -->
 
 
     </div>

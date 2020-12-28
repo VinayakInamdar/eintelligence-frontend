@@ -3,5 +3,6 @@ export interface StripePayment{
     amount :number ,
     userId : string,
     planId : number,
-    paymentCycle:  string 
+    paymentCycle:  string ,
+    campaignId : string
 }

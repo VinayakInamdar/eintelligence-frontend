@@ -275,6 +275,7 @@ export class HomeComponent implements OnInit {
             this.tableData = this.campaignList;
 
 
+
             this.source = new LocalDataSource(this.campaignList)             
         });
     }

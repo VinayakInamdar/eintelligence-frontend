@@ -83,15 +83,31 @@ export const routes: Routes = [
                 loadChildren: () => import('./store/store.module').then(m => m.StoreModule)
             },
             {
+                path: 'products',
+                component: LayoutComponent,
+                //canActivate: [RequireAuthenticatedUserRouteGuardService],
+                loadChildren: () => import('./products/products.module').then(m => m.ProductsModule)
+            },
+            {
                 path: 'admin',
                 component: LayoutComponent,
                 // canActivate: [RequireAuthenticatedUserRouteGuardService],
                 loadChildren: () => import('./admin/admin.module').then(m => m.AdminModule)
             },
             {
-                path: 'checkout/:id',
+                path: 'checkout/:planid/:productid',
                 component: LayoutComponent,
                 loadChildren: () => import('./store/checkout/checkout.module').then(m => m.CheckoutModule)
+            },
+            {
+                path: 'paymentsuccess',
+                component: LayoutComponent,
+                loadChildren: () => import('./store/paymentsuccess/paymentsuccess.module').then(m => m.PaymentSuccessModule)
+            },
+            {
+                path: 'paymentfailure',
+                component: LayoutComponent,
+                loadChildren: () => import('./store/paymentfailure/paymentfailure.module').then(m => m.PaymentFailureModule)
             },
             {
                 path: 'overview',

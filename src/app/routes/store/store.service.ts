@@ -28,8 +28,13 @@ export class StoreService {
   }
   // using to create new campaign in db 
   createStripePayment(data): Observable<any> {
-    debugger
+    
     return this.http.post<StripePayment>(this.Url + 'stripepayments', data);
+  }
+
+  CreateStripePaymentCheckout(data): Observable<any> {
+    
+    return this.http.post<StripePayment>(this.Url + 'stripepayments/CreateStripePaymentCheckout', data);
   }
 
   private handleError(err: HttpErrorResponse) {
