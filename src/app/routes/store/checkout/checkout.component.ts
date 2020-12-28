@@ -25,27 +25,16 @@ export class CheckoutComponent implements OnInit {
   isShowDiv = false;
   campaignid=100;
   stripe_session;
-  title = "angular-stripe";
-  priceId = "price_1I1UGIEKoP0zJ89QtQ6YFU82";//price_1I1Tt7EKoP0zJ89QLssTwRXe
+  priceId ;
   sessionid;
   quantity = 1;
+  paymentMode;
   stripePromise = loadStripe(environment.stripe_key);
   ngOnInit(): void {
     debugger
     this.getAllPlans();
     this.planid = this.route.snapshot.paramMap.get('planid');
     this.productId = this.route.snapshot.paramMap.get('productid');
-    // this.productService.getProducts().subscribe(
-    //   products => {
-        
-    //     this.productsOld = products;
-    //     let pro = this.productsOld.filter(x => x.id == this.productId );
-    //     let plan = pro[0].plans;
-    //     this.plans = plan.filter(x => x.planId == this.planid );
-    //     this.amount = this.plans[0].price;
-    //   },
-    //   error => this.errorMessage = <any>error
-    // );
   }
   private getFilterOptionPlans() {
     return {
@@ -65,6 +54,8 @@ export class CheckoutComponent implements OnInit {
         this.plans =  response.body
         this.plans = this.plans.filter(x => x.id == this.planid );
         this.amount = this.plans[0].price;
+        this.priceId =  this.plans[0].priceId;
+        this.paymentMode = this.plans[0].paymentType;
       }
     })
   }
@@ -86,7 +77,7 @@ export class CheckoutComponent implements OnInit {
     // When the customer clicks on the button, redirect them to Checkout.
     const stripe = await this.stripePromise;
     const { error } = await stripe.redirectToCheckout({
-      mode: 'subscription',//'payment',
+      mode: this.paymentMode,
       lineItems: [{ price: this.priceId, quantity: this.quantity }],
       successUrl: `https://localhost:4200/paymentsuccess`,
       cancelUrl: `https://localhost:4200/paymentfailure`,
@@ -102,7 +93,6 @@ export class CheckoutComponent implements OnInit {
 
   }
   addToPaymentTable(){
-    
     let data = {
       productId : this.productId,
       amount :  this.amount,

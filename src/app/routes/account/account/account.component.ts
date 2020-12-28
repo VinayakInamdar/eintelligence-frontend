@@ -299,7 +299,7 @@ emailSettingsForm = new FormGroup({
      if(this.settingActive == 1){
       if(formtype == "companyInfoForm"){
         //if(this.companyInfoForm.valid){
-          
+          debugger
           result['id'] = this.CompanyID;
           result['name'] = result.name
           result['description'] = result.description

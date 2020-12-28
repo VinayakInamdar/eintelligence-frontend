@@ -9,18 +9,17 @@ import { ProductsService } from '../../products/products.service'
   styleUrls: ['./store.component.scss']
 })
 export class StoreComponent implements OnInit {
-  newProduct=[];
-  products= [];
+  newProduct = [];
+  products = [];
   errorMessage = '';
-  settingActive = 1;
+  settingActive = 0;
   maxHeight = window.innerHeight;
   plans;
   productId;
-  constructor(public router :Router, public productService : StoreService, public productsService : ProductsService) { }
+  constructor(public router: Router, public productService: StoreService, public productsService: ProductsService) { }
 
   ngOnInit(): void {
-this.getAllPlans();
-this.getAllProduct();
+    this.getAllProduct();
     //using to get list of plans
     // this.productService.getProducts().subscribe(
     //   products => {
@@ -28,19 +27,20 @@ this.getAllProduct();
     //     this.products = products;               
     //   },
     //   error => this.errorMessage = <any>error
-      
+
     // );
   }
   public onClick(planid): any {
     debugger
-    this.router.navigate(['/checkout',this.productId,planid]);
+    this.router.navigate(['/checkout', planid, this.productId]);
   }
   getAllPlans() {
     const filterOptionModel = this.getFilterOptionPlans();
     this.productsService.getFilteredPlan(filterOptionModel).subscribe((response: any) => {
       if (response) {
         debugger
-        this.plans =  response.body
+        this.plans = response.body
+        this.plans = this.plans.filter(x=>x.productId == this.productId);
       }
     })
   }
@@ -49,19 +49,27 @@ this.getAllProduct();
     this.productsService.getFilteredProduct(filterOptionModel).subscribe((response: any) => {
       if (response) {
         debugger
-        this.products =  response.body
+        this.products = response.body
+        if(this.products){
+        this.productId=this.products[0].id;}
       }
     })
   }
   private getFilterOptionPlans() {
-        return {
-          pageNumber: 1,
-          pageSize: 1000,
-          fields: '',
-          searchQuery: '',
-          orderBy: ''
-        }
-    
-      }
+    return {
+      pageNumber: 1,
+      pageSize: 1000,
+      fields: '',
+      searchQuery: '',
+      orderBy: ''
+    }
 
+  }
+  linkClick(index,productid) {
+    debugger
+    this.settingActive = index;
+    this.productId=    this.productId=productid;
+    this.productId=productid;
+  this.getAllPlans();
+  }
 }

@@ -11,4 +11,5 @@ export class CompanyInformation {
     state:string; 
     country:string;
     companydescription:string; 
+    companytype:string;
 }

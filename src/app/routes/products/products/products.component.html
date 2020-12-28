@@ -61,7 +61,10 @@
                                     <button class="mr-1 btn btn-sm float-right accountbtnbgcolor" (click)="deleteProduct();" type="submit">Delete</button>
                                 </div>
                                 <div *ngIf="!productId">
-                                    <button class="mr-1 btn btn-sm float-right accountbtnbgcolor" (click)="createProductOnStripe();" type="submit">Save</button>
+                                    <button class="mr-1 btn btn-sm float-right accountbtnbgcolor" (click)="addProduct();" type="submit">Save</button>
+                                </div>
+                                <div *ngIf="productId">
+                                    <button class="mr-1 btn btn-sm float-right accountbtnbgcolor" (click)="cancelProduct();" type="submit">Cancel</button>
                                 </div>
                             </form>
                         </div>
@@ -154,9 +157,8 @@
                                     </label>
                                     <div class="col-md-3">
                                         <select class="form-control" formControlName="paymentType">
-                                            <option>Select</option>
-                                            <option>OneTime</option>
-                                            <option>recurring</option>
+                                            <option>subscription</option>
+                                            <option>payment</option>
                                         </select>
                                         <!-- <input formControlName="paymentType" class="form-control accountinputheight" /> -->
                                         <span class="text-danger" *ngIf="planForm.controls['paymentType'].hasError('required') && (planForm.controls['paymentType'].dirty || planForm.controls['paymentType'].touched)">
@@ -198,13 +200,13 @@
                                     </div>
                                 </div>
                                 <div *ngIf="planId">
-                                    <button class="mr-1 btn btn-sm float-right accountbtnbgcolor" (click)="addPlan();" type="submit">Update</button>
+                                    <button class="mr-1 btn btn-sm float-right accountbtnbgcolor" (click)="updateProductOnStripe();" type="submit">Update</button>
                                 </div>
                                 <div *ngIf="planId">
                                     <button class="mr-1 btn btn-sm float-right accountbtnbgcolor" (click)="deletePlan();" type="submit">Delete</button>
                                 </div>
                                 <div *ngIf="!planId">
-                                    <button class="mr-1 btn btn-sm float-right accountbtnbgcolor" (click)="createStripePrice();" type="submit">Save</button>
+                                    <button class="mr-1 btn btn-sm float-right accountbtnbgcolor" (click)="createProductOnStripe();" type="submit">Save</button>
                                 </div>
                             </form>
                         </div>

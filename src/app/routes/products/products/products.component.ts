@@ -51,7 +51,7 @@ export class ProductsComponent implements OnInit {
   companyId;
   planId;
   planList = [];
-
+  lastStripeProductId;
   productList = [];
   settings = {
     actions: { add: false, edit: false, delete: false },
@@ -144,14 +144,13 @@ export class ProductsComponent implements OnInit {
   }
 
   addProduct() {
-
+    debugger
     if (this.productId == undefined || this.productId == null) {
       let data = {
         id: "00000000-0000-0000-0000-000000000000",
         name: this.name.value,
         description: this.description.value,
-        companyID: this.companyId
-
+        companyID: this.companyId,
       }
       this.productService.createProducts(data).subscribe(response => {
         if (response) {
@@ -181,7 +180,7 @@ export class ProductsComponent implements OnInit {
     if (this.planId == undefined || this.planId == null) {
       let data = {
         id: "00000000-0000-0000-0000-000000000000",
-        name: this.name.value,
+        name: this.planName.value,
         subTitle: this.planSubTitle.value,
         features: this.features.value,
         price: this.price.value,
@@ -190,8 +189,8 @@ export class ProductsComponent implements OnInit {
         paymentType: this.paymentType.value,
         currency: this.currency.value,
         productId: this.productId,
-        stripeProductId:this.stripeProductId,
-        priceId:this.priceid,
+        stripeProductId: this.stripeProductId,
+        priceId: this.priceid,
       }
       this.productService.createPlan(data).subscribe(response => {
         if (response) {
@@ -203,7 +202,7 @@ export class ProductsComponent implements OnInit {
     } else {
       let data = {
         id: this.planId,
-        name: this.name.value,
+        name: this.planName.value,
         subTitle: this.planSubTitle.value,
         features: this.features.value,
         price: this.price.value,
@@ -274,40 +273,70 @@ export class ProductsComponent implements OnInit {
     });
   }
   createProductOnStripe() {
-    this.productService.createProductOnStripe(this.name.value,this.description.value).subscribe((response: any) => {
+    this.productService.createProductOnStripe(this.planName.value, this.planSubTitle.value).subscribe((response: any) => {
       if (response) {
         debugger
         this.stripeProductId = response.id;
-        this.addProduct();
-      
+        this.lastStripeProductId = this.stripeProductId;
+        this.createStripePrice();
+      }
+    })
+  }
+  updateProductOnStripe() {
+    this.productService.createProductOnStripe(this.planName.value, this.planSubTitle.value).subscribe((response: any) => {
+      if (response) {
+        debugger
+        this.stripeProductId = response.id;
+        this.lastStripeProductId = this.stripeProductId;
+        this.createStripePrice();
       }
     })
   }
   createStripePrice() {
-    var dict = []; 
-    dict.push({
-        key:   'UnitAmount',
-        value: 'this.price.value'
-    });
-    var dictionary = new Array(); 
-    dictionary['key'] = 'value'
-    let data={
-				UnitAmount : this.price.value,
-        Currency : this.currency.value,
-        Recurring :
-        {
-          Interval : this.paymentCycle.value,
-        },
-        ProductId : this.stripeProductId,//"prod_IdaudQUPYxm2BV",
-        Product: this.stripeProductId,
-        Type:this.paymentType.value,
-			};
+    let data;
+    data = {
+      UnitAmount: this.price.value,
+      Currency: this.currency.value,
+      Interval: this.paymentCycle.value,
+      ProductId: this.stripeProductId,//"prod_IdaudQUPYxm2BV",
+      Type: this.paymentType.value,
+    };
     debugger
-    this.productService.createStripePrice(dictionary).subscribe((response: any) => {
+    this.productService.createStripePrice(data).subscribe((response: any) => {
       if (response) {
-       this.addPlan();
+        debugger
+        this.priceid = response.id;
+        this.addPlan();
       }
     })
+  }
+  createProductOnStripe2(): Observable<any> {
+    //require secret key
+    debugger
+    const myheader = new HttpHeaders().append('Authorization', 'Bearer sk_test_51I0iLaEKoP0zJ89QzP2qwrKaIC8vjEfoVim8j4S0Y3FsRx0T3UEkvqiaEayt1AzAcP7Na5xzZcb7aN2K7aMrtcMf00CizHVXeg');
+    const options = {
+      headers: myheader,
+    }
+    let body =
+    {
+      "product": "prod_IdrCfdGVwfbrhH",
+      "currency": "inr",
+      "unit_amount": "100"
+    }
+
+
+    // let body = new HttpParams();
+    // body = body.set('currency', 'INR');
+    // body = body.set('unit_amount', '1000');
+    // body = body.set('product', 'prod_IdrCfdGVwfbrhH');
+    return this.http
+      .post<any[]>('https://api.stripe.com/v1/prices', body, options)
+  }
+  cancelProduct() {
+    this.productForm.reset();
+    this.productId = null;
+    this.sourcePlan = null;
+    this.planForm = null;
   }
 }
 

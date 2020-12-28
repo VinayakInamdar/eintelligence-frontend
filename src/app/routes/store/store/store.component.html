@@ -5,8 +5,8 @@
             <div class="card-body">
                 <p class="storepfontsize">Services</p>
                 <br>
-                <div *ngFor="let product of products">
-                    <a (click)="productId=product.id" [ngClass]="{'active': (settingActive == 1)}" class="storeafontwfonts">
+                <div *ngFor="let product of products; let i = index;">
+                    <a [ngClass]="{'active': (settingActive == i)}" (click) = "linkClick(i,product.id);" class="storeafontwfonts">
                         &nbsp;{{product.name}}</a>
                     <br>
                     <br>

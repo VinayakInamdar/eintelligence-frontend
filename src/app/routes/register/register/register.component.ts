@@ -8,7 +8,8 @@ import { RegisterService } from '../register.service';
 import { User } from '../../user/user.model';
 import { UserComponent } from '../../user/user/user.component';
 import { UserService } from '../../user/user.service';
-
+import { AccountService } from '../../account/account.service';
+import { CompanyInformation } from '../../account/account/companyinformation.model';
 @Component({
   selector: 'app-register',
   templateUrl: './register.component.html',
@@ -32,12 +33,12 @@ export class RegisterComponent implements OnInit {
   textvalue: string = "";
 
   constructor(private translate: TranslateService, fb: FormBuilder, private registerService: RegisterService,
-    public router: Router, public route: ActivatedRoute, public userService: UserService) {
+    public router: Router, public route: ActivatedRoute, public userService: UserService, public accountService: AccountService) {
 
     // this.registerModel = new Register();
     this.userModel = new User();
 
-    this.valForm = fb.group({ 
+    this.valForm = fb.group({
 
       'fName': [this.userModel.fName, Validators.required],
       'lName': [this.userModel.lName, Validators.required],
@@ -60,20 +61,33 @@ export class RegisterComponent implements OnInit {
     // this.registerService.createRegiter(result).subscribe((res: Register) => {
     //   this.registerModel = res;
     // });
-
     var result: User = Object.assign({}, value);
     this.userService.createUser(result).subscribe((res: User) => {
-      
+      debugger
       this.userModel = res;
+
+      var company=  {
+        "id": res.companyID,
+        "companytype": "Agency",
+      }
+
+
+      this.accountService.updateCompany(res.companyID, company).subscribe(
+        res => {
+          console.log(res)
+          debugger
+        }
+      )
+
     });
   }
   public onClick(): any {
     this.router.navigate(['/success']);
   }
-  public goToPrivacyPolicy () {
+  public goToPrivacyPolicy() {
     this.router.navigate(['/privacy-policy'])
   }
-  public goToTermsAndConditions () {
+  public goToTermsAndConditions() {
     this.router.navigate(['/terms-and-conditions'])
   }
 }
