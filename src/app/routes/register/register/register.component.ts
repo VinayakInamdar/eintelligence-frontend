@@ -1,6 +1,6 @@
 import { Component, OnInit, Directive } from '@angular/core';
 import { Router, ActivatedRoute } from '@angular/router';
-import { FormGroup, FormBuilder, Validators } from '@angular/forms';
+import { FormGroup, FormBuilder, Validators, FormControl } from '@angular/forms';
 //import { Register } from '../register.model';
 import { Subscription } from 'rxjs';
 import { TranslateService } from '@ngx-translate/core';
@@ -18,7 +18,8 @@ import { CompanyInformation } from '../../account/account/companyinformation.mod
 @Directive({ selector: '[ng2FileSelect]' })
 
 export class RegisterComponent implements OnInit {
-
+  companytype = new FormControl('', [Validators.required]);
+  cName = new FormControl(null, [Validators.required]);
   valForm: FormGroup;
   // public registerModel: Register;
   public userModel: User;
@@ -43,7 +44,9 @@ export class RegisterComponent implements OnInit {
       'fName': [this.userModel.fName, Validators.required],
       'lName': [this.userModel.lName, Validators.required],
       'email': [this.userModel.email, Validators.required],
-      'password': [this.userModel.password, Validators.required]
+      'password': [this.userModel.password, Validators.required],
+      'cName': [this.cName.value, Validators.required],
+      'companytype': [this.companytype.value, Validators.required]
     })
   }
 
@@ -61,14 +64,17 @@ export class RegisterComponent implements OnInit {
     // this.registerService.createRegiter(result).subscribe((res: Register) => {
     //   this.registerModel = res;
     // });
+    debugger
     var result: User = Object.assign({}, value);
     this.userService.createUser(result).subscribe((res: User) => {
       debugger
       this.userModel = res;
 
-      var company=  {
+
+      var company = {
         "id": res.companyID,
-        "companytype": "Agency",
+        "companytype": this.valForm.controls.companytype.value,
+        "name": this.valForm.controls.cName.value
       }
 
 

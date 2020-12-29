@@ -86,5 +86,9 @@ export class ProductsService {
     createStripePrice(data): Observable<any> {
         return this.http.post<any>(this.Url + 'stripepayments/CreateStripePrice', data);
     }
+    deleteStripeProduct(id): Observable<any> {
+        return this.http.post<any>(this.Url + 'stripepayments/DeleteStripeProduct', id);
+    }
+    
 }
 

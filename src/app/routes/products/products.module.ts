@@ -10,7 +10,7 @@ import { FileUploadModule } from 'ng2-file-upload';
 import { NgxSelectModule } from 'ngx-select-ex';
 import { NgxIntlTelInputModule } from 'ngx-intl-tel-input';
 import { AccordionModule } from 'ngx-bootstrap/accordion';
-
+import { NgxStripeModule } from 'ngx-stripe';
 const routes: Routes = [
   { path: '', component: ProductsComponent }
 ];
@@ -30,6 +30,8 @@ const routes: Routes = [
     NgxSelectModule,
     NgxIntlTelInputModule,
     AccordionModule.forRoot(),
+    NgxStripeModule.forRoot('pk_test_51I0iLaEKoP0zJ89QGXq8ihvypBEzyryF6Y5Hiro0UDcPLQeCTzA0v8S6lYv2DNBZZS3LxICWKJATbOxzdUCOl73p00Her3EA2b'),
+    
   ],
  
   exports: [

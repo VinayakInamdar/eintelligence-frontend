@@ -1,5 +1,5 @@
-import { Component, OnInit } from '@angular/core';
-import { FormControl, FormGroup, Validators } from '@angular/forms';
+import { Component, OnInit, ViewChild } from '@angular/core';
+import { FormControl, FormGroup, Validators, FormBuilder } from '@angular/forms';
 import { LocalDataSource } from 'ng2-smart-table';
 import { ProductsService } from '../products.service';
 import { TranslateService } from '@ngx-translate/core';
@@ -7,6 +7,16 @@ import { HttpHeaders, HttpClient, HttpParams } from '@angular/common/http';
 import { Observable } from 'rxjs';
 import { map, catchError } from 'rxjs/operators';
 //import { SnackbarService } from '../../../shared/services/snackbar/snackbar.service';
+//test
+import { StripeService, StripeCardComponent } from 'ngx-stripe';
+import {
+  StripeCardElementOptions,
+  StripeElementsOptions,
+  StripeElement
+} from '@stripe/stripe-js';
+declare var Stripe;
+
+
 declare var $: any;
 const success = require('sweetalert');
 
@@ -16,6 +26,7 @@ const success = require('sweetalert');
   styleUrls: ['./products.component.scss']
 })
 export class ProductsComponent implements OnInit {
+   //
   settingActive: number = 1;
   oneAtATime: boolean = true;
   //for product
@@ -98,10 +109,13 @@ export class ProductsComponent implements OnInit {
   source: LocalDataSource;
   sourcePlan: LocalDataSource;
   constructor(private productService: ProductsService, private translate: TranslateService, private http: HttpClient
+    ,private fb: FormBuilder, private stripeService: StripeService
     //private snackbarService: SnackbarService
   ) { }
 
   ngOnInit(): void {
+   
+
     this.companyId = localStorage.getItem('companyID');
     this.getProductsList();
   }
@@ -120,6 +134,7 @@ export class ProductsComponent implements OnInit {
       if (response) {
         debugger
         this.planId = response.id;
+        this.priceid = response.priceId
         this.stripeProductId = response.stripeProductId;
         this.planForm.patchValue({
           planName: response.name,
@@ -282,13 +297,15 @@ export class ProductsComponent implements OnInit {
       }
     })
   }
-  updateProductOnStripe() {
-    this.productService.createProductOnStripe(this.planName.value, this.planSubTitle.value).subscribe((response: any) => {
+  deleteStripeProduct() {
+     debugger
+     let data = {
+      ProductId: this.stripeProductId,
+    }
+    this.productService.deleteStripeProduct(data).subscribe((response: any) => {
       if (response) {
         debugger
-        this.stripeProductId = response.id;
-        this.lastStripeProductId = this.stripeProductId;
-        this.createStripePrice();
+        //this.addPlan();
       }
     })
   }
@@ -338,6 +355,11 @@ export class ProductsComponent implements OnInit {
     this.sourcePlan = null;
     this.planForm = null;
   }
+  test(){
+
+  }
+ 
+  
 }
 
 

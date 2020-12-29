@@ -1,22 +1,22 @@
 import { NgModule } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { RouterModule, Routes } from '@angular/router';
-import { PaymentSuccessComponent } from './paymentsuccess.component';
+import { TestApisComponent } from './testapis.component';
+
 const routes: Routes = [
 
-  { path: '', component: PaymentSuccessComponent }
+  { path: '', component: TestApisComponent }
 ];
 
 
 @NgModule({
-  declarations: [PaymentSuccessComponent],
+  declarations: [TestApisComponent],
   imports: [
     CommonModule,
-    RouterModule.forChild(routes),
-    
+    RouterModule.forChild(routes)
   ],
   exports: [
     RouterModule
 ]
 })
-export class PaymentSuccessModule { }
+export class TestApisModule { }

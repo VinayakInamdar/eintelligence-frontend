@@ -10,7 +10,7 @@ import { HttpClientModule } from '@angular/common/http';
 import { FileUploadModule } from 'ng2-file-upload';
 import { NgxSelectModule } from 'ngx-select-ex';
 import { NgxIntlTelInputModule } from 'ngx-intl-tel-input';
-
+import { NgxStripeModule } from 'ngx-stripe';
 const routes: Routes = [
   { path: '', component: StoreComponent }
 ];
@@ -28,7 +28,8 @@ const routes: Routes = [
     FileUploadModule,
     FormsModule,
     NgxSelectModule,
-    NgxIntlTelInputModule
+    NgxIntlTelInputModule,
+    NgxStripeModule.forRoot('pk_test_51I0iLaEKoP0zJ89QGXq8ihvypBEzyryF6Y5Hiro0UDcPLQeCTzA0v8S6lYv2DNBZZS3LxICWKJATbOxzdUCOl73p00Her3EA2b'),
   ],
   exports : [
     RouterModule

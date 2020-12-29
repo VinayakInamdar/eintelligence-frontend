@@ -105,6 +105,11 @@ export const routes: Routes = [
                 loadChildren: () => import('./store/paymentsuccess/paymentsuccess.module').then(m => m.PaymentSuccessModule)
             },
             {
+                path: 'test',
+                component: LayoutComponent,
+                loadChildren: () => import('./store/testapis/testapis.module').then(m => m.TestApisModule)
+            },
+            {
                 path: 'paymentfailure',
                 component: LayoutComponent,
                 loadChildren: () => import('./store/paymentfailure/paymentfailure.module').then(m => m.PaymentFailureModule)

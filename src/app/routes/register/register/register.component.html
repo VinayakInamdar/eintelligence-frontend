@@ -30,8 +30,8 @@
                         <div class="text-center" style="margin-top:0px;">
                             <div class="card">
                                 <div class="card-body">
-                                    <p class="textaligncenter fontsizexlarge paddingtop3px">Create your Account111111111111</p>
-         
+                                    <p class="textaligncenter fontsizexlarge paddingtop3px">Create your Account</p>
+
                                     <img class="imgheight20px" src="../../../../assets/img/google.png">&nbsp; Sign up with Google
                                 </div>
                             </div>
@@ -44,7 +44,7 @@
                         </div> -->
 
                         <form [formGroup]="valForm" class="form-horizontal" (submit)="submitForm(valForm.value)" novalidate="" #registerForm="ngForm">
-       
+
                             <div class="form-group">
                                 <div class="row">
                                     <label class="labelcss">EMAIL</label>
@@ -91,6 +91,39 @@
                                 </div>
                             </div>
 
+                            <div class="form-group">
+                                <div class="row">
+                                    <label class="labelcss">COMPANY NAME</label>
+                                    <p class="pcolorred">*</p>
+                                    <input class="form-control inputheight3rem" type="text" placeholder="Enter your company name" formControlName="cName">
+                                    <span class="text-danger" *ngIf="valForm.controls['cName'].hasError('required') && (valForm.controls['cName'].dirty || valForm.controls['cName'].touched)">
+                                        {{'validation.NAMEISREQUIRED' | translate}}</span>
+                                </div>
+                            </div>
+
+                            <div class="form-group">
+                                <div class="row">
+                                    <div class="col-md-5">
+                                        <div class="row">
+                                            <label class="labelcss">COMPANY TYPE</label>
+                                            <p class="pcolorred">*</p>
+                                            <div class="col-md-2"></div><br><br>
+                                            <input type="radio" formControlName="companytype" value="agency"  name="companytype"> AGENCY
+                                        </div>
+                                    </div>
+                                    <div class="col-md-2"></div>
+                                    <div class="col-md-5">
+                                        <div class="row">
+
+
+                                            <input type="radio" formControlName="companytype" value="business"  name="companytype"> BUSINESS
+
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+
+                            <fieldset></fieldset>
                             <div class="text-center">
                                 <button class="mr-1 btn btn-primary btn-lg" type="submit" (click)="onClick()" [disabled]="!registerForm.form.valid">Create an Account</button>
                             </div>
@@ -109,18 +142,18 @@
                                 </a>
                             </div>
                             <div class="text-center">
-                                    <p>
-                                        <span>&copy;</span>
-                                        <span> 2020 White Label Board</span>
-                                    </p>
-                                </div>
+                                <p>
+                                    <span>&copy;</span>
+                                    <span> 2020 White Label Board</span>
+                                </p>
+                            </div>
                             <!-- <div class="text-center">
                                 <a (click)="goToTermsAndConditions($event)"><p class="pcolorblue">Terms and Conditions</p></a>
                             </div> -->
                         </form>
-           
+
                     </div>
-              
+
                 </div>
             </div>
         </div>
