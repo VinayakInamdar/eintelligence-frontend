@@ -1,16 +1,16 @@
 import { NgModule } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { RouterModule, Routes } from '@angular/router';
-import { PaymentSuccessComponent } from './paymentsuccess.component';
+import { MyPaymentsComponent } from './mypayments.component';
 
 const routes: Routes = [
 
-  { path: '', component: PaymentSuccessComponent }
+  { path: '', component: MyPaymentsComponent }
 ];
 
 
 @NgModule({
-  declarations: [PaymentSuccessComponent],
+  declarations: [MyPaymentsComponent],
   imports: [
     CommonModule,
     RouterModule.forChild(routes)
@@ -19,4 +19,4 @@ const routes: Routes = [
     RouterModule
 ]
 })
-export class PaymentSuccessModule { }
+export class MyPaymentsModule { }
