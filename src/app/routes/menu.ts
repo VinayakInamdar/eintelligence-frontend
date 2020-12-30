@@ -35,6 +35,11 @@ const Products = {
     link: '/products',
     icon: "fas fa-store"
 };
+const MyPayments = {
+    text: 'My Payments',
+    link: '/mypayments',
+    icon: "fas fa-store"
+};
 // const Admin = {
 //     text: 'Admin',
 //     link: '/admin',
@@ -120,6 +125,7 @@ export const menu = [
     Leads,
     Proposal,
     Todolist,
-    Products
+    Products,
+    MyPayments
    
 ];

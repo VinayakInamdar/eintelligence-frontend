@@ -5,52 +5,74 @@
             <div class="content-wrapper">
                 <section id="login">
 
-                    <nav class="navbar navbar-default navbar-fixed-top bg-white" style="box-shadow: 2px 2px #e9e6e6;" role="navigation">
+                    <nav class="navbar navbar-default navbar-fixed-top bg-white" style="box-shadow: 2px 2px #e9e6e6;"
+                        role="navigation">
                         <a class="navbar-brand" href="#">
-                            <!-- <img src="./assets/img/ei-logo.png" width="30%" height="30%" alt="" /> -->
+                          My Payments
                         </a>
 
                     </nav>
 
                     <br />
                     <div class="row">
-                        <div class="col-md-4"></div>
-                        <div class="col-md-5">
-
+                        <div class="col-md-12">
                             <div class="card text-center card-default shadow p-3 mb-5 bg-white rounded">
-                                <div class="card mb-3">
-                                    <img src="../../../../assets/img/successpay.png" class="card-img-top" alt="success payment-img" style="width:16rem;height: auto;align-self: center;align-items: center;align-content: center;">
-                                    <div class="col-md-2"></div>
-                                    <div class="card-body">
+                                <div class="table-responsive">
+                                    <ng2-smart-table>
+                                        <table class="table table-bordered">
+                                            <thead>
+                                                <tr>
+                                                    <th scope="col">Plan Name</th>
+                                                    <th scope="col">Subscription Date</th>
+                                                    <th scope="col">Campaign</th>
+                                                    <th scope="col">Amount</th>
+                                                    <th scope="col">Payment Mode</th>
+                                                    <th scope="col">Payment Cycle</th>
+                                                </tr>
+                                            </thead>
+                                            <tbody>
+                                                <tr *ngFor="let p of payments">
+                                                    <td class="col">{{p.plan.name}}</td>
+                                                    <td class="col">{{p.createdOn}}</td>
+                                                    <td class="col">{{p.campaignId}}</td>
+                                                    <td class="col">{{p.amount}}</td>
+                                                    <td class="col">{{p.paymentMode}}</td>
+                                                    <td class="col">{{p.paymentCycle}}</td>
+                                                    <td *ngIf="p.stripeSubscriptionId != '' " >
+                                                        <button class="btn bg-primary" 
+                                                            (click)="cancleSubscription(p.stripeSubscriptionId);"
+                                                            type="button">Cancle Subscription</button>
+                                                    </td>
 
-                                        <h5 class="card-title" style="text-align: center; font-size: xx-large;font-family: 'Franklin Gothic Medium', 'Arial Narrow', Arial, sans-serif;">
-                                            Your Payment is Successfull</h5>
-                                        <p class="card-text" style="font-family:'Franklin Gothic Medium', 'Arial Narrow', Arial, sans-serif;  ">
-                                            Thank you for your payment</p>
-                                        <a routerLink="/store " style="font-family: 'Franklin Gothic Medium', 'Arial Narrow', Arial, sans-serif; ">
-                                            View More Products Here.</a>
-
-                                    </div>
+                                                </tr>
+                                            </tbody>
+                                        </table>
+                                    </ng2-smart-table>
                                 </div>
                             </div>
-                            <!--div class="row">
-                                    <div class="col-md-1"></div>
-                                    <div class="col-md-10">
+                            <!-- <div class="row">
+                                <div class="col">Plan Name</div>
+                                <div class="col">Subscription Date</div>
+                                <div class="col">Campaign</div>
+                                <div class="col">Amount</div>
+                                <div class="col">Payment Mode</div>
+                                <div class="col">Payment Cycle</div>
 
-                                        <p style="text-align: center; font-size: x-large;">Payment Done Successfully !</p>
-                                        <div class="text-center">
-                                            <div class="card">
-                                                <a routerLink="/store"> View More Products Here.</a>
-                                            </div>
-                                        </div>
+                            </div>
+                            <div class="row" *ngFor="let p of payments">
+                                <div class="col">{{p.plan.name}}</div>
+                                <div class="col">{{p.createdOn}}</div>
+                                <div class="col">{{p.campaignId}}</div>
+                                <div class="col">{{p.amount}}</div>
+                                <div class="col">{{p.paymentMode}}</div>
+                                <div class="col">{{p.paymentCycle}}</div>
+                                <div *ngIf="p.stripeSubscriptionId" class="col">
+                                </div>
 
-                                    </div>
-                                    <div class="col-md-1"></div>
-                                </div-->
 
+                            </div> -->
 
                         </div>
-
                     </div>
                 </section>
                 <!--Login Page Starts-->

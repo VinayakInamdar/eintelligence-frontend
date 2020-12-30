@@ -1,34 +1,6 @@
 <div class="row">
-    <!-- <div class="col-sm-3 storesubdivpadding">
-        <div class="card" [style.height.px]="maxHeight">
-            <div class="card-body">
-                <p class="storepfontsize">Services</p>
-                <br>
-                <a (click)="settingActive=1" [ngClass]="{'active': (settingActive == 1)}" class="storeafontwfonts">
-                    &nbsp;Link Building</a>
-                <br>
-                <br>
-                <a (click)="settingActive=2" [ngClass]="{'active': (settingActive == 2)}" class="storeafontwfonts">
-                    &nbsp;Content Writing Packages</a>
-                <br>
-                <br>
-                <a (click)="settingActive=3" [ngClass]="{'active': (settingActive == 3)}" class="storeafontwfonts">
-                    &nbsp;Local SEO Packages (Monthly Recurring)</a>
-                <br>
-                <br>
-                <a (click)="settingActive=4" [ngClass]="{'active': (settingActive == 4)}" class="storeafontwfonts">
-                    &nbsp;Business SEO Packages</a>
-                <br>
-                <br>
-                <a (click)="settingActive=5" [ngClass]="{'active': (settingActive == 5)}" class="storeafontwfonts">
-                    &nbsp;Website Design Packages</a>
-
-            </div>
-        </div>
-    </div> -->
     <div class="col-md-5">
         <div>
-
             <div class="container mt-4 storeproductdivheight">
                 <div class="row pad-18">
                     <div class="col-md-12 item" *ngFor="let plan of plans">
@@ -43,6 +15,32 @@
                                 <ul class="list-group list-group-flush storeulpaddingtop" >
                                     <li class="text-left storelistyle">{{plan.features}}</li>
                                 </ul>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+        </div>
+    </div>
+    <div class="col-md-3">
+        <div>
+            <div class="container mt-4 storeproductdivheight">
+                <div class="row pad-18">
+                    <div class="col-md-12 item" *ngFor="let plan of plans">
+                        <div class="card item-card card-block" [style.height.px]="maxHeight/1.2">
+                            <h3 class="card-title font-weight-bold text-left">Please Select Campaign before Checkout</h3>
+                            <div class="btn-group">
+                                <div class="btn-group" dropdown>
+
+                                </div>
+                            </div>
+                            <hr>
+                            <div class="product-attributes-box card-body storesubdivpaddinginitial">
+                                <select class="form-control"   [(ngModel)]="campaignDrp" #mySelect (change)="onChange(mySelect.value)" >
+                                    <option value="00000000-0000-0000-0000-000000000000"> Select Campaign</option>
+                                    <option *ngFor="let campaign of campaignList" [value]="campaign.id"> {{campaign.name}} </option>
+                                  </select>
                             </div>
                         </div>
                     </div>
@@ -97,6 +95,13 @@
                     </p>
                     <span class="text-muted text-sm">* Terms and conditions</span>
                 </div>
+                <div class="card-body"  *ngIf="campaignError==true">
+                <div class="alert alert-danger">
+                    <strong>Error!</strong> Plaese select Campaign before checkout.
+                  </div>
+                </div>
+
+                
             </div>
         </div>
 

@@ -41,10 +41,6 @@ export const routes: Routes = [
                 loadChildren: () => import('./register/success/success.module').then(m => m.SuccessModule)
             },
             {
-                path: 'mypayments',
-                loadChildren: () => import('./mypayments/mypayments.module').then(m => m.)
-            },
-            {
                 path: 'agency',
                 loadChildren: () => import('./register/agency/agency.module').then(m => m.AgencyModule)
             },
@@ -91,6 +87,11 @@ export const routes: Routes = [
                 component: LayoutComponent,
                 //canActivate: [RequireAuthenticatedUserRouteGuardService],
                 loadChildren: () => import('./products/products.module').then(m => m.ProductsModule)
+            },
+            {
+                path: 'mypayments',
+                component: LayoutComponent,
+                loadChildren: () => import('./mypayments/mypayments/mypayments.module').then(m => m.MyPaymentsModule)
             },
             {
                 path: 'admin',
