@@ -30,11 +30,14 @@ export class MyPaymentsService {
         return this.http.get<any>(`${this.Url}stripepayments?${params}`, { observe: 'response' });
     }
     deleteStripeSuscription(id: string): Observable<any> {
+        debugger
         const myheader = new HttpHeaders().append('Authorization', 'Bearer '+environment.stripe_secreTkey);
         const options = {
            headers: myheader
         }
-        return this.http.delete<any>('https://api.stripe.com/v1/subscriptions/'+id, options)
+        return 
+        this.http.delete<any>('https://api.stripe.com/v1/subscriptions/'+id, options)
     }
+  
 }
 

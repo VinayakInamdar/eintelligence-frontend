@@ -4,6 +4,7 @@ import { JsonPipe } from '@angular/common';
 import { MyPaymentsService } from '../../mypayments/mypayments.service'
 import { HttpClient, HttpHeaders, HttpParams } from '@angular/common/http';
 import { environment } from '../../../../environments/environment';
+import { StoreService } from '../../store/store.service';
 @Component({
   templateUrl: './mypayments.component.html',
   styleUrls: ['./mypayments.component.scss']
@@ -15,20 +16,53 @@ export class MyPaymentsComponent implements OnInit {
   maxHeight = window.innerHeight;
   payments: any[];
   stripeSubscriptionId;
-  constructor(public router: Router, public myPaymentsService: MyPaymentsService, private http: HttpClient) { }
+  priceId;
+  sessionid;
+  quantity = 1;
+  planid;
+  productId;
+  amount;
+  userId;
+  paymentMode;
+  paymentCycle;
+  campaignid;
+  tempPlansList;
+  stripePaymentId;
+  httpOptionJSON = {
+    headers: new HttpHeaders({
+      'Content-Type': 'application/x-www-form-urlencoded',
+      'Authorization': 'Bearer '+environment.stripe_secreTkey
+    })
+  };
+  constructor(public router: Router, public myPaymentsService: MyPaymentsService, private http: HttpClient,
+    public storeService: StoreService) { }
 
   ngOnInit(): void {
+    this.userId = '2e78a42a-af26-48bb-bda2-be9e16301435';
     this.getAllPaymants();
   }
- 
+
   public cancleSubscription(StripeSubscriptionId): any {
-    this.myPaymentsService.deleteStripeSuscription(StripeSubscriptionId).subscribe((response: any) => {
-      if (response) {
-        if(response.status == 'canceled'){
-          
+
+
+    const url = "https://api.stripe.com/v1/subscriptions/" +StripeSubscriptionId;
+    this.http.delete(url, this.httpOptionJSON).subscribe(res => {
+      if (res) {
+        debugger
+        let temp = this.tempPlansList.filter(x => x.stripeSubscriptionId == StripeSubscriptionId);
+        if(temp!= undefined){
+        this.amount = temp[0].amount;
+        this.paymentCycle = temp[0].paymentCycle;
+        this.planid = temp[0].planId;
+        this.campaignid=temp[0].campaignId;
+        this.stripePaymentId = temp[0].id;
+        this.paymentMode = temp[0].plan.paymentType;
+        this.addToPaymentTable(StripeSubscriptionId);
         }
       }
-    })
+    }, error => {
+      alert(error.message);
+    });
   }
   private getFilterOptionPlans() {
     return {
@@ -40,11 +74,35 @@ export class MyPaymentsComponent implements OnInit {
     }
 
   }
+  addToPaymentTable(StripeSubscriptionId) {
+    debugger
+    let data = {
+      id : this.stripePaymentId,
+      amount: this.amount,
+      userId: this.userId,
+      planId: this.planid,
+      paymentCycle: this.paymentCycle,
+      campaignId: this.campaignid,//"00000000-0000-0000-0000-000000000000",//this.campaignid,
+      PaymentMode: this.paymentMode,
+      IsActive: false,
+      StripePaymentId: StripeSubscriptionId,//add id payment
+      StripeSubscriptionId: StripeSubscriptionId
+    }
+    this.storeService.updateStripePayment(this.stripePaymentId,data).subscribe(response => {
+      if (response) {
+        debugger
+        alert("Payent Done");
+      }
+    });
+  }
   getAllPaymants() {
     const filterOptionModel = this.getFilterOptionPlans();
     this.myPaymentsService.getFilteredStripepayments(filterOptionModel).subscribe((response: any) => {
       if (response) {
-        this.payments = response.body
+        debugger
+        this.payments = response.body;
+        this.tempPlansList = this.payments;
+
       }
     })
   }

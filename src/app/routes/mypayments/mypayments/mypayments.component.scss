@@ -175,19 +175,23 @@ img {
 a:hover {
     color: #1FADD9;
 }
+
 .table-responsive {
     margin: auto;
     cursor: default;
 }
- 
+
 th {
     font-family: 'Franklin Gothic Medium', 'Arial Narrow', Arial, sans-serif;
     font-size: large;
-    padding: 3rem;
+    padding: 1rem;
+    margin: auto;
 }
- 
+
 td {
     font-family: 'Franklin Gothic Medium', 'Arial Narrow', Arial, sans-serif;
     margin: auto;
+    font-size: medium;
+    align-items: center;
     padding: 1rem;
 }

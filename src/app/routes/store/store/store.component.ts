@@ -16,6 +16,7 @@ export class StoreComponent implements OnInit {
   maxHeight = window.innerHeight;
   plans;
   productId;
+  paymentmode;
   constructor(public router: Router, public productService: StoreService, public productsService: ProductsService) { }
 
   ngOnInit(): void {
@@ -30,9 +31,15 @@ export class StoreComponent implements OnInit {
 
     // );
   }
-  public onClick(planid): any {
+  public onClick(planid,paymentmode): any {
     debugger
-    this.router.navigate(['/checkout', planid, this.productId]);
+    if(paymentmode=='subscription'){
+    this.router.navigate(['/checkoutsubscribe', planid, this.productId]);
+    }else{
+      this.router.navigate(['/checkout', planid, this.productId]);
+    }
+
+    
   }
   getAllPlans() {
     const filterOptionModel = this.getFilterOptionPlans();

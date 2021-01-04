@@ -18,11 +18,11 @@ import {
 } from '@stripe/stripe-js';
 declare var Stripe;
 @Component({
-  selector: 'app-checkout',
-  templateUrl: './checkout.component.html',
-  styleUrls: ['./checkout.component.scss']
+  selector: 'app-checkoutsubscribe',
+  templateUrl: './checkoutsubscribe.component.html',
+  styleUrls: ['./checkoutsubscribe.component.scss']
 })
-export class CheckoutComponent implements OnInit {
+export class CheckoutSubscribeComponent implements OnInit {
   //For stripe
   isShow = false;
   isShowSubscription = true;
@@ -45,7 +45,9 @@ export class CheckoutComponent implements OnInit {
   products = [];
   productsOld = [];
   plans = [];
-  constructor(private http: HttpClient, public campaignService: CampaignService, public openIdConnectService: OpenIdConnectService, public route: ActivatedRoute, public router: Router, public productService: StoreService, public productsService: ProductsService) { }
+  constructor(private http: HttpClient, public campaignService: CampaignService, public openIdConnectService: OpenIdConnectService, 
+    public route: ActivatedRoute, public router: Router, public productService: StoreService, 
+    public productsService: ProductsService) { }
   errorMessage = '';
   settingActive = 1;
   maxHeight = window.innerHeight;
@@ -111,15 +113,9 @@ export class CheckoutComponent implements OnInit {
         this.priceId = this.plans[0].priceId;
         this.paymentMode = this.plans[0].paymentType;
         this.paymentCycle = this.plans[0].paymentCycle;
-        if (this.paymentMode != 'subscription') {
-          debugger
           this.isShow = true;
-          this.stripeInit();
-        } else {
-          debugger
-          this.isShowSubscription = true;
           this.stripeSubInit();
-        }
+        
       }
     })
   }
@@ -147,7 +143,7 @@ export class CheckoutComponent implements OnInit {
     //   this.campaignError = false;
 
     let data: []
-    // Call your backend to create the Checkout session.
+    // Call your backend to create the CheckoutSubscribe session.
     this.productService.CreateStripePaymentCheckout(data).subscribe(
       products => {
         debugger
@@ -161,20 +157,9 @@ export class CheckoutComponent implements OnInit {
     //}
   }
   async checkout(sessid) {
-    // const stripe = this.stripePromise;
-    // (await stripe).redirectToCheckout({sessionId:  products.sessionId})
-    // .then(res => {
-    //   debugger
-    //    console.log(res);
-    // })
-    // .catch(error => {
-    //   debugger
-    //    console.log(error);
-    // });
-
-    this.campaignDrp;
+   this.campaignDrp;
     //this.addToPaymentTable('sub_IfLOtHsAIYo2i3');
-    // When the customer clicks on the button, redirect them to Checkout.
+    // When the customer clicks on the button, redirect them to CheckoutSubscribe.
     const stripe = await this.stripePromise;
     await stripe.redirectToCheckout({
       mode: this.paymentMode,
@@ -184,7 +169,6 @@ export class CheckoutComponent implements OnInit {
     }).then((response) => response)
       .then((data) => {
         debugger
-
         window.location.href = 'https://www.google.com';
       });
 
@@ -195,7 +179,7 @@ export class CheckoutComponent implements OnInit {
     // }
 
   }
-  addToPaymentTable(StripePaymentId) {
+  addToPaymentTable(StripeSubscriptionId) {
     let data = {
       amount: this.amount,
       userId: this.userId,
@@ -204,18 +188,16 @@ export class CheckoutComponent implements OnInit {
       campaignId: this.campaignid,//"00000000-0000-0000-0000-000000000000",//this.campaignid,
       PaymentMode: this.paymentMode,
       IsActive: true,
-      StripePaymentId: StripePaymentId
+      StripePaymentId: StripeSubscriptionId,//add id payment
+      StripeSubscriptionId: StripeSubscriptionId
     }
     this.productService.createStripePayment(data).subscribe(response => {
       if (response) {
-
         alert("Payent Done");
-        // this.snackbarService.show('Days created successfully');
       }
     });
   }
   //For stripe Detroja
-
   //################StripeFuncation###################
   stripeInit() {
     var stripe = Stripe(environment.stripe_key);
@@ -280,12 +262,12 @@ export class CheckoutComponent implements OnInit {
     const url = "https://api.stripe.com/v1/payment_intents/" + clientSecret + "/confirm";
     const body = new URLSearchParams();
     body.set('payment_method', 'pm_card_visa');
-
     this.http.post(url, body.toString(), this.httpOptionJSON).subscribe(res => {
       if (res) {
         debugger
         this.loading(false);
         this.clientSecret = res['client_secret'];
+        this.addToPaymentTable(res['id']);
       }
     }, error => {
       alert(error.message);
@@ -318,128 +300,128 @@ export class CheckoutComponent implements OnInit {
       document.querySelector("#button-text").classList.remove("hidden");
     }
   }
-
-  //################StripeSubscriptionFuncation##########
-  stripeSubInit() {
-    var stripe = Stripe(environment.stripe_key);
-    document.querySelector("#submit")['disabled'] = true;
-    var elements = stripe.elements();
-    var style = {
-      base: {
-        color: "#32325d",
-        fontFamily: 'Arial, sans-serif',
-        fontSmoothing: "antialiased",
-        fontSize: "16px",
-        "::placeholder": {
-          color: "#32325d"
+    //################StripeSubscriptionFuncation##########
+    stripeSubInit() {
+      var stripe = Stripe(environment.stripe_key);
+      document.querySelector("#submit")['disabled'] = true;
+      var elements = stripe.elements();
+      var style = {
+        base: {
+          color: "#32325d",
+          fontFamily: 'Arial, sans-serif',
+          fontSmoothing: "antialiased",
+          fontSize: "16px",
+          "::placeholder": {
+            color: "#32325d"
+          }
+        },
+        invalid: {
+          fontFamily: 'Arial, sans-serif',
+          color: "#fa755a",
+          iconColor: "#fa755a"
         }
-      },
-      invalid: {
-        fontFamily: 'Arial, sans-serif',
-        color: "#fa755a",
-        iconColor: "#fa755a"
-      }
-    };
-    var card = elements.create("card", { style: style });
-    // Stripe injects an iframe into the DOM
-    card.mount("#card-element");
-
-    card.on("change", function (event) {
-      // Disable the Pay button if there are no card details in the Element
-      document.querySelector("#submit")['disabled'] = event.empty;
-      document.querySelector("#card-errors").textContent = event.error ? event.error.message : "";
-    });
-
-    var form = document.getElementById("subscription-form");
-    form.addEventListener("submit", (event) => {
-      event.preventDefault();
-      // Complete payment when the submit button is clicked
-      this.createPaymentMethod(stripe, card);
-    });
-  }
-  createPaymentMethod(stripe, cardElement) {
-    debugger
-
-    // const url = "https://api.stripe.com/v1/payment_methods";
-    // const body = new URLSearchParams();
-    // body.set('type', 'card');
-    // body.set('card[number]', '4242424242424242');
-    // body.set('card[exp_month]', '1');
-    // body.set('card[exp_year]', '2023');
-    // body.set('card[cvc]', '123');
-
-    // this.http.post(url, body.toString(), this.httpOptionJSON).subscribe(res => {
-    //   if (res) {
-    //     debugger
-    //     this.paymentMethodId = res['id'];
-    //     this.createCustomer();
-    //   }
-    // }, error => {
-    //   alert(error.message);
-    // });
-    let p = this.cardObject.email;
-    stripe.createPaymentMethod({
-      type: 'card',
-      card: cardElement
-      // billing_details: {
-      //   name: 'rubin123@yahoo.com,'//this.cardObject.email,
-      // }
-    }).then((res) => {
+      };
+      var card = elements.create("card", { style: style });
+      // Stripe injects an iframe into the DOM
+      card.mount("#card-element");
+  
+      card.on("change", function (event) {
+        // Disable the Pay button if there are no card details in the Element
+        document.querySelector("#submit")['disabled'] = event.empty;
+        document.querySelector("#card-errors").textContent = event.error ? event.error.message : "";
+      });
+  
+      var form = document.getElementById("subscription-form");
+      form.addEventListener("submit", (event) => {
+        event.preventDefault();
+        // Complete payment when the submit button is clicked
+        this.createPaymentMethod(stripe, card);
+      });
+    }
+    createPaymentMethod(stripe, cardElement) {
       debugger
-      this.paymentMethodId = res.paymentMethod.id;
-      this.createCustomer();
-    });
-  }
-  createSubscription() {
-    debugger
-    const url = "https://api.stripe.com/v1/subscriptions";
-    const body = new URLSearchParams();
-    body.set('customer', this.customerId);
-    body.set('items[0][price]', this.priceId);
-    body.set('default_payment_method', this.paymentMethodId);
-
-    this.http.post(url, body.toString(), this.httpOptionJSON).subscribe(res => {
-      if (res) {
+  
+      // const url = "https://api.stripe.com/v1/payment_methods";
+      // const body = new URLSearchParams();
+      // body.set('type', 'card');
+      // body.set('card[number]', '4242424242424242');
+      // body.set('card[exp_month]', '1');
+      // body.set('card[exp_year]', '2023');
+      // body.set('card[cvc]', '123');
+  
+      // this.http.post(url, body.toString(), this.httpOptionJSON).subscribe(res => {
+      //   if (res) {
+      //     debugger
+      //     this.paymentMethodId = res['id'];
+      //     this.createCustomer();
+      //   }
+      // }, error => {
+      //   alert(error.message);
+      // });
+      let p = this.cardObject.email;
+      stripe.createPaymentMethod({
+        type: 'card',
+        card: cardElement
+        // billing_details: {
+        //   name: 'rubin123@yahoo.com,'//this.cardObject.email,
+        // }
+      }).then((res) => {
         debugger
-        this.subscriptionId = res['id'];
-      }
-    }, error => {
-      alert(error.message);
-    });
-
-  }
-  createCustomer() {
-    debugger
-    const url = "https://api.stripe.com/v1/customers";
-    const body = new URLSearchParams();
-    body.set('description', "rubina@gmail.com");
-
-    this.http.post(url, body.toString(), this.httpOptionJSON).subscribe(res => {
-      if (res) {
-        debugger
-        this.customerId = res['id'];
-        this.attachCustomerWithPaymentMethod();
-      }
-    }, error => {
-      alert(error.message);
-    });
-  }
-  attachCustomerWithPaymentMethod() {
-    debugger
-    const url = "https://api.stripe.com/v1/payment_methods/" + this.paymentMethodId + "/attach";
-    const body = new URLSearchParams();
-    body.set('customer', this.customerId);
-
-    this.http.post(url, body.toString(), this.httpOptionJSON).subscribe(res => {
-      if (res) {
-        debugger
-        this.createSubscription();
-      }
-    }, error => {
-      alert(error.message);
-    });
-
-  }
+        this.paymentMethodId = res.paymentMethod.id;
+        this.createCustomer();
+      });
+    }
+    createSubscription() {
+      debugger
+      const url = "https://api.stripe.com/v1/subscriptions";
+      const body = new URLSearchParams();
+      body.set('customer', this.customerId);
+      body.set('items[0][price]', this.priceId);
+      body.set('default_payment_method', this.paymentMethodId);
+  
+      this.http.post(url, body.toString(), this.httpOptionJSON).subscribe(res => {
+        if (res) {
+          debugger
+          this.subscriptionId = res['id'];
+          this.addToPaymentTable(this.subscriptionId);
+        }
+      }, error => {
+        alert(error.message);
+      });
+  
+    }
+    createCustomer() {
+      debugger
+      const url = "https://api.stripe.com/v1/customers";
+      const body = new URLSearchParams();
+      body.set('description', "rubina@gmail.com");
+  
+      this.http.post(url, body.toString(), this.httpOptionJSON).subscribe(res => {
+        if (res) {
+          debugger
+          this.customerId = res['id'];
+          this.attachCustomerWithPaymentMethod();
+        }
+      }, error => {
+        alert(error.message);
+      });
+    }
+    attachCustomerWithPaymentMethod() {
+      debugger
+      const url = "https://api.stripe.com/v1/payment_methods/" + this.paymentMethodId + "/attach";
+      const body = new URLSearchParams();
+      body.set('customer', this.customerId);
+  
+      this.http.post(url, body.toString(), this.httpOptionJSON).subscribe(res => {
+        if (res) {
+          debugger
+          this.createSubscription();
+        }
+      }, error => {
+        alert(error.message);
+      });
+  
+    }
   //For stripe Detroja End
 
 }

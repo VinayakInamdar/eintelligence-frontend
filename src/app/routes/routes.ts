@@ -105,6 +105,11 @@ export const routes: Routes = [
                 loadChildren: () => import('./store/checkout/checkout.module').then(m => m.CheckoutModule)
             },
             {
+                path: 'checkoutsubscribe/:planid/:productid',
+                component: LayoutComponent,
+                loadChildren: () => import('./store/checkoutsubscribe/checkoutsubscribe.module').then(m => m.CheckoutSubscribeModule)
+            },
+            {
                 path: 'paymentsuccess',
                 component: LayoutComponent,
                 loadChildren: () => import('./store/paymentsuccess/paymentsuccess.module').then(m => m.PaymentSuccessModule)

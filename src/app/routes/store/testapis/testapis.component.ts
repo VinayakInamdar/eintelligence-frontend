@@ -11,7 +11,6 @@ import {
 } from '@stripe/stripe-js';
 import { HttpHeaders, HttpClient } from '@angular/common/http';
 import { FormGroup } from '@angular/forms';
-
 declare var Stripe;
 
 
@@ -113,6 +112,7 @@ payWithCard(stripe, card, clientSecret) {
   this.http.post(url, body.toString(), this.httpOptionJSON).subscribe(res => {
     if (res) {
       debugger
+      this.loading(false);
       this.clientSecret = res['client_secret'];
     }
   }, error => {

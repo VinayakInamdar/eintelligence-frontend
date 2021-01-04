@@ -1,5 +1,5 @@
 import { Injectable, ErrorHandler } from '@angular/core';
-import { HttpClient, HttpErrorResponse } from '@angular/common/http';
+import { HttpClient, HttpErrorResponse, HttpHeaders } from '@angular/common/http';
 import { IProduct } from './product.model';
 import { StripePayment } from './stripepayment.model';
 import { Observable, throwError } from 'rxjs';
@@ -26,12 +26,23 @@ export class StoreService {
     );
 
   }
+  deleteStripeSuscription(id: string): Observable<any> {
+    debugger
+    const myheader = new HttpHeaders().append('Authorization', 'Bearer '+environment.stripe_secreTkey);
+    const options = {
+       headers: myheader
+    }
+    return 
+    this.http.delete<any>('https://api.stripe.com/v1/subscriptions/'+id, options)
+}
   // using to create new campaign in db 
   createStripePayment(data): Observable<any> {
     
     return this.http.post<StripePayment>(this.Url + 'stripepayments', data);
   }
-
+  updateStripePayment(id: string, data: any): Observable<any> {
+    return this.http.put<any>(this.Url + `stripepayments/${id}`, data);
+}
   CreateStripePaymentCheckout(data): Observable<any> {
     
     return this.http.post<StripePayment>(this.Url + 'stripepayments/CreateStripePaymentCheckout', data);
