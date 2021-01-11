@@ -11,7 +11,7 @@ import { IntegrationsService } from '../../integrations/integrations.service';
 import { OverviewService } from '../../overview/overview.service';
 import { CampaignService } from '../../campaign/campaign.service';
 import { LocalDataSource } from 'ng2-smart-table';
-
+import { OpenIdConnectService } from '../../../shared/services/open-id-connect.service';
 const success = require('sweetalert');
 @Component({
   selector: 'app-traffic-sources',
@@ -231,7 +231,7 @@ export class TrafficSourcesComponent implements OnInit {
 
 
   constructor(private translate: TranslateService, private route: ActivatedRoute, fb: FormBuilder, private router: Router, private integrationsService: IntegrationsService,
-    private overvieswService: OverviewService, public campaignService: CampaignService) {
+    private overvieswService: OverviewService, public campaignService: CampaignService,private openIdConnectService: OpenIdConnectService) {
     let id = this.route.snapshot.paramMap.get('id');
     this.selectedCampId = `${id.substring(3)}`;
     this.url = this.router.url
@@ -395,7 +395,8 @@ export class TrafficSourcesComponent implements OnInit {
 
   //to get campaignList to select campaign name
   public getCampaignList(): void {
-    this.campaignService.getCampaign().subscribe(res => {
+    var userid = this.openIdConnectService.user.profile.sub;
+    this.campaignService.getCampaign(userid).subscribe(res => {
       this.campaignList = res;
       var name = "";
       this.campaignList.map((s, i) => {

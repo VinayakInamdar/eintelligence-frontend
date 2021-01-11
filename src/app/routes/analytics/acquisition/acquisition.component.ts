@@ -11,7 +11,7 @@ import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { TabsetComponent } from 'ngx-bootstrap/tabs';
 import { TranslateService } from '@ngx-translate/core';
 import { LocalDataSource } from 'ng2-smart-table';
-
+import { OpenIdConnectService } from '../../../shared/services/open-id-connect.service';
 const success = require('sweetalert');
 
 @Component({
@@ -232,7 +232,7 @@ export class AcquisitionComponent implements OnInit {
 
 
   constructor(private translate: TranslateService, private route: ActivatedRoute, fb: FormBuilder, private router: Router, private integrationsService: IntegrationsService,
-    private overvieswService: OverviewService, public campaignService: CampaignService) {
+    private overvieswService: OverviewService, private openIdConnectService: OpenIdConnectService, public campaignService: CampaignService) {
     let id = this.route.snapshot.paramMap.get('id');
     this.selectedCampId = `${id.substring(3)}`;
     this.url = this.router.url
@@ -402,7 +402,8 @@ export class AcquisitionComponent implements OnInit {
 
   //to get campaignList to select campaign name
   public getCampaignList(): void {
-    this.campaignService.getCampaign().subscribe(res => {
+    var userid = this.openIdConnectService.user.profile.sub;
+    this.campaignService.getCampaign(userid).subscribe(res => {
       this.campaignList = res;
       var name = "";
       this.campaignList.map((s, i) => {

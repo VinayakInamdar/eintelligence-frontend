@@ -13,6 +13,8 @@ import { Label, Color, BaseChartDirective } from 'ng2-charts';
 import { TabsetComponent } from 'ngx-bootstrap/tabs';
 import { SerpDto } from '../serp.model';
 import { find, pull } from 'lodash';
+import { OpenIdConnectService } from '../../../shared/services/open-id-connect.service';
+
 const success = require('sweetalert');
 @Component({
   selector: 'app-keywords',
@@ -199,10 +201,8 @@ export class KeywordsComponent implements OnInit {
     'Wallis and Futuna Islands', 'Western Sahara', 'Yemen', 'Yugoslavia', 'Zaire', 'Zambia', 'Zimbabwe',
     'Global', 'Timor Leste', 'Jersey', 'Isle of Man', 'Catalan Linguistic', 'Serbia', 'Guernsey', 'Palestine',
     'Montenegro', 'Congo Democratic'];
-
-
   constructor(private translate: TranslateService, fb: FormBuilder,
-    private campaignService: CampaignService,
+    private campaignService: CampaignService,private openIdConnectService: OpenIdConnectService, 
     public route: ActivatedRoute, public router: Router, private integrationsService: IntegrationsService
     , private overvieswService: OverviewService, location: PlatformLocation) {
 
@@ -252,7 +252,8 @@ export class KeywordsComponent implements OnInit {
   }
   // using to get campaignList
   public getCampaignList(): void {
-    this.campaignService.getCampaign().subscribe(res => {
+    var userid = this.openIdConnectService.user.profile.sub;
+    this.campaignService.getCampaign(userid).subscribe(res => {
       this.campaignList = res;
       var name = "";
       if (this.selectedCampId == ":id") {

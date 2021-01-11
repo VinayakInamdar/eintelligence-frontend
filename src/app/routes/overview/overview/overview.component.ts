@@ -9,6 +9,7 @@ import { ChartDataSets, ChartOptions, ChartScales } from 'chart.js';
 import { Label, Color, BaseChartDirective } from 'ng2-charts';
 import { CampaignService } from '../../campaign/campaign.service';
 import { Campaign } from '../../campaign/campaign.model';
+import { OpenIdConnectService } from '../../../shared/services/open-id-connect.service';
 
 @Component({
   selector: 'app-overview',
@@ -199,7 +200,7 @@ export class OverviewComponent implements OnInit,AfterViewChecked {
 
 
 
-  constructor(private route: ActivatedRoute, private router: Router, private integrationsService: IntegrationsService,
+  constructor(private route: ActivatedRoute,private openIdConnectService: OpenIdConnectService,  private router: Router, private integrationsService: IntegrationsService,
     private overvieswService: OverviewService, public campaignService: CampaignService,
     private location: Location) {
     let id = this.route.snapshot.paramMap.get('id');
@@ -340,7 +341,8 @@ export class OverviewComponent implements OnInit,AfterViewChecked {
 
   //to get campaignList to select campaign name
   public getCampaignList(): void {
-    this.campaignService.getCampaign().subscribe(res => {
+    var userid = this.openIdConnectService.user.profile.sub;
+    this.campaignService.getCampaign(userid).subscribe(res => {
       this.campaignList = res;
       var name = "";
       this.campaignList.map((s, i) => {

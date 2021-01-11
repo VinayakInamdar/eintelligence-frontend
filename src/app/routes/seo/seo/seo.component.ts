@@ -16,7 +16,7 @@ import { IntegrationsService } from '../../integrations/integrations.service';
 import { TabsetComponent } from 'ngx-bootstrap/tabs';
 import * as Chart from 'chart.js';
 import { SerpDto } from '../serp.model';
-
+import { OpenIdConnectService } from '../../../shared/services/open-id-connect.service';
 const success = require('sweetalert');
 @Component({
   selector: 'app-seo',
@@ -657,7 +657,7 @@ export class SeoComponent implements OnInit {
 
 
   constructor(private translate: TranslateService, fb: FormBuilder,
-    private campaignService: CampaignService,
+    private campaignService: CampaignService,private openIdConnectService: OpenIdConnectService, 
     public route: ActivatedRoute, public router: Router, private integrationsService: IntegrationsService
     , private overvieswService: OverviewService, location: PlatformLocation,
     public auditsService: AuditsService) {
@@ -916,7 +916,8 @@ export class SeoComponent implements OnInit {
 
   // using to get list of campaigns
   public getCampaignList(): void {
-    this.campaignService.getCampaign().subscribe(res => {
+    var userid = this.openIdConnectService.user.profile.sub;
+    this.campaignService.getCampaign(userid).subscribe(res => {
       this.campaignList = res;
       // this.source = new LocalDataSource(this.campaignList)
       var name = "";

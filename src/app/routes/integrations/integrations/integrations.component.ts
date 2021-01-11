@@ -6,6 +6,7 @@ import { CampaignService } from '../../campaign/campaign.service';
 import { TranslateService } from '@ngx-translate/core';
 import { Campaign } from '../../campaign/campaign.model';
 const success = require('sweetalert');
+import { OpenIdConnectService } from '../../../shared/services/open-id-connect.service';
 
 
 @Component({
@@ -34,7 +35,7 @@ export class IntegrationsComponent implements OnInit {
 
   
 
-  constructor(private translate: TranslateService,private integrationsService : IntegrationsService ,private router: Router,private route :ActivatedRoute
+  constructor(private translate: TranslateService,private openIdConnectService: OpenIdConnectService, private integrationsService : IntegrationsService ,private router: Router,private route :ActivatedRoute
     ,private campaignService: CampaignService,) { 
       this.getCampaignList();
       let id = this.route.snapshot.paramMap.get('id');
@@ -178,7 +179,8 @@ export class IntegrationsComponent implements OnInit {
   // using to get campaignList
   public getCampaignList(): void {
     
-    this.campaignService.getCampaign().subscribe(res => {
+    var userid = this.openIdConnectService.user.profile.sub;
+    this.campaignService.getCampaign(userid).subscribe(res => {
       
         this.campaignList = res;   
         var name = "";

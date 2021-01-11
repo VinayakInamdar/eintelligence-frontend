@@ -7,7 +7,7 @@ import { HttpClient } from '@angular/common/http';
 import { CampaignService } from '../../campaign/campaign.service';
 import { IAgency } from '../agency.model';
 import { AdminService } from '../admin.service';
-
+import { OpenIdConnectService } from '../../../shared/services/open-id-connect.service';
 @Component({
   selector: 'app-campaign-list',
   templateUrl: './campaign-list.component.html',
@@ -22,7 +22,7 @@ export class CampaignListComponent implements OnInit {
     public agencyid:number;
   public agencyList: IAgency[];    
   agencies: any;
-  constructor( public http: HttpClient,public adminService: AdminService, public campaignService: CampaignService,public route: ActivatedRoute, 
+  constructor( public http: HttpClient,public adminService: AdminService, private openIdConnectService: OpenIdConnectService, public campaignService: CampaignService,public route: ActivatedRoute, 
     private router: Router,location: PlatformLocation) { 
       this.getCampaignList();
       this.getAgencyList();
@@ -62,7 +62,8 @@ export class CampaignListComponent implements OnInit {
   }
   //  using to get campaignList
   public getCampaignList(): void {
-      this.campaignService.getCampaign().subscribe(res => {
+    var userid = this.openIdConnectService.user.profile.sub;
+    this.campaignService.getCampaign(userid).subscribe(res => {
           this.campaignList = res;
           this.tableData = this.campaignList;            
       });

@@ -11,7 +11,7 @@ import { OverviewService } from '../../overview/overview.service';
 import { ActivatedRoute, Router } from '@angular/router';
 import { CampaignService } from '../../campaign/campaign.service';
 import { IntegrationsService } from '../../integrations/integrations.service';
-
+import { OpenIdConnectService } from '../../../shared/services/open-id-connect.service';
 const success = require('sweetalert');
 @Component({
   selector: 'app-audience',
@@ -230,7 +230,7 @@ export class AudienceComponent implements OnInit {
 
 
 
-  constructor(private translate: TranslateService, private route: ActivatedRoute, fb: FormBuilder, private router: Router, private integrationsService: IntegrationsService,
+  constructor(private translate: TranslateService, private openIdConnectService: OpenIdConnectService, private route: ActivatedRoute, fb: FormBuilder, private router: Router, private integrationsService: IntegrationsService,
     private overvieswService: OverviewService, public campaignService: CampaignService) {
     let id = this.route.snapshot.paramMap.get('id');
     this.selectedCampId = `${id.substring(3)}`;
@@ -387,7 +387,8 @@ export class AudienceComponent implements OnInit {
 
   //to get campaignList to select campaign name
   public getCampaignList(): void {
-    this.campaignService.getCampaign().subscribe(res => {
+    var userid = this.openIdConnectService.user.profile.sub;
+    this.campaignService.getCampaign(userid).subscribe(res => {
       this.campaignList = res;
       var name = "";
       this.campaignList.map((s, i) => {

@@ -15,7 +15,7 @@ import { IntegrationsService } from '../../integrations/integrations.service';
 import { OverviewService } from '../../overview/overview.service';
 import { PlatformLocation } from '@angular/common';
 import { AuditsService } from '../../audits/audits.service';
-
+import { OpenIdConnectService } from '../../../shared/services/open-id-connect.service';
 
 const success = require('sweetalert');
 
@@ -381,7 +381,7 @@ export class CampaginComponent implements OnInit, AfterViewInit {
 
   constructor(private translate: TranslateService, fb: FormBuilder,
     private campaignService: CampaignService,
-    public route: ActivatedRoute, public router: Router, private integrationsService: IntegrationsService
+    public route: ActivatedRoute, public router: Router, private openIdConnectService: OpenIdConnectService, private integrationsService: IntegrationsService
     , private overvieswService: OverviewService, location: PlatformLocation,
     public auditsService: AuditsService) {
 
@@ -651,7 +651,8 @@ if(reportDates.length == 4 && reportDates[3]['date']){
 
   // using to get list of campaigns
   public getCampaignList(): void {
-    this.campaignService.getCampaign().subscribe(res => {
+    var userid = this.openIdConnectService.user.profile.sub;
+    this.campaignService.getCampaign(userid).subscribe(res => {
       this.campaignList = res;
       this.source = new LocalDataSource(this.campaignList)
       var name = "";

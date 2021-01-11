@@ -4,7 +4,7 @@ import { PlatformLocation } from '@angular/common';
 import { Router, ActivatedRoute } from '@angular/router';
 import { AdminService } from '../admin.service';
 import { CampaignService } from '../../campaign/campaign.service';
-
+import { OpenIdConnectService } from '../../../shared/services/open-id-connect.service';
 @Component({
   selector: 'app-campaign-detail',
   templateUrl: './campaign-detail.component.html',
@@ -15,7 +15,7 @@ export class CampaignDetailComponent implements OnInit {
   public campaignid: string;
   public selectedCampaign:any;
 
-  constructor( public http: HttpClient,public adminService: AdminService, public campaignService: CampaignService,public route: ActivatedRoute, 
+  constructor( public http: HttpClient,public adminService: AdminService, private openIdConnectService: OpenIdConnectService, public campaignService: CampaignService,public route: ActivatedRoute, 
     private router: Router,location: PlatformLocation) { 
       this.getCampaignList();
       location.onPopState(() => {
@@ -32,7 +32,8 @@ export class CampaignDetailComponent implements OnInit {
 
   //to get campaignList to select campaign name
   public getCampaignList(): void {
-    this.campaignService.getCampaign().subscribe(res => {
+    var userid = this.openIdConnectService.user.profile.sub;
+    this.campaignService.getCampaign(userid).subscribe(res => {
         let selectedcampaign = res.filter((s,i)=>{
           if(s.id == this.campaignid){
             return s

@@ -17,7 +17,7 @@ import { TabsetComponent } from 'ngx-bootstrap/tabs';
 import * as Chart from 'chart.js';
 import * as Highcharts from 'highcharts';
 import HC_map from 'highcharts/modules/map';
-
+import { OpenIdConnectService } from '../../../shared/services/open-id-connect.service';
 HC_map(Highcharts);
 
 const success = require('sweetalert');
@@ -568,7 +568,7 @@ myData = [
     ['Kairo', 19500000]
 ]
   constructor(private translate: TranslateService, fb: FormBuilder,
-    private campaignService: CampaignService,
+    private campaignService: CampaignService,public openIdConnectService: OpenIdConnectService,
     public route: ActivatedRoute, public router: Router, private integrationsService: IntegrationsService
     , private overvieswService: OverviewService, location: PlatformLocation,
     public auditsService: AuditsService) {
@@ -778,7 +778,8 @@ itemDeselected(event) {
 
   // using to get list of campaigns
   public getCampaignList(): void {
-    this.campaignService.getCampaign().subscribe(res => {
+    var userid = this.openIdConnectService.user.profile.sub;
+    this.campaignService.getCampaign(userid).subscribe(res => {
       this.campaignList = res;
       this.source = new LocalDataSource(this.campaignList)
       var name = "";

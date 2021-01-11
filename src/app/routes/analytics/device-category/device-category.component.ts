@@ -12,7 +12,7 @@ import { CampaignService } from '../../campaign/campaign.service';
 import { ActivatedRoute, Router } from '@angular/router';
 import { IntegrationsService } from '../../integrations/integrations.service';
 import { table } from 'console';
-
+import { OpenIdConnectService } from '../../../shared/services/open-id-connect.service';
 const success = require('sweetalert');
 @Component({
   selector: 'app-device-category',
@@ -232,7 +232,7 @@ export class DeviceCategoryComponent implements OnInit {
 
 
   constructor(private translate: TranslateService, private route: ActivatedRoute, fb: FormBuilder, private router: Router, private integrationsService: IntegrationsService,
-    private overvieswService: OverviewService, public campaignService: CampaignService) {
+    private overvieswService: OverviewService, private openIdConnectService: OpenIdConnectService, public campaignService: CampaignService) {
     let id = this.route.snapshot.paramMap.get('id');
     this.selectedCampId = `${id.substring(3)}`;
     this.url = this.router.url
@@ -389,7 +389,8 @@ export class DeviceCategoryComponent implements OnInit {
 
   //to get campaignList to select campaign name
   public getCampaignList(): void {
-    this.campaignService.getCampaign().subscribe(res => {
+    var userid = this.openIdConnectService.user.profile.sub;
+    this.campaignService.getCampaign(userid).subscribe(res => {
       this.campaignList = res;
       var name = "";
       this.campaignList.map((s, i) => {

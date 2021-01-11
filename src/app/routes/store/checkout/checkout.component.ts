@@ -84,7 +84,8 @@ export class CheckoutComponent implements OnInit {
     this.campaignError = false;
   }
   public getCampaignList(): void {
-    this.campaignService.getCampaign().subscribe(res => {
+    var userid = this.openIdConnectService.user.profile.sub;
+    this.campaignService.getCampaign(userid).subscribe(res => {
 
       this.campaignList = res;
 
