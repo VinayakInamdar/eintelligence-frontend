@@ -24,30 +24,30 @@ export class StoreComponent implements OnInit {
     //using to get list of plans
     // this.productService.getProducts().subscribe(
     //   products => {
-    //     debugger
+    //     
     //     this.products = products;               
     //   },
     //   error => this.errorMessage = <any>error
 
     // );
   }
-  public onClick(planid,paymentmode): any {
+  public onClick(planid, paymentmode): any {
     debugger
-    if(paymentmode=='subscription'){
-    this.router.navigate(['/checkoutsubscribe', planid, this.productId]);
-    }else{
+    if (paymentmode == 'recurring') {
+      this.router.navigate(['/checkoutsubscribe', planid, this.productId]);
+    } else {
       this.router.navigate(['/checkout', planid, this.productId]);
     }
 
-    
+
   }
   getAllPlans() {
     const filterOptionModel = this.getFilterOptionPlans();
     this.productsService.getFilteredPlan(filterOptionModel).subscribe((response: any) => {
       if (response) {
-        debugger
+        
         this.plans = response.body
-        this.plans = this.plans.filter(x=>x.productId == this.productId);
+        this.plans = this.plans.filter(x => x.productId == this.productId);
       }
     })
   }
@@ -55,10 +55,12 @@ export class StoreComponent implements OnInit {
     const filterOptionModel = this.getFilterOptionPlans();
     this.productsService.getFilteredProduct(filterOptionModel).subscribe((response: any) => {
       if (response) {
-        debugger
+        
         this.products = response.body
-        if(this.products){
-        this.productId=this.products[0].id;}
+        if (this.products) {
+          this.productId = this.products[0].id;
+          this.getAllPlans();
+        }
       }
     })
   }
@@ -72,11 +74,11 @@ export class StoreComponent implements OnInit {
     }
 
   }
-  linkClick(index,productid) {
-    debugger
+  linkClick(index, productid) {
+    
     this.settingActive = index;
-    this.productId=    this.productId=productid;
-    this.productId=productid;
-  this.getAllPlans();
+    this.productId = this.productId = productid;
+    this.productId = productid;
+    this.getAllPlans();
   }
 }

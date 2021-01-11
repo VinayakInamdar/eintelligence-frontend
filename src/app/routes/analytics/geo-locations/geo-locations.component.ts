@@ -293,6 +293,7 @@ export class GeoLocationsComponent implements OnInit {
           geolocationres => {
             this.reportsData = res;
             this.source = new LocalDataSource(geolocationres['geoLocation']);
+            
             this.convertToLineChartsLabels(this.reportsData.gaPreparedDataDto.date)
             this.convertToLineChartsData(this.reportsData.gaPreparedDataDto.sessions)
             this.showSpinnerBaseChart = false;

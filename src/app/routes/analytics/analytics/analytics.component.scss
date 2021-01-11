@@ -169,6 +169,7 @@ li:hover span.only-show-on-hover  {
     color: #0f9ed6!important;
     font-size: 15px;
     font-weight: bold;
+    text-align: left;
 }
 .form-control {
     display: block;
@@ -788,3 +789,10 @@ li:hover span.only-show-on-hover  {
         white-space: nowrap;
         overflow: hidden;
     }
+    .newBox{
+        box-sizing: border-box;
+        -webkit-box-sizing: border-box;
+        -moz-box-sizing: border-box;
+        border-left: 1px solid #ECECEC;
+    }
+    

@@ -6,7 +6,57 @@
     </div>
     <div class="col-md-2"> </div>
 </div>
+<nav class="navbar navbar-expand-sm" style="background-color: #F9FCFF;">
 
+    <!-- Links -->
+    <ul class="navbar-nav">
+        <li>
+            <div class="btn-group">
+                <div class="btn-add-new-campaign btn btn-default">
+                    <i class="fa fa-plus" aria-hidden="true" (click)="onClick($event)"></i>
+                </div>
+                <div class="btn-group" dropdown>
+                    <button id="button-basic" dropdownToggle type="input" class="btn campselectedname"
+                        aria-controls="dropdown-basic">
+                        {{selectedCampaignName !== undefined ? selectedCampaignName : 'select your campaign'}}
+                        <span class="caret"> </span>
+                    </button>
+                    <ul id="dropdown-basic" *dropdownMenu class="dropdown-menu camplisth" role="menu"
+                        aria-labelledby="button-basic">
+                        <li role="menuitem" *ngFor="let campaign of campaignList"
+                            [ngClass]="{'active': selectedCampId == campaign.id}"><a class="dropdown-item"
+                                (click)="onCampaignSelect($event,campaign)" href="#">{{campaign.name}}</a></li>
+                    </ul>
+                </div>
+            </div>
+        </li>
+        <li id="overview_menu" class="nav-link" data-third-menu="">
+            <a href="javascript:void(0);" class="nav-link"  (click)="goToCampaignOverview($event)">
+                <span class="fontsizesmall">Overview</span>
+            </a>
+        </li>
+        <li id="analytics_menu" class="nav-link" data-third-menu="analytics_menu_index">
+            <a href="javascript:void(0);" class="nav-link" 
+                (click)="goToAnalyticsOverview($event)">
+                <span class="fontsizesmall">Analytics</span>
+            </a>
+        </li>
+        <li id="seo_menu" class="nav-link" data-third-menu="seo_menu_index">
+            <a href="javascript:void(0);" class="nav-link"
+                (click)="goToSeoOverview($event)">
+                <span class="fontsizesmall">SEO</span>
+            </a>
+
+        </li>
+        <li id="seo_menu" class="nav-link" data-third-menu="seo_menu_index">
+            <a href="javascript:void(0);" class="nav-link"
+                >
+                <span class="fontsizesmall">Social Media</span>
+            </a>
+        </li>
+    </ul>
+
+</nav>
 <div *ngIf="settingActive == 1;" class="row w3-container w3-center w3-animate-right paddingtopdiv">
     <div class="col-md-2"> </div>
     <div class="col-md-8">
@@ -225,7 +275,7 @@
 
 
 <div class="row maindiv" *ngIf="settingActive == 3;">
-    <div class="grey-container">
+    <!-- <div class="grey-container">
         <div class="pagewidth clearfix ">
             <div class="campaign-selector-container ">
                 <div class="btn-group">
@@ -555,7 +605,7 @@
                 </li>
             </ul>
         </div>
-    </div>
+    </div> -->
 
     <div class="col-lg-12">
 

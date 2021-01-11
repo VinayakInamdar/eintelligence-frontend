@@ -4,26 +4,26 @@ const Home = {
     link: '/home',
     icon: 'fas fa-home',
 };
-const User = {
-    text: 'User',
-    link: '/user',
-    icon: "fa fa-user"
-};
-const Account = {
-    text: 'Account',
-    link: '/account',
-    icon: "fa fa-user-plus",
-    // submenu: [
-    //     {
-    //         text: 'Account Setting',
-    //          link: '/account/accountsetting'
-    //     },
-    //     {
-    //         text: 'Branding',
-    //         link: '/account/branding'
-    //     }
-    // ]
-};
+// const User = {
+//     text: 'User',
+//     link: '/user',
+//     icon: "fa fa-user"
+// };
+// const Account = {
+//     text: 'Account',
+//     link: '/account',
+//     icon: "fa fa-user-plus",
+//     // submenu: [
+//     //     {
+//     //         text: 'Account Setting',
+//     //          link: '/account/accountsetting'
+//     //     },
+//     //     {
+//     //         text: 'Branding',
+//     //         link: '/account/branding'
+//     //     }
+//     // ]
+// };
 
 const Fulfillment = {
     text: 'Fulfillment',
@@ -47,7 +47,7 @@ const MyPayments = {
 // };
 
 const Campaign = {
-    text: 'Projects',
+    text: 'Campaigns',
     link: '/campaign',
     icon: "fa fa-bullhorn"
 };
@@ -113,19 +113,21 @@ const headingMain = {
 export const menu = [
     headingMain,
     Home,
+    Products,
     Campaign,
     Fulfillment, 
     Reports,
-    User,
-    Account,
+    MyPayments,
+    //User,
+   // Account,
   //  Store,
     //Admin,
    
    Integrations,
     Leads,
     Proposal,
-    Todolist,
-    Products,
-    MyPayments
+    //Todolist,
+   
+  
    
 ];

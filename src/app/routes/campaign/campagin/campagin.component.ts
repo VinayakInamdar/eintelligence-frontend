@@ -709,7 +709,7 @@ if(reportDates.length == 4 && reportDates[3]['date']){
   }
   // using to get list of keyword list
   public getSerpList(): void {
-    this.campaignService.getSerp().subscribe(res => {
+    this.campaignService.getSerp('01-Jan-2019','31-Jan-2020').subscribe(res => {
       // this.serpList = res; 
       // this.source = new LocalDataSource(this.serpList) 
       var serpData = res.map((s, i) => {
@@ -941,7 +941,14 @@ if(reportDates.length == 4 && reportDates[3]['date']){
   public goToAnalyticsOverview(event) {
     this.router.navigate([`/campaign/:id${this.selectedCampId}/analytics`])
   }
-
+  // using to navigate to  overview page
+  public goToCampaignOverview(event) {
+    this.router.navigate(['/campaign', { id: this.selectedCampId }], {
+      queryParams: {
+        view: 'showReport'
+      },
+    });
+  }
   // using to navigate to analytics acquision page
   public goToAcquisiton(event) {
     this.router.navigate([`/campaign/:id${this.selectedCampId}/analytics/acquisition`])

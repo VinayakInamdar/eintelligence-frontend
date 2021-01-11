@@ -12,14 +12,90 @@ import {
 import { HttpHeaders, HttpClient } from '@angular/common/http';
 import { FormGroup } from '@angular/forms';
 declare var Stripe;
+import * as Highcharts from 'highcharts';
+// import HC_map from 'highcharts/modules/map';
 
+// HC_map(Highcharts);
+
+// const success = require('sweetalert');
+// const worldMap = require('@highcharts/map-collection/custom/world.geo.json');
 
 @Component({
   templateUrl: './testapis.component.html',
   styleUrls: ['./testapis.component.scss']
 })
 export class TestApisComponent implements OnInit {
+// &&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&& High Chart STart
+/*Highcharts: typeof Highcharts = Highcharts;
 
+chartMap: Highcharts.Options = {
+ chart: {
+   map: worldMap as any
+ },
+ title: {
+   text: 'Highcharts Maps - basic demo'
+ },
+ subtitle: {
+   text: `Selected Canadian cities were marked using their lat/lon coordinates.<br>
+   Source map: <a href="http://code.highcharts.com/mapdata/custom/world.js">World, Miller projection, medium resolution</a>.`
+ },
+ mapNavigation: {
+   enabled: true,
+   buttonOptions: {
+     alignTo: 'spacingBox'
+   }
+ },
+ legend: {
+   enabled: true
+ },
+ colorAxis: {
+   min: 0
+ },
+ series: [{
+   name: 'Random data',
+   states: {
+     hover: {
+       color: '#BADA55'
+     }
+   },
+   dataLabels: {
+     enabled: true,
+     format: '{point.name}'
+   },
+   allAreas: false,
+   data: [
+     ['fo', 0],
+     ['um', 1],
+   ]
+ } as Highcharts.SeriesMapOptions,
+ {
+   // Specify points using lat/lon
+   type: 'mappoint',
+   name: 'Canada cities',
+   marker: {
+       radius: 5,
+       fillColor: 'tomato'
+   },
+   data: [
+     {
+       name: 'Vancouver',
+       lat: 49.246292,
+       lon: -123.116226
+     },
+     {
+       name: 'Quebec City',
+       lat: 46.829853,
+       lon: -71.254028
+     },
+     {
+       name: 'Yellowknife',
+       lat: 62.4540,
+       lon: -114.3718
+     }
+   ]
+ } as Highcharts.SeriesMappointOptions]
+};*/
+//*&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&High Chart end
   httpOptionJSON = {
 		headers: new HttpHeaders({
 			'Content-Type': 'application/x-www-form-urlencoded',
@@ -95,7 +171,7 @@ paymentIntentCall() {
 
   this.http.post(url, body.toString(), this.httpOptionJSON).subscribe(res => {
     if (res) {
-      debugger
+      
       this.clientSecret = res['id'];
     }
   }, error => {
@@ -103,7 +179,7 @@ paymentIntentCall() {
   });
 }
 payWithCard(stripe, card, clientSecret) {
-  debugger
+  
   this.loading(true);
   const url = "https://api.stripe.com/v1/payment_intents/"+this.clientSecret+"/confirm";
   const body = new URLSearchParams();
@@ -111,7 +187,7 @@ payWithCard(stripe, card, clientSecret) {
 
   this.http.post(url, body.toString(), this.httpOptionJSON).subscribe(res => {
     if (res) {
-      debugger
+      
       this.loading(false);
       this.clientSecret = res['client_secret'];
     }
@@ -145,13 +221,13 @@ payWithCard(stripe, card, clientSecret) {
   //   });
 }
 orderComplete(paymentIntentId) {
-  debugger
+  
   this.loading(false);
   document.querySelector(".result-message").classList.remove("hidden");
   document.querySelector("#submit")['disabled'] = true;
 }
 showError(errorMsgText) {
-  debugger
+  
   this.loading(false);
   var errorMsg = document.querySelector("#card-errors");
   errorMsg.textContent = errorMsgText;
@@ -210,7 +286,7 @@ stripeSubInit() {
   });
 }
 createPaymentMethod(stripe, cardElement) {
-  debugger
+  
   stripe.createPaymentMethod({
     type: 'card',
     card: cardElement,

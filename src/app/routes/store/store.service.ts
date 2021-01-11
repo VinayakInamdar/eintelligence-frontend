@@ -27,7 +27,7 @@ export class StoreService {
 
   }
   deleteStripeSuscription(id: string): Observable<any> {
-    debugger
+    
     const myheader = new HttpHeaders().append('Authorization', 'Bearer '+environment.stripe_secreTkey);
     const options = {
        headers: myheader

@@ -41,17 +41,16 @@ export class CampaignService {
   getCampaign(): Observable<any[]> {
       return this.http.get<any[]>(`${this.Url}campaigns/GetCampaignByUserId?userId=` + localStorage.getItem('userID'))
   }
-
   // using to get list of keywords
-  getSerp(): Observable<any[]> {
+  getSerp(startDate:string,endDate:string): Observable<any[]> {
     return this.http.get<any[]>(this.Url + '/serps',{
-      params: new HttpParams().set('pageSize', '1000')
+      params: new HttpParams().set('pageSize', '1000').set("startDate", startDate).set("endDate",endDate)
     })
   }
   // using to add new keyword in selected campaign Id
-  addNewKeyword(CampaignID :string,Keyword : any,Location : string,Tags : any): Observable<SerpDto> {
+  addNewKeyword(CampaignID :string,Keyword : any,Location : string,Tags : any,startDate:string,endDate:string): Observable<SerpDto> {
     return this.http.post<SerpDto>(`${this.Url}serps/GetSerpData`,{},{
-      params: new HttpParams().set('CampaignID', CampaignID).set('Keywords', Keyword.join(',')).set('Location', Location).set('Tags', Tags)
+      params: new HttpParams().set('CampaignID', CampaignID).set('Keywords', Keyword.join(',')).set('Location', Location).set('Tags', Tags).set("startDate", startDate).set("endDate",endDate)
     });
     
   }

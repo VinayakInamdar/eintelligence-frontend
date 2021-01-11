@@ -5,6 +5,8 @@ import { MyPaymentsService } from '../../mypayments/mypayments.service'
 import { HttpClient, HttpHeaders, HttpParams } from '@angular/common/http';
 import { environment } from '../../../../environments/environment';
 import { StoreService } from '../../store/store.service';
+import { OpenIdConnectService } from '../../../shared/services/open-id-connect.service';
+
 @Component({
   templateUrl: './mypayments.component.html',
   styleUrls: ['./mypayments.component.scss']
@@ -34,11 +36,12 @@ export class MyPaymentsComponent implements OnInit {
       'Authorization': 'Bearer '+environment.stripe_secreTkey
     })
   };
-  constructor(public router: Router, public myPaymentsService: MyPaymentsService, private http: HttpClient,
+  constructor(public router: Router,public openIdConnectService: OpenIdConnectService, public myPaymentsService: MyPaymentsService, private http: HttpClient,
     public storeService: StoreService) { }
 
   ngOnInit(): void {
-    this.userId = '2e78a42a-af26-48bb-bda2-be9e16301435';
+    this.userId = this.openIdConnectService.user.profile.sub;
+   // this.userId = '2e78a42a-af26-48bb-bda2-be9e16301435';
     this.getAllPaymants();
   }
 
@@ -48,7 +51,7 @@ export class MyPaymentsComponent implements OnInit {
     const url = "https://api.stripe.com/v1/subscriptions/" +StripeSubscriptionId;
     this.http.delete(url, this.httpOptionJSON).subscribe(res => {
       if (res) {
-        debugger
+        
         let temp = this.tempPlansList.filter(x => x.stripeSubscriptionId == StripeSubscriptionId);
         if(temp!= undefined){
         this.amount = temp[0].amount;
@@ -75,7 +78,7 @@ export class MyPaymentsComponent implements OnInit {
 
   }
   addToPaymentTable(StripeSubscriptionId) {
-    debugger
+    
     let data = {
       id : this.stripePaymentId,
       amount: this.amount,
@@ -90,7 +93,7 @@ export class MyPaymentsComponent implements OnInit {
     }
     this.storeService.updateStripePayment(this.stripePaymentId,data).subscribe(response => {
       if (response) {
-        debugger
+        
         alert("Payent Done");
       }
     });
@@ -99,7 +102,7 @@ export class MyPaymentsComponent implements OnInit {
     const filterOptionModel = this.getFilterOptionPlans();
     this.myPaymentsService.getFilteredStripepayments(filterOptionModel).subscribe((response: any) => {
       if (response) {
-        debugger
+        
         this.payments = response.body;
         this.tempPlansList = this.payments;
 

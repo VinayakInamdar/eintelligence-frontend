@@ -15,20 +15,77 @@ import { PlatformLocation } from '@angular/common';
 import { IntegrationsService } from '../../integrations/integrations.service';
 import { TabsetComponent } from 'ngx-bootstrap/tabs';
 import * as Chart from 'chart.js';
+import * as Highcharts from 'highcharts';
+import HC_map from 'highcharts/modules/map';
+
+HC_map(Highcharts);
 
 const success = require('sweetalert');
+const worldMap = require('@highcharts/map-collection/custom/world.geo.json');
+
 @Component({
   selector: 'app-analytics',
   templateUrl: './analytics.component.html',
   styleUrls: ['./analytics.component.scss']
 })
-export class AnalyticsComponent implements OnInit {
 
+export class AnalyticsComponent implements OnInit {
+  isShowallGeo=false;
+// &&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&
+/*Highcharts: typeof Highcharts = Highcharts;
+  chartConstructor = "mapChart";
+  chartData = [{ code3: "ABW", z: 105 }, { code3: "AFG", z: 35530 }];
+
+  chartOptions: Highcharts.Options = {
+    chart: {
+      map: worldMap
+    },
+    title: {
+      text: "Highmaps basic demo"
+    },
+    subtitle: {
+      text:
+        'Source map: <a href="http://code.highcharts.com/mapdata/custom/world.js">World, Miller projection, medium resolution</a>'
+    },
+    mapNavigation: {
+      enabled: true,
+      buttonOptions: {
+        alignTo: "spacingBox"
+      }
+    },
+    legend: {
+      enabled: true
+    },
+    colorAxis: {
+      min: 0
+    },
+    series: [
+      {
+        type: "map",
+        name: "Random data",
+        states: {
+          hover: {
+            color: "#BADA55"
+          }
+        },
+        dataLabels: {
+          enabled: true,
+          format: "{point.name}"
+        },
+        allAreas: false,
+        data: [
+          ["kg", 211],
+          ["np", 212]
+        ]
+      }
+    ]
+  };*/
+//*&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&
   @ViewChild('staticTabs', { static: false }) staticTabs: TabsetComponent;
   @ViewChild(BaseChartDirective)
   public chart: BaseChartDirective;
   @ViewChild('dougnutChart')
-  public dougnutchart: BaseChartDirective;
+  public dougnutchart: BaseChartDirective;z
   @ViewChild('dougnutChart1') dougnutChart1: ElementRef;
   valForm: FormGroup;
   public campaignModel: Campaign;
@@ -188,6 +245,91 @@ export class AnalyticsComponent implements OnInit {
     }
   };
   source: LocalDataSource;
+  sourceGeo: LocalDataSource;
+  settingsGeo = {
+    actions: { add: false, edit: false, delete: false },
+    attr: {
+      class: 'table'
+    },
+    columns: {
+      name: {
+        title: '',
+        filter: false,
+      },
+      sessions: {
+        title: 'Session',
+        valuePrepareFunction: (sessions) => {
+          return this.convertToNumberInTwoDecimal(sessions, undefined)
+        },
+        filter: false
+      },
+      percentNewSessions: {
+        title: '% Session',
+        valuePrepareFunction: (percentNewSessions) => {
+
+          return this.convertToNumberInTwoDecimal(percentNewSessions, '%')
+        },
+        filter: false
+      },
+      users: {
+        title: 'Users',
+        valuePrepareFunction: (users) => {
+
+          return this.convertToNumberInTwoDecimal(users, undefined)
+        },
+        filter: false
+      },
+      bounceRate: {
+        title: 'Bounce Rate',
+        valuePrepareFunction: (bounceRate) => {
+
+          return this.convertToNumberInTwoDecimal(bounceRate, undefined)
+        },
+        filter: false
+      },
+      pageviews: {
+        title: 'Goal Value',
+        valuePrepareFunction: (pageviews) => {
+
+          return this.convertToNumberInTwoDecimal(pageviews, undefined)
+        },
+        filter: false
+      },
+      pageviewsPerSession: {
+        title: 'Page vew per Session',
+        valuePrepareFunction: (pageviewsPerSession) => {
+
+          return this.convertToNumberInTwoDecimal(pageviewsPerSession, undefined)
+        },
+        filter: false
+      },
+      avgSessionDuration: {
+        title: 'Avg. Session Duration',
+        valuePrepareFunction: (avgSessionDuration) => {
+
+          return this.convertTohhmmss(avgSessionDuration)
+        },
+        filter: false
+      },
+      goalConversionRateAll: {
+        title: 'Goal Conversation Rate',
+        valuePrepareFunction: (goalConversionRateAll) => {
+
+          return this.convertToNumberInTwoDecimal(goalConversionRateAll, '%')
+        },
+        filter: false
+      },
+      goalCompletionsAll: {
+        title: 'Goal Completions',
+        valuePrepareFunction: (goalCompletionsAll) => {
+
+          return this.convertToNumberInTwoDecimal(goalCompletionsAll, undefined)
+        },
+        filter: false
+      },
+
+    }
+  };
   bsValue = new Date();
   date = new Date();
   startDate = new Date(new Date().setDate(new Date().getDate() - 31)).toISOString().split("T")[0]; queryParams: any;
@@ -396,8 +538,35 @@ export class AnalyticsComponent implements OnInit {
   behaviorsubmenu: boolean = false;
   conversionsubmenu: boolean = false;
   settingActive: number = 3;
-
-
+//Map chart
+title = '';
+type = 'Map';
+data = [
+   ["China", "China: 1,363,800,000"],
+   ["India", "India: 1,242,620,000"],
+   ["US", "US: 317,842,000"],
+   ["Indonesia", "Indonesia: 247,424,598"],
+   ["Brazil", "Brazil: 201,032,714"],
+   ["Pakistan", "Pakistan: 186,134,000"],
+   ["Nigeria", "Nigeria: 173,615,000"],
+   ["Bangladesh", "Bangladesh: 152,518,015"],
+   ["Russia", "Russia: 146,019,512"],
+   ["Japan", "Japan: 127,120,000"]
+];
+columnNames = ["Country","Population"];
+options = {   
+   showTip: true
+};
+width = 550;
+height = 400;
+myType = 'PieChart';
+myData = [
+    ['London', 8136000],
+    ['New York', 8538000],
+    ['Paris', 2244000],
+    ['Berlin', 3470000],
+    ['Kairo', 19500000]
+]
   constructor(private translate: TranslateService, fb: FormBuilder,
     private campaignService: CampaignService,
     public route: ActivatedRoute, public router: Router, private integrationsService: IntegrationsService
@@ -431,7 +600,13 @@ export class AnalyticsComponent implements OnInit {
       'leadGeneration': [this.campaignModel.leadGeneration, Validators.required],
     })
   }
+  itemSelected(event) {
+    alert(JSON.stringify(event));
+}
 
+itemDeselected(event) {
+    alert("DESELECTED");
+}
   checkqueryparams() {
     var params = { ...this.route.snapshot.queryParams };
     this.queryParams = params.view
@@ -478,19 +653,22 @@ export class AnalyticsComponent implements OnInit {
               trafficsourcers => {
                 this.campaignService.GetGeoLocationReports(this.selectedCampId, this.startDate, this.endDate).subscribe(
                   geolocationres => {
+                    
                     this.campaignService.GetLanguageReports(this.selectedCampId, this.startDate, this.endDate).subscribe(
                       languageres => {
                         this.campaignService.GetGaBehaviorAnalyticsReports(this.selectedCampId, this.startDate, this.endDate).subscribe(
                           behaviorres => {
+                            
+                            this.sourceGeo = new LocalDataSource(geolocationres['geoLocation']);
                             this.top5geoLocationsData = geolocationres['geoLocation'].sort((a, b) => {
                               return +b.sessions - +a.sessions
-                            }).slice(0, 5)
+                            }).slice(0,7)
                             this.top5landingPagesData = behaviorres['landingPages'].sort((a, b) => {
                               return +b.pageviews - +a.pageviews
-                            }).slice(0, 5)
+                            }).slice(0, 7)
                             this.top5languagesData = languageres['language'].sort((a, b) => {
                               return +b.users - +a.users
-                            }).slice(0, 5)
+                            }).slice(0, 7)
                             if (this.doughnutData1.datasets.length == 0) {
                               var data = [parseInt(devicecategoryres['desktop']['sessions']), parseInt(devicecategoryres['mobile']['sessions']), parseInt(devicecategoryres['tablet']['sessions'])]
                               this.doughnutData1.datasets.push({ data: data, backgroundColor: ["#1c73a4", "#36A1F7", "#8CC8FA"], borderColor: ['rgb(28, 115, 164)', 'rgba(54, 161, 247)', 'rgba(140, 200, 250)'], hoverBackgroundColor: ['rgb(28, 115, 164)', 'rgba(54, 161, 247, 3)', 'rgba(140, 200, 250, 3)'], borderWidth: 1, hoverBorderColor: ['rgba(28, 115, 164,1)', 'rgba(54, 161, 247, 3)', 'rgba(140, 200, 250, 3)'], hoverBorderWidth: 3 })
@@ -499,6 +677,7 @@ export class AnalyticsComponent implements OnInit {
                               var data = [parseInt(trafficsourcers['totalData']['direct']['pageviews']), parseInt(trafficsourcers['totalData']['direct']['pageviews']), parseInt(trafficsourcers['totalData']['organic']['pageviews']), parseInt(trafficsourcers['totalData']['referral']['pageviews']), parseInt(trafficsourcers['totalData']['social']['pageviews'])]
                               this.doughnutData.datasets.push({ data: data, backgroundColor: ["#1c73a4", "#36A1F7", "#8CC8FA", "#E2F1FD", "#FF723D"], borderColor: ['rgb(28, 115, 164)', 'rgba(54, 161, 247)', 'rgba(140, 200, 250)', 'rgba(226, 241, 253)', 'rgba(255, 114, 61)'], hoverBackgroundColor: ['rgb(28, 115, 164)', 'rgba(54, 161, 247, 3)', 'rgba(140, 200, 250, 3)', 'rgba(226, 241, 253, 1)', 'rgba(255, 114, 61, 1)'], borderWidth: 1, hoverBorderColor: ['rgba(28, 115, 164,1)', 'rgba(54, 161, 247, 3)', 'rgba(140, 200, 250, 3)', 'rgba(226, 241, 253, 1)', 'rgba(255, 114, 61, 1)'], hoverBorderWidth: 3 })
                             }
+                            
                             this.reportsData = res;
                             this.dateLabels = this.reportsData.gaPreparedDataDto.date;
                             this.convertToLineChartsLabels(this.reportsData.gaPreparedDataDto.date)
@@ -658,7 +837,7 @@ export class AnalyticsComponent implements OnInit {
   }
   // using to get list of keyword list
   public getSerpList(): void {
-    this.campaignService.getSerp().subscribe(res => {
+    this.campaignService.getSerp('01-Jan-2019','31-Jan-2020').subscribe(res => {
       // this.serpList = res; 
       // this.source = new LocalDataSource(this.serpList) 
       var serpData = res.map((s, i) => {
@@ -882,11 +1061,19 @@ export class AnalyticsComponent implements OnInit {
       },
     })
   }
+  
   // using to navigate to analytics overview page
   public goToAnalyticsOverview(event) {
     this.router.navigate([`/campaign/:id${this.selectedCampId}/analytics`])
   }
-
+  // using to navigate to  overview page
+  public goToCampaignOverview(event) {
+    this.router.navigate(['/campaign', { id: this.selectedCampId }], {
+      queryParams: {
+        view: 'showReport'
+      },
+    });
+  }
   // using to navigate to analytics acquision page
   public goToAcquisiton(event) {
     this.router.navigate([`/campaign/:id${this.selectedCampId}/analytics/acquisition`])
@@ -1006,5 +1193,22 @@ export class AnalyticsComponent implements OnInit {
       this.sitespeedCircularProgressouterStrokeColorMobile = '#148B39'
     }
   }
+  showAllGeo(){
+this.isShowallGeo =true;
+  }
+  public convertToNumberInTwoDecimal(value, type) {
+    var number = Number(value)
+    return type == '%' ? number.toFixed(2) + '%' : number.toFixed(2);
+  }
+  public convertTohhmmss(avgSessionDuration: any) {
+    var dateObj = new Date(avgSessionDuration * 60 * 1000);
+    var hours = dateObj.getUTCHours();
+    var minutes = dateObj.getUTCMinutes();
+    var seconds = dateObj.getSeconds();
 
+    var timeString = hours.toString().padStart(2, '0') + ':' +
+      minutes.toString().padStart(2, '0') + ':' +
+      seconds.toString().padStart(2, '0');
+    return timeString;
+  }
 }

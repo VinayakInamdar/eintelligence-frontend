@@ -3,6 +3,7 @@ import { CommonModule } from '@angular/common';
 import { RouterModule, Routes } from '@angular/router';
 import { TestApisComponent } from './testapis.component';
 import { NgxStripeModule } from 'ngx-stripe';
+// import { HighchartsChartModule } from 'highcharts-angular';
 const routes: Routes = [
 
   { path: '', component: TestApisComponent }
@@ -14,6 +15,7 @@ const routes: Routes = [
   imports: [
     CommonModule,
     RouterModule.forChild(routes),
+    // HighchartsChartModule,
     NgxStripeModule.forRoot('pk_test_51I0iLaEKoP0zJ89QGXq8ihvypBEzyryF6Y5Hiro0UDcPLQeCTzA0v8S6lYv2DNBZZS3LxICWKJATbOxzdUCOl73p00Her3EA2b'),
     
   ],

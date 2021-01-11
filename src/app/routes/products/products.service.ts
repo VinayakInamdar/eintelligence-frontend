@@ -21,7 +21,8 @@ import { FilterOptionModel } from '../../shared/model/filter-option.model';
 
 export class ProductsService {
     Url = environment.apiUrl;
-
+    stripepublishablekey =environment.stripe_key;
+    stripeSecretKey = environment.stripe_secreTkey;
 
     constructor(private http: HttpClient, private openIdConnectService: OpenIdConnectService) {
         this.openIdConnectService = openIdConnectService;
@@ -73,7 +74,7 @@ export class ProductsService {
     }
     createProductOnStripe(name, description): Observable<any> {
         //require secret key
-        const myheader = new HttpHeaders().append('Authorization', 'Bearer sk_test_51I0iLaEKoP0zJ89QzP2qwrKaIC8vjEfoVim8j4S0Y3FsRx0T3UEkvqiaEayt1AzAcP7Na5xzZcb7aN2K7aMrtcMf00CizHVXeg');
+        const myheader = new HttpHeaders().append('Authorization', 'Bearer '+this.stripeSecretKey);
         const options = {
             headers: myheader,
         };

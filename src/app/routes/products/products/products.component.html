@@ -35,7 +35,7 @@
                                 
                         
                                     
-                            <form class="form-horizontal" [formGroup]="productForm">
+                            <form class="form-horizontal" [formGroup]="productForm" #myForm>
                                 <div class="form-group row">
                                     <label class="col-md-4 col-form-label accountlabelpadding">
                                         Product Name
@@ -68,7 +68,7 @@
                                     <button class="mr-1 btn btn-sm float-right accountbtnbgcolor" (click)="addProduct();" type="submit">Save</button>
                                 </div>
                                 <div *ngIf="productId">
-                                    <button class="mr-1 btn btn-sm float-right accountbtnbgcolor" (click)="cancelProduct();" type="submit">Cancel</button>
+                                    <button class="mr-1 btn btn-sm float-right accountbtnbgcolor" (click)="cancelProduct();myForm.reset();planform.reset();" type="submit">Cancel</button>
                                 </div>
                             </form>
                         </div>
@@ -97,10 +97,10 @@
                                     </div>
                                 </div>
                             </div>
-                            <form class="form-horizontal" [formGroup]="planForm">
+                            <form class="form-horizontal" [formGroup]="planForm" #planform>
                                 <div class="form-group row">
                                     <label class="col-md-4 col-form-label accountlabelpadding">
-                                        Pln Name
+                                        Plan Name
                                         <span class="accountspancolor">*</span>
                                     </label>
                                     <div class="col-md-8">
@@ -126,7 +126,8 @@
                                         <span class="accountspancolor">*</span>
                                     </label>
                                     <div class="col-md-8">
-                                        <input formControlName="features" class="form-control accountinputheight" />
+
+                                        <textarea formControlName="features" style="height: 5rem;" class="form-control accountinputheight"></textarea>
                                         <span class="text-danger" *ngIf="planForm.controls['features'].hasError('required') && (planForm.controls['features'].dirty || planForm.controls['features'].touched)">
                                             Plan Features Is Required</span>
                                     </div>
@@ -137,7 +138,7 @@
                                         <span class="accountspancolor">*</span>
                                     </label>
                                     <div class="col-md-3">
-                                        <input formControlName="price" class="form-control accountinputheight" />
+                                        <input type="number" formControlName="price" class="form-control accountinputheight" />
                                         <span class="text-danger" *ngIf="planForm.controls['price'].hasError('price') && (planForm.controls['price'].dirty || planForm.controls['price'].touched)">
                                             Price Id Required</span>
                                         <br>
@@ -161,8 +162,9 @@
                                     </label>
                                     <div class="col-md-3">
                                         <select class="form-control" formControlName="paymentType">
-                                            <option>subscription</option>
+                                            <option>Select</option>
                                             <option>payment</option>
+                                            <option>recurring</option>
                                         </select>
                                         <!-- <input formControlName="paymentType" class="form-control accountinputheight" /> -->
                                         <span class="text-danger" *ngIf="planForm.controls['paymentType'].hasError('required') && (planForm.controls['paymentType'].dirty || planForm.controls['paymentType'].touched)">
@@ -176,8 +178,6 @@
                                     <div class="col-md-3">
                                         <select class="form-control" formControlName="paymentCycle">
                                             <option>Select</option>
-                                            <option>day</option>
-                                            <option>week</option>
                                             <option>month</option>
                                             <option>year</option>
                                             
@@ -204,7 +204,7 @@
                                     </div>
                                 </div>
                                 <div *ngIf="planId">
-                                    <button class="mr-1 btn btn-sm float-right accountbtnbgcolor" (click)="updateStripePrice();" type="submit">Update</button>
+                                    <button class="mr-1 btn btn-sm float-right accountbtnbgcolor" (click)="addPlan();" type="submit">Update</button>
                                 </div>
                                 <div *ngIf="planId">
                                     <button class="mr-1 btn btn-sm float-right accountbtnbgcolor" (click)="deletePlan();" type="submit">Delete</button>

@@ -76,76 +76,23 @@
             </div>
 
             <div class="card b mb-2">
-                <!-- <form id="payment-form" class="mb-1">
-                    <div class="row mb-2">
-                        <div class="col-sm-12">
-                            <div id="paypal-button-container"></div>
-                        </div>
-                    </div>
-                    <div class="row justify-content-md-center">
-                        <div class="col-sm-11">
-                            <label for="email" class="mb-0">Email</label>
-                            <input type="text" class="form-control" [(ngModel)]="cardObject.email" id="email"
-                                name="email" />
-                        </div>
-                    </div>
-                    <div class="row justify-content-md-center">
-                        <div class="col-sm-11">
-                            <label for="card" class="mb-0">Card information</label>
-                            <div id="card-element"></div>
-                        </div>
-                    </div>
-                    <div class="row justify-content-md-center">
-                        <div class="col-sm-11">
-                            <label for="billingName" class="mb-0 mt-1">Name on card</label>
-                            <input type="text" class="form-control" [(ngModel)]="cardObject.billingName"
-                                autocorrect="off" id="billingName" name="billingName">
-                        </div>
-                    </div>
-                    <div class="row justify-content-md-center">
-                        <div class="col-sm-11">
-                            <label for="country" class="mb-0">Country or region</label>
-                            <select id="billingCountry" name="billingCountry"
-                                style="height: 44px;border-color: rgba(50, 50, 93, 0.1);"
-                                [(ngModel)]="cardObject.billingCountry" class="form-control">
-                                <option value="" disabled="" hidden=""></option>
-                                <option value="IN">India</option>
-                                <option value="USA">USA</option>
-                            </select>
-                        </div>
-                    </div>
-                    <div class="row justify-content-md-center">
-                        <div class="col-sm-11">
-                            <button class="btn btn-primary btn-block" id="submit">
-                                <div class="spinner hidden" id="spinner"></div>
-                                <span id="button-text">CHECKOUT</span>
-                            </button>
-                        </div>
-                    </div>
-                    <div class="row justify-content-md-center" *ngIf="campaignError==true">
-                        <div class="alert alert-danger">
-                            <strong>Error!</strong> Plaese select Campaign before checkout.
-                        </div>
-                    </div>
 
-                    <p id="card-errors" role="alert"></p>
-                    <p class="result-message hidden">
-                        Payment succeeded
-                    </p>
-                </form> -->
             <form id="subscription-form" class="mb-1"> 
                     <div class="row mb-2">
                         <div class="col-sm-11">
                             <div id="paypal-button-container1"></div>
                         </div>
                     </div>
-                    <div class="row  justify-content-md-center">
+                    <!-- <div class="row  justify-content-md-center">
                         <div class="col-sm-11">
                             <label for="email" class="mb-0">Email</label>
-                            <input type="text" class="form-control" [(ngModel)]="cardObject.email" id="email"
+                            <input type="text" class="form-control" [(ngModel)]="cardEmail" id="email"
                                 name="email" />
                         </div>
-                    </div>
+                    </div> -->
+                    <br>
+                    <br>
+                    
                     <div class="row  justify-content-md-center">
                         <div class="col-sm-11">
                             <label for="card" class="mb-0">Card information</label>
@@ -153,19 +100,26 @@
                         </div>
                     </div>
                     <br>
+                    <br>
                     <div class="row justify-content-md-center">
                         <div class="col-sm-11">
                             <button class="btn btn-primary btn-block" id="submit">
                                 <div class="spinner hidden" id="spinner"></div>
-                                <span id="button-text">Subscribe</span>
+                                <span id="button-text">SUBSCRIBE</span>
                             </button>
+                        </div>
+                    </div>
+                    <br>
+                    <div class="row justify-content-md-center" *ngIf="campaignError==true">
+                        <div class="alert alert-danger">
+                            <strong>Error!</strong> Plaese select Campaign before checkout.
                         </div>
                     </div>
                     <p id="card-errors" role="alert"></p>
                     <p class="result-message hidden">
                         Subscribe succeeded
                     </p>
-                </form> -->
+                </form> 
             </div>
 
 

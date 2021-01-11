@@ -6,7 +6,7 @@ import { TranslateService } from '@ngx-translate/core';
 import { HttpHeaders, HttpClient, HttpParams } from '@angular/common/http';
 import { Observable } from 'rxjs';
 import { map, catchError } from 'rxjs/operators';
-//import { SnackbarService } from '../../../shared/services/snackbar/snackbar.service';
+import { SnackbarService } from '../../../shared/services/snackbar/snackbar.service';
 //test
 import { StripeService, StripeCardComponent } from 'ngx-stripe';
 import {
@@ -26,7 +26,7 @@ const success = require('sweetalert');
   styleUrls: ['./products.component.scss']
 })
 export class ProductsComponent implements OnInit {
-   //
+  //
   settingActive: number = 1;
   oneAtATime: boolean = true;
   //for product
@@ -109,12 +109,12 @@ export class ProductsComponent implements OnInit {
   source: LocalDataSource;
   sourcePlan: LocalDataSource;
   constructor(private productService: ProductsService, private translate: TranslateService, private http: HttpClient
-    ,private fb: FormBuilder, private stripeService: StripeService
+    , private fb: FormBuilder, private stripeService: StripeService, private snackbarService: SnackbarService
     //private snackbarService: SnackbarService
   ) { }
 
   ngOnInit(): void {
-   
+
 
     this.companyId = localStorage.getItem('companyID');
     this.getProductsList();
@@ -132,7 +132,7 @@ export class ProductsComponent implements OnInit {
     this.planForm.reset();
     this.productService.getPlan(planId).subscribe((response: any) => {
       if (response) {
-        debugger
+        
         this.planId = response.id;
         this.priceid = response.priceId
         this.stripeProductId = response.stripeProductId;
@@ -159,7 +159,7 @@ export class ProductsComponent implements OnInit {
   }
 
   addProduct() {
-    debugger
+    
     if (this.productId == undefined || this.productId == null) {
       let data = {
         id: "00000000-0000-0000-0000-000000000000",
@@ -169,8 +169,8 @@ export class ProductsComponent implements OnInit {
       }
       this.productService.createProducts(data).subscribe(response => {
         if (response) {
-
-          this.successAlert();
+          this.snackbarService.show('Product Added');
+          this.productId = response.id;;
           this.getProductsList();
         }
       });
@@ -183,9 +183,8 @@ export class ProductsComponent implements OnInit {
       }
       this.productService.updateProducts(this.productId, data).subscribe(response => {
         //if (response) {
-        this.successAlert();
+        this.snackbarService.show('Product Updated');
         this.getProductsList();
-        //this.snackbarService.show('Days created successfully');
         //}
       });
     }
@@ -209,12 +208,14 @@ export class ProductsComponent implements OnInit {
       }
       this.productService.createPlan(data).subscribe(response => {
         if (response) {
-          this.successAlert();
+          this.snackbarService.show('Plan Added');
+         // this.planId = response.id;
           this.getPlansList();
           this.planForm.reset();
         }
       });
     } else {
+      debugger
       let data = {
         id: this.planId,
         name: this.planName.value,
@@ -228,7 +229,7 @@ export class ProductsComponent implements OnInit {
         productId: this.productId,
       }
       this.productService.updatePlan(this.planId, data).subscribe(response => {
-        this.successAlert();
+        this.snackbarService.show('Plan Updated');
         this.getPlansList();
         this.planForm.reset();
       });
@@ -245,12 +246,15 @@ export class ProductsComponent implements OnInit {
       this.planForm.reset();
       this.productForm.reset();
       this.getProductsList();
+      this.snackbarService.show('Product Deleted');
     })
   }
   deletePlan() {
     this.productService.deletePlan(this.planId).subscribe((response: any) => {
       this.planForm.reset();
       this.getPlansList();
+      this.planId  = null;
+      this.snackbarService.show('Plan Deleted');
     })
   }
   getProduct(productId) {
@@ -268,25 +272,7 @@ export class ProductsComponent implements OnInit {
       }
     })
   }
-  successAlert() {
-    success({
-      icon: this.translate.instant('sweetalert.SUCCESSICON'),
-      title: this.translate.instant('message.UPDATEMSG'),
-      buttons: {
-        confirm: {
-          text: this.translate.instant('sweetalert.OKBUTTON'),
-          value: true,
-          visible: true,
-          className: "bg-primary",
-          closeModal: true,
-        }
-      }
-    }).then((isConfirm: any) => {
-      if (isConfirm) {
-        // this.router.navigate(['/home']);
-      }
-    });
-  }
+
   createProductOnStripe() {
     this.productService.createProductOnStripe(this.planName.value, this.planSubTitle.value).subscribe((response: any) => {
       if (response) {
@@ -298,13 +284,13 @@ export class ProductsComponent implements OnInit {
     })
   }
   deleteStripeProduct() {
-     debugger
-     let data = {
+    
+    let data = {
       ProductId: this.stripeProductId,
     }
     this.productService.deleteStripeProduct(data).subscribe((response: any) => {
       if (response) {
-        debugger
+        
         //this.addPlan();
       }
     })
@@ -318,10 +304,10 @@ export class ProductsComponent implements OnInit {
       ProductId: this.stripeProductId,//"prod_IdaudQUPYxm2BV",
       Type: this.paymentType.value,
     };
-    debugger
+    
     this.productService.createStripePrice(data).subscribe((response: any) => {
       if (response) {
-        debugger
+        
         this.priceid = response.id;
         this.addPlan();
       }
@@ -329,7 +315,7 @@ export class ProductsComponent implements OnInit {
   }
   createProductOnStripe2(): Observable<any> {
     //require secret key
-    debugger
+    
     const myheader = new HttpHeaders().append('Authorization', 'Bearer sk_test_51I0iLaEKoP0zJ89QzP2qwrKaIC8vjEfoVim8j4S0Y3FsRx0T3UEkvqiaEayt1AzAcP7Na5xzZcb7aN2K7aMrtcMf00CizHVXeg');
     const options = {
       headers: myheader,
@@ -350,16 +336,10 @@ export class ProductsComponent implements OnInit {
       .post<any[]>('https://api.stripe.com/v1/prices', body, options)
   }
   cancelProduct() {
-    this.productForm.reset();
     this.productId = null;
-    this.sourcePlan = null;
-    this.planForm = null;
+    this.planId  = null;
+    this.planList.pop();
   }
-  test(){
-
-  }
- 
-  
 }
 
 

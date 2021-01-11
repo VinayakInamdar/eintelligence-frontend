@@ -64,10 +64,10 @@ export class RegisterComponent implements OnInit {
     // this.registerService.createRegiter(result).subscribe((res: Register) => {
     //   this.registerModel = res;
     // });
-    debugger
+    
     var result: User = Object.assign({}, value);
     this.userService.createUser(result).subscribe((res: User) => {
-      debugger
+      
       this.userModel = res;
 
 
@@ -81,7 +81,7 @@ export class RegisterComponent implements OnInit {
       this.accountService.updateCompany(res.companyID, company).subscribe(
         res => {
           console.log(res)
-          debugger
+          
         }
       )
 

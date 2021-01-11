@@ -25,14 +25,13 @@ import { SiteSpeedComponent } from './site-speed/site-speed.component';
 import { ConversionsComponent } from './conversions/conversions.component';
 import { EcommerceComponent } from './ecommerce/ecommerce.component';
 import { GoalsComponent } from './goals/goals.component';
-
+// import { GoogleChartsModule } from 'angular-google-charts';
+// import { HighchartsChartModule } from 'highcharts-angular';
 const routes: Routes = [
   { path: '', component: AnalyticsComponent },
 ];
-
 @NgModule({
- 
-  imports: [
+   imports: [
     CommonModule,
     SharedModule,
     RouterModule.forChild(routes),
@@ -45,6 +44,8 @@ const routes: Routes = [
     NgxSelectModule,
     NgxIntlTelInputModule,
     ChartsModule
+    // GoogleChartsModule.forRoot({ version: 'chart-version' }),
+    // HighchartsChartModule
   ],
   declarations: [SourcesMediumsComponent, CampaignsComponent, AudienceComponent, DeviceCategoryComponent, GeoLocationsComponent, LanguagesComponent, BehaviorComponent, LandingPagesComponent, EventsComponent, SiteSpeedComponent, ConversionsComponent, EcommerceComponent, GoalsComponent],
   exports: [

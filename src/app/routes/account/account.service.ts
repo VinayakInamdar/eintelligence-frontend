@@ -6,7 +6,7 @@ import { catchError,tap, combineAll } from 'rxjs/operators';
 import { environment } from 'src/environments/environment';
 import { UserInfo } from 'os';
 import { User } from '../user/user.model';
-
+import { FilterOptionModel } from '../../shared/model/filter-option.model';
 
 
 @Injectable({
@@ -56,7 +56,10 @@ getUser(userId:string): Observable<User[]> {
  getCompany(userId:string): Observable<CompanyInformation[]> {
   return this.http.get<CompanyInformation[]>(`${this.Url}companys/GetCompanyDetails?userId=` + userId)
 }
-
+getFilteredUsers(filter: FilterOptionModel): Observable<any> {
+  const params = `PageNumber=${filter.pageNumber}&PageSize=${filter.pageSize}&SearchQuery=${filter.searchQuery}&OrderBy=${filter.orderBy}&Fields=${filter.fields}`;
+  return this.http.get<any>(`${this.Url}aspusers?${params}`, { observe: 'response' });
+}
 
 updateUser(userId : string,selectedUser: any) : Observable<User[]> {
   return this.http.put<User[]>(this.Url + 'aspusers/' + userId, selectedUser)
