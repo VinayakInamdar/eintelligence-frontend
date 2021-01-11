@@ -32,7 +32,7 @@ export class StoreComponent implements OnInit {
     // );
   }
   public onClick(planid, paymentmode): any {
-    debugger
+    
     if (paymentmode == 'recurring') {
       this.router.navigate(['/checkoutsubscribe', planid, this.productId]);
     } else {

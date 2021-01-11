@@ -129,7 +129,7 @@ export class CheckoutSubscribeComponent implements OnInit {
         this.priceId = this.plans[0].priceId;
         this.paymentMode = this.plans[0].paymentType;
         this.paymentCycle = this.plans[0].paymentCycle;
-        debugger
+        
         this.stripeSubInit();
 
       }
@@ -241,7 +241,7 @@ export class CheckoutSubscribeComponent implements OnInit {
   }
   //################StripeSubscriptionFuncation##########
   stripeSubInit() {
-    debugger
+    
     var stripe = Stripe(environment.stripe_key);
     document.querySelector("#submit")['disabled'] = true;
     var elements = stripe.elements();
@@ -341,7 +341,7 @@ export class CheckoutSubscribeComponent implements OnInit {
 
   }
   createCustomer() {
-    debugger
+    
     const url = "https://api.stripe.com/v1/customers";
     const body = new URLSearchParams();
     body.set('description', this.companyDetail.name);

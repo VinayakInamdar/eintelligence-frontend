@@ -166,8 +166,9 @@ export class HomeComponent implements OnInit {
     
       //  using to get campaignList
     public getCampaignList(): void {
+      
       var userid = this.openIdConnectService.user.profile.sub;
-        this.campaignService.getCampaign().subscribe(res => {
+        this.campaignService.getCampaign(userid).subscribe(res => {
           
 
         //   res.forEach((item) => {

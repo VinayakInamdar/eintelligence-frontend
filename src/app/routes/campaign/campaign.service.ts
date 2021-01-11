@@ -38,8 +38,10 @@ export class CampaignService {
   //   })
   // }
 
-  getCampaign(): Observable<any[]> {
-      return this.http.get<any[]>(`${this.Url}campaigns/GetCampaignByUserId?userId=` + localStorage.getItem('userID'))
+  getCampaign(userid): Observable<any[]> {
+    
+    let c= localStorage.getItem('userID');
+      return this.http.get<any[]>(`${this.Url}campaigns/GetCampaignByUserId?userId=` + userid)
   }
   // using to get list of keywords
   getSerp(startDate:string,endDate:string): Observable<any[]> {
