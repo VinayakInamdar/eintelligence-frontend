@@ -4,6 +4,8 @@ import { StoreService } from '../store.service';
 import { IProduct } from '../product.model';
 import { JsonPipe } from '@angular/common';
 import { ProductsService } from '../../products/products.service'
+import { OpenIdConnectService } from '../../../shared/services/open-id-connect.service';
+import { AccountService } from '../../account/account.service';
 @Component({
   templateUrl: './store.component.html',
   styleUrls: ['./store.component.scss']
@@ -17,10 +19,15 @@ export class StoreComponent implements OnInit {
   plans;
   productId;
   paymentmode;
-  constructor(public router: Router, public productService: StoreService, public productsService: ProductsService) { }
+  userId;
+  companyId;
+  constructor(public router: Router, private accountService: AccountService, public openIdConnectService: OpenIdConnectService, public productService: StoreService, public productsService: ProductsService) { }
 
   ngOnInit(): void {
-    this.getAllProduct();
+    debugger
+    this.companyId = localStorage.getItem('companyID');
+    this.userId = this.openIdConnectService.user.profile.sub;
+      this.getAllProduct();
     //using to get list of plans
     // this.productService.getProducts().subscribe(
     //   products => {
@@ -41,6 +48,7 @@ export class StoreComponent implements OnInit {
 
 
   }
+
   getAllPlans() {
     const filterOptionModel = this.getFilterOptionPlans();
     this.productsService.getFilteredPlan(filterOptionModel).subscribe((response: any) => {
@@ -55,9 +63,10 @@ export class StoreComponent implements OnInit {
     const filterOptionModel = this.getFilterOptionPlans();
     this.productsService.getFilteredProduct(filterOptionModel).subscribe((response: any) => {
       if (response) {
-        
+        debugger
         this.products = response.body
-        if (this.products) {
+        if (this.products != undefined && this.products != null && this.products.length > 0) {
+        this.products = this.products.filter(x => x.companyId == this.companyId);
           this.productId = this.products[0].id;
           this.getAllPlans();
         }

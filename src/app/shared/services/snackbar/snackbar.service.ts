@@ -15,7 +15,7 @@ export class SnackbarService {
     const config = new MatSnackBarConfig();
     config.verticalPosition = verticalPosition;
     config.horizontalPosition = horizontalPosition;
-    config.duration = 1000;
+    config.duration = 10000;
     this._snackBar.open(message, action, config);
   }
 

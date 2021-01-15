@@ -6,7 +6,7 @@ import { UserblockService } from '../sidebar/userblock/userblock.service';
 import { SettingsService } from '../../core/settings/settings.service';
 import { MenuService } from '../../core/menu/menu.service';
 import { Observable } from 'rxjs';
-
+import { OpenIdConnectService } from '../../shared/services/open-id-connect.service';
 @Component({
     selector: 'app-header',
     templateUrl: './header.component.html',
@@ -23,13 +23,15 @@ export class HeaderComponent implements OnInit {
     isNavSearchVisible: boolean;
     @ViewChild('fsbutton', { static: true }) fsbutton;  // the fullscreen button
 
-    constructor(public menu: MenuService, public userblockService: UserblockService, public settings: SettingsService, public injector: Injector) {
+    constructor(public menu: MenuService, public _openIdConnectService: OpenIdConnectService, public userblockService: UserblockService, public settings: SettingsService, public injector: Injector) {
 
         // show only a few items on demo
         this.menuItems = menu.getMenu().slice(Math.max(menu.getMenu().length - 3,1)); // for horizontal layout
 
     }
-
+    logout() {        
+        this._openIdConnectService.triggerSignOut();
+    }
     ngOnInit() {
         this.isNavSearchVisible = false;
 

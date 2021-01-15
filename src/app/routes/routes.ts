@@ -89,6 +89,12 @@ export const routes: Routes = [
                 loadChildren: () => import('./products/products.module').then(m => m.ProductsModule)
             },
             {
+                path: 'socialmedia',
+                component: LayoutComponent,
+                //canActivate: [RequireAuthenticatedUserRouteGuardService],
+                loadChildren: () => import('./socialmedia/socialmedia.module').then(m => m.SocialmediaModule)
+            },
+            {
                 path: 'mypayments',
                 component: LayoutComponent,
                 loadChildren: () => import('./mypayments/mypayments/mypayments.module').then(m => m.MyPaymentsModule)

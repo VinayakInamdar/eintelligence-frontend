@@ -123,6 +123,7 @@ export class ProductsComponent implements OnInit {
     this.productService.getProductsByCompanyId(this.companyId).subscribe((response: any) => {
       if (response) {
         this.productList = response;
+        this.productList = this.productList.filter(x => x.companyId == this.companyId);
         this.source = new LocalDataSource(this.productList)
         this.planForm.reset();
       }

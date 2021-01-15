@@ -4,16 +4,23 @@
 export const environment = {
   production: false,
   apiUrl: 'https://localhost:44357/api/',
-   //my stripe key
+  //my stripe key
   // stripe_key: 'pk_test_51I0iLaEKoP0zJ89QGXq8ihvypBEzyryF6Y5Hiro0UDcPLQeCTzA0v8S6lYv2DNBZZS3LxICWKJATbOxzdUCOl73p00Her3EA2b',
   // stripe_secreTkey: 'sk_test_51I0iLaEKoP0zJ89QzP2qwrKaIC8vjEfoVim8j4S0Y3FsRx0T3UEkvqiaEayt1AzAcP7Na5xzZcb7aN2K7aMrtcMf00CizHVXeg',
   //office keys test 
   stripe_key: 'pk_test_L4apfqRUqsnf9DlZceFAy4Wx',
   stripe_secreTkey: 'sk_test_K75p6KZMy95Lm1Ojt9ZW3Nsu00wxom9G1z',
-    //office keys Live 
-    // stripe_key: 'pk_live_iaYYzGaqQ7BZGhoNMkvqrjX2',
-    // stripe_secreTkey: 'sk_test_K75p6KZMy95Lm1Ojt9ZW3Nsu00wxom9G1z',
-   openIdConnectSettings: {
+  //office keys Live 
+  // stripe_key: 'pk_live_iaYYzGaqQ7BZGhoNMkvqrjX2',
+  // stripe_secreTkey: 'sk_test_K75p6KZMy95Lm1Ojt9ZW3Nsu00wxom9G1z',
+  // Facebook Techovarya keys
+  facebook_clientToken: '8297e1f6d032164c4d94a205387bf171',
+  facebook_appSecret: 'c487f4d66242b62431eb4bb26d785b84',
+  facebook_appid: '448186179555932',
+  facebook_appToken: '448186179555932|GnYxyy4pqi6B_f49gfVUkVwrMfM',
+  facebook_userToken: 'EAAGXn3oGklwBAEDY2dpA11KLDG0hhHYWi9pts9qmPJxXs6Ywb4UOq6SRhvr5kFpNDeUrHkG1rIZCxHJMxQS3U7UurncvEnjuuaD4aLmKDAT5uIoSb3QWSE92GkLWOS0Oqub7ZAIcxwtMBAaLOSQWqEiwsMuqaugO5XwiXJx97ekfXeuB8cnQhISZAtINl8ZD',
+
+  openIdConnectSettings: {
     authority: 'https://localhost:44349/',
     client_id: 'tourmanagementclient',
     redirect_uri: 'https://localhost:4200/signin-oidc',
@@ -49,7 +56,9 @@ export const environment = {
 // };
 
 // export const environment = {
-//   production: false,
+//   production: true,
+//   stripe_key: 'pk_test_L4apfqRUqsnf9DlZceFAy4Wx',
+//   stripe_secreTkey: 'sk_test_K75p6KZMy95Lm1Ojt9ZW3Nsu00wxom9G1z',
 //   apiUrl: 'https://eintelligencebackend.azurewebsites.net/api/',
 //   openIdConnectSettings: {
 //     authority: 'https://eintelligenceidentity.azurewebsites.net/',
