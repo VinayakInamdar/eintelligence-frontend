@@ -56,11 +56,9 @@
 <div class="row">
     <div class="col-md-6 offset-md-3 mt-5 text-center">
         <div class="card">
-            <h4 class="card-header">Angular 10 Facebook Login Example</h4>
+            <h4 class="card-header">Facebook EI Reports</h4>
             <div class="card-body">
                 <button class="btn btn-facebook" (click)="loginWithOptions()">
-                <!-- <button class="btn btn-facebook"> -->
-
                     <i class="fa fa-facebook mr-1"></i>
                     Login with Facebook
                 </button>
@@ -97,10 +95,9 @@
 
                     <div class="row">
                         <div class="col-sm-3">
-                            <h3 style="align-self: flex-start;padding:0.2rem ;"><b>PAGE PROFILE VIEWS</b></h3>
-                            <h3 style="font-size: x-large;margin: auto;">162</h3>
-                            <h4 style="align-self: flex-start;margin-left:3rem;padding: 0.2rem;align-self: center;">Avg
-                                per day:5</h4>
+                            <h3><b>PAGE PROFILE VIEWS</b></h3>
+                            <h3 style="font-size: x-large;margin: auto;color:red;">{{profileViewTotal}}</h3>
+                            <!-- <h3 class="fontxlrge" style="color:red;">100000</h3> -->
                         </div>
                         <div class="vl"></div>
                         <div class="col-sm-3">
@@ -133,38 +130,36 @@
                         </div>
                         <div class="vl"></div>
                         <div class="col-sm-3">
-                            <h3 style="align-self: flex-start;padding:0.2rem ;"><b>PAGE CLICKS</b></h3>
-                            <h3 style="font-size: x-large;margin: auto;">132</h3>
-                            <h4 style="align-self: flex-start;margin-left:3rem;padding: 0.2rem;align-self: center;">Avg
-                                per day:5</h4>
+                            <h3><b>PAGE CLICKS</b></h3>
+                            <h3 class="fontxlrge" style="color:red;">{{pageClicksTotal}}</h3>
+
                         </div>
                         <div class="vl"></div>
                         <div class="col-sm-2">
+                            <h3><b> +Ve VS -Ve FEEDBACK</b></h3>
+
+                           
                             <table class="table table-bordered font-weight-bold"
                                 style="width: auto;margin:auto;padding: 1rem;">
                                 <thead>
                                     <tr>
 
                                         <td>
-
+                                            POSITIVE
                                         </td>
                                         <td>
-                                            POSITIVE VS NEGATIVE FEEDBACK
+                                             FEEDBACK
                                         </td>
                                     </tr>
                                 </thead>
                                 <tbody>
                                     <tr>
-                                        <td><i>fas fa-circle</i>
-                                        </td>
-                                        <div class="col">
                                             <td class="text-blue">
-                                                100% positive
+                                                 {{positiveFeedback}}
                                             </td>
-                                            <td class="text-blue">
-                                                0% negative
+                                            <td style="color:red;">
+                                                 {{negativeFeedback}}
                                             </td>
-                                        </div>
                                     </tr>
                             </table>
                         </div>
@@ -195,16 +190,15 @@
                     <div class="row">
                         <div class="col-sm-3" style="float: left;">
                             <h3 style="align-self: flex-start;padding:0.2rem ;"><b>TOTAL PAGE LIKES</b></h3>
-                            <h3 style="font-size: x-large;margin: auto;">{{pagelikesTotal}}</h3>
+                            <!-- <h3 style="font-size: x-large;margin: auto;color:red;">23424</h3> -->
+                            <h3 style="font-size: x-large;margin: auto;color:red;">{{pagelikesTotal}}</h3>
 
                         </div>
                         <div class="vl"></div>
                         <div class="col-sm-3" style="float: left;">
                             <h3 style="align-self: flex-start;padding:0.2rem ;"><b>NEW LIKES</b></h3>
-                            <h3 style="font-size: x-large;margin: auto;">10</h3>
-                            <h4 style="align-self: flex-start;margin-left:3rem;padding: 0.2rem;align-self: center;">Avg.
-                                per day:less than 10
-                            </h4>
+                            <!-- <h3 style="font-size: x-large;margin: auto;color:red;">23423</h3> -->
+                            <h3 style="font-size: x-large;margin: auto;color:red;">{{pageNewlikesTotal}}</h3>
                         </div>
 
                         <div class="vl"></div>
@@ -390,10 +384,8 @@
                         <div class="vl"></div>
                         <div class="col-sm-3" style="float: left;">
                             <h3 style="align-self: flex-start;padding:0.2rem ;"><b>PAGE REACH</b></h3>
-                            <h3 style="font-size: x-large;margin: auto;">20</h3>
-                            <h4 style="align-self: flex-start;margin-left:3rem;padding: 0.2rem;align-self: center;">Avg.
-                                per day: 20
-                            </h4>
+                            <!-- <h3 style="font-size: x-large;margin: auto;color:red;">456546</h3> -->
+                            <h3 style="font-size: x-large;margin: auto;color:red;">{{pageReachTotal}}</h3>
                         </div>
                         <div class="vl"></div>
                         <div class="col-sm-3">

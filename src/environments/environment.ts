@@ -16,10 +16,11 @@ export const environment = {
   // Facebook Techovarya keys
   facebook_clientToken: '8297e1f6d032164c4d94a205387bf171',
   facebook_appSecret: 'c487f4d66242b62431eb4bb26d785b84',
-  facebook_appid: '448186179555932',
+  facebook_appid: '448186179555932',//746342506318304
   facebook_appToken: '448186179555932|GnYxyy4pqi6B_f49gfVUkVwrMfM',
   facebook_userToken: 'EAAGXn3oGklwBAEDY2dpA11KLDG0hhHYWi9pts9qmPJxXs6Ywb4UOq6SRhvr5kFpNDeUrHkG1rIZCxHJMxQS3U7UurncvEnjuuaD4aLmKDAT5uIoSb3QWSE92GkLWOS0Oqub7ZAIcxwtMBAaLOSQWqEiwsMuqaugO5XwiXJx97ekfXeuB8cnQhISZAtINl8ZD',
-
+  facebook_pageid : '102988865108273',
+  //user id= 105114094889635
   openIdConnectSettings: {
     authority: 'https://localhost:44349/',
     client_id: 'tourmanagementclient',
