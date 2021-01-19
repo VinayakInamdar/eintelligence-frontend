@@ -53,12 +53,21 @@
     </ul>
 
 </nav>
-<div class="row">
-    <div class="col-md-6 offset-md-3 mt-5 text-center">
-        <div class="card">
-            <h4 class="card-header">Facebook EI Reports</h4>
-            <div class="card-body">
-                <button class="btn btn-facebook" (click)="loginWithOptions()">
+<div class="row  justify-content-center">
+    <div class="col-md-4  justify-content-center">
+    <div class="card card-default shadow bg-white rounded height100pxfit-content cursor-set">
+        <div class="card-header">
+            <div class="row borderBtm padding5">
+                <h2 class="col-xs-12 col-12 col-md-10 fontsize15px colour-set">Facebook EI Reports</h2>
+                <div class="col-xs-12 col-12 col-md-1 fontsize15px">
+            
+                </div>
+            </div>
+
+        </div>
+        <div class="widget-content">
+            <div class="overviewdivborder">
+                <button class="mr-1 btn btn-primary btn-lg" type="button" (click)="loginWithOptions()">
                     <i class="fa fa-facebook mr-1"></i>
                     Login with Facebook
                 </button>
@@ -66,23 +75,14 @@
         </div>
     </div>
 </div>
+</div>
 <div class="row overviewmaindiv">
-
-    <br>
-    <hr>
-    <br>
-    <div class="col-lg-12  font-weight-bold fontsizelarge">
-        EI Reports
-    </div>
-    <br>
-    <hr>
-    <br>
     <div class="col-lg-12">
 
-        <div class="card card-default shadow bg-white rounded height200px" style="height: fit-content;">
+        <div class="card card-default shadow bg-white rounded height200pxfit-content cursor-set">
             <div class="card-header">
                 <div class="row borderBtm padding5">
-                    <h2 class="col-xs-12 col-12 col-md-10 fontsize15px">Facebook : Performance Summary</h2>
+                    <h2 class="col-xs-12 col-12 col-md-10 fontsize15px colour-set">Facebook: Performance Summary</h2>
                     <div class="col-xs-12 col-12 col-md-1 fontsize15px">
                         <i class="fa fa-info-circle paddingtop10px"
                             matTooltip="Geographical data to show where most of the traffic comes from"></i>
@@ -95,21 +95,21 @@
 
                     <div class="row">
                         <div class="col-sm-3">
-                            <h3><b>PAGE PROFILE VIEWS</b></h3>
-                            <h3 style="font-size: x-large;margin: auto;color:red;">{{profileViewTotal}}</h3>
-                            <!-- <h3 class="fontxlrge" style="color:red;">100000</h3> -->
+                            <h3 class="colour-light">PAGE PROFILE VIEWS</h3>
+                            <h3 class="fontxlrge">{{profileViewTotal}}</h3>
+                            <h3 class="fontsizesmall">Avg. per day : {{avgProfileView}}</h3>
                         </div>
                         <div class="vl"></div>
                         <div class="col-sm-3">
-                            <table class="table table-bordered font-weight-bold"
-                                style="width: auto;margin:auto;padding: 1rem;">
+                            <h3 class="colour-light">TOP EXTERNAL REFERRER</h3>
+                            <table class="table table-bordered font-weight-bold colour-light">
                                 <thead>
                                     <tr>
                                         <td>
                                             URL
                                         </td>
                                         <td>
-                                            Count
+                                            COUNT
                                         </td>
                                         <td>
                                             %
@@ -130,17 +130,16 @@
                         </div>
                         <div class="vl"></div>
                         <div class="col-sm-3">
-                            <h3><b>PAGE CLICKS</b></h3>
-                            <h3 class="fontxlrge" style="color:red;">{{pageClicksTotal}}</h3>
+                            <h3 class="colour-light">PAGE CLICKS</h3>
+                            <h3 class="fontxlrge">{{pageClicksTotal}}</h3>
 
                         </div>
                         <div class="vl"></div>
                         <div class="col-sm-2">
-                            <h3><b> +Ve VS -Ve FEEDBACK</b></h3>
+                            <h3 class="colour-light"> +Ve VS -Ve FEEDBACK</h3>
 
-                           
-                            <table class="table table-bordered font-weight-bold"
-                                style="width: auto;margin:auto;padding: 1rem;">
+
+                            <table class="table table-bordered font-weight-bold colour-light">
                                 <thead>
                                     <tr>
 
@@ -148,18 +147,18 @@
                                             POSITIVE
                                         </td>
                                         <td>
-                                             FEEDBACK
+                                            FEEDBACK
                                         </td>
                                     </tr>
                                 </thead>
                                 <tbody>
                                     <tr>
-                                            <td class="text-blue">
-                                                 {{positiveFeedback}}
-                                            </td>
-                                            <td style="color:red;">
-                                                 {{negativeFeedback}}
-                                            </td>
+                                        <td class="text-blue">
+                                            {{percentPositive}}%
+                                        </td>
+                                        <td style="color:red;">
+                                            {{percentNegative}}%
+                                        </td>
                                     </tr>
                             </table>
                         </div>
@@ -173,10 +172,10 @@
 
 
 
-        <div class="card card-default shadow bg-white rounded height200px" style="height: fit-content;">
+        <div class="card card-default shadow bg-white rounded height200pxfit-content cursor-set">
             <div class="card-header">
                 <div class="row borderBtm padding5">
-                    <h2 class="col-xs-12 col-12 col-md-10 fontsize15px">Facebook:Audience Summary</h2>
+                    <h2 class="col-xs-12 col-12 col-md-10 fontsize15px colour-set">Facebook: Audience Summary</h2>
                     <div class="col-xs-12 col-12 col-md-1 fontsize15px">
                         <i class="fa fa-info-circle paddingtop10px"
                             matTooltip="Social media data to show where most of the traffic comes from"></i>
@@ -188,53 +187,48 @@
                 <div class="overviewdivborder">
 
                     <div class="row">
-                        <div class="col-sm-3" style="float: left;">
-                            <h3 style="align-self: flex-start;padding:0.2rem ;"><b>TOTAL PAGE LIKES</b></h3>
+                        <div class="col-sm-3">
+                            <h3 class="colour-light">TOTAL PAGE LIKES</h3>
                             <!-- <h3 style="font-size: x-large;margin: auto;color:red;">23424</h3> -->
-                            <h3 style="font-size: x-large;margin: auto;color:red;">{{pagelikesTotal}}</h3>
+                            <h3 class="fontxlrge">{{pagelikesTotal}}</h3>
 
                         </div>
                         <div class="vl"></div>
-                        <div class="col-sm-3" style="float: left;">
-                            <h3 style="align-self: flex-start;padding:0.2rem ;"><b>NEW LIKES</b></h3>
+                        <div class="col-sm-3">
+                            <h3 class="colour-light">NEW LIKES</h3>
                             <!-- <h3 style="font-size: x-large;margin: auto;color:red;">23423</h3> -->
-                            <h3 style="font-size: x-large;margin: auto;color:red;">{{pageNewlikesTotal}}</h3>
+                            <h3 class="fontxlrge">{{pageNewlikesTotal}}</h3>
                         </div>
 
                         <div class="vl"></div>
-                        <div class="col-sm-3" style="float: right;padding-left: 8rem;">
-                            <h3 style="align-self: flex-start;padding:0.2rem ;"><b>LIKES LOST</b></h3>
-                            <h3 style="font-size: x-large;margin: auto;">6</h3>
-                            <h4>Avg per day:3
-                            </h4>
+                        <div class="col-sm-3">
+                            <h3 class="colour-light">LIKES LOST</h3>
+                            <h3 class="fontxlrge">{{lostLikes}}</h3>
+                            <h3 class="fontsizesmall">Avg. per day : {{avgLostLikes}}</h3>
                         </div>
                         <div class="vl"></div>
                         <div class="col-sm-2">
-                            <table class="table table-bordered font-weight-bold"
-                                style="width: auto;margin:auto;padding: 1rem;margin-left: auto;">
+                            <h3 class="colour-light"> ORGANIC VS PAID LIKES</h3>
+                            <table class="table table-bordered font-weight-bold colour-light">
                                 <thead>
                                     <tr>
 
                                         <td>
-
+                                            ORGANIC
                                         </td>
                                         <td>
-                                            ORGANIC VS PAID LIKES
+                                            PAID
                                         </td>
                                     </tr>
                                 </thead>
                                 <tbody>
                                     <tr>
-                                        <td><i>fas fa-circle</i>
+                                        <td class="text-blue">
+                                            {{percentPositive}}%
                                         </td>
-                                        <div class="col">
-                                            <td class="text-blue">
-                                                100% organic
-                                            </td>
-                                            <td class="text-blue">
-                                                0% paid
-                                            </td>
-                                        </div>
+                                        <td style="color:red;">
+                                            {{percentNegative}}%
+                                        </td>
                                     </tr>
                             </table>
                         </div>
@@ -244,11 +238,12 @@
 
             </div>
         </div>
-        <div class="col-lg-6" style="margin: auto;padding: 2rem;float: left;">
-            <div class="card card-default shadow bg-white rounded height200px">
+        <div class="col-lg-6">
+            <div class="card card-default shadow bg-white rounded height200pxfit-content cursor-set">
                 <div class="card-header">
                     <div class="row borderBtm padding5">
-                        <h2 class="col-xs-12 col-12 col-md-10 fontsize15px">Facebook:Page Views Via External Referrers
+                        <h2 class="col-xs-12 col-12 col-md-10 fontsize15px colour-set">Facebook: Page Views Via External
+                            Referrers
                         </h2>
                         <div class="col-xs-12 col-12 col-md-1 fontsize15px">
                             <i class="fa fa-info-circle paddingtop10px"
@@ -261,7 +256,7 @@
                     <div class="overviewdivborder">
                         <div class="row">
                             <div class="col-lg-12">
-                                <table class="table table-bordered font-weight-bold">
+                                <table class="table table-bordered font-weight-bold colour-light">
                                     <thead>
                                         <tr>
                                             <td>
@@ -276,14 +271,14 @@
                                         </tr>
                                     </thead>
                                     <tbody>
-                                        <tr>
+                                        <tr *ngFor="let h of pageUnlikeList; let i = index;">
                                             <td class="text-blue">
-                                                https://www.google.com/
+                                                {{h.source}}
                                             </td>
                                             <td class="text-blue">
-                                                29
+                                                {{h.count}}
                                             </td>
-                                            <td class="text-blue">35% </td>
+                                            <td class="text-blue">{{h.percent}}% </td>
                                         </tr>
                                 </table>
 
@@ -296,11 +291,12 @@
                 </div>
             </div>
         </div>
-        <div class="col-lg-6" style="margin: auto;padding: 2rem;float: right;height: fit-content;">
-            <div class="card card-default shadow bg-white rounded height200px" style="height: fit-content;">
+        <div class="col-lg-6">
+            <div class="card card-default shadow bg-white rounded height200pxfit-content cursor-set">
                 <div class="card-header">
                     <div class="row borderBtm padding5">
-                        <h2 class="col-xs-12 col-12 col-md-10 fontsize15px">Facebook:Page Unlikes by Source</h2>
+                        <h2 class="col-xs-12 col-12 col-md-10 fontsize15px colour-set">Facebook: Page Unlikes by Source
+                        </h2>
                         <div class="col-xs-12 col-12 col-md-1 fontsize15px">
                             <i class="fa fa-info-circle paddingtop10px"
                                 matTooltip="Geographical data to show where most of the traffic comes from"></i>
@@ -312,11 +308,11 @@
                     <div class="overviewdivborder">
                         <div class="row">
                             <div class="col-lg-12">
-                                <table class="table table-bordered font-weight-bold">
+                                <table class="table table-bordered font-weight-bold colour-light">
                                     <thead>
                                         <tr>
                                             <td>
-
+                                                SOURCE
                                             </td>
                                             <td>
                                                 UNLIKES
@@ -327,23 +323,14 @@
                                         </tr>
                                     </thead>
                                     <tbody>
-                                        <tr>
+                                        <tr *ngFor="let h of pageUnlikeList; let i = index;">
                                             <td class="text-blue">
-                                                Deactivated or Memorialized Account Removals
+                                                {{h.source}}
                                             </td>
                                             <td class="text-blue">
-                                                5
+                                                {{h.count}}
                                             </td>
-                                            <td class="text-blue">12% </td>
-                                        </tr>
-                                        <tr>
-                                            <td class="text-blue">
-                                                Others
-                                            </td>
-                                            <td class="text-blue">
-                                                7
-                                            </td>
-                                            <td class="text-blue">21% </td>
+                                            <td class="text-blue">{{h.percent}}% </td>
                                         </tr>
                                 </table>
 
@@ -359,10 +346,10 @@
     </div>
     <!-- second -->
     <div class="col-lg-12">
-        <div class="card card-default shadow bg-white rounded height200px" style="height: fit-content;">
+        <div class="card card-default shadow bg-white rounded height200pxfit-content cursor-set">
             <div class="card-header">
                 <div class="row borderBtm padding5">
-                    <h2 class="col-xs-12 col-12 col-md-10 fontsize15px">Facebook:Impression Summary</h2>
+                    <h2 class="col-xs-12 col-12 col-md-10 fontsize15px colour-set">Facebook: Impression Summary</h2>
                     <div class="col-xs-12 col-12 col-md-1 fontsize15px">
                         <i class="fa fa-info-circle paddingtop10px"
                             matTooltip="Social media data to show where most of the traffic comes from"></i>
@@ -374,62 +361,53 @@
                 <div class="overviewdivborder">
 
                     <div class="row">
-                        <div class="col-sm-3" style="float: left;">
-                            <h3 style="align-self: flex-start;padding:0.2rem ;"><b>PAGE IMPRESSIONS</b></h3>
-                            <h3 style="font-size: x-large;margin: auto;color:red;">{{pageImpressionsTotal}}</h3>
-                            <h4 style="align-self: flex-start;margin-left:3rem;padding: 0.2rem;align-self: center;">Avg.
-                                per day: 15
-                            </h4>
-                        </div>
-                        <div class="vl"></div>
-                        <div class="col-sm-3" style="float: left;">
-                            <h3 style="align-self: flex-start;padding:0.2rem ;"><b>PAGE REACH</b></h3>
-                            <!-- <h3 style="font-size: x-large;margin: auto;color:red;">456546</h3> -->
-                            <h3 style="font-size: x-large;margin: auto;color:red;">{{pageReachTotal}}</h3>
+                        <div class="col-sm-3">
+                            <h3 class="colour-light">PAGE IMPRESSIONS</h3>
+                            <h3 class="fontxlrge">{{pageImpressionsTotal}}</h3>
+
                         </div>
                         <div class="vl"></div>
                         <div class="col-sm-3">
-                            <div class="widget-content">
+                            <h3 class="colour-light">PAGE REACH</h3>
+                            <!-- <h3 style="font-size: x-large;margin: auto;color:red;">456546</h3> -->
+                            <h3 class="fontxlrge">{{pageReachTotal}}</h3>
+                        </div>
+                        <div class="vl"></div>
+                        <div class="col-sm-3">
                                 <div class="overviewdivborder">
                                     <div class="row">
                                         <div class="col-lg-12">
-                                            <table class="table table-bordered font-weight-bold"
-                                                style="width: auto;margin:auto;padding: 1rem;margin-left: auto;padding: 2rem;">
+                                            <h3 class="colour-light"> ORGANIC VS PAID REACH</h3>
+                                            <table class="table table-bordered font-weight-bold colour-light">
                                                 <thead>
                                                     <tr>
 
                                                         <td>
-
+                                                            ORGANIC
                                                         </td>
                                                         <td>
-                                                            ORGANIC VS PAID REACH
+                                                            PAID
                                                         </td>
                                                     </tr>
                                                 </thead>
                                                 <tbody>
                                                     <tr>
-                                                        <td><i>fas fa-circle</i>
+                                                        <td class="text-blue">
+                                                            {{percentOrganicReach}}%
                                                         </td>
-                                                        <div class="col">
-                                                            <td class="text-blue">
-                                                                100% organic
-                                                            </td>
-                                                            <td class="text-blue">
-                                                                0% paid
-                                                            </td>
-                                                        </div>
+                                                        <td class="text-blue">
+                                                            {{percentPaidReach}}%
+                                                        </td>
                                                     </tr>
                                             </table>
                                         </div>
                                     </div>
                                 </div>
-                            </div>
                         </div>
                         <div class="vl"></div>
                         <div class="col-sm-2">
-                            <h3 style="align-self: flex-start;padding:0.2rem ;"><b>TOP COUNTRY</b></h3>
-                            <table class="table table-bordered font-weight-bold"
-                                style="width: auto;margin:auto;padding: 2rem;margin-left: auto;">
+                            <h3 class="colour-light">TOP COUNTRY</h3>
+                            <table class="table table-bordered font-weight-bold colour-light">
 
                                 <thead>
                                     <tr>
