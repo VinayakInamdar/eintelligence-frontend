@@ -82,6 +82,8 @@ export class SocialmediaComponent implements OnInit {
         this.getTotalClicksCount();
         this.getPositiveFeedbackCount();
         this.getNegativeFeedbackCount();
+        this.getProfileViewCount();
+        this.getPageImpression();
       }
     }, error => {
       this.snackbarService.show('Fetch Page Token Failed : ' + JSON.stringify(error.error));
@@ -108,16 +110,41 @@ export class SocialmediaComponent implements OnInit {
     });
   }
   getProfileViewCount() {
-    //page_views_unique Page Views from users logged into Facebook day
-    const url = "https://graph.facebook.com/" + environment.facebook_pageid + "?access_token=" + this.accessToken + "&fields=page_views";
+    
+  //page_views_unique Page Views from users logged into Facebook day
+  const url = "https://graph.facebook.com/" + environment.facebook_pageid + "/insights/page_views_total?access_token=" + this.pageToken;
+  //const url = "https://graph.facebook.com/102988865108273/insights/page_impressions_unique?access_token=EAAGXn3oGklwBAAni75mymZAVNH0RB7ecJ7BSj6lYmnRwWewDSJMvhUZCxwMlnPH1HnMHWYKccrsDR6dyjeeQPBDpucGeN6EtvYTYcZC1OeWa2ObRAlHS2ZC2yMMmOLB5AkJWuxK0YtLBv2EpaD2RtsEjeb8EgbPUUeJLkDnbG4jplrccWCKgzu8LU4ie0abbeBrdzscvuATZCusuSOXku";
+  this.http.get(url).subscribe(res => {
+    if (res) {
+      
+      let p = res['data'][2];
+      let l = p['values'];
+      this.profileViewTotal = 0;
+      for (let i = 0; i < l.length; i++) {
+        this.profileViewTotal = parseInt(this.profileViewTotal) + parseInt(l[i].value)
+      }
+    }
+  }, error => {
+    this.snackbarService.show('Fetch Total Page Reach Count Failed : ' + JSON.stringify(error.error));
+  });
+  }
+  getPageImpression() {
+    debugger
+    const url = "https://graph.facebook.com/" + environment.facebook_pageid + "/insights/page_impressions?access_token=" + this.pageToken;
     this.http.get(url).subscribe(res => {
       if (res) {
-        this.profileViewTotal = res['page_views_unique'];
+        debugger
+        let p = res['data'][2];
+        let l = p['values'];
+        this.pageImpressionsTotal = 0;
+        for (let i = 0; i < l.length; i++) {
+          this.pageImpressionsTotal = parseInt(this.pageImpressionsTotal) + parseInt(l[i].value)
+        }
       }
     }, error => {
-      this.snackbarService.show('Fetch Total Profile View Count Failed : ' + JSON.stringify(error.error));
+      this.snackbarService.show('Fetch Total Page Reach Count Failed : ' + JSON.stringify(error.error));
     });
-  }
+    }
   getPageReachCount() {
     //page_views_unique Page Views from users logged into Facebook day
     const url = "https://graph.facebook.com/" + environment.facebook_pageid + "/insights/page_impressions_unique?access_token=" + this.pageToken;
@@ -137,11 +164,9 @@ export class SocialmediaComponent implements OnInit {
     });
   }
   getTotalClicksCount() {
-    debugger
     const url = "https://graph.facebook.com/" + environment.facebook_pageid + "/insights/page_total_actions?access_token=" + this.pageToken;
     this.http.get(url).subscribe(res => {
       if (res) {
-        debugger
         let p = res['data'][2];
         let l = p['values'];
         this.pageClicksTotal = 0;
@@ -154,12 +179,13 @@ export class SocialmediaComponent implements OnInit {
       this.snackbarService.show('Fetch Total Page Clicks Count Failed : ' + JSON.stringify(error.error));
     });
   }
+
   getPositiveFeedbackCount() {
-    debugger
+    
     const url = "https://graph.facebook.com/" + environment.facebook_pageid + "/insights/page_positive_feedback_by_type?access_token=" + this.pageToken;
     this.http.get(url).subscribe(res => {
       if (res) {
-        debugger
+        
         let p = res['data'][2];
         let l = p['values'];
         this.positiveFeedback = 0;
@@ -182,11 +208,11 @@ export class SocialmediaComponent implements OnInit {
     });
   }
   getNegativeFeedbackCount() {
-    debugger
+    
     const url = "https://graph.facebook.com/" + environment.facebook_pageid + "/insights/page_negative_feedback?access_token=" + this.pageToken;
     this.http.get(url).subscribe(res => {
       if (res) {
-        debugger
+        
         let p = res['data'][2];
         let l = p['values'];
         this.negativeFeedback = parseInt(l[0].value) + parseInt(l[1].value);
