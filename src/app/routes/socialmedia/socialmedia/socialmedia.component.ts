@@ -91,7 +91,7 @@ export class SocialmediaComponent implements OnInit {
     this.externalReferrerList = [{ "url": "1", "count": "2", "percent": "3" }, { "url": "4", "count": "5", "percent": "6" }];
   }
   getUserId() {
-    
+
     const url = "https://graph.facebook.com/me?access_token=" + this.accessToken + "&fields=id,name";
     this.http.get(url).subscribe(res => {
       if (res) {
@@ -104,27 +104,551 @@ export class SocialmediaComponent implements OnInit {
     });
   }
   generatePageToken() {
-    
+
     const url = "https://graph.facebook.com/" + this.userId + "/accounts?access_token=" + this.accessToken;
     // const url = "https://graph.facebook.com/105114094889635/accounts?access_token=EAAGXn3oGklwBAEDY2dpA11KLDG0hhHYWi9pts9qmPJxXs6Ywb4UOq6SRhvr5kFpNDeUrHkG1rIZCxHJMxQS3U7UurncvEnjuuaD4aLmKDAT5uIoSb3QWSE92GkLWOS0Oqub7ZAIcxwtMBAaLOSQWqEiwsMuqaugO5XwiXJx97ekfXeuB8cnQhISZAtINl8ZD";
     this.http.get(url).subscribe(res => {
       if (res) {
-        
+        debugger
         this.pageToken = res['data'][0].access_token;
-        this.getPageReachCount();
-        this.getTotalClicksCount();
-        this.getPositiveFeedbackCount();
-        this.getNegativeFeedbackCount();
-        this.getProfileViewCount();
-        this.getPageImpression();
-        this.getTotalExternamReferrer();
-        this.getPageUnlikeBySOurceCount();
-        this.getPageReachOrganicCount();
-        this.getPageReachPaidCount();
-        this.getTotalLikesLost();
+        this.getAllData28Days();
+        // this.getPageReachCount();
+        // this.getTotalClicksCount();
+        //this.getPositiveFeedbackCount();
+        // this.getNegativeFeedbackCount();
+        // this.getProfileViewCount();
+        // this.getPageImpression();
+        //this.getTotalExternamReferrer();
+        //this.getPageUnlikeBySOurceCount();
+        //this.getPageReachOrganicCount();
+        //this.getPageReachPaidCount();
+        // this.getTotalLikesLost();
       }
     }, error => {
       this.snackbarService.show('Fetch Page Token Failed : ' + JSON.stringify(error.error));
+    });
+  }
+  onSelect(period) {
+    this.getAllDataByPeriod(period);
+//     if(period=='day'){
+// this.getAllDataOneDays();
+//     }
+//     if(period=='week'){
+//       this.getAllDataWeek();
+//     }
+//     if(period=='days_28'){
+      
+//     }
+  }
+  getAllDataByPeriod(period) {
+    debugger
+    const url = "https://graph.facebook.com/" + environment.facebook_pageid + "/insights/page_impressions_unique,page_total_actions,page_positive_feedback_by_type,page_negative_feedback,page_views_total,page_impressions,page_views_external_referrals,page_fans_by_unlike_source_unique,page_impressions_organic,page_impressions_paid,page_fan_removes_unique?access_token=" + this.pageToken;
+    this.http.get(url).subscribe(res => {
+      if (res) {
+        debugger
+        for (let i = 0; i < res['data'].length; i++) {
+          let p = res['data'][i];
+          //Page Reach
+          if (p.name == 'page_impressions_unique' && p.period == period) {
+            let l = p['values'];
+            this.pageReachTotal = 0;
+            for (let k = 0; k < l.length; k++) {
+              this.pageReachTotal = parseInt(this.pageReachTotal) + parseInt(l[k].value)
+            }
+          }
+          //Clicks
+          if (p.name == 'page_total_actions' && p.period == period) {
+            let l = p['values'];
+            this.pageClicksTotal = 0;
+            for (let k = 0; k < l.length; k++) {
+              this.pageClicksTotal = parseInt(this.pageClicksTotal) + parseInt(l[k].value)
+            }
+          }
+          //positive feedback
+          if (p.name == 'page_positive_feedback_by_type' && p.period == period) {
+            let l = p['values'];
+            this.positiveFeedback = 0;
+            for (let k = 0; k < l.length; k++) {
+              if (l[k].value['other']) {
+                this.positiveFeedback = parseInt(this.positiveFeedback) + parseInt(l[k].value['other']);
+              }
+              if (l[k].value['like']) {
+                this.positiveFeedback = parseInt(this.positiveFeedback) + parseInt(l[k].value['like']);
+              }
+              if (l[k].value['comment']) {
+                this.positiveFeedback = parseInt(this.positiveFeedback) + parseInt(l[k].value['comment']);
+              }
+            }
+          }
+          //negative feedback
+          if (p.name == 'page_negative_feedback' && p.period == period) {
+            let l = p['values'];
+            this.negativeFeedback = 0;
+            for (let k = 0; k < l.length; k++) {
+              if (l[k].value['other']) {
+                this.negativeFeedback = parseInt(this.negativeFeedback) + parseInt(l[k].value['other']);
+              }
+              if (l[k].value['like']) {
+                this.negativeFeedback = parseInt(this.negativeFeedback) + parseInt(l[k].value['like']);
+              }
+              if (l[k].value['comment']) {
+                this.negativeFeedback = parseInt(this.negativeFeedback) + parseInt(l[k].value['comment']);
+              }
+            }
+            this.totalfeedback = parseInt(this.positiveFeedback) + parseInt(this.negativeFeedback)
+            this.percentPositive = this.getPercentage(parseInt(this.positiveFeedback), parseInt(this.totalfeedback));
+            if(this.percentPositive =='NaN'){this.percentPositive = 0;}
+            this.percentNegative = this.getPercentage(parseInt(this.negativeFeedback), parseInt(this.totalfeedback));
+            if(this.percentNegative =='NaN'){this.percentNegative = 0;}
+
+          }
+          //Profile view count
+          if (p.name == 'page_views_total' && p.period == period) {
+            let l = p['values'];
+            this.profileViewTotal = 0;
+            for (let k = 0; k < l.length; k++) {
+              this.profileViewTotal = parseInt(this.profileViewTotal) + parseInt(l[k].value)
+            }
+            this.avgProfileView = this.getAverage(this.profileViewTotal, 28);
+          }
+          //Page Impressions
+          if (p.name == 'page_impressions' && p.period == period) {
+            let l = p['values'];
+            this.pageImpressionsTotal = 0;
+            for (let k = 0; k < l.length; k++) {
+              this.pageImpressionsTotal = parseInt(this.pageImpressionsTotal) + parseInt(l[k].value)
+            }
+          }
+
+          //Page External Referrer
+          if (p.name == 'page_views_external_referrals' && p.period == period) {
+            let l = p['values'];
+            this.externalReferrerList = l;
+            // for (let k = 0; k < l.length; k++) {
+            //   this.profileViewTotal = parseInt(this.profileViewTotal) + parseInt(l[k].value)
+            // }
+          }
+          //Page Unlike 
+          if (p.name == 'page_fans_by_unlike_source_unique' && p.period == period) {
+            let l = p['values'];
+            this.pageUnlikeList = l;
+            // for (let k = 0; k < l.length; k++) {
+            //   this.pageImpressionsTotal = parseInt(this.pageImpressionsTotal) + parseInt(l[k].value)
+            // }
+          }
+          //Organic Reach
+          if (p.name == 'page_impressions_organic' && p.period == period) {
+            let l = p['values'];
+            this.organicReach = 0;
+            for (let k = 0; k < l.length; k++) {
+              this.organicReach = parseInt(this.organicReach) + parseInt(l[k].value)
+            }
+          }
+          //Paid Reach
+          if (p.name == 'page_impressions_paid' && p.period == period) {
+            let l = p['values'];
+            this.paidReach = 0;
+            for (let k = 0; k < l.length; k++) {
+              this.paidReach = parseInt(this.paidReach) + parseInt(l[k].value)
+            }
+            this.pageReachTotal = parseInt(this.paidReach) + parseInt(this.organicReach)
+            this.percentOrganicReach = this.getPercentage(parseInt(this.organicReach), parseInt(this.pageReachTotal));
+            this.percentPaidReach = this.getPercentage(parseInt(this.paidReach), parseInt(this.pageReachTotal));
+          }
+          //Lost Likes
+          if (p.name == 'page_fan_removes_unique' && p.period == period) {
+            let l = p['values'];
+            this.lostLikes = 0;
+            for (let k = 0; k < l.length; k++) {
+              this.lostLikes = parseInt(this.lostLikes) + parseInt(l[k].value)
+            }
+          }
+        }
+
+      }
+    }, error => {
+      this.snackbarService.show('Fetch Data Failed : ' + JSON.stringify(error.error));
+    });
+  }
+  getAllDataWeek() {
+    debugger
+    const url = "https://graph.facebook.com/" + environment.facebook_pageid + "/insights/page_impressions_unique,page_total_actions,page_positive_feedback_by_type,page_negative_feedback,page_views_total,page_impressions,page_views_external_referrals,page_fans_by_unlike_source_unique,page_impressions_organic,page_impressions_paid,page_fan_removes_unique?access_token=" + this.pageToken;
+    this.http.get(url).subscribe(res => {
+      if (res) {
+        debugger
+        for (let i = 0; i < res['data'].length; i++) {
+          let p = res['data'][i];
+          //Page Reach
+          if (p.name == 'page_impressions_unique' && p.period == 'week') {
+            let l = p['values'];
+            this.pageReachTotal = 0;
+            for (let k = 0; k < l.length; k++) {
+              this.pageReachTotal = parseInt(this.pageReachTotal) + parseInt(l[k].value)
+            }
+          }
+          //Clicks
+          if (p.name == 'page_total_actions' && p.period == 'week') {
+            let l = p['values'];
+            this.pageClicksTotal = 0;
+            for (let k = 0; k < l.length; k++) {
+              this.pageClicksTotal = parseInt(this.pageClicksTotal) + parseInt(l[k].value)
+            }
+          }
+          //positive feedback
+          if (p.name == 'page_positive_feedback_by_type' && p.period == 'week') {
+            let l = p['values'];
+            this.positiveFeedback = 0;
+            for (let k = 0; k < l.length; k++) {
+              if (l[k].value['other']) {
+                this.positiveFeedback = parseInt(this.positiveFeedback) + parseInt(l[k].value['other']);
+              }
+              if (l[k].value['like']) {
+                this.positiveFeedback = parseInt(this.positiveFeedback) + parseInt(l[k].value['like']);
+              }
+              if (l[k].value['comment']) {
+                this.positiveFeedback = parseInt(this.positiveFeedback) + parseInt(l[k].value['comment']);
+              }
+            }
+          }
+          //negative feedback
+          if (p.name == 'page_negative_feedback' && p.period == 'week') {
+            let l = p['values'];
+            this.negativeFeedback = 0;
+            for (let k = 0; k < l.length; k++) {
+              if (l[k].value['other']) {
+                this.negativeFeedback = parseInt(this.negativeFeedback) + parseInt(l[k].value['other']);
+              }
+              if (l[k].value['like']) {
+                this.negativeFeedback = parseInt(this.negativeFeedback) + parseInt(l[k].value['like']);
+              }
+              if (l[k].value['comment']) {
+                this.negativeFeedback = parseInt(this.negativeFeedback) + parseInt(l[k].value['comment']);
+              }
+            }
+            this.totalfeedback = parseInt(this.positiveFeedback) + parseInt(this.negativeFeedback)
+            this.percentPositive = this.getPercentage(parseInt(this.positiveFeedback), parseInt(this.totalfeedback));
+            this.percentNegative = this.getPercentage(parseInt(this.negativeFeedback), parseInt(this.totalfeedback));
+          }
+          //Profile view count
+          if (p.name == 'page_views_total' && p.period == 'week') {
+            let l = p['values'];
+            this.profileViewTotal = 0;
+            for (let k = 0; k < l.length; k++) {
+              this.profileViewTotal = parseInt(this.profileViewTotal) + parseInt(l[k].value)
+            }
+            this.avgProfileView = this.getAverage(this.profileViewTotal, 28);
+          }
+          //Page Impressions
+          if (p.name == 'page_impressions' && p.period == 'week') {
+            let l = p['values'];
+            this.pageImpressionsTotal = 0;
+            for (let k = 0; k < l.length; k++) {
+              this.pageImpressionsTotal = parseInt(this.pageImpressionsTotal) + parseInt(l[k].value)
+            }
+          }
+
+          //Page External Referrer
+          if (p.name == 'page_views_external_referrals' && p.period == 'week') {
+            let l = p['values'];
+            this.externalReferrerList = l;
+            // for (let k = 0; k < l.length; k++) {
+            //   this.profileViewTotal = parseInt(this.profileViewTotal) + parseInt(l[k].value)
+            // }
+          }
+          //Page Unlike 
+          if (p.name == 'page_fans_by_unlike_source_unique' && p.period == 'week') {
+            let l = p['values'];
+            this.pageUnlikeList = l;
+            // for (let k = 0; k < l.length; k++) {
+            //   this.pageImpressionsTotal = parseInt(this.pageImpressionsTotal) + parseInt(l[k].value)
+            // }
+          }
+          //Organic Reach
+          if (p.name == 'page_impressions_organic' && p.period == 'week') {
+            let l = p['values'];
+            this.organicReach = 0;
+            for (let k = 0; k < l.length; k++) {
+              this.organicReach = parseInt(this.organicReach) + parseInt(l[k].value)
+            }
+          }
+          //Paid Reach
+          if (p.name == 'page_impressions_paid' && p.period == 'week') {
+            let l = p['values'];
+            this.paidReach = 0;
+            for (let k = 0; k < l.length; k++) {
+              this.paidReach = parseInt(this.paidReach) + parseInt(l[k].value)
+            }
+            this.pageReachTotal = parseInt(this.paidReach) + parseInt(this.organicReach)
+            this.percentOrganicReach = this.getPercentage(parseInt(this.organicReach), parseInt(this.pageReachTotal));
+            this.percentPaidReach = this.getPercentage(parseInt(this.paidReach), parseInt(this.pageReachTotal));
+          }
+          //Lost Likes
+          if (p.name == 'page_fan_removes_unique' && p.period == 'week') {
+            let l = p['values'];
+            this.lostLikes = 0;
+            for (let k = 0; k < l.length; k++) {
+              this.lostLikes = parseInt(this.lostLikes) + parseInt(l[k].value)
+            }
+          }
+        }
+
+      }
+    }, error => {
+      this.snackbarService.show('Fetch Data Failed : ' + JSON.stringify(error.error));
+    });
+  }
+  getAllData28Days() {
+    debugger
+    const url = "https://graph.facebook.com/" + environment.facebook_pageid + "/insights/page_impressions_unique,page_total_actions,page_positive_feedback_by_type,page_negative_feedback,page_views_total,page_impressions,page_views_external_referrals,page_fans_by_unlike_source_unique,page_impressions_organic,page_impressions_paid,page_fan_removes_unique?access_token=" + this.pageToken;
+    this.http.get(url).subscribe(res => {
+      if (res) {
+        debugger
+        for (let i = 0; i < res['data'].length; i++) {
+          let p = res['data'][i];
+          //Page Reach
+          if (p.name == 'page_impressions_unique' && p.period == 'days_28') {
+            let l = p['values'];
+            this.pageReachTotal = 0;
+            for (let k = 0; k < l.length; k++) {
+              this.pageReachTotal = parseInt(this.pageReachTotal) + parseInt(l[k].value)
+            }
+          }
+          //Clicks
+          if (p.name == 'page_total_actions' && p.period == 'days_28') {
+            let l = p['values'];
+            this.pageClicksTotal = 0;
+            for (let k = 0; k < l.length; k++) {
+              this.pageClicksTotal = parseInt(this.pageClicksTotal) + parseInt(l[k].value)
+            }
+          }
+          //positive feedback
+          if (p.name == 'page_positive_feedback_by_type' && p.period == 'days_28') {
+            let l = p['values'];
+            this.positiveFeedback = 0;
+            for (let k = 0; k < l.length; k++) {
+              if (l[k].value['other']) {
+                this.positiveFeedback = parseInt(this.positiveFeedback) + parseInt(l[k].value['other']);
+              }
+              if (l[k].value['like']) {
+                this.positiveFeedback = parseInt(this.positiveFeedback) + parseInt(l[k].value['like']);
+              }
+              if (l[k].value['comment']) {
+                this.positiveFeedback = parseInt(this.positiveFeedback) + parseInt(l[k].value['comment']);
+              }
+            }
+          }
+          //negative feedback
+          if (p.name == 'page_negative_feedback' && p.period == 'days_28') {
+            let l = p['values'];
+            this.negativeFeedback = 0;
+            for (let k = 0; k < l.length; k++) {
+              if (l[k].value['other']) {
+                this.negativeFeedback = parseInt(this.negativeFeedback) + parseInt(l[k].value['other']);
+              }
+              if (l[k].value['like']) {
+                this.negativeFeedback = parseInt(this.negativeFeedback) + parseInt(l[k].value['like']);
+              }
+              if (l[k].value['comment']) {
+                this.negativeFeedback = parseInt(this.negativeFeedback) + parseInt(l[k].value['comment']);
+              }
+            }
+            this.totalfeedback = parseInt(this.positiveFeedback) + parseInt(this.negativeFeedback)
+            this.percentPositive = this.getPercentage(parseInt(this.positiveFeedback), parseInt(this.totalfeedback));
+            this.percentNegative = this.getPercentage(parseInt(this.negativeFeedback), parseInt(this.totalfeedback));
+          }
+          //Profile view count
+          if (p.name == 'page_views_total' && p.period == 'days_28') {
+            let l = p['values'];
+            this.profileViewTotal = 0;
+            for (let k = 0; k < l.length; k++) {
+              this.profileViewTotal = parseInt(this.profileViewTotal) + parseInt(l[k].value)
+            }
+            this.avgProfileView = this.getAverage(this.profileViewTotal, 28);
+          }
+          //Page Impressions
+          if (p.name == 'page_impressions' && p.period == 'days_28') {
+            let l = p['values'];
+            this.pageImpressionsTotal = 0;
+            for (let k = 0; k < l.length; k++) {
+              this.pageImpressionsTotal = parseInt(this.pageImpressionsTotal) + parseInt(l[k].value)
+            }
+          }
+
+          //Page External Referrer
+          if (p.name == 'page_views_external_referrals' && p.period == 'days_28') {
+            let l = p['values'];
+            this.externalReferrerList = l;
+            // for (let k = 0; k < l.length; k++) {
+            //   this.profileViewTotal = parseInt(this.profileViewTotal) + parseInt(l[k].value)
+            // }
+          }
+          //Page Unlike 
+          if (p.name == 'page_fans_by_unlike_source_unique' && p.period == 'days_28') {
+            let l = p['values'];
+            this.pageUnlikeList = l;
+            // for (let k = 0; k < l.length; k++) {
+            //   this.pageImpressionsTotal = parseInt(this.pageImpressionsTotal) + parseInt(l[k].value)
+            // }
+          }
+          //Organic Reach
+          if (p.name == 'page_impressions_organic' && p.period == 'days_28') {
+            let l = p['values'];
+            this.organicReach = 0;
+            for (let k = 0; k < l.length; k++) {
+              this.organicReach = parseInt(this.organicReach) + parseInt(l[k].value)
+            }
+          }
+          //Paid Reach
+          if (p.name == 'page_impressions_paid' && p.period == 'days_28') {
+            let l = p['values'];
+            this.paidReach = 0;
+            for (let k = 0; k < l.length; k++) {
+              this.paidReach = parseInt(this.paidReach) + parseInt(l[k].value)
+            }
+            this.pageReachTotal = parseInt(this.paidReach) + parseInt(this.organicReach)
+            this.percentOrganicReach = this.getPercentage(parseInt(this.organicReach), parseInt(this.pageReachTotal));
+            this.percentPaidReach = this.getPercentage(parseInt(this.paidReach), parseInt(this.pageReachTotal));
+          }
+          //Lost Likes
+          if (p.name == 'page_fan_removes_unique' && p.period == 'days_28') {
+            let l = p['values'];
+            this.lostLikes = 0;
+            for (let k = 0; k < l.length; k++) {
+              this.lostLikes = parseInt(this.lostLikes) + parseInt(l[k].value)
+            }
+          }
+        }
+
+      }
+    }, error => {
+      this.snackbarService.show('Fetch Data Failed : ' + JSON.stringify(error.error));
+    });
+  }
+  getAllDataOneDays() {
+    debugger
+    const url = "https://graph.facebook.com/" + environment.facebook_pageid + "/insights/page_impressions_unique,page_total_actions,page_positive_feedback_by_type,page_negative_feedback,page_views_total,page_impressions,page_views_external_referrals,page_fans_by_unlike_source_unique,page_impressions_organic,page_impressions_paid,page_fan_removes_unique?access_token=" + this.pageToken;
+    this.http.get(url).subscribe(res => {
+      if (res) {
+        debugger
+        for (let i = 0; i < res['data'].length; i++) {
+          let p = res['data'][i];
+          //Page Reach
+          if (p.name == 'page_impressions_unique' && p.period == 'day') {
+            let l = p['values'];
+            this.pageReachTotal = 0;
+            for (let k = 0; k < l.length; k++) {
+              this.pageReachTotal = parseInt(this.pageReachTotal) + parseInt(l[k].value)
+            }
+          }
+          //Clicks
+          if (p.name == 'page_total_actions' && p.period == 'day') {
+            let l = p['values'];
+            this.pageClicksTotal = 0;
+            for (let k = 0; k < l.length; k++) {
+              this.pageClicksTotal = parseInt(this.pageClicksTotal) + parseInt(l[k].value)
+            }
+          }
+          //positive feedback
+          if (p.name == 'page_positive_feedback_by_type' && p.period == 'day') {
+            let l = p['values'];
+            this.positiveFeedback = 0;
+            for (let k = 0; k < l.length; k++) {
+              if (l[k].value['other']) {
+                this.positiveFeedback = parseInt(this.positiveFeedback) + parseInt(l[k].value['other']);
+              }
+              if (l[k].value['like']) {
+                this.positiveFeedback = parseInt(this.positiveFeedback) + parseInt(l[k].value['like']);
+              }
+              if (l[k].value['comment']) {
+                this.positiveFeedback = parseInt(this.positiveFeedback) + parseInt(l[k].value['comment']);
+              }
+            }
+          }
+          //negative feedback
+          if (p.name == 'page_negative_feedback' && p.period == 'day') {
+            let l = p['values'];
+            this.negativeFeedback = 0;
+            for (let k = 0; k < l.length; k++) {
+              if (l[k].value['other']) {
+                this.negativeFeedback = parseInt(this.negativeFeedback) + parseInt(l[k].value['other']);
+              }
+              if (l[k].value['like']) {
+                this.negativeFeedback = parseInt(this.negativeFeedback) + parseInt(l[k].value['like']);
+              }
+              if (l[k].value['comment']) {
+                this.negativeFeedback = parseInt(this.negativeFeedback) + parseInt(l[k].value['comment']);
+              }
+            }
+            this.totalfeedback = parseInt(this.positiveFeedback) + parseInt(this.negativeFeedback)
+            this.percentPositive = this.getPercentage(parseInt(this.positiveFeedback), parseInt(this.totalfeedback));
+            this.percentNegative = this.getPercentage(parseInt(this.negativeFeedback), parseInt(this.totalfeedback));
+          }
+          //Profile view count
+          if (p.name == 'page_views_total' && p.period == 'day') {
+            let l = p['values'];
+            this.profileViewTotal = 0;
+            for (let k = 0; k < l.length; k++) {
+              this.profileViewTotal = parseInt(this.profileViewTotal) + parseInt(l[k].value)
+            }
+            this.avgProfileView = this.getAverage(this.profileViewTotal, 28);
+          }
+          //Page Impressions
+          if (p.name == 'page_impressions' && p.period == 'day') {
+            let l = p['values'];
+            this.pageImpressionsTotal = 0;
+            for (let k = 0; k < l.length; k++) {
+              this.pageImpressionsTotal = parseInt(this.pageImpressionsTotal) + parseInt(l[k].value)
+            }
+          }
+
+          //Page External Referrer
+          if (p.name == 'page_views_external_referrals' && p.period == 'day') {
+            let l = p['values'];
+            this.externalReferrerList = l;
+            // for (let k = 0; k < l.length; k++) {
+            //   this.profileViewTotal = parseInt(this.profileViewTotal) + parseInt(l[k].value)
+            // }
+          }
+          //Page Unlike 
+          if (p.name == 'page_fans_by_unlike_source_unique' && p.period == 'day') {
+            let l = p['values'];
+            this.pageUnlikeList = l;
+            // for (let k = 0; k < l.length; k++) {
+            //   this.pageImpressionsTotal = parseInt(this.pageImpressionsTotal) + parseInt(l[k].value)
+            // }
+          }
+          //Organic Reach
+          if (p.name == 'page_impressions_organic' && p.period == 'day') {
+            let l = p['values'];
+            this.organicReach = 0;
+            for (let k = 0; k < l.length; k++) {
+              this.organicReach = parseInt(this.organicReach) + parseInt(l[k].value)
+            }
+          }
+          //Paid Reach
+          if (p.name == 'page_impressions_paid' && p.period == 'day') {
+            let l = p['values'];
+            this.paidReach = 0;
+            for (let k = 0; k < l.length; k++) {
+              this.paidReach = parseInt(this.paidReach) + parseInt(l[k].value)
+            }
+            this.pageReachTotal = parseInt(this.paidReach) + parseInt(this.organicReach)
+            this.percentOrganicReach = this.getPercentage(parseInt(this.organicReach), parseInt(this.pageReachTotal));
+            this.percentPaidReach = this.getPercentage(parseInt(this.paidReach), parseInt(this.pageReachTotal));
+          }
+          //Lost Likes
+          if (p.name == 'page_fan_removes_unique' && p.period == 'day') {
+            let l = p['values'];
+            this.lostLikes = 0;
+            for (let k = 0; k < l.length; k++) {
+              this.lostLikes = parseInt(this.lostLikes) + parseInt(l[k].value)
+            }
+          }
+        }
+
+      }
+    }, error => {
+      this.snackbarService.show('Fetch Data Failed : ' + JSON.stringify(error.error));
     });
   }
   getPageLikes() {
@@ -160,7 +684,7 @@ export class SocialmediaComponent implements OnInit {
           this.profileViewTotal = parseInt(this.profileViewTotal) + parseInt(l[i].value)
         }
         debugger
-        this.avgProfileView=this.getAverage(this.profileViewTotal,28);
+        this.avgProfileView = this.getAverage(this.profileViewTotal, 28);
       }
     }, error => {
       this.snackbarService.show('Fetch Total Page Reach Count Failed : ' + JSON.stringify(error.error));
@@ -257,11 +781,11 @@ export class SocialmediaComponent implements OnInit {
     });
   }
   getPageUnlikeBySOurceCount() {
-    
+
     const url = "https://graph.facebook.com/" + environment.facebook_pageid + "/insights/page_fans_by_unlike_source_unique?access_token=" + this.pageToken;
     this.http.get(url).subscribe(res => {
       if (res) {
-        
+
         let p = res['data'][2];
         let l = p['values'];
         // this.pageClicksTotal = 0;
@@ -300,7 +824,7 @@ export class SocialmediaComponent implements OnInit {
         for (let i = 0; i < l.length; i++) {
           this.lostLikes = parseInt(this.lostLikes) + parseInt(l[i].value)
         }
-        this.avgLostLikes=this.getAverage(this.lostLikes,28);
+        this.avgLostLikes = this.getAverage(this.lostLikes, 28);
       }
     }, error => {
       this.snackbarService.show('Fetch Total External Referrer Count Failed : ' + JSON.stringify(error.error));
@@ -348,7 +872,7 @@ export class SocialmediaComponent implements OnInit {
             this.negativeFeedback = parseInt(this.negativeFeedback) + parseInt(l[i].value['comment']);
           }
         }
-        
+
         this.totalfeedback = parseInt(this.positiveFeedback) + parseInt(this.negativeFeedback)
         this.percentPositive = this.getPercentage(parseInt(this.positiveFeedback), parseInt(this.totalfeedback));
         this.percentNegative = this.getPercentage(parseInt(this.negativeFeedback), parseInt(this.totalfeedback));
@@ -376,9 +900,9 @@ export class SocialmediaComponent implements OnInit {
   }
   getAverage(count, totaldays) {
     let p = count / totaldays;
-    if(p.toString().includes('0.')){
+    if (p.toString().includes('0.')) {
       return '<1';
-    }else {
+    } else {
       return p;
     }
   }

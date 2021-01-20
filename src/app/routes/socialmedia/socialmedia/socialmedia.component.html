@@ -51,6 +51,14 @@
             </a>
         </li>
     </ul>
+    <div class="col-md-3">
+    <select class="form-control"  [(ngModel)]="period" (change)="onSelect($event.target.value)">
+        <option value='0'>Select</option>
+        <option value='day'>Yesterday</option>
+        <option value='week'>Week</option>
+        <option value='days_28'>28 Days</option>
+    </select>
+    </div>
 
 </nav>
 <div class="row  justify-content-center">
