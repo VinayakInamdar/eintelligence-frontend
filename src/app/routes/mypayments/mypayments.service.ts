@@ -26,6 +26,7 @@ export class MyPaymentsService {
         this.openIdConnectService = openIdConnectService;
     }
     getFilteredStripepayments(filter: FilterOptionModel): Observable<any> {
+        debugger
         const params = `PageNumber=${filter.pageNumber}&PageSize=${filter.pageSize}&SearchQuery=${filter.searchQuery}&OrderBy=${filter.orderBy}&Fields=${filter.fields}`;
         return this.http.get<any>(`${this.Url}stripepayments?${params}`, { observe: 'response' });
     }

@@ -7,7 +7,7 @@ import { environment } from '../../../environments/environment';
 import { Campaign } from './campaign.model';
 import { SerpDto } from '../seo/serp.model';
 import { OpenIdConnectService } from 'src/app/shared/services/open-id-connect.service';
-
+import { FilterOptionModel } from '../../shared/model/filter-option.model';
 @Injectable({
   providedIn: 'root'
 })
@@ -27,7 +27,11 @@ export class CampaignService {
     
     return this.http.post<Campaign>(this.Url + 'campaigns', campaignSetupData);
   }
-
+  getFilteredRankingGraph(filter: FilterOptionModel): Observable<any> {
+    debugger
+    const params = `PageNumber=${filter.pageNumber}&PageSize=${filter.pageSize}&SearchQuery=${filter.searchQuery}&OrderBy=${filter.orderBy}&Fields=${filter.fields}`;
+    return this.http.get<any>(`${this.Url}rankinggraphs?${params}`, { observe: 'response' });
+}
   // using to get list of campaign
   // getCampaign(): Observable<any[]> {
   //   if(localStorage.getItem('companyID') ){

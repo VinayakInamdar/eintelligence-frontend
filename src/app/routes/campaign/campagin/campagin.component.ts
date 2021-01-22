@@ -29,6 +29,7 @@ const success = require('sweetalert');
 export class CampaginComponent implements OnInit, AfterViewInit {
   @ViewChild('staticTabs', { static: false }) staticTabs: TabsetComponent;
   @ViewChild(BaseChartDirective)
+  rankingGraphData;
   public chart: BaseChartDirective;
   valForm: FormGroup;
   public campaignModel: Campaign;
@@ -263,7 +264,7 @@ export class CampaginComponent implements OnInit, AfterViewInit {
   lineChartPlugins = [];
   lineChartType = 'line';
   barData = {
-    labels: ['January', 'February', 'March', 'April', 'May', 'June', 'July'],
+    labels: ['January'],
     'legend': {
       'onClick': function (evt, item) {
 
@@ -272,18 +273,6 @@ export class CampaginComponent implements OnInit, AfterViewInit {
     datasets: [
       {
         data: [], label: '#1-#3', legend: false
-      }, {
-        data: [], label: '#4-#10',
-      }, {
-        data: [], label: '#11-#20',
-      }, {
-        data: [], label: '#21-#50',
-      },
-      {
-        data: [], label: '#51-#100',
-      },
-      {
-        data: [], label: '#100+',
       }]
   };
   barChartLabels: Label[] = ['Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun', 'Jul', 'Aug', 'Sept', 'Oct', 'Nov', 'Dec']
@@ -295,7 +284,7 @@ export class CampaginComponent implements OnInit, AfterViewInit {
       pointHoverBorderColor: 'white'
     },];
 
-  barOptions = {  
+  barOptions = {
     scaleShowVerticalLines: false,
     responsive: true,
     legend: {
@@ -333,7 +322,7 @@ export class CampaginComponent implements OnInit, AfterViewInit {
         gridLines: {
           display: false
         },
-        barPercentage: 1.4,
+        barPercentage: 0.4,
         ticks: {
           autoSkip: true,
           maxTicksLimit: 15,
@@ -395,6 +384,7 @@ export class CampaginComponent implements OnInit, AfterViewInit {
     }
     this.getCampaignList();
     this.getSerpList();
+    this.getRankingGraphData();
     location.onPopState(() => {
 
 
@@ -436,6 +426,7 @@ export class CampaginComponent implements OnInit, AfterViewInit {
     this.sub = this.route.params.subscribe(params => {
       this.id = params['id'];
     });
+    
   }
 
   // using to check Integration Status of selected campaign Id
@@ -454,32 +445,32 @@ export class CampaginComponent implements OnInit, AfterViewInit {
           trafficsourcers => {
             var array = [];
 
-            
-            
-            if(trafficsourcers['display'] != null ){
-                array.push(trafficsourcers['display']);
+
+
+            if (trafficsourcers['display'] != null) {
+              array.push(trafficsourcers['display']);
             }
-            if(trafficsourcers['medium']){
+            if (trafficsourcers['medium']) {
               array.push(trafficsourcers['medium']);
             }
 
-            if(trafficsourcers['referral']){
+            if (trafficsourcers['referral']) {
               array.push(trafficsourcers['referral']);
             }
 
-            if(trafficsourcers['social']){
+            if (trafficsourcers['social']) {
               array.push(trafficsourcers['social']);
             }
 
-            if(trafficsourcers['source']){
+            if (trafficsourcers['source']) {
 
               array.push(trafficsourcers['source']);
             }
 
-            if(trafficsourcers['display']){
+            if (trafficsourcers['display']) {
               array.push(trafficsourcers['display']);
             }
-            
+
 
             this.convertToLineChartsLabels(array)
 
@@ -521,44 +512,44 @@ export class CampaginComponent implements OnInit, AfterViewInit {
     var array5 = []
     this.trafficsourcedate = { display: [], medium: [], referral: [], social: [], source: [] }
 
-    if(reportDates.length == 1 && reportDates[0]['date']){
+    if (reportDates.length == 1 && reportDates[0]['date']) {
       reportDates[0]['date'].map((s, i) => {
         var date = this.changeDatesFormat(s, i)
         array1.push({ date: date, sessions: reportDates[0]['sessions'][i] })
       }, this.trafficsourcedate.display = array1)
     }
 
-if(reportDates.length == 2 && reportDates[1]['date']){
-  reportDates[1]['date'].map((s, i) => {
-    var date = this.changeDatesFormat(s, i)
-    array2.push({ date: date, sessions: reportDates[1]['sessions'][i] })
-  }, this.trafficsourcedate.medium = array2)
-}
+    if (reportDates.length == 2 && reportDates[1]['date']) {
+      reportDates[1]['date'].map((s, i) => {
+        var date = this.changeDatesFormat(s, i)
+        array2.push({ date: date, sessions: reportDates[1]['sessions'][i] })
+      }, this.trafficsourcedate.medium = array2)
+    }
 
-if(reportDates.length == 3 && reportDates[2]['date']){
-  reportDates[2]['date'].map((s, i) => {
-    var date = this.changeDatesFormat(s, i)
-    array3.push({ date: date, sessions: reportDates[2]['sessions'][i] })
-  }, this.trafficsourcedate.referral = array3)
+    if (reportDates.length == 3 && reportDates[2]['date']) {
+      reportDates[2]['date'].map((s, i) => {
+        var date = this.changeDatesFormat(s, i)
+        array3.push({ date: date, sessions: reportDates[2]['sessions'][i] })
+      }, this.trafficsourcedate.referral = array3)
 
-}
+    }
 
-if(reportDates.length == 4 && reportDates[3]['date']){
-  reportDates[3]['date'].map((s, i) => {
-    var date = this.changeDatesFormat(s, i)
-    array4.push({ date: date, sessions: reportDates[3]['sessions'][i] })
-  }, this.trafficsourcedate.social = array4)
-}
-   
-  if(reportDates.length == 5 &&  reportDates[4]['date']){
-    reportDates[4]['date'].map((s, i) => {
-      var date = this.changeDatesFormat(s, i)
-      array5.push({ date: date, sessions: reportDates[4]['sessions'][i] })
-    }, this.trafficsourcedate.source = array5)
-  }
+    if (reportDates.length == 4 && reportDates[3]['date']) {
+      reportDates[3]['date'].map((s, i) => {
+        var date = this.changeDatesFormat(s, i)
+        array4.push({ date: date, sessions: reportDates[3]['sessions'][i] })
+      }, this.trafficsourcedate.social = array4)
+    }
 
-   
-    
+    if (reportDates.length == 5 && reportDates[4]['date']) {
+      reportDates[4]['date'].map((s, i) => {
+        var date = this.changeDatesFormat(s, i)
+        array5.push({ date: date, sessions: reportDates[4]['sessions'][i] })
+      }, this.trafficsourcedate.source = array5)
+    }
+
+
+
     var from = new Date(this.startDate);
     var to = new Date(this.endDate);
     var dates = []
@@ -686,7 +677,7 @@ if(reportDates.length == 4 && reportDates[3]['date']){
         }
       })
 
-      if(selectedCampTaskId[0]){
+      if (selectedCampTaskId[0]) {
         var taskId = selectedCampTaskId[0].taskId;
         this.selectedCampaignTaskId = taskId.toString()
         this.auditsService.getOnPageData(this.selectedCampaignTaskId).subscribe(res => {
@@ -699,50 +690,73 @@ if(reportDates.length == 4 && reportDates[3]['date']){
               have_sitemap: s.have_sitemap,
               have_robots: s.have_robots
             }
-  
+
           })
           this.showSpinnerSiteAnalysisContent = false;
         })
       }
-     
+
 
     })
   }
+  private getFilterOptionPlans() {
+    return {
+      pageNumber: 1,
+      pageSize: 1000,
+      fields: '',
+      searchQuery: '',
+      orderBy: ''
+    }
+
+  }
+  getRankingGraphData() {
+    debugger
+    this.barData.datasets[0].data = [10,20,34,6,43,12,56,86,5,33,24,55]
+  //  const filterOptionModel = this.getFilterOptionPlans();
+  //  this.campaignService.getFilteredRankingGraph(filterOptionModel).subscribe((response: any) => {
+  //    if (response) {
+  //      debugger
+  //      this.rankingGraphData =response.body;
+  //      this.barData.datasets[0].data = this.rankingGraphData;
+  //      this.chart.chart.update();
+  //    }
+  //  })
+ }
   // using to get list of keyword list
   public getSerpList(): void {
-    this.campaignService.getSerp('01-Jan-2019','31-Jan-2020').subscribe(res => {
-      // this.serpList = res; 
-      // this.source = new LocalDataSource(this.serpList) 
-      var serpData = res.map((s, i) => {
-        if (s.position > 0 && s.position <= 3) {
-          var positions = []
-          for (var x = 0; x < 12; x++) {
-            this.barData.datasets[0].data.push(s.position)
-          }
-        }
-        else if (s.position > 3 && s.position <= 10) {
-          this.barData.datasets[1].data = s.position
-        }
-        else if (s.position > 10 && s.position <= 20) {
-          this.barData.datasets[2].data = s.position
-        }
-        else if (s.position > 20 && s.position <= 50) {
-          this.barData.datasets[3].data = s.position
-        }
-        else if (s.position > 50 && s.position <= 100) {
-          this.barData.datasets[4].data = s.position
-        }
-        else if (s.position > 100) {
-          this.barData.datasets[5].data = s.position
-        }
+    this.campaignService.getSerp('01-Jan-2019', '31-Jan-2020').subscribe(res => {
+       //this.serpList = res; 
+       //this.source = new LocalDataSource(this.serpList) 
+      // var serpData = res.map((s, i) => {
+      //   if (s.position > 0 && s.position <= 3) {
+      //     var positions = []
+      //     for (var x = 0; x < 12; x++) {
+      //       this.barData.datasets[0].data.push(s.position)
+      //     }
+      //   }
+      //   else if (s.position > 3 && s.position <= 10) {
+      //     this.barData.datasets[1].data = s.position
+      //   }
+      //   else if (s.position > 10 && s.position <= 20) {
+      //     this.barData.datasets[2].data = s.position
+      //   }
+      //   else if (s.position > 20 && s.position <= 50) {
+      //     this.barData.datasets[3].data = s.position
+      //   }
+      //   else if (s.position > 50 && s.position <= 100) {
+      //     this.barData.datasets[4].data = s.position
+      //   }
+      //   else if (s.position > 100) {
+      //     this.barData.datasets[5].data = s.position
+      //   }
 
-      })
+      // })
       this.chart.chart.update();
     });
   }
 
   // using to navigate to overview page to view anlytics of selected campaign
-  public onCampaignSelect(event,selectedCampaign) {
+  public onCampaignSelect(event, selectedCampaign) {
     this.selectedCampaignName = selectedCampaign.name
     this.selectedCampId = selectedCampaign.id
     this.router.navigate(['/campaign', { id: this.selectedCampId }]);
