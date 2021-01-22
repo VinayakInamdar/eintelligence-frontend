@@ -30,6 +30,7 @@ export class CampaginComponent implements OnInit, AfterViewInit {
   @ViewChild('staticTabs', { static: false }) staticTabs: TabsetComponent;
   @ViewChild(BaseChartDirective)
   rankingGraphData;
+  barDataArray:any[]=[];
   public chart: BaseChartDirective;
   valForm: FormGroup;
   public campaignModel: Campaign;
@@ -711,16 +712,25 @@ export class CampaginComponent implements OnInit, AfterViewInit {
   }
   getRankingGraphData() {
     debugger
-    this.barData.datasets[0].data = [10,20,34,6,43,12,56,86,5,33,24,55]
-  //  const filterOptionModel = this.getFilterOptionPlans();
-  //  this.campaignService.getFilteredRankingGraph(filterOptionModel).subscribe((response: any) => {
-  //    if (response) {
-  //      debugger
-  //      this.rankingGraphData =response.body;
-  //      this.barData.datasets[0].data = this.rankingGraphData;
-  //      this.chart.chart.update();
-  //    }
-  //  })
+  //  this.barData.datasets[0].data = [10,20,34,6,43,12,56,86,5,33,24,55]
+   const filterOptionModel = this.getFilterOptionPlans();
+   this.campaignService.getFilteredRankingGraph(filterOptionModel).subscribe((response: any) => {
+     if (response) {
+       debugger
+
+       this.rankingGraphData =response.body;
+       this.rankingGraphData.sort(function (a, b) {
+        var MONTH = { JANUARY: 0, FEBRUARY: 1, MARCH: 2, APRIL: 3, MAY: 4, JUNE: 5, JULY: 6, AUGUST: 7, SEPTEMBER: 8, OCTOBER: 9, NOVEMBER: 10, DECEMBER: 11 };
+        return a.year - b.year || MONTH[a.month] - MONTH[b.month];
+      });
+      
+       for(let i= 0 ;i<this.rankingGraphData.length;i++){
+        this.barDataArray.push(this.rankingGraphData[i].avragePosition)
+       }
+       this.barData.datasets[0].data = this.barDataArray;
+       this.chart.chart.update();
+     }
+   })
  }
   // using to get list of keyword list
   public getSerpList(): void {

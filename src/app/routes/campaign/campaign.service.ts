@@ -50,6 +50,7 @@ export class CampaignService {
       params: new HttpParams().set('pageSize', '1000').set("startDate", startDate).set("endDate",endDate)
     })
   }
+  
   // using to add new keyword in selected campaign Id
   addNewKeyword(CampaignID :string,Keyword : any,Location : string,Tags : any,startDate:string,endDate:string): Observable<SerpDto> {
     return this.http.post<SerpDto>(`${this.Url}serps/GetSerpData`,{},{
