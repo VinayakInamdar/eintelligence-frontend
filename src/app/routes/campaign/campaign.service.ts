@@ -17,22 +17,28 @@ export class CampaignService {
   campaignList: Campaign[];
   Url = environment.apiUrl;
 
-  constructor(private http: HttpClient,private openIdConnectService: OpenIdConnectService) { }
-  
+  constructor(private http: HttpClient, private openIdConnectService: OpenIdConnectService) { }
+
   // using to create new campaign in db 
   createCampaign(campaignSetupData: Campaign): Observable<Campaign> {
-    if(localStorage.getItem('companyID') ){
-      campaignSetupData.companyID = localStorage.getItem('companyID'); 
+    if (localStorage.getItem('companyID')) {
+      campaignSetupData.companyID = localStorage.getItem('companyID');
     }
-    
+
     return this.http.post<Campaign>(this.Url + 'campaigns', campaignSetupData);
   }
   getFilteredRankingGraph(filter: FilterOptionModel): Observable<any> {
-    debugger
+    
     const params = `PageNumber=${filter.pageNumber}&PageSize=${filter.pageSize}&SearchQuery=${filter.searchQuery}&OrderBy=${filter.orderBy}&Fields=${filter.fields}`;
     return this.http.get<any>(`${this.Url}rankinggraphs?${params}`, { observe: 'response' });
-}
-  // using to get list of campaign
+  }
+  createRankingGraph(data): Observable<any> {
+    return this.http.post<any>(this.Url + 'rankinggraphs', data);
+  }
+  deleteRankingGraph(id: string): Observable<any> {
+    return this.http.delete<any>(this.Url + `rankinggraphs/${id}`);
+  }
+    // using to get list of campaign
   // getCampaign(): Observable<any[]> {
   //   if(localStorage.getItem('companyID') ){
   //     var companyID = localStorage.getItem('companyID'); 
@@ -42,107 +48,107 @@ export class CampaignService {
   //   })
   // }
   getCampaign(userid): Observable<any[]> {
-      return this.http.get<any[]>(`${this.Url}campaigns/GetCampaignByUserId?userId=` + userid)
+    return this.http.get<any[]>(`${this.Url}campaigns/GetCampaignByUserId?userId=` + userid)
   }
   // using to get list of keywords
-  getSerp(startDate:string,endDate:string): Observable<any[]> {
-    return this.http.get<any[]>(this.Url + '/serps',{
-      params: new HttpParams().set('pageSize', '1000').set("startDate", startDate).set("endDate",endDate)
+  getSerp(startDate: string, endDate: string): Observable<any[]> {
+    return this.http.get<any[]>(this.Url + '/serps', {
+      params: new HttpParams().set('pageSize', '1000').set("startDate", startDate).set("endDate", endDate)
     })
   }
-  
+
   // using to add new keyword in selected campaign Id
-  addNewKeyword(CampaignID :string,Keyword : any,Location : string,Tags : any,startDate:string,endDate:string): Observable<SerpDto> {
-    return this.http.post<SerpDto>(`${this.Url}serps/GetSerpData`,{},{
-      params: new HttpParams().set('CampaignID', CampaignID).set('Keywords', Keyword.join(',')).set('Location', Location).set('Tags', Tags).set("startDate", startDate).set("endDate",endDate)
+  addNewKeyword(CampaignID: string, Keyword: any, Location: string, Tags: any, startDate: string, endDate: string): Observable<SerpDto> {
+    return this.http.post<SerpDto>(`${this.Url}serps/GetSerpData`, {}, {
+      params: new HttpParams().set('CampaignID', CampaignID).set('Keywords', Keyword.join(',')).set('Location', Location).set('Tags', Tags).set("startDate", startDate).set("endDate", endDate)
     });
-    
+
   }
 
   // using to get google analytics report of selected campaign Id, Start Date , End Date
-  getGaAnalyticsReports(campaignId: string,startDate:string,endDate:string): Observable<any[]> {
-    return this.http.get<any[]>(`${this.Url}googleanalyticsaccounts/GetGaAnalyticsReports?id=` + campaignId,{
-      params: new HttpParams().set("startDate", startDate).set("endDate",endDate)
-   });
-    
-  }
-  
-    // using to get google analytics report of selected campaign Id, Start Date , End Date
-  getGaAnalyticsReportsByDateRange(campaignId: string,startDate:string,endDate:string): Observable<any[]> {
-    return this.http.get<any[]>(`${this.Url}googleanalyticsaccounts/GetGaAnalyticsReports?id=` + campaignId,{
-       params: new HttpParams().set("startDate", startDate).set("endDate",endDate)
+  getGaAnalyticsReports(campaignId: string, startDate: string, endDate: string): Observable<any[]> {
+    return this.http.get<any[]>(`${this.Url}googleanalyticsaccounts/GetGaAnalyticsReports?id=` + campaignId, {
+      params: new HttpParams().set("startDate", startDate).set("endDate", endDate)
     });
-    
+
   }
 
-   // using to get google analytics traffic sources report of selected campaign Id, Start Date , End Date
-   GetTrafficSourcesReports(campaignId: string,startDate:string,endDate:string): Observable<any[]> {
-    return this.http.get<any[]>(`${this.Url}googleanalyticsaccounts/GetTrafficSourcesReports?id=` + campaignId,{
-       params: new HttpParams().set("startDate", startDate).set("endDate",endDate)
+  // using to get google analytics report of selected campaign Id, Start Date , End Date
+  getGaAnalyticsReportsByDateRange(campaignId: string, startDate: string, endDate: string): Observable<any[]> {
+    return this.http.get<any[]>(`${this.Url}googleanalyticsaccounts/GetGaAnalyticsReports?id=` + campaignId, {
+      params: new HttpParams().set("startDate", startDate).set("endDate", endDate)
     });
-    
+
   }
 
-   // using to get google analytics sources-mediums report of selected campaign Id, Start Date , End Date
-   GetTrafficSourcesMediumsReports(campaignId: string,startDate:string,endDate:string): Observable<any[]> {
-    return this.http.get<any[]>(`${this.Url}googleanalyticsaccounts/GetTrafficSourcesMediumsReports?id=` + campaignId,{
-       params: new HttpParams().set("startDate", startDate).set("endDate",endDate)
+  // using to get google analytics traffic sources report of selected campaign Id, Start Date , End Date
+  GetTrafficSourcesReports(campaignId: string, startDate: string, endDate: string): Observable<any[]> {
+    return this.http.get<any[]>(`${this.Url}googleanalyticsaccounts/GetTrafficSourcesReports?id=` + campaignId, {
+      params: new HttpParams().set("startDate", startDate).set("endDate", endDate)
     });
-    
+
   }
 
-   // using to get google analytics campaigns report of selected campaign Id, Start Date , End Date
-   GetCampaignReports(campaignId: string,startDate:string,endDate:string): Observable<any[]> {
-    return this.http.get<any[]>(`${this.Url}googleanalyticsaccounts/GetCampaignReports?id=` + campaignId,{
-       params: new HttpParams().set("startDate", startDate).set("endDate",endDate)
+  // using to get google analytics sources-mediums report of selected campaign Id, Start Date , End Date
+  GetTrafficSourcesMediumsReports(campaignId: string, startDate: string, endDate: string): Observable<any[]> {
+    return this.http.get<any[]>(`${this.Url}googleanalyticsaccounts/GetTrafficSourcesMediumsReports?id=` + campaignId, {
+      params: new HttpParams().set("startDate", startDate).set("endDate", endDate)
     });
-    
+
   }
 
-   // using to get google analytics audience report of selected campaign Id, Start Date , End Date
-   GetAudienceReports(campaignId: string,startDate:string,endDate:string): Observable<any[]> {
-    return this.http.get<any[]>(`${this.Url}googleanalyticsaccounts/GetAudienceReports?id=` + campaignId,{
-       params: new HttpParams().set("startDate", startDate).set("endDate",endDate)
+  // using to get google analytics campaigns report of selected campaign Id, Start Date , End Date
+  GetCampaignReports(campaignId: string, startDate: string, endDate: string): Observable<any[]> {
+    return this.http.get<any[]>(`${this.Url}googleanalyticsaccounts/GetCampaignReports?id=` + campaignId, {
+      params: new HttpParams().set("startDate", startDate).set("endDate", endDate)
     });
-    
+
   }
 
-   // using to get google analytics device-category report of selected campaign Id, Start Date , End Date
-   GetDeviceCategoryReports(campaignId: string,startDate:string,endDate:string): Observable<any[]> {
-    return this.http.get<any[]>(`${this.Url}googleanalyticsaccounts/GetDeviceCategoryReports?id=` + campaignId,{
-       params: new HttpParams().set("startDate", startDate).set("endDate",endDate)
+  // using to get google analytics audience report of selected campaign Id, Start Date , End Date
+  GetAudienceReports(campaignId: string, startDate: string, endDate: string): Observable<any[]> {
+    return this.http.get<any[]>(`${this.Url}googleanalyticsaccounts/GetAudienceReports?id=` + campaignId, {
+      params: new HttpParams().set("startDate", startDate).set("endDate", endDate)
     });
-    
+
   }
 
-       // using to get google analytics geolocation report of selected campaign Id, Start Date , End Date
-       GetGeoLocationReports(campaignId: string,startDate:string,endDate:string): Observable<any[]> {
-        return this.http.get<any[]>(`${this.Url}googleanalyticsaccounts/GetGeoLocationReports?id=` + campaignId,{
-           params: new HttpParams().set("startDate", startDate).set("endDate",endDate)
-        });
-        
-      }
-      // using to get google analytics language report of selected campaign Id, Start Date , End Date
-      GetLanguageReports(campaignId: string,startDate:string,endDate:string): Observable<any[]> {
-        return this.http.get<any[]>(`${this.Url}googleanalyticsaccounts/GetLanguageReports?id=` + campaignId,{
-           params: new HttpParams().set("startDate", startDate).set("endDate",endDate)
-        });
-        
-      }
+  // using to get google analytics device-category report of selected campaign Id, Start Date , End Date
+  GetDeviceCategoryReports(campaignId: string, startDate: string, endDate: string): Observable<any[]> {
+    return this.http.get<any[]>(`${this.Url}googleanalyticsaccounts/GetDeviceCategoryReports?id=` + campaignId, {
+      params: new HttpParams().set("startDate", startDate).set("endDate", endDate)
+    });
 
-      // using to get google analytics behavior report of selected campaign Id, Start Date , End Date
-      GetGaBehaviorAnalyticsReports(campaignId: string,startDate:string,endDate:string): Observable<any[]> {
-        return this.http.get<any[]>(`${this.Url}googleanalyticsaccounts/GetGaBehaviorAnalyticsReports?id=` + campaignId,{
-           params: new HttpParams().set("startDate", startDate).set("endDate",endDate)
-        });
-        
-      }
+  }
 
-        // using to get google analytics conversions report of selected campaign Id, Start Date , End Date
-        GetGaConversionsAnalyticsReports(campaignId: string,startDate:string,endDate:string): Observable<any[]> {
-          return this.http.get<any[]>(`${this.Url}googleanalyticsaccounts/GetGaConversionsAnalyticsReports?id=` + campaignId,{
-             params: new HttpParams().set("startDate", startDate).set("endDate",endDate)
-          });
-          
-        }
+  // using to get google analytics geolocation report of selected campaign Id, Start Date , End Date
+  GetGeoLocationReports(campaignId: string, startDate: string, endDate: string): Observable<any[]> {
+    return this.http.get<any[]>(`${this.Url}googleanalyticsaccounts/GetGeoLocationReports?id=` + campaignId, {
+      params: new HttpParams().set("startDate", startDate).set("endDate", endDate)
+    });
+
+  }
+  // using to get google analytics language report of selected campaign Id, Start Date , End Date
+  GetLanguageReports(campaignId: string, startDate: string, endDate: string): Observable<any[]> {
+    return this.http.get<any[]>(`${this.Url}googleanalyticsaccounts/GetLanguageReports?id=` + campaignId, {
+      params: new HttpParams().set("startDate", startDate).set("endDate", endDate)
+    });
+
+  }
+
+  // using to get google analytics behavior report of selected campaign Id, Start Date , End Date
+  GetGaBehaviorAnalyticsReports(campaignId: string, startDate: string, endDate: string): Observable<any[]> {
+    return this.http.get<any[]>(`${this.Url}googleanalyticsaccounts/GetGaBehaviorAnalyticsReports?id=` + campaignId, {
+      params: new HttpParams().set("startDate", startDate).set("endDate", endDate)
+    });
+
+  }
+
+  // using to get google analytics conversions report of selected campaign Id, Start Date , End Date
+  GetGaConversionsAnalyticsReports(campaignId: string, startDate: string, endDate: string): Observable<any[]> {
+    return this.http.get<any[]>(`${this.Url}googleanalyticsaccounts/GetGaConversionsAnalyticsReports?id=` + campaignId, {
+      params: new HttpParams().set("startDate", startDate).set("endDate", endDate)
+    });
+
+  }
 }

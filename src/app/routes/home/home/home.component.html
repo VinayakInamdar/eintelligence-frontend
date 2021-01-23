@@ -5,8 +5,8 @@
 
     <div class="col-lg-10">
 
-        
-        <div class="card card-default shadow p-3 mb-5 bg-white rounded">
+
+        <div class="card card-default shadow p-3 mb-5 bg-white rounded cursor-default">
             <div class="card-header">
                 <div class="row">
                     <div class="col-md-3">Lunch a Web Audit</div>
@@ -18,14 +18,11 @@
                 <div class="row">
 
                     <div class="col-lg-10">
-                        <form [formGroup]="valForm" class="form-horizontal  formh" (keydown.enter)="$event.preventDefault()"
-            (submit)="runAudit($event,valForm.value)" novalidate="">
-                        <input formControlName="webUrl" #weburlInput class="form-control homeinputheight" placeholder="Website URL" [(ngModel)]="siteurl">
-                        <span class="text-danger"
-                        *ngIf="valForm.controls['webUrl'].hasError('required') && (valForm.controls['webUrl'].dirty || valForm.controls['webUrl'].touched)">
+                        <form [formGroup]="valForm" class="form-horizontal  formh" (keydown.enter)="$event.preventDefault()" (submit)="runAudit($event,valForm.value)" novalidate="">
+                            <input formControlName="webUrl" #weburlInput class="form-control homeinputheight" placeholder="Website URL" [(ngModel)]="siteurl">
+                            <span class="text-danger" *ngIf="valForm.controls['webUrl'].hasError('required') && (valForm.controls['webUrl'].dirty || valForm.controls['webUrl'].touched)">
                         {{'validation.URLREQUIRED' | translate}}</span>
-                    <span class="text-danger"
-                        *ngIf="valForm.controls['webUrl'].hasError('pattern') && (valForm.controls['webUrl'].dirty || valForm.controls['webUrl'].touched)">
+                            <span class="text-danger" *ngIf="valForm.controls['webUrl'].hasError('pattern') && (valForm.controls['webUrl'].dirty || valForm.controls['webUrl'].touched)">
                         {{'validation.URLVALIDATION' | translate}}</span>
                             <br>
                         </form>
@@ -47,8 +44,8 @@
 
     <div class="col-lg-10">
 
-        
-        <div class="card card-default shadow p-3 mb-5 bg-white rounded">
+
+        <div class="card card-default shadow p-3 mb-5 bg-white rounded  cursor-default">
             <!-- <div class="card-header">
                 <div class="row">
                     <div class="col-md-3">Lunch a Web Audit</div>
@@ -60,73 +57,49 @@
                 <div class="row">
                     <div class="col-lg-4">
                         <div style="display: block">
-                            <canvas baseChart
-                                    [data]="pieChartData1"
-                                    [options]="pieOptions1"
-                                    [labels]="pieChartLabels1"
-                                    [chartType]="pieChartType1"></canvas>
-                                    
-                          </div> 
-                          <center> <span class=""> Ranking Performance</span></center>
+                            <canvas baseChart [data]="pieChartData1" [options]="pieOptions1" [labels]="pieChartLabels1" [chartType]="pieChartType1"></canvas>
+
+                        </div>
+                        <center> <span class=""> Ranking Performance</span></center>
                     </div>
 
                     <div class="col-lg-4">
                         <div style="display: block">
-                            <canvas baseChart
-                                    [data]="pieChartData2"
-                                    [options]="pieOptions2"
-                                    [labels]="pieChartLabels2"
-                                    [chartType]="pieChartType2"></canvas>
-                          </div> 
-                          <center> <span class=""> Traffic Performance</span></center>
+                            <canvas baseChart [data]="pieChartData2" [options]="pieOptions2" [labels]="pieChartLabels2" [chartType]="pieChartType2"></canvas>
+                        </div>
+                        <center> <span class=""> Traffic Performance</span></center>
                     </div>
 
                     <div class="col-lg-4">
                         <div style="display: block">
-                            <canvas baseChart
-                                    [data]="pieChartData3"
-                                    [labels]="pieChartLabels3"
-                                    [options]="pieOptions3"
-                                    [chartType]="pieChartType3"></canvas>
-                          </div> 
-                          <center> <span class=""> Conversions</span></center>
+                            <canvas baseChart [data]="pieChartData3" [labels]="pieChartLabels3" [options]="pieOptions3" [chartType]="pieChartType3"></canvas>
+                        </div>
+                        <center> <span class=""> Conversions</span></center>
                     </div>
-                    
+
                 </div>
 
                 <div class="row paddingtop25px">
                     <div class="col-lg-4">
                         <div style="display: block">
-                            <canvas baseChart
-                                    [data]="pieChartData4"
-                                    [options]="pieOptions4"
-                                    [labels]="pieChartLabels4"
-                                    [chartType]="pieChartType4"></canvas>                                   
-                          </div> 
-                          <center> <span class="">Impressions</span></center>
-                          
+                            <canvas baseChart [data]="pieChartData4" [options]="pieOptions4" [labels]="pieChartLabels4" [chartType]="pieChartType4"></canvas>
+                        </div>
+                        <center> <span class="">Impressions</span></center>
+
                     </div>
 
                     <div class="col-lg-4">
                         <div style="display: block">
-                            <canvas baseChart
-                                    [data]="pieChartData5"
-                                    [labels]="pieChartLabels5"
-                                    [options]="pieOptions5" 
-                                    [chartType]="pieChartType5"></canvas>
-                          </div> 
-                          <center> <span class=""> Social Media Engagement</span></center>
+                            <canvas baseChart [data]="pieChartData5" [labels]="pieChartLabels5" [options]="pieOptions5" [chartType]="pieChartType5"></canvas>
+                        </div>
+                        <center> <span class=""> Social Media Engagement</span></center>
                     </div>
 
                     <div class="col-lg-4">
                         <div style="display: block">
-                            <canvas baseChart
-                                    [data]="pieChartData6"
-                                    [labels]="pieChartLabels6"
-                                    [options]="pieOptions6"
-                                    [chartType]="pieChartType6"></canvas>
-                          </div> 
-                          <center> <span class=""> Conversions PPC</span></center>
+                            <canvas baseChart [data]="pieChartData6" [labels]="pieChartLabels6" [options]="pieOptions6" [chartType]="pieChartType6"></canvas>
+                        </div>
+                        <center> <span class=""> Conversions PPC</span></center>
                     </div>
                 </div>
             </div>
@@ -135,13 +108,12 @@
     </div>
     <div class="col-sm-1"></div>
 </div>
-<div class="row">
+<div class="row cursor-default">
     <div class="col-md-1"></div>
     <div class="col-md-3 fontsizelarger fontweightnormal fontcolorblack paddingtop25px">Your Campagins</div>
     <div class="col-md-2"></div>
     <div class="col-md-3 search-container paddingtop13px">
-        <input #search class="form-control ng-valid ng-dirty ng-valid-parse ng-touched ng-empty homeinputwidth "
-            type="text" placeholder="Search for campaigns" (keyup)="onSearch(search.value)">
+        <input #search class="form-control ng-valid ng-dirty ng-valid-parse ng-touched ng-empty homeinputwidth " type="text" placeholder="Search for campaigns" (keyup)="onSearch(search.value)">
         <div class="col-md-1"></div>
     </div>
     <div class="col-md-2">
@@ -156,8 +128,8 @@
 <div class="row">
     <div class="col-md-1"></div>
     <div class="col-md-10">
-        <div class="card card-default shadow p-3 mb-5 bg-white rounded">
-            <div class="table-responsive">
+        <div class="card card-default shadow p-3 mb-5 bg-white rounded cursor-default">
+            <div class="table-responsive cursor-pointer">
                 <ng2-smart-table [settings]="settings" [source]="source" (userRowSelect)="userRowSelect($event)">
                 </ng2-smart-table>
             </div>

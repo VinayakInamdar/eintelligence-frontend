@@ -40,7 +40,7 @@ export class InstagramComponent implements OnInit {
   //   .map((response) => response)
   // }
 //     authInstagramAccount() {
-//       debugger
+//       
 //     const url = "https://www.instagram.com/oauth/authorize";
 //     const body = new URLSearchParams();
 //     body.set('client_id', environment.facebook_appid);
@@ -50,7 +50,7 @@ export class InstagramComponent implements OnInit {
 
 //     this.http.post(url, body.toString()).subscribe(res => {
 //       if (res) {
-// debugger
+// 
 //       }
 //     }, error => {
 //       alert(JSON.stringify(error.error));

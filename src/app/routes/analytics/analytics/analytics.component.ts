@@ -1155,15 +1155,15 @@ itemDeselected(event) {
     this.router.navigate([`/campaign/:id${this.selectedCampId}/seo`])
   }
   public goToSocialMedia(event) {
-    debugger
+    
     this.router.navigate([`/socialmedia`])
   }
   public goToLinkedIn(event) {
-    debugger
+    
     this.router.navigate([`/linkedin`])
   }
   public goToInstagram(event) {
-    debugger
+    
     this.router.navigate([`/instagram`])
   }
   //using to close create campaign  component

@@ -191,7 +191,7 @@ export class ProductsComponent implements OnInit {
     }
   }
   addPlan() {
-    debugger
+    
     if (this.planId == undefined || this.planId == null) {
       let data = {
         id: "00000000-0000-0000-0000-000000000000",
@@ -216,7 +216,7 @@ export class ProductsComponent implements OnInit {
         }
       });
     } else {
-      debugger
+      
       let data = {
         id: this.planId,
         name: this.planName.value,
@@ -277,7 +277,7 @@ export class ProductsComponent implements OnInit {
   createProductOnStripe() {
     this.productService.createProductOnStripe(this.planName.value, this.planSubTitle.value).subscribe((response: any) => {
       if (response) {
-        debugger
+        
         this.stripeProductId = response.id;
         this.lastStripeProductId = this.stripeProductId;
         this.createStripePrice();

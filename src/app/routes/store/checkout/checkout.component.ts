@@ -249,7 +249,7 @@ export class CheckoutComponent implements OnInit {
     });
   }
   paymentIntentCall() {
-    debugger
+    
     const url = "https://api.stripe.com/v1/payment_intents";
     const body = new URLSearchParams();
     body.set('amount', this.amount);

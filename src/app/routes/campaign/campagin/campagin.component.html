@@ -55,7 +55,10 @@
             </a>
         </li>
     </ul>
-
+    <button class="mr-1 btn btn-primary btn-lg" style="float: right;" type="button" (click)="DeleteRankingGraphData()">
+        <i class="fa fa-linkedin mr-1"></i>
+        Refresh Data
+    </button>
 </nav>
 <div *ngIf="settingActive == 1;" class="row w3-container w3-center w3-animate-right paddingtopdiv">
     <div class="col-md-2"> </div>
@@ -260,8 +263,8 @@
 <div class="row" *ngIf="settingActive == 2;">
     <div class="col-md-1"></div>
     <div class="col-md-10">
-        <div class="card card-default shadow p-3 mb-5 bg-white rounded">
-            <div class="table-responsive">
+        <div class="card card-default shadow p-3 mb-5 bg-white rounded cursor-default">
+            <div class="table-responsive cursor-pointer">
                 <ng2-smart-table [settings]="settings" [source]="source" (userRowSelect)="userRowSelect($event)">
                 </ng2-smart-table>
             </div>

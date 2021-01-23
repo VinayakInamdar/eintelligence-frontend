@@ -99,7 +99,7 @@ export class MyPaymentsComponent implements OnInit {
     });
   }
   getAllPaymants() {
-    debugger
+    
     const filterOptionModel = this.getFilterOptionPlans();
     this.myPaymentsService.getFilteredStripepayments(filterOptionModel).subscribe((response: any) => {
       if (response) {

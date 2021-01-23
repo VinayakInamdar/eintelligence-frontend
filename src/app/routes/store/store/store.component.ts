@@ -24,7 +24,7 @@ export class StoreComponent implements OnInit {
   constructor(public router: Router, private accountService: AccountService, public openIdConnectService: OpenIdConnectService, public productService: StoreService, public productsService: ProductsService) { }
 
   ngOnInit(): void {
-    debugger
+    
     this.companyId = localStorage.getItem('companyID');
     this.userId = this.openIdConnectService.user.profile.sub;
       this.getAllProduct();
@@ -63,7 +63,7 @@ export class StoreComponent implements OnInit {
     const filterOptionModel = this.getFilterOptionPlans();
     this.productsService.getFilteredProduct(filterOptionModel).subscribe((response: any) => {
       if (response) {
-        debugger
+        
         this.products = response.body
         if (this.products != undefined && this.products != null && this.products.length > 0) {
         this.products = this.products.filter(x => x.companyId == this.companyId);

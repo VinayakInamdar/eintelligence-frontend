@@ -30,7 +30,10 @@ export class CampaginComponent implements OnInit, AfterViewInit {
   @ViewChild('staticTabs', { static: false }) staticTabs: TabsetComponent;
   @ViewChild(BaseChartDirective)
   rankingGraphData;
-  barDataArray:any[]=[];
+  tempRankingGraphData = [];
+  averageRanking;
+  serpList;
+  barDataArray: any[] = [];
   public chart: BaseChartDirective;
   valForm: FormGroup;
   public campaignModel: Campaign;
@@ -427,7 +430,7 @@ export class CampaginComponent implements OnInit, AfterViewInit {
     this.sub = this.route.params.subscribe(params => {
       this.id = params['id'];
     });
-    
+
   }
 
   // using to check Integration Status of selected campaign Id
@@ -711,32 +714,107 @@ export class CampaginComponent implements OnInit, AfterViewInit {
 
   }
   getRankingGraphData() {
-    debugger
-  //  this.barData.datasets[0].data = [10,20,34,6,43,12,56,86,5,33,24,55]
-   const filterOptionModel = this.getFilterOptionPlans();
-   this.campaignService.getFilteredRankingGraph(filterOptionModel).subscribe((response: any) => {
-     if (response) {
-       debugger
+    //  this.barData.datasets[0].data = [10,20,34,6,43,12,56,86,5,33,24,55]
+    const filterOptionModel = this.getFilterOptionPlans();
+    this.campaignService.getFilteredRankingGraph(filterOptionModel).subscribe((response: any) => {
+      if (response) {
+        this.barDataArray = [];
+        this.rankingGraphData = response.body;
+        this.tempRankingGraphData = response.body;
+        this.rankingGraphData.sort(function (a, b) {
+          var MONTH = {
+            January: 1, February: 2, March: 3, April: 4, May: 5, June: 6,
+            July: 7, August: 8, September: 9, October: 10, November: 11, December: 12
+          };
+          return a.year - b.year || MONTH[a.month] - MONTH[b.month];
+        });
+        debugger
+        let u =  this.rankingGraphData;
+        let p = u.filter(x => x.month == "January")
+        if (p != null && p != undefined && p.length > 0) {
+          this.barDataArray.push(p[0].avragePosition)
+        }
+        else { this.barDataArray.push(0) }
 
-       this.rankingGraphData =response.body;
-       this.rankingGraphData.sort(function (a, b) {
-        var MONTH = { JANUARY: 0, FEBRUARY: 1, MARCH: 2, APRIL: 3, MAY: 4, JUNE: 5, JULY: 6, AUGUST: 7, SEPTEMBER: 8, OCTOBER: 9, NOVEMBER: 10, DECEMBER: 11 };
-        return a.year - b.year || MONTH[a.month] - MONTH[b.month];
-      });
-      
-       for(let i= 0 ;i<this.rankingGraphData.length;i++){
-        this.barDataArray.push(this.rankingGraphData[i].avragePosition)
-       }
-       this.barData.datasets[0].data = this.barDataArray;
-       this.chart.chart.update();
-     }
-   })
- }
+        u =  this.rankingGraphData;
+        p = this.rankingGraphData.filter(x => x.month == "February")
+        if (p != null && p != undefined && p.length > 0) {
+          this.barDataArray.push(p[0].avragePosition)
+        }
+        else { this.barDataArray.push(0) }
+        u =  this.rankingGraphData;
+        p = this.rankingGraphData.filter(x => x.month == "March")
+        if (p != null && p != undefined && p.length > 0) {
+          this.barDataArray.push(p[0].avragePosition)
+        }
+        else { this.barDataArray.push(0) }
+        u =  this.rankingGraphData;
+        p = this.rankingGraphData.filter(x => x.month == "April")
+        if (p != null && p != undefined && p.length > 0) {
+          this.barDataArray.push(p[0].avragePosition)
+        }
+        else { this.barDataArray.push(0) }
+        u =  this.rankingGraphData;
+        p = this.rankingGraphData.filter(x => x.month == "May")
+        if (p != null && p != undefined && p.length > 0) {
+          this.barDataArray.push(p[0].avragePosition)
+        }
+        else { this.barDataArray.push(0) }
+        u =  this.rankingGraphData;
+        p = this.rankingGraphData.filter(x => x.month == "June")
+        if (p != null && p != undefined && p.length > 0) {
+          this.barDataArray.push(p[0].avragePosition)
+        }
+        else { this.barDataArray.push(0) }
+        u =  this.rankingGraphData;
+        p = this.rankingGraphData.filter(x => x.month == "July")
+        if (p != null && p != undefined && p.length > 0) {
+          this.barDataArray.push(p[0].avragePosition)
+        }
+        else { this.barDataArray.push(0) }
+        u =  this.rankingGraphData;
+        p = this.rankingGraphData.filter(x => x.month == "August")
+        if (p != null && p != undefined && p.length > 0) {
+          this.barDataArray.push(p[0].avragePosition)
+        }
+        else { this.barDataArray.push(0) }
+        u =  this.rankingGraphData;
+        p = this.rankingGraphData.filter(x => x.month == "September")
+        if (p != null && p != undefined && p.length > 0) {
+          this.barDataArray.push(p[0].avragePosition)
+        }
+        else { this.barDataArray.push(0) }
+        u =  this.rankingGraphData;
+        p = this.rankingGraphData.filter(x => x.month == "October")
+        if (p != null && p != undefined && p.length > 0) {
+          this.barDataArray.push(p[0].avragePosition)
+        }
+        else { this.barDataArray.push(0) }
+        u =  this.rankingGraphData;
+        p = this.rankingGraphData.filter(x => x.month == "November")
+        if (p != null && p != undefined && p.length > 0) {
+          this.barDataArray.push(p[0].avragePosition)
+        }
+        else { this.barDataArray.push(0) }
+        u =  this.rankingGraphData;
+        p = this.rankingGraphData.filter(x => x.month == "December")
+        if (p != null && p != undefined && p.length > 0) {
+          this.barDataArray.push(p[0].avragePosition)
+        }
+        else { this.barDataArray.push(0) }
+
+
+        this.barData.datasets[0].data = this.barDataArray;
+        this.chart.chart.update();
+      }
+    })
+  }
   // using to get list of keyword list
   public getSerpList(): void {
     this.campaignService.getSerp('01-Jan-2019', '31-Jan-2020').subscribe(res => {
-       //this.serpList = res; 
-       //this.source = new LocalDataSource(this.serpList) 
+
+      this.serpList = res;
+      //this.source = new LocalDataSource(this.serpList) 
       // var serpData = res.map((s, i) => {
       //   if (s.position > 0 && s.position <= 3) {
       //     var positions = []
@@ -1107,5 +1185,56 @@ export class CampaginComponent implements OnInit, AfterViewInit {
     var finaldate = odate + " " + omon
     return finaldate
   }
+  RefreshRankingGraphData() {
 
+    let p;
+    let totalPosition = 0;
+    p = this.serpList.filter(x => x.campaignID.toString() === this.selectedCampId.toLowerCase());
+    if (p != null && p != undefined && p.length > 0) {
+      for (let i = 0; i < p.length; i++) {
+        totalPosition = totalPosition + p[i].position;
+      }
+    }
+    this.averageRanking = totalPosition / parseInt(this.serpList.length)
+    this.averageRanking = Math.round(this.averageRanking);
+    const monthNames = ["January", "February", "March", "April", "May", "June",
+      "July", "August", "September", "October", "November", "December"
+    ];
+
+    const d = new Date();
+    let currMonth = monthNames[d.getMonth()];
+    let data = {
+      id: "00000000-0000-0000-0000-000000000000",
+      avragePosition: this.averageRanking,
+      month: currMonth,
+      campaignId: this.selectedCampId,
+    }
+    this.campaignService.createRankingGraph(data).subscribe(response => {
+      if (response) {
+        this.getRankingGraphData();
+      }
+    });
+  }
+  DeleteRankingGraphData() {
+
+    const monthNames = ["January", "February", "March", "April", "May", "June",
+      "July", "August", "September", "October", "November", "December"
+    ];
+    const d = new Date();
+    let currMonth = monthNames[d.getMonth()];
+    let tempId;
+    let p = this.tempRankingGraphData.filter(x => x.month == currMonth)
+    if (p != null && p != undefined && p.length > 0) {
+      tempId = p[0].id;
+      this.campaignService.deleteRankingGraph(tempId).subscribe(response => {
+        //if (response) {
+
+
+        //this.snackbarService.show('Product Added');
+        //}
+      });
+    }
+    this.RefreshRankingGraphData();
+
+  }
 }

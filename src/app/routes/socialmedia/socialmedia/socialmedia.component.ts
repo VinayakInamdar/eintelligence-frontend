@@ -109,7 +109,7 @@ export class SocialmediaComponent implements OnInit {
     // const url = "https://graph.facebook.com/105114094889635/accounts?access_token=EAAGXn3oGklwBAEDY2dpA11KLDG0hhHYWi9pts9qmPJxXs6Ywb4UOq6SRhvr5kFpNDeUrHkG1rIZCxHJMxQS3U7UurncvEnjuuaD4aLmKDAT5uIoSb3QWSE92GkLWOS0Oqub7ZAIcxwtMBAaLOSQWqEiwsMuqaugO5XwiXJx97ekfXeuB8cnQhISZAtINl8ZD";
     this.http.get(url).subscribe(res => {
       if (res) {
-        debugger
+        
         this.pageToken = res['data'][0].access_token;
         this.getAllData28Days();
         // this.getPageReachCount();
@@ -141,11 +141,11 @@ export class SocialmediaComponent implements OnInit {
 //     }
   }
   getAllDataByPeriod(period) {
-    debugger
+    
     const url = "https://graph.facebook.com/" + environment.facebook_pageid + "/insights/page_impressions_unique,page_total_actions,page_positive_feedback_by_type,page_negative_feedback,page_views_total,page_impressions,page_views_external_referrals,page_fans_by_unlike_source_unique,page_impressions_organic,page_impressions_paid,page_fan_removes_unique?access_token=" + this.pageToken;
     this.http.get(url).subscribe(res => {
       if (res) {
-        debugger
+        
         for (let i = 0; i < res['data'].length; i++) {
           let p = res['data'][i];
           //Page Reach
@@ -271,11 +271,11 @@ export class SocialmediaComponent implements OnInit {
     });
   }
   getAllDataWeek() {
-    debugger
+    
     const url = "https://graph.facebook.com/" + environment.facebook_pageid + "/insights/page_impressions_unique,page_total_actions,page_positive_feedback_by_type,page_negative_feedback,page_views_total,page_impressions,page_views_external_referrals,page_fans_by_unlike_source_unique,page_impressions_organic,page_impressions_paid,page_fan_removes_unique?access_token=" + this.pageToken;
     this.http.get(url).subscribe(res => {
       if (res) {
-        debugger
+        
         for (let i = 0; i < res['data'].length; i++) {
           let p = res['data'][i];
           //Page Reach
@@ -398,11 +398,11 @@ export class SocialmediaComponent implements OnInit {
     });
   }
   getAllData28Days() {
-    debugger
+    
     const url = "https://graph.facebook.com/" + environment.facebook_pageid + "/insights/page_impressions_unique,page_total_actions,page_positive_feedback_by_type,page_negative_feedback,page_views_total,page_impressions,page_views_external_referrals,page_fans_by_unlike_source_unique,page_impressions_organic,page_impressions_paid,page_fan_removes_unique?access_token=" + this.pageToken;
     this.http.get(url).subscribe(res => {
       if (res) {
-        debugger
+        
         for (let i = 0; i < res['data'].length; i++) {
           let p = res['data'][i];
           //Page Reach
@@ -525,11 +525,11 @@ export class SocialmediaComponent implements OnInit {
     });
   }
   getAllDataOneDays() {
-    debugger
+    
     const url = "https://graph.facebook.com/" + environment.facebook_pageid + "/insights/page_impressions_unique,page_total_actions,page_positive_feedback_by_type,page_negative_feedback,page_views_total,page_impressions,page_views_external_referrals,page_fans_by_unlike_source_unique,page_impressions_organic,page_impressions_paid,page_fan_removes_unique?access_token=" + this.pageToken;
     this.http.get(url).subscribe(res => {
       if (res) {
-        debugger
+        
         for (let i = 0; i < res['data'].length; i++) {
           let p = res['data'][i];
           //Page Reach
@@ -683,7 +683,7 @@ export class SocialmediaComponent implements OnInit {
         for (let i = 0; i < l.length; i++) {
           this.profileViewTotal = parseInt(this.profileViewTotal) + parseInt(l[i].value)
         }
-        debugger
+        
         this.avgProfileView = this.getAverage(this.profileViewTotal, 28);
       }
     }, error => {
@@ -730,7 +730,7 @@ export class SocialmediaComponent implements OnInit {
     //const url = "https://graph.facebook.com/102988865108273/insights/page_impressions_unique?access_token=EAAGXn3oGklwBAAni75mymZAVNH0RB7ecJ7BSj6lYmnRwWewDSJMvhUZCxwMlnPH1HnMHWYKccrsDR6dyjeeQPBDpucGeN6EtvYTYcZC1OeWa2ObRAlHS2ZC2yMMmOLB5AkJWuxK0YtLBv2EpaD2RtsEjeb8EgbPUUeJLkDnbG4jplrccWCKgzu8LU4ie0abbeBrdzscvuATZCusuSOXku";
     this.http.get(url).subscribe(res => {
       if (res) {
-        debugger
+        
         let p = res['data'][2];
         let l = p['values'];
         this.organicReach = 0;
@@ -748,7 +748,7 @@ export class SocialmediaComponent implements OnInit {
     //const url = "https://graph.facebook.com/102988865108273/insights/page_impressions_unique?access_token=EAAGXn3oGklwBAAni75mymZAVNH0RB7ecJ7BSj6lYmnRwWewDSJMvhUZCxwMlnPH1HnMHWYKccrsDR6dyjeeQPBDpucGeN6EtvYTYcZC1OeWa2ObRAlHS2ZC2yMMmOLB5AkJWuxK0YtLBv2EpaD2RtsEjeb8EgbPUUeJLkDnbG4jplrccWCKgzu8LU4ie0abbeBrdzscvuATZCusuSOXku";
     this.http.get(url).subscribe(res => {
       if (res) {
-        debugger
+        
         let p = res['data'][2];
         let l = p['values'];
         this.paidReach = 0;
@@ -767,7 +767,7 @@ export class SocialmediaComponent implements OnInit {
     const url = "https://graph.facebook.com/" + environment.facebook_pageid + "/insights/page_total_actions?access_token=" + this.pageToken;
     this.http.get(url).subscribe(res => {
       if (res) {
-        debugger
+        
         let p = res['data'][2];
         let l = p['values'];
         this.pageClicksTotal = 0;
@@ -801,7 +801,7 @@ export class SocialmediaComponent implements OnInit {
     const url = "https://graph.facebook.com/" + environment.facebook_pageid + "/insights/page_views_external_referrals?access_token=" + this.pageToken;
     this.http.get(url).subscribe(res => {
       if (res) {
-        debugger
+        
         let p = res['data'][2];
         let l = p['values'];
         this.pageClicksTotal = 0;
@@ -817,7 +817,7 @@ export class SocialmediaComponent implements OnInit {
     const url = "https://graph.facebook.com/" + environment.facebook_pageid + "/insights/page_fan_removes_unique?access_token=" + this.pageToken;
     this.http.get(url).subscribe(res => {
       if (res) {
-        debugger
+        
         let p = res['data'][2];
         let l = p['values'];
         this.lostLikes = 0;

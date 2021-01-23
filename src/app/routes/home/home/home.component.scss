@@ -3,47 +3,66 @@
 @import "../../../shared/styles/bootstrap/_mixins";
 @import '../../../shared/styles/app/variables.scss';
 @import '~angular2-toaster/toaster.css';
-
-
-.card-header{
+.card-header {
     font-size: larger;
     font-weight: normal;
     color: black;
 }
-.btn{
+
+.btn {
     font-size: larger;
 }
+
 .homemaindiv {
     padding-top: 4%;
 }
+
 .homedivborder {
     border: black 2px;
 }
+
 .homeinputheight {
     height: 3.1575rem;
 }
+
 .homedivfontsw {
-    font-size: larger;  font-weight: normal;
+    font-size: larger;
+    font-weight: normal;
     color: black;
 }
+
 .fontsizelarger {
     font-size: larger;
 }
+
 .fontweightnormal {
     font-weight: normal;
 }
+
 .fontcolorblack {
     color: black;
 }
+
 .textaligncenter {
     text-align: center;
 }
+
 .paddingtop25px {
     padding-top: 25px;
 }
+
 .paddingtop13px {
     padding-top: 13px;
 }
+
 .homeinputwidth {
     width: fit-content;
+}
+
+.cursor-default {
+    cursor: default;
+}
+
+.cursor-pointer {
+    cursor: pointer
 }

@@ -271,6 +271,7 @@ export class KeywordsComponent implements OnInit {
   // using to get list of keyword list
   public getSerpList(): void {
     this.campaignService.getSerp('01-Jan-2019','31-Jan-2020').subscribe(res => {
+      
       this.serpList = res;
       this.source = new LocalDataSource(this.serpList)
     });
