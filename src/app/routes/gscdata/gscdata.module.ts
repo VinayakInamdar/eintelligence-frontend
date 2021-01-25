@@ -10,7 +10,8 @@ import { Ng2SmartTableModule } from 'ng2-smart-table';
 import { NgxIntlTelInputModule } from 'ngx-intl-tel-input';
 import { NgxSelectModule } from 'ngx-select-ex';
 import { SharedModule } from 'src/app/shared/shared.module';
-
+import { SocialLoginModule, SocialAuthServiceConfig } from 'angularx-social-login';
+import { GoogleLoginProvider } from 'angularx-social-login';
 
 const routes: Routes = [
   { path: '', component: GscdataComponent }
@@ -30,7 +31,24 @@ const routes: Routes = [
     FormsModule,
     NgxSelectModule,
     NgxIntlTelInputModule,
-    ChartsModule
+    ChartsModule,
+    SocialLoginModule
+  ],  
+  providers: [
+    {
+      provide: 'SocialAuthServiceConfig',
+      useValue: {
+        autoLogin: false,
+        providers: [
+          {
+            id: GoogleLoginProvider.PROVIDER_ID,
+            provider: new GoogleLoginProvider(
+              '959505317275-v8294ho5b3prni9rqi4l6nnb8463uiig.apps.googleusercontent.com'
+            )
+          }
+        ]
+      } as SocialAuthServiceConfig,
+    }
   ],
   exports: [RouterModule]
 })
