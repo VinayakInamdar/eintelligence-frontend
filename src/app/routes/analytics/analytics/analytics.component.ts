@@ -1166,6 +1166,10 @@ itemDeselected(event) {
     
     this.router.navigate([`/instagram`])
   }
+  public goToGSC(event) {
+    
+    this.router.navigate([`/gsc`])
+  }
   //using to close create campaign  component
   public closeCreateCampaignComponent(event) {
     event.preventDefault()

@@ -107,6 +107,12 @@ export const routes: Routes = [
                 loadChildren: () => import('./instagram/instagram.module').then(m => m.InstagramModule)
             },
             {
+                path: 'gsc',
+                component: LayoutComponent,
+                //canActivate: [RequireAuthenticatedUserRouteGuardService],
+                loadChildren: () => import('./gscdata/gscdata.module').then(m => m.GscdataModule)
+            },
+            {
                 path: 'mypayments',
                 component: LayoutComponent,
                 loadChildren: () => import('./mypayments/mypayments/mypayments.module').then(m => m.MyPaymentsModule)
