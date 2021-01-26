@@ -83,6 +83,50 @@
     </div>
 </div>
 <div class="row overviewmaindiv">
+
+    <div class="col-lg-12">
+
+        <div class="overviewdivfontspadding"></div>
+
+        <div class="card card-default shadow bg-white rounded">
+            <div class="card-header">
+                <div class="row borderBtm padding5">
+                    <h2 class="col-xs-12 col-12 col-md-5"> Clicks</h2>
+                </div>
+
+            </div>
+            <div class="card-body row">
+                <div class="chart-wrapper mx-auto chart-container">
+                    <canvas baseChart id="canvas" [chartType]="'line'" [options]="barOptions"
+                        [datasets]="barData.datasets" [colors]="barColors" [labels]="barChartLabels" [legend]="true"
+                        height="50">
+                    </canvas>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div class="col-lg-12">
+
+        <div class="overviewdivfontspadding"></div>
+
+        <div class="card card-default shadow bg-white rounded">
+            <div class="card-header">
+                <div class="row borderBtm padding5">
+                    <h2 class="col-xs-12 col-12 col-md-5"> Clicks</h2>
+                </div>
+
+            </div>
+            <div class="card-body row">
+                <div class="chart-wrapper mx-auto chart-container">
+                    <canvas baseChart id="canvas" [chartType]="'LineWithLine'" [options]="barOptions"
+                        [datasets]="barDataImpressions.datasets" [colors]="barColors" [labels]="barChartLabels" [legend]="true"
+                        height="50">
+                    </canvas>
+                </div>
+            </div>
+        </div>
+    </div>
     <div class="col-lg-12">
 
         <div class="card card-default shadow bg-white rounded height200pxfit-content cursor-set">
