@@ -17,11 +17,13 @@
                     <i class="fa fa-plus" aria-hidden="true"></i>
                 </div>
                 <div class="btn-group" dropdown>
-                    <button id="button-basic" dropdownToggle type="input" class="btn campselectedname" aria-controls="dropdown-basic">
+                    <button id="button-basic" dropdownToggle type="input" class="btn campselectedname"
+                        aria-controls="dropdown-basic">
                         Select Campaign name
                         <span class="caret"> </span>
                     </button>
-                    <ul id="dropdown-basic" *dropdownMenu class="dropdown-menu camplisth" role="menu" aria-labelledby="button-basic">
+                    <ul id="dropdown-basic" *dropdownMenu class="dropdown-menu camplisth" role="menu"
+                        aria-labelledby="button-basic">
                         <li role="menuitem"><a class="dropdown-item" href="#">Campaign name</a></li>
                     </ul>
                 </div>
@@ -49,41 +51,41 @@
             </a>
         </li>
     </ul>
-    <div class="col-md-3">
-        <select class="form-control" [(ngModel)]="period" (change)="onSelect($event.target.value)">
-            <option value='0'>Select</option>
-            <option value='day'>Yesterday</option>
-            <option value='week'>Week</option>
-            <option value='days_28'>28 Days</option>
-        </select>
+    <div class="overviewdivborder  move-center">
+        <button class="mr-1 btn btn-primary btn-lg" type="button" (click)="signInWithGoogle()">
+            <i class="fa fa-twitter mr-1"></i>
+            Login with Google
+        </button>
     </div>
 
 </nav>
-<div class="row  justify-content-center">
-    <div class="col-md-4  justify-content-center">
-        <div class="card card-default shadow bg-white rounded height100pxfit-content cursor-set">
-            <div class="card-header">
-                <div class="row borderBtm padding5">
-                    <h2 class="col-xs-12 col-12 col-md-10 fontsize15px colour-set move-center">Twitter EI Reports</h2>
-                    <div class="col-xs-12 col-12 col-md-1 fontsize15px">
 
-                    </div>
-                </div>
-
-            </div>
-            <div class="widget-content">
-                <div class="overviewdivborder  move-center">
-                    <button class="mr-1 btn btn-primary btn-lg" type="button" (click)="signInWithGoogle()">
-                        <i class="fa fa-twitter mr-1"></i>
-                        Login with Twitter
-                    </button>
-                </div>
-            </div>
-        </div>
-    </div>
-</div>
 <div class="row overviewmaindiv">
+    <div class="col-lg-12"  [formGroup]="myForm">
+        <div class="col-lg-3">
+            Please Select Date Range
+        </div>
+        <div class="col-lg-3">
+            <mat-form-field appearance="fill" class="pr-sm-4" fxFlex="20">
+                <mat-label>Start date</mat-label>
+                <input matInput [matDatepicker]="startDatePicker"name="start" formControlName="fromDate" (dateChange)="onStartDateChange($event)">
+                <mat-datepicker-toggle matSuffix [for]="startDatePicker"></mat-datepicker-toggle>
+                <mat-datepicker #startDatePicker></mat-datepicker>
+                <mat-error>Please select start date!</mat-error>
+            </mat-form-field>
+        </div>
+        <div class="col-lg-3">
+            <mat-form-field appearance="fill" class="pr-sm-4" fxFlex="0">
+                <mat-label>End date</mat-label>
+                <input matInput [matDatepicker]="endDatePicker" name="end"  [formControl]="toDate" (dateChange)="onEndDateChange($event)">
+                <mat-datepicker-toggle matSuffix [for]="endDatePicker"></mat-datepicker-toggle>
+                <mat-datepicker #endDatePicker></mat-datepicker>
+                <mat-error>Please select End date!</mat-error>
+            </mat-form-field>
+        </div>
 
+
+    </div>
     <div class="col-lg-12">
 
         <div class="overviewdivfontspadding"></div>
@@ -98,8 +100,8 @@
             <div class="card-body row">
                 <div class="chart-wrapper mx-auto chart-container">
                     <canvas baseChart id="canvas" [chartType]="'line'" [options]="barOptions"
-                        [datasets]="barData.datasets" [colors]="barColors" [labels]="barChartLabels" [legend]="true"
-                        height="50">
+                        [datasets]="barDataClicks.datasets" [colors]="barColors" [labels]="barChartLabels"
+                        [legend]="true" height="50">
                     </canvas>
                 </div>
             </div>
@@ -113,15 +115,15 @@
         <div class="card card-default shadow bg-white rounded">
             <div class="card-header">
                 <div class="row borderBtm padding5">
-                    <h2 class="col-xs-12 col-12 col-md-5"> Clicks</h2>
+                    <h2 class="col-xs-12 col-12 col-md-5"> Impressions</h2>
                 </div>
 
             </div>
             <div class="card-body row">
                 <div class="chart-wrapper mx-auto chart-container">
-                    <canvas baseChart id="canvas" [chartType]="'LineWithLine'" [options]="barOptions"
-                        [datasets]="barDataImpressions.datasets" [colors]="barColors" [labels]="barChartLabels" [legend]="true"
-                        height="50">
+                    <canvas baseChart id="canvas1" [chartType]="'line'" [options]="barOptions"
+                        [datasets]="barDataImpressions.datasets" [colors]="barColors" [labels]="barChartLabels"
+                        [legend]="true" height="50">
                     </canvas>
                 </div>
             </div>
@@ -129,363 +131,43 @@
     </div>
     <div class="col-lg-12">
 
-        <div class="card card-default shadow bg-white rounded height200pxfit-content cursor-set">
+        <div class="overviewdivfontspadding"></div>
+
+        <div class="card card-default shadow bg-white rounded">
             <div class="card-header">
                 <div class="row borderBtm padding5">
-                    <h2 class="col-xs-12 col-12 col-md-10 fontsize15px colour-set">: Performance Summary</h2>
-                    <div class="col-xs-12 col-12 col-md-1 fontsize15px">
-                        <i class="fa fa-info-circle paddingtop10px" matTooltip="Geographical data to show where most of the traffic comes from"></i>
-                    </div>
+                    <h2 class="col-xs-12 col-12 col-md-5"> Site CTR</h2>
                 </div>
 
             </div>
-            <div class="widget-content">
-                <div class="overviewdivborder">
-
-                    <div class="row">
-                        <div class="col-sm-3">
-                            <h3 class="colour-light">PAGE PROFILE VIEWS</h3>
-                            <h3 class="fontxlrge">{{profileViewTotal}}</h3>
-                            <h3 class="fontsizesmall">Avg. per day : {{avgProfileView}}</h3>
-                        </div>
-                        <div class="vl"></div>
-                        <div class="col-sm-3">
-                            <h3 class="colour-light">TOP EXTERNAL REFERRER</h3>
-                            <table class="table table-bordered font-weight-bold colour-light">
-                                <thead>
-                                    <tr>
-                                        <td>
-                                            URL
-                                        </td>
-                                        <td>
-                                            COUNT
-                                        </td>
-                                        <td>
-                                            %
-                                        </td>
-                                    </tr>
-                                </thead>
-                                <tbody>
-                                    <tr>
-                                        <td class="text-blue">
-                                            https://www.google.com
-                                        </td>
-                                        <td class="text-blue">
-                                            7
-                                        </td>
-                                        <td class="text-blue">35%</td>
-                                    </tr>
-                            </table>
-                        </div>
-                        <div class="vl"></div>
-                        <div class="col-sm-3">
-                            <h3 class="colour-light">PAGE CLICKS</h3>
-                            <h3 class="fontxlrge">{{pageClicksTotal}}</h3>
-
-                        </div>
-                        <div class="vl"></div>
-                        <div class="col-sm-2">
-                            <h3 class="colour-light"> +Ve VS -Ve FEEDBACK</h3>
-
-
-                            <table class="table table-bordered font-weight-bold colour-light">
-                                <thead>
-                                    <tr>
-
-                                        <td>
-                                            POSITIVE
-                                        </td>
-                                        <td>
-                                            FEEDBACK
-                                        </td>
-                                    </tr>
-                                </thead>
-                                <tbody>
-                                    <tr>
-                                        <td class="text-blue">
-                                            {{percentPositive}}%
-                                        </td>
-                                        <td style="color:red;">
-                                            {{percentNegative}}%
-                                        </td>
-                                    </tr>
-                            </table>
-                        </div>
-
-                    </div>
-
-                </div>
-
-            </div>
-        </div>
-
-
-
-        <div class="card card-default shadow bg-white rounded height200pxfit-content cursor-set">
-            <div class="card-header">
-                <div class="row borderBtm padding5">
-                    <h2 class="col-xs-12 col-12 col-md-10 fontsize15px colour-set">: Audience Summary</h2>
-                    <div class="col-xs-12 col-12 col-md-1 fontsize15px">
-                        <i class="fa fa-info-circle paddingtop10px" matTooltip="Social media data to show where most of the traffic comes from"></i>
-                    </div>
-                </div>
-
-            </div>
-            <div class="widget-content">
-                <div class="overviewdivborder">
-
-                    <div class="row">
-                        <div class="col-sm-3">
-                            <h3 class="colour-light">TOTAL PAGE LIKES</h3>
-                            <!-- <h3 style="font-size: x-large;margin: auto;color:red;">23424</h3> -->
-                            <h3 class="fontxlrge">{{pagelikesTotal}}</h3>
-
-                        </div>
-                        <div class="vl"></div>
-                        <div class="col-sm-3">
-                            <h3 class="colour-light">NEW LIKES</h3>
-                            <!-- <h3 style="font-size: x-large;margin: auto;color:red;">23423</h3> -->
-                            <h3 class="fontxlrge">{{pageNewlikesTotal}}</h3>
-                        </div>
-
-                        <div class="vl"></div>
-                        <div class="col-sm-3">
-                            <h3 class="colour-light">LIKES LOST</h3>
-                            <h3 class="fontxlrge">{{lostLikes}}</h3>
-                            <h3 class="fontsizesmall">Avg. per day : {{avgLostLikes}}</h3>
-                        </div>
-                        <div class="vl"></div>
-                        <div class="col-sm-2">
-                            <h3 class="colour-light"> ORGANIC VS PAID LIKES</h3>
-                            <table class="table table-bordered font-weight-bold colour-light">
-                                <thead>
-                                    <tr>
-
-                                        <td>
-                                            ORGANIC
-                                        </td>
-                                        <td>
-                                            PAID
-                                        </td>
-                                    </tr>
-                                </thead>
-                                <tbody>
-                                    <tr>
-                                        <td class="text-blue">
-                                            {{percentPositive}}%
-                                        </td>
-                                        <td style="color:red;">
-                                            {{percentNegative}}%
-                                        </td>
-                                    </tr>
-                            </table>
-                        </div>
-                    </div>
-
-                </div>
-
-            </div>
-        </div>
-        <div class="col-lg-6">
-            <div class="card card-default shadow bg-white rounded height200pxfit-content cursor-set">
-                <div class="card-header">
-                    <div class="row borderBtm padding5">
-                        <h2 class="col-xs-12 col-12 col-md-10 fontsize15px colour-set">: Page Views Via External Referrers
-                        </h2>
-                        <div class="col-xs-12 col-12 col-md-1 fontsize15px">
-                            <i class="fa fa-info-circle paddingtop10px" matTooltip="Geographical data to show where most of the traffic comes from"></i>
-                        </div>
-                    </div>
-
-                </div>
-                <div class="widget-content">
-                    <div class="overviewdivborder">
-                        <div class="row">
-                            <div class="col-lg-12">
-                                <table class="table table-bordered font-weight-bold colour-light">
-                                    <thead>
-                                        <tr>
-                                            <td>
-                                                URL
-                                            </td>
-                                            <td>
-                                                VIEWS
-                                            </td>
-                                            <td>
-                                                VIEW %
-                                            </td>
-                                        </tr>
-                                    </thead>
-                                    <tbody>
-                                        <tr *ngFor="let h of pageUnlikeList; let i = index;">
-                                            <td class="text-blue">
-                                                {{h.source}}
-                                            </td>
-                                            <td class="text-blue">
-                                                {{h.count}}
-                                            </td>
-                                            <td class="text-blue">{{h.percent}}% </td>
-                                        </tr>
-                                </table>
-
-                            </div>
-                        </div>
-
-
-                    </div>
-
-                </div>
-            </div>
-        </div>
-        <div class="col-lg-6">
-            <div class="card card-default shadow bg-white rounded height200pxfit-content cursor-set">
-                <div class="card-header">
-                    <div class="row borderBtm padding5">
-                        <h2 class="col-xs-12 col-12 col-md-10 fontsize15px colour-set">: Page Unlikes by Source
-                        </h2>
-                        <div class="col-xs-12 col-12 col-md-1 fontsize15px">
-                            <i class="fa fa-info-circle paddingtop10px" matTooltip="Geographical data to show where most of the traffic comes from"></i>
-                        </div>
-                    </div>
-
-                </div>
-                <div class="widget-content">
-                    <div class="overviewdivborder">
-                        <div class="row">
-                            <div class="col-lg-12">
-                                <table class="table table-bordered font-weight-bold colour-light">
-                                    <thead>
-                                        <tr>
-                                            <td>
-                                                SOURCE
-                                            </td>
-                                            <td>
-                                                UNLIKES
-                                            </td>
-                                            <td>
-                                                UNLIKES %
-                                            </td>
-                                        </tr>
-                                    </thead>
-                                    <tbody>
-                                        <tr *ngFor="let h of pageUnlikeList; let i = index;">
-                                            <td class="text-blue">
-                                                {{h.source}}
-                                            </td>
-                                            <td class="text-blue">
-                                                {{h.count}}
-                                            </td>
-                                            <td class="text-blue">{{h.percent}}% </td>
-                                        </tr>
-                                </table>
-
-                            </div>
-                        </div>
-
-
-                    </div>
-
+            <div class="card-body row">
+                <div class="chart-wrapper mx-auto chart-container">
+                    <canvas baseChart id="canvas1" [chartType]="'line'" [options]="barOptions"
+                        [datasets]="barDataCTR.datasets" [colors]="barColors" [labels]="barChartLabels"
+                        [legend]="true" height="50">
+                    </canvas>
                 </div>
             </div>
         </div>
     </div>
-    <!-- second -->
     <div class="col-lg-12">
-        <div class="card card-default shadow bg-white rounded height200pxfit-content cursor-set">
+
+        <div class="overviewdivfontspadding"></div>
+
+        <div class="card card-default shadow bg-white rounded">
             <div class="card-header">
                 <div class="row borderBtm padding5">
-                    <h2 class="col-xs-12 col-12 col-md-10 fontsize15px colour-set">: Impression Summary</h2>
-                    <div class="col-xs-12 col-12 col-md-1 fontsize15px">
-                        <i class="fa fa-info-circle paddingtop10px" matTooltip="Social media data to show where most of the traffic comes from"></i>
-                    </div>
+                    <h2 class="col-xs-12 col-12 col-md-5"> Positions</h2>
                 </div>
 
             </div>
-            <div class="widget-content">
-                <div class="overviewdivborder">
-
-                    <div class="row">
-                        <div class="col-sm-3">
-                            <h3 class="colour-light">PAGE IMPRESSIONS</h3>
-                            <h3 class="fontxlrge">{{pageImpressionsTotal}}</h3>
-
-                        </div>
-                        <div class="vl"></div>
-                        <div class="col-sm-3">
-                            <h3 class="colour-light">PAGE REACH</h3>
-                            <!-- <h3 style="font-size: x-large;margin: auto;color:red;">456546</h3> -->
-                            <h3 class="fontxlrge">{{pageReachTotal}}</h3>
-                        </div>
-                        <div class="vl"></div>
-                        <div class="col-sm-3">
-                            <div class="overviewdivborder">
-                                <div class="row">
-                                    <div class="col-lg-12">
-                                        <h3 class="colour-light"> ORGANIC VS PAID REACH</h3>
-                                        <table class="table table-bordered font-weight-bold colour-light">
-                                            <thead>
-                                                <tr>
-
-                                                    <td>
-                                                        ORGANIC
-                                                    </td>
-                                                    <td>
-                                                        PAID
-                                                    </td>
-                                                </tr>
-                                            </thead>
-                                            <tbody>
-                                                <tr>
-                                                    <td class="text-blue">
-                                                        {{percentOrganicReach}}%
-                                                    </td>
-                                                    <td class="text-blue">
-                                                        {{percentPaidReach}}%
-                                                    </td>
-                                                </tr>
-                                        </table>
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
-                        <div class="vl"></div>
-                        <div class="col-sm-2">
-                            <h3 class="colour-light">TOP COUNTRY</h3>
-                            <table class="table table-bordered font-weight-bold colour-light">
-
-                                <thead>
-                                    <tr>
-                                        <td>COUNTRIES</td>
-
-                                        <td>
-                                            COUNT
-                                        </td>
-                                        <td>%</td>
-                                    </tr>
-                                </thead>
-                                <tbody>
-                                    <tr>
-                                        <td>India
-                                        </td>
-
-                                        <td class="text-blue">
-                                            921
-                                        </td>
-                                        <td class="text-blue">
-                                            64%
-                                        </td>
-
-                                    </tr>
-                            </table>
-                        </div>
-                    </div>
-
-
-
-
-
+            <div class="card-body row">
+                <div class="chart-wrapper mx-auto chart-container">
+                    <canvas baseChart id="canvas1" [chartType]="'line'" [options]="barOptions"
+                        [datasets]="barDataPositions.datasets" [colors]="barColors" [labels]="barChartLabels"
+                        [legend]="true" height="50">
+                    </canvas>
                 </div>
-
             </div>
         </div>
     </div>

@@ -18,6 +18,7 @@ import { RegisterComponent } from './routes/register/register/register.component
 import { NgxSummernoteModule } from 'ngx-summernote';
 import { ChartsModule } from 'ng2-charts';
 import { MatSnackBarModule } from '@angular/material/snack-bar';
+import { DatePipe } from '@angular/common';
 // https://github.com/ocombe/ng2-translate/issues/218
 export function createTranslateLoader(http: HttpClient) {
     return new TranslateHttpLoader(http, './assets/i18n/', '.json');
@@ -48,6 +49,7 @@ export function createTranslateLoader(http: HttpClient) {
         MatSnackBarModule
     ],
     providers: [
+        DatePipe,
         RequireAuthenticatedUserRouteGuardService,
         OpenIdConnectService
     ],

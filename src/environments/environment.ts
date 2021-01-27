@@ -72,10 +72,10 @@ export const environment = {
 //   openIdConnectSettings: {
 //     authority: 'https://eintelligenceidentity.azurewebsites.net/',
 //     client_id: 'tourmanagementclient',
-//     redirect_uri: 'https://eintelligence.azurewebsites.net/signin-oidc',
+//     redirect_uri: 'https://app.whitelabelboard.com/signin-oidc',
 //     scope: 'openid profile roles tourmanagementapi',
 //     response_type: 'id_token token',
-//     post_logout_redirect_uri: 'https://eintelligence.azurewebsites.net/',
+//     post_logout_redirect_uri: 'https://app.whitelabelboard.com/',
 //   },
 // };
 

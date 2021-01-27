@@ -4,6 +4,9 @@ import { async } from '@angular/core/testing';
 import { SocialAuthService } from "angularx-social-login";
 import { GoogleLoginProvider } from "angularx-social-login";
 import { Label } from 'ng2-charts';
+import { DatePipe } from '@angular/common';
+import { FormControl, FormGroup, Validators } from '@angular/forms';
+import { parseDate } from 'ngx-bootstrap/chronos';
 @Component({
   selector: 'app-gscdata',
   templateUrl: './gscdata.component.html',
@@ -13,7 +16,18 @@ export class GscdataComponent implements OnInit {
   clicksData = [];
   dateListData = [];
   impressionData;
-  currDate:string;
+  currDate: string;
+  previousStartDate;
+  previousEndDate;
+  toDate = new FormControl(new Date())
+  fromDate = new FormControl(new Date(Date.now() - 7 * 24 * 60 * 60 * 1000) )
+  currYear: number;
+  myForm = new FormGroup({
+    fromDate: this.fromDate,
+    toDate: this.toDate,
+  });
+  startDate;
+  endDate;
   //Chart variables
   barOptions = {
     scaleShowVerticalLines: false,
@@ -89,7 +103,7 @@ export class GscdataComponent implements OnInit {
       }
     },
   };
-  barData = {
+  barDataClicks = {
     labels: ['January'],
     'legend': {
       'onClick': function (evt, item) {
@@ -104,6 +118,34 @@ export class GscdataComponent implements OnInit {
       }]
   };
   barDataImpressions = {
+    labels: ['January'],
+    'legend': {
+      'onClick': function (evt, item) {
+
+      },
+    },
+    datasets: [
+      {
+        data: [], label: 'This Year', legend: false, fill: false
+      }, {
+        data: [], label: 'Previous Year', legend: false, fill: false,
+      }]
+  };
+  barDataCTR = {
+    labels: ['January'],
+    'legend': {
+      'onClick': function (evt, item) {
+
+      },
+    },
+    datasets: [
+      {
+        data: [], label: 'This Year', legend: false, fill: false
+      }, {
+        data: [], label: 'Previous Year', legend: false, fill: false,
+      }]
+  };
+  barDataPositions = {
     labels: ['January'],
     'legend': {
       'onClick': function (evt, item) {
@@ -138,49 +180,22 @@ export class GscdataComponent implements OnInit {
       'Authorization': 'Bearer ' + this.accessToken,
     })
   };
-
-  constructor(private authService: SocialAuthService, private http: HttpClient) {
-    // this.barData.datasets[0].data = [10, 20, 34, 6, 43, 12, 56, 86, 5, 33, 24, 55];
-    // this.barData.datasets[1].data = [13, 10, 84, 77, 3, 12, 57, 54, 65, 34, 33, 22];
-    this.barDataImpressions.datasets[0].data = [1, 2, 3, 6, 43, 2, 56, 86, 5, 3, 24, 55];
-    this.barDataImpressions.datasets[1].data = [13, 10, 4.77, 3, 12, 57, 4, 65, 4, 3, 22];
+  constructor(private authService: SocialAuthService, private http: HttpClient, public datepipe: DatePipe,) {
+    this.getDateSettings();
   }
-
   signInWithGoogle(): void {
     const googleLoginOptions = {
       scope: 'profile email https://www.googleapis.com/auth/webmasters.readonly https://www.googleapis.com/auth/webmasters'
-    }; // https://developers.google.com/api-client-library/javascript/reference/referencedocs#gapiauth2clientconfig
+    }; 
     this.authService.signIn(GoogleLoginProvider.PROVIDER_ID, googleLoginOptions)
       .then((res) => {
-        console.log('Logged in', res);
         this.accessToken = res['authToken'];
-        let idToken = res['idToken'];
         this.getData();
-      })
-    //.then(x => console.log(x));
-  }
-  getSiteData() {
-    debugger
-    this.httpOptionJSON = {
-      headers: new HttpHeaders({
-        'Accept': 'application/json',
-        'Authorization': 'Bearer ' + this.accessToken,
-      })
-    };
-    //const url = "https://https://www.googleapis.com/auth/compute/www.abhisi.com/searchAnalytics/query?key=AIzaSyC1IsrCeeNXp9ksAmC8szBtYVjTLJC9UWQ";
-    const url = "https://searchconsole.googleapis.com/webmasters/v3/sites?key=AIzaSyC1IsrCeeNXp9ksAmC8szBtYVjTLJC9UWQ";
-    this.http.get(url, this.httpOptionJSON).subscribe(res => {
-      if (res) {
-        debugger
-        alert(res);
-      }
-    }, error => {
-      debugger
-      alert('Checkout Failed For Subscription: ' + JSON.stringify(error.error));
-    });
 
+      })
   }
-  getData(startDate, endDate) {
+
+  getDataCurrentYear(startDate, endDate) {
     debugger
     this.httpOptionJSON = {
       headers: new HttpHeaders({
@@ -191,8 +206,8 @@ export class GscdataComponent implements OnInit {
     const url = "https://www.googleapis.com/webmasters/v3/sites/https%3A%2F%2Fwww.abhisi.com%2F/searchAnalytics/query?key=AIzaSyC1IsrCeeNXp9ksAmC8szBtYVjTLJC9UWQ";
     let data = {
       "startRow": 0,
-      "startDate": "2021-01-15",
-      "endDate": "2021-01-25",
+      "startDate": startDate,
+      "endDate": endDate,
       "dataState": "ALL",
       "dimensions": [
         "DATE"
@@ -203,28 +218,109 @@ export class GscdataComponent implements OnInit {
         debugger
         let rows = res['rows'];
         this.dateListData = [];
-        this.barData.datasets[0].data=[];
-        this.barData.datasets[1].data=[];
-        this.barChartLabels=[];
+        this.barDataClicks.datasets[0].data = [];
+        this.barDataImpressions.datasets[0].data = [];
+        this.barDataCTR.datasets[0].data = [];
+        this.barDataPositions.datasets[0].data = [];
+        this.barChartLabels = [];
         for (let i = 0; i < rows.length; i++) {
           this.currDate = rows[i].keys[0]
-          this.currDate = this.currDate.substring(5,10);
-           this.dateListData.push(this.currDate);
-          // this.dateListData.push(this.datepipe.transform(rows[i].keys[0], 'MMM d'));
-          this.barData.datasets[0].data.push(rows[i].clicks);
-          this.barData.datasets[1].data.push(rows[i].clicks + 10);
+          this.currDate = this.currDate.substring(5, 10);
+          this.barDataClicks.datasets[0].data.push(rows[i].clicks);
+          this.barDataImpressions.datasets[0].data.push(rows[i].impressions);
+          this.barDataCTR.datasets[0].data.push(rows[i].ctr);
+          this.barDataPositions.datasets[0].data.push(rows[i].position);
           this.barChartLabels.push(this.currDate);
         }
-       // this.barData.datasets[0].data = [10, 20, 34, 6, 43, 12, 56, 86, 5, 33, 24, 55];
       }
     }, error => {
       debugger
-      alert('Checkout Failed For Subscription: ' + JSON.stringify(error.error));
+      alert('Data fetch failed for current year : ' + JSON.stringify(error.error));
+    });
+
+  }
+  getDataPreviousYear(startDate, endDate) {
+    debugger
+    this.httpOptionJSON = {
+      headers: new HttpHeaders({
+        'Accept': 'application/json',
+        'Authorization': 'Bearer ' + this.accessToken,
+      })
+    };
+    const url = "https://www.googleapis.com/webmasters/v3/sites/https%3A%2F%2Fwww.abhisi.com%2F/searchAnalytics/query?key=AIzaSyC1IsrCeeNXp9ksAmC8szBtYVjTLJC9UWQ";
+    let data = {
+      "startRow": 0,
+      "startDate": startDate,
+      "endDate": endDate,
+      "dataState": "ALL",
+      "dimensions": [
+        "DATE"
+      ]
+    };
+    this.http.post(url, data, this.httpOptionJSON).subscribe(res => {
+      if (res) {
+        debugger
+        let rows = res['rows'];
+        this.dateListData = [];
+        this.barDataClicks.datasets[1].data = [];
+        this.barDataImpressions.datasets[1].data = [];
+        this.barChartLabels = [];
+        for (let i = 0; i < rows.length; i++) {
+          this.currDate = rows[i].keys[0]
+          this.currDate = this.currDate.substring(5, 10);
+          this.barDataClicks.datasets[1].data.push(rows[i].clicks + 10);
+          this.barDataImpressions.datasets[1].data.push(rows[i].impressions);
+          this.barDataCTR.datasets[1].data.push(rows[i].ctr);
+          this.barDataPositions.datasets[1].data.push(rows[i].position);
+
+          this.barChartLabels.push(this.currDate);
+        }
+      }
+    }, error => {
+      debugger
+      alert('Data fetch failed for previous year : ' + JSON.stringify(error.error));
     });
 
   }
   ngOnInit() {
 
   }
+  onStartDateChange(event) {
+    this.startDate = this.datepipe.transform(this.fromDate.value, 'yyyy-MM-dd');
+    this.currYear = parseInt(this.datepipe.transform(this.fromDate.value, 'yyyy'));
+    let prevYear = this.currYear - 1;
+    this.previousStartDate = prevYear.toString() + '-' + this.datepipe.transform(this.fromDate.value, 'MM-dd');
+    this.getData();
+  }
 
+  onEndDateChange(event) {
+    this.endDate = this.datepipe.transform(this.toDate.value, 'yyyy-MM-dd');
+    this.currYear = parseInt(this.datepipe.transform(this.toDate.value, 'yyyy'));
+    let prevYear = this.currYear - 1;
+    this.previousEndDate = prevYear.toString() + '-' + this.datepipe.transform(this.toDate.value, 'MM-dd');
+    this.getData();
+  }
+  getData(){
+    debugger
+    if(this.accessToken == '' || this.accessToken == undefined || this.accessToken ==null){
+      alert("Please, Login with Google to fetch data");
+    }else if(parseDate(this.endDate) < parseDate(this.startDate)){
+      alert("Start Date can not be grater then End Date");
+    }
+    else{
+    this.getDataCurrentYear(this.startDate, this.endDate);
+    this.getDataPreviousYear(this.previousStartDate, this.previousEndDate);
+    }
+  }
+  getDateSettings(){
+    debugger
+    this.startDate = this.datepipe.transform(this.fromDate.value, 'yyyy-MM-dd');
+    this.currYear = parseInt(this.datepipe.transform(this.fromDate.value, 'yyyy'));
+    let prevYear = this.currYear - 1;
+    this.previousStartDate = prevYear.toString() + '-' + this.datepipe.transform(this.fromDate.value, 'MM-dd');
+    this.endDate = this.datepipe.transform(this.toDate.value, 'yyyy-MM-dd');
+    this.currYear = parseInt(this.datepipe.transform(this.toDate.value, 'yyyy'));
+     prevYear = this.currYear - 1;
+    this.previousEndDate = prevYear.toString() + '-' + this.datepipe.transform(this.toDate.value, 'MM-dd');
+  }
 }
