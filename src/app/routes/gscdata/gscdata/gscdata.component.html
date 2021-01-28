@@ -50,6 +50,21 @@
                 <span class="fontsizesmall">Social Media</span>
             </a>
         </li>
+        <li id="seo_menu" class="nav-link" data-third-menu="seo_menu_index">
+            <a href="javascript:void(0);" class="nav-link" (click)="goToLinkedIn($event)">
+                <span class="fontsizesmall">LinkedIn</span>
+            </a>
+        </li>
+        <li id="seo_menu" class="nav-link" data-third-menu="seo_menu_index">
+            <a href="javascript:void(0);" class="nav-link" (click)="goToInstagram($event)">
+                <span class="fontsizesmall">Instagram</span>
+            </a>
+        </li>
+        <li id="seo_menu" class="nav-link" data-third-menu="seo_menu_index">
+            <a href="javascript:void(0);" class="nav-link" (click)="goToGSC($event)">
+                <span class="fontsizesmall">GSC</span>
+            </a>
+        </li>
     </ul>
     <div class="overviewdivborder  move-center">
         <button class="mr-1 btn btn-primary btn-lg" type="button" (click)="signInWithGoogle()">
@@ -61,14 +76,15 @@
 </nav>
 
 <div class="row overviewmaindiv">
-    <div class="col-lg-12"  [formGroup]="myForm">
+    <div class="col-lg-12" [formGroup]="myForm">
         <div class="col-lg-3">
             Please Select Date Range
         </div>
         <div class="col-lg-3">
             <mat-form-field appearance="fill" class="pr-sm-4" fxFlex="20">
                 <mat-label>Start date</mat-label>
-                <input matInput [matDatepicker]="startDatePicker"name="start" formControlName="fromDate" (dateChange)="onStartDateChange($event)">
+                <input matInput [matDatepicker]="startDatePicker" name="start" formControlName="fromDate"
+                    (dateChange)="onStartDateChange($event)">
                 <mat-datepicker-toggle matSuffix [for]="startDatePicker"></mat-datepicker-toggle>
                 <mat-datepicker #startDatePicker></mat-datepicker>
                 <mat-error>Please select start date!</mat-error>
@@ -77,14 +93,42 @@
         <div class="col-lg-3">
             <mat-form-field appearance="fill" class="pr-sm-4" fxFlex="0">
                 <mat-label>End date</mat-label>
-                <input matInput [matDatepicker]="endDatePicker" name="end"  [formControl]="toDate" (dateChange)="onEndDateChange($event)">
+                <input matInput [matDatepicker]="endDatePicker" name="end" [formControl]="toDate"
+                    (dateChange)="onEndDateChange($event)">
                 <mat-datepicker-toggle matSuffix [for]="endDatePicker"></mat-datepicker-toggle>
                 <mat-datepicker #endDatePicker></mat-datepicker>
                 <mat-error>Please select End date!</mat-error>
             </mat-form-field>
         </div>
+    </div>
+    <div class="col-lg-12">
+        <div class="col-sm-3">
+            <h3 class="colour-light">Clicks</h3>
+            <h3 class="fontxlrge">{{clicksThisYear}}</h3>
+            <!-- <h3 class="fontsizesmall">1</h3> -->
 
+        </div>
+        <div class="vl"></div>
+        <div class="col-sm-3">
+            <h3 class="colour-light">Impressions</h3>
+            <h3 class="fontxlrge">{{impressionsThisYear}}</h3>
+            <!-- <h3 class="fontsizesmall">1</h3> -->
 
+        </div>
+        <div class="vl"></div>
+        <div class="col-sm-3">
+            <h3 class="colour-light">CTR</h3>
+            <h3 class="fontxlrge">{{cTRThisYear}}</h3>
+            <!-- <h3 class="fontsizesmall">1</h3> -->
+
+        </div>
+        <div class="vl"></div>
+        <div class="col-sm-3">
+            <h3 class="colour-light">Position</h3>
+            <h3 class="fontxlrge">{{positionThisYear}}</h3>
+            <!-- <h3 class="fontsizesmall">Avg</h3> -->
+
+        </div>
     </div>
     <div class="col-lg-12">
 
@@ -143,8 +187,8 @@
             <div class="card-body row">
                 <div class="chart-wrapper mx-auto chart-container">
                     <canvas baseChart id="canvas1" [chartType]="'line'" [options]="barOptions"
-                        [datasets]="barDataCTR.datasets" [colors]="barColors" [labels]="barChartLabels"
-                        [legend]="true" height="50">
+                        [datasets]="barDataCTR.datasets" [colors]="barColors" [labels]="barChartLabels" [legend]="true"
+                        height="50">
                     </canvas>
                 </div>
             </div>
