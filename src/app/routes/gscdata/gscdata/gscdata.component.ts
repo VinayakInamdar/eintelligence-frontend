@@ -7,7 +7,10 @@ import { Label } from 'ng2-charts';
 import { DatePipe } from '@angular/common';
 import { FormControl, FormGroup, Validators } from '@angular/forms';
 import { parseDate } from 'ngx-bootstrap/chronos';
-import { Router } from '@angular/router';
+import { ActivatedRoute, Router } from '@angular/router';
+import { OpenIdConnectService } from '../../../shared/services/open-id-connect.service';
+import { CampaignService } from '../../campaign/campaign.service';
+import { LocalDataSource } from 'ng2-smart-table';
 @Component({
   selector: 'app-gscdata',
   templateUrl: './gscdata.component.html',
@@ -27,6 +30,7 @@ export class GscdataComponent implements OnInit {
     fromDate: this.fromDate,
     toDate: this.toDate,
   });
+ 
   startDate;
   endDate;
   clicksThisYear: string = "0";
@@ -41,6 +45,10 @@ export class GscdataComponent implements OnInit {
   percentImpressions;
   percentCTR;
   percentPosition;
+  campaignList = [];
+  selectedCampIdWebUrl: string;
+  selectedCampId: string;
+  selectedCampaignName: string;
   //Chart variables
   barOptions = {
     scaleShowVerticalLines: false,
@@ -195,8 +203,70 @@ export class GscdataComponent implements OnInit {
       'Authorization': 'Bearer ' + this.accessToken,
     })
   };
-  constructor(private authService: SocialAuthService, private http: HttpClient, public datepipe: DatePipe, public router: Router) {
+  constructor(private authService: SocialAuthService, private http: HttpClient, public datepipe: DatePipe, public router: Router,
+    private campaignService: CampaignService, public openIdConnectService: OpenIdConnectService, public route: ActivatedRoute) {
+    let id = this.route.snapshot.paramMap.get('id');
+    this.selectedCampId = `${id}`;
     this.getDateSettings();
+    this.getCampaignList();
+  }
+   // using to get list of campaigns
+   public getCampaignList(): void {
+    var userid = this.openIdConnectService.user.profile.sub;
+    this.campaignService.getCampaign(userid).subscribe(res => {
+      this.campaignList = res;
+      // this.source = new LocalDataSource(this.campaignList)
+      var name = "";
+      if (this.selectedCampId == ":id") {
+        this.selectedCampId = this.campaignList[0].id
+      }
+      debugger
+      this.campaignList.map((s, i) => {
+        if (s.id == this.selectedCampId) {
+          name = s.name
+          this.selectedCampIdWebUrl = s.webUrl
+        }
+      })
+      this.selectedCampaignName = name !== "" ? name : undefined;
+    });
+  }
+  public goToSeoOverview(event) {
+    this.router.navigate([`/campaign/:id${this.selectedCampId}/seo`])
+  }
+  public goToSocialMedia(event) {
+
+    this.router.navigate([`./socialmedia/socialmedia`, { id: this.selectedCampId }])
+  }
+  public goToLinkedIn(event) {
+
+    this.router.navigate([`./linkedin/linkedin`, { id: this.selectedCampId }])
+  }
+  public goToInstagram(event) {
+
+    this.router.navigate([`./instagram/instagram`, { id: this.selectedCampId }])
+  }
+  public goToGSC(event) {
+    debugger
+    this.router.navigate([`./gsc/gsc`, { id: this.selectedCampId }])
+  }
+  public goToAnalyticsOverview(event) {
+    this.router.navigate([`/campaign/:id${this.selectedCampId}/analytics`])
+  }
+  public goToCampaignOverview(event) {
+    this.router.navigate(['/campaign', { id: this.selectedCampId }], {
+      queryParams: {
+        view: 'showReport'
+      },
+    });
+  }
+
+  // using to navigate to overview page to view anlytics of selected campaign
+  public onCampaignSelect(event, selectedCampaign) {
+    this.selectedCampaignName = selectedCampaign.name
+    this.selectedCampId = selectedCampaign.id
+    //this.router.navigate(['/home/overview', { id: this.selectedCampId }]);
+    this.router.navigate(['./gsc/gsc', { id: this.selectedCampId }]);
+
   }
   signInWithGoogle(): void {
     const googleLoginOptions = {
@@ -211,7 +281,7 @@ export class GscdataComponent implements OnInit {
   }
 
   getDataCurrentYear(startDate, endDate, all) {
-    
+
     this.httpOptionJSON = {
       headers: new HttpHeaders({
         'Accept': 'application/json',
@@ -241,12 +311,12 @@ export class GscdataComponent implements OnInit {
     }
     this.http.post(url, data, this.httpOptionJSON).subscribe(res => {
       if (res) {
-        
+
         let rows = res['rows'];
         if (all == 0) {
           this.clicksThisYear = rows[0].clicks;
           this.impressionsThisYear = rows[0].impressions;
-          this.cTRThisYear =  parseFloat(rows[0].ctr).toFixed(2).toString();
+          this.cTRThisYear = parseFloat(rows[0].ctr).toFixed(2).toString();
           this.positionThisYear = parseFloat(rows[0].position).toFixed(2).toString();
         }
         else {
@@ -268,13 +338,13 @@ export class GscdataComponent implements OnInit {
         }
       }
     }, error => {
-      
+
       alert('Data fetch failed for current year : ' + JSON.stringify(error.error));
     });
 
   }
   getDataPreviousYear(startDate, endDate, all) {
-    
+
     this.httpOptionJSON = {
       headers: new HttpHeaders({
         'Accept': 'application/json',
@@ -293,17 +363,17 @@ export class GscdataComponent implements OnInit {
     };
     this.http.post(url, data, this.httpOptionJSON).subscribe(res => {
       if (res) {
-        
+
         let rows = res['rows'];
         if (all == 0) {
           this.clicksPreviousYear = rows[0].clicks;
-          this.impressionsPreviousYear =  rows[0].impressions;
+          this.impressionsPreviousYear = rows[0].impressions;
           this.cTRPreviousYear = parseFloat(rows[0].ctr).toFixed(2).toString();
-          this.positionPreviousYear  = parseFloat(rows[0].position).toFixed(2).toString();
+          this.positionPreviousYear = parseFloat(rows[0].position).toFixed(2).toString();
 
           //pecentgage calculate
           //(previous-current*100)/Previous
-          
+
         }
         else {
           this.dateListData = [];
@@ -323,7 +393,7 @@ export class GscdataComponent implements OnInit {
         }
       }
     }, error => {
-      
+
       alert('Data fetch failed for previous year : ' + JSON.stringify(error.error));
     });
 
@@ -331,6 +401,7 @@ export class GscdataComponent implements OnInit {
   ngOnInit() {
 
   }
+ 
   onStartDateChange(event) {
     this.startDate = this.datepipe.transform(this.fromDate.value, 'yyyy-MM-dd');
     this.currYear = parseInt(this.datepipe.transform(this.fromDate.value, 'yyyy'));
@@ -347,7 +418,7 @@ export class GscdataComponent implements OnInit {
     this.getData();
   }
   getData() {
-    
+
     if (this.accessToken == '' || this.accessToken == undefined || this.accessToken == null) {
       alert("Please, Login with Google to fetch data");
     } else if (parseDate(this.endDate) < parseDate(this.startDate)) {
@@ -361,7 +432,7 @@ export class GscdataComponent implements OnInit {
     }
   }
   getDateSettings() {
-    
+
     this.startDate = this.datepipe.transform(this.fromDate.value, 'yyyy-MM-dd');
     this.currYear = parseInt(this.datepipe.transform(this.fromDate.value, 'yyyy'));
     let prevYear = this.currYear - 1;
@@ -371,19 +442,8 @@ export class GscdataComponent implements OnInit {
     prevYear = this.currYear - 1;
     this.previousEndDate = prevYear.toString() + '-' + this.datepipe.transform(this.toDate.value, 'MM-dd');
   }
-  public goToLinkedIn(event) {
-
-    this.router.navigate([`/linkedin`])
-  }
-  public goToInstagram(event) {
-
-    this.router.navigate([`/instagram`])
-  }
-  public goToGSC(event) {
-
-    this.router.navigate([`/gsc`])
-  }
   getPercentage(num, total) {
     return ((100 * num) / total)
   }
+
 }

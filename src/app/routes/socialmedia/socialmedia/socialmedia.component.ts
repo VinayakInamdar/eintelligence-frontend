@@ -6,6 +6,10 @@ import { environment } from '../../../../environments/environment';
 import { SnackbarService } from '../../../shared/services/snackbar/snackbar.service';
 import { FacebookService, LoginResponse, LoginOptions, UIResponse, UIParams, FBVideoComponent } from 'ngx-facebook';
 import { positionElements } from 'ngx-bootstrap/positioning';
+import { ActivatedRoute, Router } from '@angular/router';
+import { OpenIdConnectService } from '../../../shared/services/open-id-connect.service';
+import { CampaignService } from '../../campaign/campaign.service';
+import { LocalDataSource } from 'ng2-smart-table';
 @Component({
   selector: 'app-socialmedia',
   templateUrl: './socialmedia.component.html',
@@ -48,12 +52,78 @@ export class SocialmediaComponent implements OnInit {
   avgNewLikes;
   avgPageClicks;
   avgLostLikes;
-  constructor(private http: HttpClient, private snackbarService: SnackbarService, private fb: FacebookService) {
+  campaignList = [];
+  selectedCampIdWebUrl: string;
+  selectedCampId: string;
+  selectedCampaignName: string;
+  constructor(private http: HttpClient, private snackbarService: SnackbarService, private fb: FacebookService, public router: Router,
+    private campaignService: CampaignService, public openIdConnectService: OpenIdConnectService, public route: ActivatedRoute) {
     fb.init({
       appId: environment.facebook_appid,
       version: 'v9.0'
     });
+    let id = this.route.snapshot.paramMap.get('id');
+    this.selectedCampId = `${id}`;
+    this.getCampaignList();
   }
+     // using to get list of campaigns
+     public getCampaignList(): void {
+      var userid = this.openIdConnectService.user.profile.sub;
+      this.campaignService.getCampaign(userid).subscribe(res => {
+        this.campaignList = res;
+        // this.source = new LocalDataSource(this.campaignList)
+        var name = "";
+        if (this.selectedCampId == ":id") {
+          this.selectedCampId = this.campaignList[0].id
+        }
+        debugger
+        this.campaignList.map((s, i) => {
+          if (s.id == this.selectedCampId) {
+            name = s.name
+            this.selectedCampIdWebUrl = s.webUrl
+          }
+        })
+        this.selectedCampaignName = name !== "" ? name : undefined;
+      });
+    }
+    public goToSeoOverview(event) {
+      this.router.navigate([`/campaign/:id${this.selectedCampId}/seo`])
+    }
+    public goToSocialMedia(event) {
+  
+      this.router.navigate([`./socialmedia/socialmedia`, { id: this.selectedCampId }])
+    }
+    public goToLinkedIn(event) {
+  
+      this.router.navigate([`./linkedin/linkedin`, { id: this.selectedCampId }])
+    }
+    public goToInstagram(event) {
+  
+      this.router.navigate([`./instagram/instagram`, { id: this.selectedCampId }])
+    }
+    public goToGSC(event) {
+      debugger
+      this.router.navigate([`./gsc/gsc`, { id: this.selectedCampId }])
+    }
+    public goToAnalyticsOverview(event) {
+      this.router.navigate([`/campaign/:id${this.selectedCampId}/analytics`])
+    }
+    public goToCampaignOverview(event) {
+      this.router.navigate(['/campaign', { id: this.selectedCampId }], {
+        queryParams: {
+          view: 'showReport'
+        },
+      });
+    }
+  
+    // using to navigate to overview page to view anlytics of selected campaign
+    public onCampaignSelect(event, selectedCampaign) {
+      this.selectedCampaignName = selectedCampaign.name
+      this.selectedCampId = selectedCampaign.id
+      //this.router.navigate(['/home/overview', { id: this.selectedCampId }]);
+      this.router.navigate(['./gsc/gsc', { id: this.selectedCampId }]);
+  
+    }
   login() {
     this.fb.login()
       .then((res: LoginResponse) => {

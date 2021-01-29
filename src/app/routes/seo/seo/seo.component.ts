@@ -1296,6 +1296,23 @@ export class SeoComponent implements OnInit {
   public goToSeoOverview(event) {
     this.router.navigate([`/campaign/:id${this.selectedCampId}/seo`])
   }
+ 
+  public goToSocialMedia(event) {
+
+    this.router.navigate([`./socialmedia/socialmedia`, { id: this.selectedCampId }])
+  }
+  public goToLinkedIn(event) {
+
+    this.router.navigate([`./linkedin/linkedin`, { id: this.selectedCampId }])
+  }
+  public goToInstagram(event) {
+
+    this.router.navigate([`./instagram/instagram`, { id: this.selectedCampId }])
+  }
+  public goToGSC(event) {
+    debugger
+    this.router.navigate([`./gsc/gsc`, { id: this.selectedCampId }])
+  }
 
   //using to close create campaign  component
   public closeCreateCampaignComponent(event) {
