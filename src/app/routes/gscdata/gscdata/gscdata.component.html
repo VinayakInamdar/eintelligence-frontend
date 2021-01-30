@@ -78,65 +78,140 @@
 </nav>
 
 <div class="row overviewmaindiv">
-    <div class="col-lg-12" [formGroup]="myForm">
-        <div class="col-lg-3">
-            Please Select Date Range
-        </div>
-        <div class="col-lg-3">
-            <mat-form-field appearance="fill" class="pr-sm-4" fxFlex="20">
-                <mat-label>Start date</mat-label>
-                <input matInput [matDatepicker]="startDatePicker" name="start" formControlName="fromDate"
-                    (dateChange)="onStartDateChange($event)">
-                <mat-datepicker-toggle matSuffix [for]="startDatePicker"></mat-datepicker-toggle>
-                <mat-datepicker #startDatePicker></mat-datepicker>
-                <mat-error>Please select start date!</mat-error>
-            </mat-form-field>
-        </div>
-        <div class="col-lg-3">
-            <mat-form-field appearance="fill" class="pr-sm-4" fxFlex="0">
-                <mat-label>End date</mat-label>
-                <input matInput [matDatepicker]="endDatePicker" name="end" [formControl]="toDate"
-                    (dateChange)="onEndDateChange($event)">
-                <mat-datepicker-toggle matSuffix [for]="endDatePicker"></mat-datepicker-toggle>
-                <mat-datepicker #endDatePicker></mat-datepicker>
-                <mat-error>Please select End date!</mat-error>
-            </mat-form-field>
+    <div class="card card-default shadow p-3 mb-5 bg-white rounded set-middle">
+        <div class="col-lg-12" [formGroup]="myForm">
+            <div class="col-lg-3">
+                Please Select Date Range
+            </div>
+            <div class="col-lg-3">
+                <mat-form-field appearance="fill" class="pr-sm-4" fxFlex="20">
+                    <mat-label>Start date</mat-label>
+                    <input matInput [matDatepicker]="startDatePicker" name="start" formControlName="fromDate" (dateChange)="onStartDateChange($event)">
+                    <mat-datepicker-toggle matSuffix [for]="startDatePicker"></mat-datepicker-toggle>
+                    <mat-datepicker #startDatePicker></mat-datepicker>
+                    <mat-error>Please select start date!</mat-error>
+                </mat-form-field>
+            </div>
+            <div class="col-md-2"></div>
+            <div class="col-lg-3">
+                <mat-form-field appearance="fill" class="pr-sm-4" fxFlex="0">
+                    <mat-label>End date</mat-label>
+                    <input matInput [matDatepicker]="endDatePicker" name="end" [formControl]="toDate" (dateChange)="onEndDateChange($event)">
+                    <mat-datepicker-toggle matSuffix [for]="endDatePicker"></mat-datepicker-toggle>
+                    <mat-datepicker #endDatePicker></mat-datepicker>
+                    <mat-error>Please select End date!</mat-error>
+                </mat-form-field>
+            </div>
         </div>
     </div>
     <div class="col-lg-12">
-        <div class="col-sm-3">
-            <h3 class="colour-light">Clicks</h3>
-            <h3 class="fontxlrge">{{clicksThisYear}}</h3>
+        <div class="col-sm-2">
+            <h3 class="colour-light">YoY</h3>
+            <h3 class="colour-light">Metrics</h3>
+            <h3 class="fontxlrge"></h3>
             <!-- <h3 class="fontsizesmall">1</h3> -->
 
         </div>
         <div class="vl"></div>
-        <div class="col-sm-3">
+        <div class="col-sm-2">
+            <h3 class="colour-light">Clicks</h3>
+            <h3 class="fontxlrge">{{clicksThisYear}}</h3>
+            <h3 class="fontsizesmall" [ngClass]="{'red-font': 0 > percentClicks}">{{this.percentClicks}}</h3>
+
+        </div>
+        <div class="vl"></div>
+        <div class="col-sm-2">
             <h3 class="colour-light">Impressions</h3>
             <h3 class="fontxlrge">{{impressionsThisYear}}</h3>
-            <!-- <h3 class="fontsizesmall">1</h3> -->
+            <h3 class="fontsizesmall" [ngClass]="{'red-font': 0 > percentImpressions}">{{percentImpressions}}</h3>
+
 
         </div>
         <div class="vl"></div>
         <div class="col-sm-3">
             <h3 class="colour-light">CTR</h3>
             <h3 class="fontxlrge">{{cTRThisYear}}</h3>
-            <!-- <h3 class="fontsizesmall">1</h3> -->
+            <h3 class="fontsizesmall" [ngClass]="{'red-font': 0 > percentCTR}">{{percentCTR}}</h3>
 
         </div>
         <div class="vl"></div>
         <div class="col-sm-3">
             <h3 class="colour-light">Position</h3>
             <h3 class="fontxlrge">{{positionThisYear}}</h3>
-            <!-- <h3 class="fontsizesmall">Avg</h3> -->
+            <h3 class="fontsizesmall" [ngClass]="{'red-font': 0 > percentPosition}">{{percentPosition}}</h3>
+
 
         </div>
+    </div>
+    <div class="col-lg-12">
+    <div class="col-lg-4">
+
+        <div class="overviewdivfontspadding"></div>
+
+        <div class="card card-default shadow bg-white rounded" >
+            <div class="card-header">
+                <div class="row borderBtm padding5">
+                    <h2 class="col-xs-12 col-12 col-md-9">Clicks By Device</h2>
+                </div>
+            </div>
+            <div class="card-body row">
+                <div class="chart-wrapper mx-auto chart-container">
+                    <canvas baseChart id="canvas1" [chartType]="'bar'" [options]="barOptions"
+                        [datasets]="barDataClicksDevice.datasets" [colors]="barColors" [labels]="barChartLabelsDevice"
+                        [legend]="true"  height="140">
+                    </canvas>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="col-lg-4">
+
+        <div class="overviewdivfontspadding"></div>
+
+        <div class="card card-default shadow bg-white rounded" >
+            <div class="card-header">
+                <div class="row borderBtm padding5">
+                    <h2 class="col-xs-12 col-12 col-md-9">Impressions By Device</h2>
+                </div>
+
+            </div>
+            <div class="card-body row">
+                <div class="chart-wrapper mx-auto chart-container">
+                    <canvas baseChart id="canvas1" [chartType]="'bar'" [options]="barOptions"
+                        [datasets]="barDataImpressionsDevice.datasets" [colors]="barColors" [labels]="barChartLabelsDevice"
+                        [legend]="true" height="140">
+                    </canvas>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="col-lg-4">
+
+        <div class="overviewdivfontspadding"></div>
+
+        <div class="card card-default shadow bg-white rounded" >
+            <div class="card-header">
+                <div class="row borderBtm padding5">
+                    <h2 class="col-xs-12 col-12 col-md-9">Position By Device</h2>
+                </div>
+
+            </div>
+            <div class="card-body row">
+                <div class="chart-wrapper mx-auto chart-container">
+                    <canvas baseChart id="canvas1" [chartType]="'bar'" [options]="barOptions"
+                        [datasets]="barDataPositionDevice.datasets" [colors]="barColors" [labels]="barChartLabelsDevice"
+                        [legend]="true" height="140">
+                    </canvas>
+                </div>
+            </div>
+        </div>
+    </div>
     </div>
     <div class="col-lg-12">
 
         <div class="overviewdivfontspadding"></div>
 
-        <div class="card card-default shadow bg-white rounded">
+        <div class="card card-default shadow bg-white rounded" >
             <div class="card-header">
                 <div class="row borderBtm padding5">
                     <h2 class="col-xs-12 col-12 col-md-5"> Clicks</h2>

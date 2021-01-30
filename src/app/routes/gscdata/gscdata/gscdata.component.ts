@@ -11,6 +11,8 @@ import { ActivatedRoute, Router } from '@angular/router';
 import { OpenIdConnectService } from '../../../shared/services/open-id-connect.service';
 import { CampaignService } from '../../campaign/campaign.service';
 import { LocalDataSource } from 'ng2-smart-table';
+//import { GoogleAdsApi } from 'google-ads-api'
+///import { ChartOptions } from 'chart.js';
 @Component({
   selector: 'app-gscdata',
   templateUrl: './gscdata.component.html',
@@ -30,7 +32,7 @@ export class GscdataComponent implements OnInit {
     fromDate: this.fromDate,
     toDate: this.toDate,
   });
- 
+
   startDate;
   endDate;
   clicksThisYear: string = "0";
@@ -51,7 +53,7 @@ export class GscdataComponent implements OnInit {
   selectedCampaignName: string;
   //Chart variables
   barOptions = {
-    scaleShowVerticalLines: false,
+    scaleShowVerticalLines: true,
     responsive: true,
     legend: {
       position: 'bottom',
@@ -86,7 +88,7 @@ export class GscdataComponent implements OnInit {
     scales: {
       xAxes: [{
         gridLines: {
-          display: false
+          display: true
         },
         barPercentage: 0.4,
         ticks: {
@@ -104,7 +106,7 @@ export class GscdataComponent implements OnInit {
       }],
       yAxes: [{
         gridLines: {
-          display: false
+          display: true
         }
       }]
     },
@@ -181,8 +183,56 @@ export class GscdataComponent implements OnInit {
       }, {
         data: [], label: 'Previous Year', legend: false, fill: false,
       }]
+    // datasets: [
+    //   {
+    //     data: [], label: 'Clicks', legend: false, fill: false
+    //   }, {
+    //     data: [], label: 'Impressions', legend: false, fill: false,
+    //   }, {
+    //     data: [], label: 'Position', legend: false, fill: false,
+    //   }]
+  };
+  // public barChartOptions: ChartOptions = {
+  //   responsive: true,
+  // };
+  barDataImpressionsDevice = {
+    labels: ['January'],
+    'legend': {
+      'onClick': function (evt, item) {
+
+      },
+    },
+    datasets: [
+      {
+        data: [], label: 'Impressions', legend: false, fill: false
+      }]
+  };
+  barDataClicksDevice = {
+    labels: ['January'],
+    'legend': {
+      'onClick': function (evt, item) {
+
+      },
+    },
+    datasets: [
+      {
+        data: [], label: 'Clicks', legend: false, fill: false
+      }]
+  };
+  barDataPositionDevice = {
+    labels: ['January'],
+    'legend': {
+      'onClick': function (evt, item) {
+
+      },
+    },
+    datasets: [
+      {
+        data: [], label: 'Position', legend: false, fill: false
+      }]
   };
   barChartLabels: Label[] = [];
+  barChartLabelsDevice: Label[] = [];
   barColors = [
     {
       backgroundColor: 'rgba(12, 162, 235, 0.2)',
@@ -193,9 +243,9 @@ export class GscdataComponent implements OnInit {
     {
       backgroundColor: 'rgba(12, 162, 111, 0.2)',
       borderColor: '#2DEEE2',
-      pointHoverBackgroundColor: '#2D9EE2',
+      pointHoverBackgroundColor: '#2DEEE2',
       pointHoverBorderColor: 'white'
-    },];
+    }];
   accessToken = '';
   httpOptionJSON = {
     headers: new HttpHeaders({
@@ -203,6 +253,7 @@ export class GscdataComponent implements OnInit {
       'Authorization': 'Bearer ' + this.accessToken,
     })
   };
+
   constructor(private authService: SocialAuthService, private http: HttpClient, public datepipe: DatePipe, public router: Router,
     private campaignService: CampaignService, public openIdConnectService: OpenIdConnectService, public route: ActivatedRoute) {
     let id = this.route.snapshot.paramMap.get('id');
@@ -210,8 +261,8 @@ export class GscdataComponent implements OnInit {
     this.getDateSettings();
     this.getCampaignList();
   }
-   // using to get list of campaigns
-   public getCampaignList(): void {
+  // using to get list of campaigns
+  public getCampaignList(): void {
     var userid = this.openIdConnectService.user.profile.sub;
     this.campaignService.getCampaign(userid).subscribe(res => {
       this.campaignList = res;
@@ -279,7 +330,44 @@ export class GscdataComponent implements OnInit {
 
       })
   }
+  getDataByDevice(startDate, endDate) {
 
+    this.httpOptionJSON = {
+      headers: new HttpHeaders({
+        'Accept': 'application/json',
+        'Authorization': 'Bearer ' + this.accessToken,
+      })
+    };
+    const url = "https://www.googleapis.com/webmasters/v3/sites/https%3A%2F%2Fwww.abhisi.com%2F/searchAnalytics/query?key=AIzaSyC1IsrCeeNXp9ksAmC8szBtYVjTLJC9UWQ";
+    let data = {};
+
+    data = {
+      "startRow": 0,
+      "startDate": startDate,
+      "endDate": endDate,
+      "dataState": "ALL",
+      "dimensions": [
+        "DEVICE"
+      ]
+    };
+    this.http.post(url, data, this.httpOptionJSON).subscribe(res => {
+      if (res) {
+        debugger
+        let rows = res['rows'];
+        this.barDataImpressionsDevice.datasets[0].data = [];
+        this.barChartLabelsDevice = [];
+        for (let i = 0; i < rows.length; i++) {
+          this.barDataImpressionsDevice.datasets[0].data.push(rows[i].impressions);
+          this.barDataClicksDevice.datasets[0].data.push(rows[i].clicks);
+          this.barDataPositionDevice.datasets[0].data.push(rows[i].position);
+
+          this.barChartLabelsDevice.push(rows[i].keys[0]);
+        }
+      }
+    }, error => {
+      alert('Data fetch failed by device : ' + JSON.stringify(error.error));
+    });
+  }
   getDataCurrentYear(startDate, endDate, all) {
 
     this.httpOptionJSON = {
@@ -372,8 +460,11 @@ export class GscdataComponent implements OnInit {
           this.positionPreviousYear = parseFloat(rows[0].position).toFixed(2).toString();
 
           //pecentgage calculate
-          //(previous-current*100)/Previous
-
+          debugger
+          this.percentClicks = this.getYearwiseDifference(this.clicksPreviousYear, this.clicksThisYear);
+          this.percentImpressions = this.getYearwiseDifference(this.impressionsPreviousYear, this.impressionsThisYear);
+          this.percentPosition = this.getYearwiseDifference(this.positionPreviousYear, this.positionThisYear);
+          this.percentCTR = this.getYearwiseDifference(this.cTRPreviousYear, this.cTRThisYear);
         }
         else {
           this.dateListData = [];
@@ -401,7 +492,7 @@ export class GscdataComponent implements OnInit {
   ngOnInit() {
 
   }
- 
+
   onStartDateChange(event) {
     this.startDate = this.datepipe.transform(this.fromDate.value, 'yyyy-MM-dd');
     this.currYear = parseInt(this.datepipe.transform(this.fromDate.value, 'yyyy'));
@@ -429,6 +520,7 @@ export class GscdataComponent implements OnInit {
       this.getDataPreviousYear(this.previousStartDate, this.previousEndDate, 0);
       this.getDataCurrentYear(this.startDate, this.endDate, 1);
       this.getDataPreviousYear(this.previousStartDate, this.previousEndDate, 1);
+      this.getDataByDevice(this.startDate, this.endDate)
     }
   }
   getDateSettings() {
@@ -442,8 +534,28 @@ export class GscdataComponent implements OnInit {
     prevYear = this.currYear - 1;
     this.previousEndDate = prevYear.toString() + '-' + this.datepipe.transform(this.toDate.value, 'MM-dd');
   }
+
+  getYearwiseDifference(previous, current) {
+    debugger
+    let diff = ((parseFloat(previous) - parseFloat(current)) * 100) / parseFloat(previous)
+    return parseFloat(diff.toString()).toFixed(2)
+
+  }
   getPercentage(num, total) {
     return ((100 * num) / total)
   }
+  // googleAds() {
+  //   // 1. Create a new client with your credentials
+  //   const client = new GoogleAdsApi({
+  //     client_id: '<CLIENT_ID>',
+  //     client_secret: '<CLIENT_SECRET>',
+  //     developer_token: '<DEVELOPER_TOKEN>',
+  //   })
 
+  //   // 2. Load a customer with a valid CID & authentication
+  //   const customer = client.Customer({
+  //     customer_account_id: '<CUSTOMER_ACCOUNT_ID>',
+  //     refresh_token: '<REFRESH_TOKEN>',
+  //   })
+  // }
 }
