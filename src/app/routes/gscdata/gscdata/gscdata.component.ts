@@ -327,7 +327,7 @@ export class GscdataComponent implements OnInit {
       .then((res) => {
         this.accessToken = res['authToken'];
         this.getData();
-
+//this.getAdsData();
       })
   }
   getDataByDevice(startDate, endDate) {
@@ -547,15 +547,74 @@ export class GscdataComponent implements OnInit {
   // googleAds() {
   //   // 1. Create a new client with your credentials
   //   const client = new GoogleAdsApi({
-  //     client_id: '<CLIENT_ID>',
-  //     client_secret: '<CLIENT_SECRET>',
-  //     developer_token: '<DEVELOPER_TOKEN>',
+  //     client_id: '959505317275-v8294ho5b3prni9rqi4l6nnb8463uiig.apps.googleusercontent.com',
+  //     client_secret: 'JNCBlNi2j-o5sob6qL6Q8Ead',
+  //     developer_token: 'ucZP-dS-i1MSe2Ynp-Xnzg',
   //   })
 
   //   // 2. Load a customer with a valid CID & authentication
   //   const customer = client.Customer({
-  //     customer_account_id: '<CUSTOMER_ACCOUNT_ID>',
+  //     customer_account_id: '791-951-4950',
   //     refresh_token: '<REFRESH_TOKEN>',
   //   })
+
+  //   customer.campaigns.list()
   // }
+  getAdsData(){
+    this.httpOptionJSON = {
+      headers: new HttpHeaders({
+        'Accept': 'application/json',
+        'Authorization': 'Bearer ' + this.accessToken,
+        'developer-token': 'ucZP-dS-i1MSe2Ynp-Xnzg'
+      })
+    };
+    const url = "https://googleads.googleapis.com/v6/customers/{791-951-495}/googleAds:searchstream";
+    let data = {};
+
+    data = {
+      "query" : "SELECT campaign.name, campaign.status, segments.device,"+
+                   " metrics.impressions, metrics.clicks, metrics.ctr,"+
+                  "  metrics.average_cpc, metrics.cost_micros"+
+           " FROM campaign"+
+            " WHERE segments.date DURING LAST_30_DAYS"
+    };
+    this.http.post(url, data, this.httpOptionJSON).subscribe(res => {
+      if (res) {
+        debugger
+       
+      }
+    }, error => {
+      alert('Data fetch failed by device : ' + JSON.stringify(error.error));
+    });
+  }
+  /**
+ * Generates a refresh token given the authorization code.
+ */
+// function generateRefreshToken() {
+//   var payload = {
+//     code: CODE,
+//     client_id: CLIENT_ID,
+//     client_secret: CLIENT_SECRET,
+//     // Specify that no redirection should take place
+//     // This is Google-specific and not part of the OAuth2 specification.
+//     redirect_uri: 'urn:ietf:wg:oauth:2.0:oob',
+//     grant_type: 'authorization_code'
+//   };
+//   var options = {method: 'POST', payload: payload};
+//   var response = UrlFetchApp.fetch(TOKEN_URL, options);
+//   var data = JSON.parse(response.getContentText());
+//   if (data.refresh_token) {
+//     var msg = 'Success! Refresh token: ' + data.refresh_token +
+//       '\n\nThe following may also be a useful format for pasting into your ' +
+//       'script:\n\n' +
+//       'var CLIENT_ID = \'' + CLIENT_ID + '\';\n' +
+//       'var CLIENT_SECRET = \'' + CLIENT_SECRET + '\';\n' +
+//       'var REFRESH_TOKEN = \'' + data.refresh_token + '\';';
+//     Logger.log(msg);
+//   } else {
+//     Logger.log(
+//         'Error, failed to generate Refresh token: ' +
+//         response.getContentText());
+//   }
+// }
 }

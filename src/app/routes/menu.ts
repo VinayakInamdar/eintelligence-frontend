@@ -58,28 +58,28 @@ const Campaign = {
      icon: "fas fa-cogs"
  };
 
-const Leads = {
-    text: 'CRM',
-    link: '/leads',
-    icon: "fa fa-book"
-};
+// const Leads = {
+//     text: 'CRM',
+//     link: '/leads',
+//     icon: "fa fa-book"
+// };
 
-const Proposal = {
-    text: 'Proposal',
-    link: '/proposal',
-    icon: "fas fa-sticky-note"
-};
+// const Proposal = {
+//     text: 'Proposal',
+//     link: '/proposal',
+//     icon: "fas fa-sticky-note"
+// };
 const Todolist = {
     text: 'Tasks',
     link: '/todo',
     icon: "fas fa-list-alt"
 };
 
-const Reports = {
-    text: 'Reports',
-    link: '/reports',
-    icon: "fas fa-list-alt"
-};
+// const Reports = {
+//     text: 'Reports',
+//     link: '/reports',
+//     icon: "fas fa-list-alt"
+// };
 
 
 
@@ -116,7 +116,7 @@ export const menu = [
     Products,
     Campaign,
     Fulfillment, 
-    Reports,
+   // Reports,
     MyPayments,
     //User,
    // Account,
@@ -124,8 +124,8 @@ export const menu = [
     //Admin,
    
    Integrations,
-    Leads,
-    Proposal,
+    //Leads,
+    //Proposal,
     //Todolist,
    
   

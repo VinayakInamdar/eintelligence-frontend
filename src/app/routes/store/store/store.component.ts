@@ -66,7 +66,7 @@ export class StoreComponent implements OnInit {
         
         this.products = response.body
         if (this.products != undefined && this.products != null && this.products.length > 0) {
-        this.products = this.products.filter(x => x.companyId == this.companyId);
+        this.products = this.products.filter(x => x.companyID == this.companyId);
           this.productId = this.products[0].id;
           this.getAllPlans();
         }
