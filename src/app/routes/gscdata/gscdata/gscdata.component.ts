@@ -325,6 +325,7 @@ export class GscdataComponent implements OnInit {
     };
     this.authService.signIn(GoogleLoginProvider.PROVIDER_ID, googleLoginOptions)
       .then((res) => {
+        debugger
         this.accessToken = res['authToken'];
         this.getData();
 //this.getAdsData();
@@ -561,11 +562,12 @@ export class GscdataComponent implements OnInit {
   //   customer.campaigns.list()
   // }
   getAdsData(){
+    debugger
     this.httpOptionJSON = {
       headers: new HttpHeaders({
         'Accept': 'application/json',
-        'Authorization': 'Bearer ' + this.accessToken,
-        'developer-token': 'ucZP-dS-i1MSe2Ynp-Xnzg'
+        'Authorization': 'Bearer ' + this.accessToken
+        //'developer-token': 'ucZP-dS-i1MSe2Ynp-Xnzg'
       })
     };
     const url = "https://googleads.googleapis.com/v6/customers/{791-951-495}/googleAds:searchstream";

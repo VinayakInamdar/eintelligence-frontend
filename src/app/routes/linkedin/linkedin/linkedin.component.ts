@@ -1,5 +1,6 @@
 import { HttpClient } from '@angular/common/http';
 import { Component, OnInit } from '@angular/core';
+import { ActivatedRoute } from '@angular/router';
 
 //import { LinkedInService } from 'angular-linkedin-sdk';
 @Component({
@@ -8,55 +9,37 @@ import { Component, OnInit } from '@angular/core';
   styleUrls: ['./linkedin.component.scss']
 })
 export class LinkedinComponent implements OnInit {
-
+  accessToken;
+  private linkedInCredentials = {
+    clientId: "77rl4v6oym4y16",
+    redirectUrl: "https://localhost:4200/linkedin/linkedin"
+  };
   //constructor(private _linkedInService: LinkedInService) { }
-  constructor(private http: HttpClient) { }
+  constructor(private http: HttpClient,  private activatedRoute: ActivatedRoute) { 
+    debugger
+    this.accessToken = this.activatedRoute.snapshot.queryParams["code"];
+  }
 
   public isUserAuthenticated;
   apiKey;
   ngOnInit() {
 
   }
-  // public getApiKeyFromSdkIN() {
-  //   // Retrieve the API key used in the library through the SDK IN variable
-  //   this.apiKey = this._linkedInService.getSdkIN().ENV.auth.api_key;
-  // }
-  // public subscribeToLogin(){
-  //   
-  //   this._linkedInService.login().subscribe({
-  //     next: (state) => {
-  //       // state will always return true when login completed 
-  //     },
-  //     complete: () => {
-  //       // Completed
-  //     }
-  //   });
-  // }
-  // public login() {
-  //   
-  //   this._linkedInService.login().subscribe({
-  //     next: (state) => {
-  //       
-  //       console.log(`Login result: ${state}`);
-  //     }
-  //   });
-  // }
-
-
+  login() {
+    window.location.href = `https://www.linkedin.com/uas/oauth2/authorization?response_type=code&client_id=${
+      this.linkedInCredentials.clientId
+    }&redirect_uri=${this.linkedInCredentials.redirectUrl}&scope=r_emailaddress`;
+  }
   connectToLinkedIn() {
-    
-    let client_id = '77rl4v6oym4y16';
-    let redirect_uri = encodeURI("https://localhost:4200/linkedin");
-    //GET https://www.linkedin.com/oauth/v2/authorization?response_type=code&client_id={your_client_id}&redirect_uri=https%3A%2F%2Fdev.example.com%2Fauth%2Flinkedin%2Fcallback&state=fooobar&scope=r_liteprofile%20r_emailaddress%20w_member_social
-		//	let url = 'https://www.linkedin.com/oauth/v2/authorization?response_type=code&client_id=77rl4v6oym4y16&redirect_uri=https://localhost:4200/linkedin&scope=r_emailaddress,r_liteprofile';
-
-    // let url = `https://www.linkedin.com/oauth/v2/authorization?response_type=code&client_id=${client_id}&redirect_uri=${redirect_uri}`;
-    let url = 'https://www.linkedin.com/oauth/v2/authorization?response_type=code&client_id='+client_id+'&redirect_uri='+redirect_uri+'&scope=r_emailaddress,r_liteprofile';
+    let url = `https://www.linkedin.com/uas/oauth2/authorization?response_type=code&client_id=${
+      this.linkedInCredentials.clientId
+    }&redirect_uri=${this.linkedInCredentials.redirectUrl}&scope=r_emailaddress`;
     this.http.get(url).subscribe(res => {
       if (res) {
-        
+        debugger
       }
     }, error => {
+      debugger
       alert(error.message);
     });
     // let url = "https://www.linkedin.com/oauth/v2/accessToken";

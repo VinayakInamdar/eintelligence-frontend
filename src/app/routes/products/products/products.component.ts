@@ -120,10 +120,12 @@ export class ProductsComponent implements OnInit {
     this.getProductsList();
   }
   getProductsList() {
+    debugger
     this.productService.getProductsByCompanyId(this.companyId).subscribe((response: any) => {
       if (response) {
+        debugger
         this.productList = response;
-        this.productList = this.productList.filter(x => x.companyId == this.companyId);
+        //this.productList = this.productList.filter(x => x.companyID == this.companyId);
         this.source = new LocalDataSource(this.productList)
         this.planForm.reset();
       }
