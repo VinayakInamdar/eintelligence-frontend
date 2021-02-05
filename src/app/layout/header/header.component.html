@@ -39,8 +39,23 @@
             </a>
         </li> -->
         <li class="nav-item d-none d-md-block">
+            <a class="nav-link"  title="Add Products"   [routerLink]="'/products'">
+                <em class="fas fa-list-alt"></em>
+            </a>
+        </li>
+        <li class="nav-item d-none d-md-block">
+            <a class="nav-link"  title="My Payments"   [routerLink]="'/mypayments'">
+                <em class="fas fa-sticky-note"></em>
+            </a>
+        </li>
+        <li class="nav-item d-none d-md-block">
+            <a class="nav-link"  title="Integrations"   [routerLink]="'/integrations/:id'">
+                <em class="fas fa-cogs"></em>
+            </a>
+        </li>
+        <li class="nav-item d-none d-md-block">
             <a class="nav-link"  title="Lock screen"  (click)="logout()">
-                <em class="fa fa-sign-out">Sign Out</em>
+                <em class="fas fa-sign-out"></em>
             </a>
         </li>
         <!-- END lock screen-->

@@ -11,7 +11,8 @@ import { Ng2SmartTableModule } from 'ng2-smart-table';
 import { NgxIntlTelInputModule } from 'ngx-intl-tel-input';
 import { NgxSelectModule } from 'ngx-select-ex';
 import { FacebookModule } from 'ngx-facebook';
-
+import { SubmenuModule } from '../submenu/submenu.module';
+import { SocialmediaSubmenuModule } from '../socialmedia-submenu/socialmedia-submenu.module';
 const routes: Routes = [
   { path: '', component: SocialmediaComponent }
 ];
@@ -31,7 +32,9 @@ const routes: Routes = [
     NgxSelectModule,
     NgxIntlTelInputModule,
     ChartsModule,
-    FacebookModule.forRoot()
+    FacebookModule.forRoot(),
+    SubmenuModule,
+    SocialmediaSubmenuModule
   ],
   exports: [RouterModule]
 })

@@ -6,74 +6,21 @@
     </div>
     <div class="col-md-2"> </div>
 </div>
-<nav class="navbar navbar-expand-sm" style="background-color: #F9FCFF;">
-
-    <!-- Links -->
-    <ul class="navbar-nav">
-        <li>
-            <div class="btn-group">
-                <div class="btn-add-new-campaign btn btn-default">
-                    <i class="fa fa-plus" aria-hidden="true"></i>
-                </div>
-                <div class="btn-group" dropdown>
-                    <button id="button-basic" dropdownToggle type="input" class="btn campselectedname"
-                        aria-controls="dropdown-basic">
-                        {{selectedCampaignName !== undefined ? selectedCampaignName : 'select your campaign'}}
-                        <span class="caret"> </span>
-                    </button>
-                    <ul id="dropdown-basic" *dropdownMenu class="dropdown-menu overviewulheightmax" role="menu"
-                    aria-labelledby="button-basic">
-                    <li role="menuitem" *ngFor="let campaign of campaignList"
-                        [ngClass]="{'active': selectedCampId == campaign.id}"><a class="dropdown-item"
-                            (click)="onCampaignSelect($event,campaign)" href="javascript:void(0);">{{campaign.name}}</a></li>
-                </ul>
-                </div>
-            </div>
-        </li>
-        <li id="overview_menu" class="nav-link" data-third-menu="">
-            <a href="javascript:void(0);" class="nav-link" (click)="goToCampaignOverview($event)">
-                <span class="fontsizesmall">Overview</span>
-            </a>
-        </li>
-        <li id="analytics_menu" class="nav-link" data-third-menu="analytics_menu_index">
-            <a href="javascript:void(0);" class="nav-link" (click)="goToAnalyticsOverview($event)">
-                <span class="fontsizesmall">Analytics</span>
-            </a>
-        </li>
-        <li id="seo_menu" class="nav-link" data-third-menu="seo_menu_index">
-            <a href="javascript:void(0);" class="nav-link"  (click)="goToSeoOverview($event)">
-                <span class="fontsizesmall">SEO</span>
-            </a>
-
-        </li>
-        <li id="seo_menu" class="nav-link" data-third-menu="seo_menu_index">
-            <a href="javascript:void(0);" class="nav-link" (click)="goToSocialMedia($event)">
-                <span class="fontsizesmall">Facebook</span>
-            </a>
-        </li>
-        <!-- <li id="seo_menu" class="nav-link" data-third-menu="seo_menu_index">
-            <a href="javascript:void(0);" class="nav-link" (click)="goToLinkedIn($event)">
-                <span class="fontsizesmall">LinkedIn</span>
-            </a>
-        </li>
-        <li id="seo_menu" class="nav-link" data-third-menu="seo_menu_index">
-            <a href="javascript:void(0);" class="nav-link" (click)="goToInstagram($event)">
-                <span class="fontsizesmall">Instagram</span>
-            </a>
-        </li> -->
-        <li id="seo_menu" class="nav-link" data-third-menu="seo_menu_index">
-            <a href="javascript:void(0);" class="nav-link" (click)="goToGSC($event)">
-                <span class="fontsizesmall">GSC</span>
-            </a>
-        </li>
-    </ul>
-
-</nav>
-
+<app-submenu></app-submenu>
+<div class="overviewdivborder  move-center">
+    <button class="mr-1 btn btn-primary btn-lg" type="button" (click)="signInWithGoogle()">
+        <i class="fa fa-twitter mr-1"></i>
+        Login with Google
+    </button>
+    <button class="mr-1 btn btn-primary btn-lg"  type="button" (click)="DeleteRankingGraphData()">
+        <i class="fa fa-linkedin mr-1"></i>
+        Refresh Data
+    </button>
+</div>
 <div class="row maindiv" *ngIf="settingActive == 3;">
     <div class="col-md-12">
-        <div class="overviewdivfontspadding"></div>
-        <div class="col-md-8">
+    <div class="col-md-6">
+        <div class="col-md-12">
             <div class="card card-default shadow bg-white rounded" (mouseenter)="showDiv($event,'true','seo')">
                 <div class="card-header">
                     <div class="row borderBtm padding5">
@@ -88,220 +35,118 @@
                 <div class="card-body row">
                     <div class="chart-wrapper mx-auto chart-container" *ngIf="hasActiveAccount && hasAuthorize">
                         <canvas baseChart id="canvas" [chartType]="'bar'" [options]="barOptions"
-                            [datasets]="barData.datasets" [colors]="barColors" [labels]="barChartLabels" [legend]="true"
-                            height="80">
+                            [datasets]="barData.datasets" [colors]="barColors1" [labels]="barChartLabels1" [legend]="true"
+                            height="90">
                         </canvas>
                     </div>
-                    <div class="btn-container footer-buttons text-center">
+                    <!-- <div class="btn-container footer-buttons text-center">
                         <a href="javascript:void(0)" class="btn btn-link" (click)="goToKeywords($event)">See More</a>
-                    </div>
+                    </div> -->
                 </div>
             </div>
         </div>
-        <div class="col-md-4">
-            <div class="card card-default shadow bg-white rounded ">
-                <div class="card-header">
-                    <div class="row borderBtm padding5">
-                        <h2 class="col-xs-12 col-12 col-md-10"> Keyword Rankings</h2>
-                        <div class="col-xs-12 col-12 col-md-1 fontsize15px paddingleft20px">
-                            <i class="fa fa-info-circle paddingtop10px"
-                                matTooltip="Week-to-week visual representation of keywords ranking on the first page"></i>
+    </div>
+    <div class="col-lg-6">
+
+        <div class="card card-default shadow bg-white rounded">
+            <div class="card-header">
+                <div class="row borderBtm padding5">
+                    <h2 class="col-xs-12 col-12 col-md-11">Traffic Sources</h2>
+                    <div class="col-xs-12 col-12 col-md-1 fontsize15px">
+                        <i class="fa fa-info-circle paddingtop10px"
+                            matTooltip="Distribution of website traffic from different sources"></i>
+                    </div>
+                </div>
+            </div>
+            <div class="card-body row">
+                <div class="chart-wrapper mx-auto chart-container" *ngIf="hasActiveAccount && hasAuthorize">
+                    <div *ngIf="showSpinnerBaseChart" class="la-line-scale  linescaleloadercolortopleft">
+                        <div></div>
+                        <div></div>
+                        <div></div>
+                        <div></div>
+                        <div></div>
+                    </div>
+                    <canvas *ngIf="!showSpinnerBaseChart" baseChart [datasets]="lineChartData1"
+                        [labels]="lineChartLabels1" [options]="lineChartOptions1" [colors]="lineChartColors1"
+                        [legend]="lineChartLegend1" [chartType]="lineChartType1" [plugins]="lineChartPlugins1"
+                        [fullWidth]="true">
+                    </canvas>
+                </div>
+
+
+                <!-- *ngIf="!hasActiveAccount && !hasAuthorize" -->
+                <div class="widget-overlay" *ngIf="!hasActiveAccount && !hasAuthorize">
+                    <div class="widget-overlay-content text-center">
+                        <h2 class="colorintegrateanalytics">Integrate Analytics</h2>
+                        <div class="text-center btn-container">
+                            <a class="btn ganalyticsbackgcolor" (click)="goToOverview()"> <span></span>
+                                &nbsp;&nbsp;Integrate Google Analytics</a>
+                            <!-- <img src="assets/img/ga.png"> -->
                         </div>
                     </div>
 
                 </div>
-                <div class="card-body row">
-                    <div class="chart-wrapper chart-containersmall" *ngIf="hasActiveAccount && hasAuthorize">
-                        <canvas baseChart id="canvas" [chartType]="'bar'" [options]="barOptions1"
-                            [datasets]="barData1.datasets" [colors]="barColors1" [labels]="barData1.labels"
-                            [legend]="true" height="50" width="100">
-                        </canvas>
-                    </div>
-                    <div class="btn-container footer-buttons text-center">
-                        <a href="javascript:void(0)" class="btn btn-link" (click)="goToKeywords($event)">See More</a>
-                    </div>
-                </div>
+
             </div>
         </div>
+    </div>
     </div>
     <div class="col-lg-12">
-        <div class="col-lg-12">
-            <div class="card card-default shadow p-3 mb-9 bg-white rounded">
-                <div class="table-responsive">
-                    <ng2-smart-table [settings]="settings" [source]="source" (userRowSelect)="userRowSelect($event)">
-                    </ng2-smart-table>
+        <div class="widget-overlay" *ngIf="!hasActiveAccount && !hasAuthorize">
+            <div class="widget-overlay-content text-center">
+                <h2 class="colorintegrateanalytics">Integrate Analytics</h2>
+                <div class="text-center btn-container">
+                    <a class="btn ganalyticsbackgcolor" (click)="goToOverview()"> <span></span>
+                        &nbsp;&nbsp;Integrate Google Analytics</a>
+                    <!-- <img src="assets/img/ga.png"> -->
                 </div>
             </div>
         </div>
     </div>
-    <div class="col-lg-12">
-        <div class="col-lg-12">
-
-            <div class="card card-default shadow bg-white rounded">
-                <div class="card-header">
-                    <div class="row borderBtm padding5">
-                        <h2 class="col-xs-12 col-12 col-md-11">Organic Traffic</h2>
-                        <div class="col-xs-12 col-12 col-md-1 fontsize15px">
-                            <i class="fa fa-info-circle paddingtop10px paddingleft20px"
-                                matTooltip="Traffic coming from organic search"></i>
-                        </div>
-                        <!-- <div class="col-xs-12 col-12 col-md-3 form-group">
-                          <input type="input" placeholder="Select DateRange" class="form-control" bsDaterangepicker
-                              (bsValueChange)="onDateRangeSelect($event)"
-                              [bsConfig]="{ ranges: ranges, containerClass: 'theme-blue' }"
-                              [bsValue]="bsInlineRangeValue">
-                      </div> -->
-                        <!-- <div class="btn-group">
-                          <div class="btn-group" dropdown>
-                              <button id="button-basic" dropdownToggle type="input" class="btn campselectedname"
-                                  aria-controls="dropdown-basic">
-                                  {{selctedLabelName !== undefined ? selctedLabelName : 'select Label'}}
-                                  <span class="caret"> </span>
-                              </button>
-                              <ul id="dropdown-basic" *dropdownMenu class="dropdown-menu camplisth" role="menu"
-                                  aria-labelledby="button-basic">
-                                  <li role="menuitem" *ngFor="let label of dropdownlabels"
-                                      [ngClass]="{'active': selectedLabel == label.id}"><a class="dropdown-item"
-                                          (click)="onLabelSelect($event,label)" href="javascript:void(0);">{{label.label}}</a></li>
-                              </ul>
-                          </div>
-                      </div> -->
-                        <!-- <p class="camph4">VS</p> -->
-                        <!-- <div class="btn-group">
-                          <div class="btn-group" dropdown>
-                              <button id="button-basic" dropdownToggle type="input" class="btn campselectedname"
-                                  aria-controls="dropdown-basic">
-                                  {{selctedLabelName1 !== undefined ? selctedLabelName1 : 'select Matrix'}}
-                                  <span class="caret"> </span>
-                              </button>
-                              <ul id="dropdown-basic" *dropdownMenu class="dropdown-menu camplisth" role="menu"
-                                  aria-labelledby="button-basic">
-                                  <li role="menuitem" *ngFor="let label of dropdownlabels1"
-                                      [ngClass]="{'active': selectedLabel1 == label.id}"><a class="dropdown-item"
-                                          (click)="onLabelSelect1($event,label)" href="javascript:void(0);">{{label.label}}</a></li>
-                              </ul>
-                          </div>
-                      </div> -->
-
-                    </div>
-
+    <div class="row overviewmaindiv">
+        <div class="card card-default shadow p-3 mb-5 bg-white rounded set-middle">
+            <div class="col-lg-12" [formGroup]="myForm">
+                <div class="col-lg-3">
+                    Please Select Date Range For GSC
                 </div>
-                <div class="card-body row">
-                    <div class="chart-wrapper mx-auto chart-container" *ngIf="hasActiveAccount && hasAuthorize">
-                        <div *ngIf="showSpinnerBaseChart" class="la-line-scale  linescaleloadercolortopleft">
-                            <div></div>
-                            <div></div>
-                            <div></div>
-                            <div></div>
-                            <div></div>
-                        </div>
-                        <canvas *ngIf="!showSpinnerBaseChart" baseChart [datasets]="lineChartData"
-                            [labels]="lineChartLabels" [options]="lineChartOptions" [colors]="lineChartColors"
-                            [legend]="lineChartLegend" [chartType]="lineChartType" [plugins]="lineChartPlugins"
-                            [fullWidth]="true">
-                        </canvas>
-                    </div>
-
-
-                    <!-- *ngIf="!hasActiveAccount && !hasAuthorize" -->
-                    <div class="widget-overlay" *ngIf="!hasActiveAccount && !hasAuthorize">
-                        <div class="widget-overlay-content text-center">
-                            <h2 class="colorintegrateanalytics">Integrate Analytics</h2>
-                            <div class="text-center btn-container">
-                                <a class="btn ganalyticsbackgcolor" (click)="goToOverview()"> <span></span>
-                                    &nbsp;&nbsp;Integrate Google Analytics</a>
-                                <!-- <img src="assets/img/ga.png"> -->
-                            </div>
-                        </div>
-
-                    </div>
-
+                <div class="col-lg-3">
+                    <mat-form-field appearance="fill" class="pr-sm-4" fxFlex="20">
+                        <mat-label>Start date</mat-label>
+                        <input matInput [matDatepicker]="startDatePicker" name="start" formControlName="fromDate" (dateChange)="onStartDateChange($event)">
+                        <mat-datepicker-toggle matSuffix [for]="startDatePicker"></mat-datepicker-toggle>
+                        <mat-datepicker #startDatePicker></mat-datepicker>
+                        <mat-error>Please select start date!</mat-error>
+                    </mat-form-field>
+                </div>
+                <div class="col-md-2"></div>
+                <div class="col-lg-3">
+                    <mat-form-field appearance="fill" class="pr-sm-4" fxFlex="0">
+                        <mat-label>End date</mat-label>
+                        <input matInput [matDatepicker]="endDatePicker" name="end" [formControl]="toDate" (dateChange)="onEndDateChange($event)">
+                        <mat-datepicker-toggle matSuffix [for]="endDatePicker"></mat-datepicker-toggle>
+                        <mat-datepicker #endDatePicker></mat-datepicker>
+                        <mat-error>Please select End date!</mat-error>
+                    </mat-form-field>
                 </div>
             </div>
         </div>
-    </div>
     <div class="col-lg-12">
         <div class="col-lg-6">
-
-            <div class="card card-default shadow bg-white rounded">
+            <div class="card card-default shadow bg-white rounded" >
                 <div class="card-header">
                     <div class="row borderBtm padding5">
-                        <h2 class="col-xs-12 col-12 col-md-11">Traffic Sources</h2>
-                        <div class="col-xs-12 col-12 col-md-1 fontsize15px">
-                            <i class="fa fa-info-circle paddingtop10px"
-                                matTooltip="Distribution of website traffic from different sources"></i>
-                        </div>
-                        <!-- <div class="col-xs-12 col-12 col-md-3 form-group">
-                        <input type="input" placeholder="Select DateRange" class="form-control" bsDaterangepicker
-                            (bsValueChange)="onDateRangeSelect($event)"
-                            [bsConfig]="{ ranges: ranges, containerClass: 'theme-blue' }"
-                            [bsValue]="bsInlineRangeValue">
-                    </div> -->
-                        <!-- <div class="btn-group">
-                        <div class="btn-group" dropdown>
-                            <button id="button-basic" dropdownToggle type="input" class="btn campselectedname"
-                                aria-controls="dropdown-basic">
-                                {{selctedLabelName !== undefined ? selctedLabelName : 'select Label'}}
-                                <span class="caret"> </span>
-                            </button>
-                            <ul id="dropdown-basic" *dropdownMenu class="dropdown-menu camplisth" role="menu"
-                                aria-labelledby="button-basic">
-                                <li role="menuitem" *ngFor="let label of dropdownlabels"
-                                    [ngClass]="{'active': selectedLabel == label.id}"><a class="dropdown-item"
-                                        (click)="onLabelSelect($event,label)" href="javascript:void(0);">{{label.label}}</a></li>
-                            </ul>
-                        </div>
-                    </div> -->
-                        <!-- <p class="camph4">VS</p> -->
-                        <!-- <div class="btn-group">
-                        <div class="btn-group" dropdown>
-                            <button id="button-basic" dropdownToggle type="input" class="btn campselectedname"
-                                aria-controls="dropdown-basic">
-                                {{selctedLabelName1 !== undefined ? selctedLabelName1 : 'select Matrix'}}
-                                <span class="caret"> </span>
-                            </button>
-                            <ul id="dropdown-basic" *dropdownMenu class="dropdown-menu camplisth" role="menu"
-                                aria-labelledby="button-basic">
-                                <li role="menuitem" *ngFor="let label of dropdownlabels1"
-                                    [ngClass]="{'active': selectedLabel1 == label.id}"><a class="dropdown-item"
-                                        (click)="onLabelSelect1($event,label)" href="javascript:void(0);">{{label.label}}</a></li>
-                            </ul>
-                        </div>
-                    </div> -->
-
+                        <h2 class="col-xs-12 col-12 col-md-5"> Clicks</h2>
                     </div>
-
+    
                 </div>
                 <div class="card-body row">
-                    <div class="chart-wrapper mx-auto chart-container" *ngIf="hasActiveAccount && hasAuthorize">
-                        <div *ngIf="showSpinnerBaseChart" class="la-line-scale  linescaleloadercolortopleft">
-                            <div></div>
-                            <div></div>
-                            <div></div>
-                            <div></div>
-                            <div></div>
-                        </div>
-                        <canvas *ngIf="!showSpinnerBaseChart" baseChart [datasets]="lineChartData1"
-                            [labels]="lineChartLabels1" [options]="lineChartOptions1" [colors]="lineChartColors1"
-                            [legend]="lineChartLegend1" [chartType]="lineChartType1" [plugins]="lineChartPlugins1"
-                            [fullWidth]="true">
+                    <div class="chart-wrapper mx-auto chart-container">
+                        <canvas baseChart id="canvas" [chartType]="'line'" [options]="barOptions"
+                            [datasets]="barDataClicks.datasets" [colors]="barColors" [labels]="barChartLabels"
+                            [legend]="true" height="50">
                         </canvas>
                     </div>
-
-
-                    <!-- *ngIf="!hasActiveAccount && !hasAuthorize" -->
-                    <div class="widget-overlay" *ngIf="!hasActiveAccount && !hasAuthorize">
-                        <div class="widget-overlay-content text-center">
-                            <h2 class="colorintegrateanalytics">Integrate Analytics</h2>
-                            <div class="text-center btn-container">
-                                <a class="btn ganalyticsbackgcolor" (click)="goToOverview()"> <span></span>
-                                    &nbsp;&nbsp;Integrate Google Analytics</a>
-                                <!-- <img src="assets/img/ga.png"> -->
-                            </div>
-                        </div>
-
-                    </div>
-
                 </div>
             </div>
         </div>
@@ -310,87 +155,126 @@
             <div class="card card-default shadow bg-white rounded">
                 <div class="card-header">
                     <div class="row borderBtm padding5">
-                        <h2 class="col-xs-12 col-12 col-md-11">Traffic Distribution</h2>
-                        <div class="col-xs-12 col-12 col-md-1 fontsize15px">
-                            <i class="fa fa-info-circle paddingtop10px"
-                                matTooltip="Distribution of traffic according to device type"></i>
-                        </div>
-                        <!-- <div class="col-xs-12 col-12 col-md-3 form-group">
-                        <input type="input" placeholder="Select DateRange" class="form-control" bsDaterangepicker
-                            (bsValueChange)="onDateRangeSelect($event)"
-                            [bsConfig]="{ ranges: ranges, containerClass: 'theme-blue' }"
-                            [bsValue]="bsInlineRangeValue">
-                    </div> -->
-                        <!-- <div class="btn-group">
-                        <div class="btn-group" dropdown>
-                            <button id="button-basic" dropdownToggle type="input" class="btn campselectedname"
-                                aria-controls="dropdown-basic">
-                                {{selctedLabelName !== undefined ? selctedLabelName : 'select Label'}}
-                                <span class="caret"> </span>
-                            </button>
-                            <ul id="dropdown-basic" *dropdownMenu class="dropdown-menu camplisth" role="menu"
-                                aria-labelledby="button-basic">
-                                <li role="menuitem" *ngFor="let label of dropdownlabels"
-                                    [ngClass]="{'active': selectedLabel == label.id}"><a class="dropdown-item"
-                                        (click)="onLabelSelect($event,label)" href="javascript:void(0);">{{label.label}}</a></li>
-                            </ul>
-                        </div>
-                    </div> -->
-                        <!-- <p class="camph4">VS</p> -->
-                        <!-- <div class="btn-group">
-                        <div class="btn-group" dropdown>
-                            <button id="button-basic" dropdownToggle type="input" class="btn campselectedname"
-                                aria-controls="dropdown-basic">
-                                {{selctedLabelName1 !== undefined ? selctedLabelName1 : 'select Matrix'}}
-                                <span class="caret"> </span>
-                            </button>
-                            <ul id="dropdown-basic" *dropdownMenu class="dropdown-menu camplisth" role="menu"
-                                aria-labelledby="button-basic">
-                                <li role="menuitem" *ngFor="let label of dropdownlabels1"
-                                    [ngClass]="{'active': selectedLabel1 == label.id}"><a class="dropdown-item"
-                                        (click)="onLabelSelect1($event,label)" href="javascript:void(0);">{{label.label}}</a></li>
-                            </ul>
-                        </div>
-                    </div> -->
-
+                        <h2 class="col-xs-12 col-12 col-md-5"> Impressions</h2>
                     </div>
-
+    
                 </div>
                 <div class="card-body row">
-                    <div class="chart-wrapper mx-auto chart-container" *ngIf="hasActiveAccount && hasAuthorize">
-                        <div *ngIf="showSpinnerBaseChart" class="la-line-scale  linescaleloadercolortopleft">
-                            <div></div>
-                            <div></div>
-                            <div></div>
-                            <div></div>
-                            <div></div>
-                        </div>
-                        <canvas *ngIf="!showSpinnerBaseChart" baseChart [datasets]="lineChartData2"
-                            [labels]="lineChartLabels2" [options]="lineChartOptions2" [colors]="lineChartColors2"
-                            [legend]="lineChartLegend2" [chartType]="lineChartType2" [plugins]="lineChartPlugins2"
-                            [fullWidth]="true">
+                    <div class="chart-wrapper mx-auto chart-container">
+                        <canvas baseChart id="canvas1" [chartType]="'line'" [options]="barOptions"
+                            [datasets]="barDataImpressions.datasets" [colors]="barColors" [labels]="barChartLabels"
+                            [legend]="true" height="50">
                         </canvas>
                     </div>
-
-
-                    <!-- *ngIf="!hasActiveAccount && !hasAuthorize" -->
-                    <div class="widget-overlay" *ngIf="!hasActiveAccount && !hasAuthorize">
-                        <div class="widget-overlay-content text-center">
-                            <h2 class="colorintegrateanalytics">Integrate Analytics</h2>
-                            <div class="text-center btn-container">
-                                <a class="btn ganalyticsbackgcolor" (click)="goToOverview()"> <span></span>
-                                    &nbsp;&nbsp;Integrate Google Analytics</a>
-                                <!-- <img src="assets/img/ga.png"> -->
-                            </div>
-                        </div>
-
-                    </div>
-
                 </div>
             </div>
         </div>
     </div>
+    <div class="col-lg-12">
+        <div class="col-lg-6">
+            <div class="card card-default shadow bg-white rounded">
+                <div class="card-header">
+                    <div class="row borderBtm padding5">
+                        <h2 class="col-xs-12 col-12 col-md-5"> Site CTR</h2>
+                    </div>
+    
+                </div>
+                <div class="card-body row">
+                    <div class="chart-wrapper mx-auto chart-container">
+                        <canvas baseChart id="canvas1" [chartType]="'line'" [options]="barOptions"
+                            [datasets]="barDataCTR.datasets" [colors]="barColors" [labels]="barChartLabels" [legend]="true"
+                            height="50">
+                        </canvas>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="col-lg-6">
+            <div class="card card-default shadow bg-white rounded">
+                <div class="card-header">
+                    <div class="row borderBtm padding5">
+                        <h2 class="col-xs-12 col-12 col-md-5"> Positions</h2>
+                    </div>
+    
+                </div>
+                <div class="card-body row">
+                    <div class="chart-wrapper mx-auto chart-container">
+                        <canvas baseChart id="canvas1" [chartType]="'line'" [options]="barOptions"
+                            [datasets]="barDataPositions.datasets" [colors]="barColors" [labels]="barChartLabels"
+                            [legend]="true" height="50">
+                        </canvas>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="col-lg-12">
+    <div class="card card-default shadow bg-white rounded">
+        <div class="card-header">
+            <div class="row borderBtm padding5">
+                <h3 class="col-xs-12 col-12 col-md-5 paddingtop5px"> Analytics Page (Site Speed)</h3>
+                <div class="col-xs-12 col-12 col-md-3 form-group">
+                    <input type="input" placeholder="Select DateRange" class="form-control" bsDaterangepicker
+                        (bsValueChange)="onDateRangeSelect($event)"
+                        [bsConfig]="{ ranges: ranges, containerClass: 'theme-blue' }"
+                        [bsValue]="bsInlineRangeValue">
+                </div>
+                <div class="btn-group">
+                    <div class="btn-group" dropdown>
+                        <button id="button-basic" dropdownToggle type="input" class="btn overviewbtnwidth"
+                            aria-controls="dropdown-basic">
+                            {{selctedLabelName !== undefined ? selctedLabelName : 'select Label'}}
+                            <span class="caret"> </span>
+                        </button>
+                        <ul id="dropdown-basic" *dropdownMenu class="dropdown-menu overviewulheightmax" role="menu"
+                            aria-labelledby="button-basic">
+                            <li role="menuitem" *ngFor="let label of dropdownlabels"
+                                [ngClass]="{'active': selectedLabel == label.id}"><a class="dropdown-item"
+                                    (click)="onLabelSelect($event,label)"
+                                    href="javascript:void(0);">{{label.label}}</a></li>
+                        </ul>
+                    </div>
+                </div>
+                <p class="overviewpvs">VS</p>
+                <div class="btn-group">
+                    <div class="btn-group" dropdown>
+                        <button id="button-basic" dropdownToggle type="input" class="btn overviewbtnwidth"
+                            aria-controls="dropdown-basic">
+                            {{selctedLabelName1 !== undefined ? selctedLabelName1 : 'select Matrix'}}
+                            <span class="caret"> </span>
+                        </button>
+                        <ul id="dropdown-basic" *dropdownMenu class="dropdown-menu overviewulheightmax" role="menu"
+                            aria-labelledby="button-basic">
+                            <li role="menuitem" *ngFor="let label of dropdownlabels1"
+                                [ngClass]="{'active': selectedLabel1 == label.id}"><a class="dropdown-item"
+                                    (click)="onLabelSelect1($event,label)"
+                                    href="javascript:void(0);">{{label.label}}</a></li>
+                        </ul>
+                    </div>
+                </div>
 
+            </div>
+
+        </div>
+        <div class="card-body row">
+            <div class="chart-wrapper mx-auto chart-container" *ngIf="hasActiveAccount && hasAuthorize">
+                <div *ngIf="showSpinnerBaseChart" class="la-line-scale  linescaleloadercolortopleft">
+                    <div></div>
+                    <div></div>
+                    <div></div>
+                    <div></div>
+                    <div></div>
+                </div>
+                <canvas *ngIf="!showSpinnerBaseChart" baseChart [datasets]="lineChartData"
+                    [labels]="lineChartLabels" [options]="lineChartOptions" [colors]="lineChartColors"
+                    [legend]="lineChartLegend" [chartType]="lineChartType" [plugins]="lineChartPlugins"
+                    [fullWidth]="true">
+                </canvas>
+            </div>
+
+        </div>
+    </div>
+</div>
     <!-- <div class="col-lg-4">
 
 

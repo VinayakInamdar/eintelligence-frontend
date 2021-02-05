@@ -62,13 +62,15 @@ export class SocialmediaComponent implements OnInit {
       appId: environment.facebook_appid,
       version: 'v9.0'
     });
-    let id = this.route.snapshot.paramMap.get('id');
+    //let id = this.route.snapshot.paramMap.get('id');
+    let id = localStorage.getItem("selectedCampId");
     this.selectedCampId = `${id}`;
     this.getCampaignList();
   }
      // using to get list of campaigns
      public getCampaignList(): void {
-      var userid = this.openIdConnectService.user.profile.sub;
+       debugger
+      var userid = localStorage.getItem("userID");
       this.campaignService.getCampaign(userid).subscribe(res => {
         this.campaignList = res;
         // this.source = new LocalDataSource(this.campaignList)

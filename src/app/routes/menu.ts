@@ -30,16 +30,16 @@ const Fulfillment = {
     link: '/store',
     icon: "fas fa-store"
 };
-const Products = {
-    text: 'Products',
-    link: '/products',
-    icon: "fas fa-store"
-};
-const MyPayments = {
-    text: 'My Payments',
-    link: '/mypayments',
-    icon: "fas fa-store"
-};
+// const Products = {
+//     text: 'Products',
+//     link: '/products',
+//     icon: "fas fa-store"
+// };
+// const MyPayments = {
+//     text: 'My Payments',
+//     link: '/mypayments',
+//     icon: "fas fa-store"
+// };
 // const Admin = {
 //     text: 'Admin',
 //     link: '/admin',
@@ -52,11 +52,11 @@ const Campaign = {
     icon: "fa fa-bullhorn"
 };
 
- const Integrations = {
-    text: 'Integrnations',
-     link: '/integrations/:id',
-     icon: "fas fa-cogs"
- };
+//  const Integrations = {
+//     text: 'Integrnations',
+//      link: '/integrations/:id',
+//      icon: "fas fa-cogs"
+//  };
 
 // const Leads = {
 //     text: 'CRM',
@@ -69,11 +69,11 @@ const Campaign = {
 //     link: '/proposal',
 //     icon: "fas fa-sticky-note"
 // };
-const Todolist = {
-    text: 'Tasks',
-    link: '/todo',
-    icon: "fas fa-list-alt"
-};
+// const Todolist = {
+//     text: 'Tasks',
+//     link: '/todo',
+//     icon: "fas fa-list-alt"
+// };
 
 // const Reports = {
 //     text: 'Reports',
@@ -113,17 +113,17 @@ const headingMain = {
 export const menu = [
     headingMain,
     Home,
-    Products,
+  //  Products,
     Campaign,
     Fulfillment, 
    // Reports,
-    MyPayments,
+   // MyPayments,
     //User,
    // Account,
   //  Store,
     //Admin,
    
-   Integrations,
+   //Integrations,
     //Leads,
     //Proposal,
     //Todolist,

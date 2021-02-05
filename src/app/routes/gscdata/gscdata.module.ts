@@ -16,6 +16,7 @@ const routes: Routes = [
   { path: '', component: GscdataComponent }
 ];
 
+
 @NgModule({
   declarations: [GscdataComponent],
   imports: [

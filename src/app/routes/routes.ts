@@ -89,19 +89,19 @@ export const routes: Routes = [
                 loadChildren: () => import('./products/products.module').then(m => m.ProductsModule)
             },
             {
-                path: 'socialmedia/:id',
+                path: 'socialmedia',
                 component: LayoutComponent,
                 //canActivate: [RequireAuthenticatedUserRouteGuardService],
                 loadChildren: () => import('./socialmedia/socialmedia.module').then(m => m.SocialmediaModule)
             },
             {
-                path: 'linkedin/:id',
+                path: 'linkedin',
                 component: LayoutComponent,
                 //canActivate: [RequireAuthenticatedUserRouteGuardService],
                 loadChildren: () => import('./linkedin/linkedin.module').then(m => m.LinkedinModule)
             },
             {
-                path: 'instagram/:id',
+                path: 'instagram',
                 component: LayoutComponent,
                 //canActivate: [RequireAuthenticatedUserRouteGuardService],
                 loadChildren: () => import('./instagram/instagram.module').then(m => m.InstagramModule)

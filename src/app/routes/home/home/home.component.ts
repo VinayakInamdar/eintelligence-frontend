@@ -327,7 +327,8 @@ export class HomeComponent implements OnInit {
      
       // using to view analytics report of selected campaign Id
       userRowSelect(campaign: any) : void{
-
+        localStorage.setItem('selectedCampId', campaign.data.id);
+        //this.router.navigate([`../campaign/:id${campaign.data.id}/seo`]);
         this.router.navigate(['/campaign', {id : campaign.data.id}],{queryParams: {
           view: 'showReport'
         },});

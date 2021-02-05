@@ -10,7 +10,8 @@ import { Ng2SmartTableModule } from 'ng2-smart-table';
 import { NgxIntlTelInputModule } from 'ngx-intl-tel-input';
 import { NgxSelectModule } from 'ngx-select-ex';
 import { SharedModule } from 'src/app/shared/shared.module';
-
+import { SubmenuModule } from '../submenu/submenu.module';
+import { SocialmediaSubmenuModule } from '../socialmedia-submenu/socialmedia-submenu.module';
 const routes: Routes = [
   { path: '', component: LinkedinComponent }
 ];
@@ -29,7 +30,9 @@ const routes: Routes = [
     FormsModule,
     NgxSelectModule,
     NgxIntlTelInputModule,
-    ChartsModule
+    ChartsModule,
+    SubmenuModule,
+    SocialmediaSubmenuModule
  ]
 })
 export class LinkedinModule { }

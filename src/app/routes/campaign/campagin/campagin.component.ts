@@ -1232,7 +1232,6 @@ public goToGSC(event) {
     });
   }
   DeleteRankingGraphData() {
-
     const monthNames = ["January", "February", "March", "April", "May", "June",
       "July", "August", "September", "October", "November", "December"
     ];
@@ -1244,13 +1243,10 @@ public goToGSC(event) {
       tempId = p[0].id;
       this.campaignService.deleteRankingGraph(tempId).subscribe(response => {
         //if (response) {
-
-
         //this.snackbarService.show('Product Added');
         //}
       });
     }
     this.RefreshRankingGraphData();
-
   }
 }

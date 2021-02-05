@@ -394,7 +394,7 @@ export class SiteSpeedComponent implements OnInit {
 
   //to get campaignList to select campaign name
   public getCampaignList(): void {
-    var userid = this.openIdConnectService.user.profile.sub;
+    var userid = localStorage.getItem("userID");
     this.campaignService.getCampaign(userid).subscribe(res => {
       this.campaignList = res;
       var name = "";

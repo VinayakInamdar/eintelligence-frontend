@@ -25,8 +25,9 @@ import { ConversionsComponent } from '../analytics/conversions/conversions.compo
 import { EcommerceComponent } from '../analytics/ecommerce/ecommerce.component';
 import { GoalsComponent } from '../analytics/goals/goals.component';
 import { SeoComponent } from '../seo/seo/seo.component';
-
-
+import { SubmenuModule } from '../submenu/submenu.module';
+import { SocialLoginModule, SocialAuthServiceConfig } from 'angularx-social-login';
+import { GoogleLoginProvider } from 'angularx-social-login';
 
 
 const routes: Routes = [
@@ -60,8 +61,27 @@ const routes: Routes = [
         SharedModule,
         RouterModule.forChild(routes),
         Ng2SmartTableModule,
-        ChartsModule
+        ChartsModule,
+        SubmenuModule,
+        SocialLoginModule
     ],
+    providers: [
+        {
+          provide: 'SocialAuthServiceConfig',
+          useValue: {
+            autoLogin: false,
+            providers: [    
+              {
+                id: GoogleLoginProvider.PROVIDER_ID,
+                provider: new GoogleLoginProvider(
+                  '959505317275-v8294ho5b3prni9rqi4l6nnb8463uiig.apps.googleusercontent.com'//CLient id
+                )
+              },
+              
+            ]
+          } as SocialAuthServiceConfig,
+        }
+      ],
     declarations: [KeywordsComponent,AnalyticsComponent,AcquisitionComponent,
         TrafficSourcesComponent,SourcesMediumsComponent,CampaignsComponent,
         AudienceComponent,DeviceCategoryComponent,GeoLocationsComponent,LanguagesComponent

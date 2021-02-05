@@ -6,7 +6,7 @@ import { BrowserModule } from '@angular/platform-browser';
 import { SharedModule } from '../../shared/shared.module';
 import { ChartsModule } from 'ng2-charts';
 import { KeywordsComponent } from '../seo/keywords/keywords.component';
-
+import { SubmenuModule } from '../submenu/submenu.module';
 @NgModule({
   declarations: [],
   imports: [
@@ -14,6 +14,7 @@ import { KeywordsComponent } from '../seo/keywords/keywords.component';
     CommonModule,
     BrowserModule,
     ChartsModule,
+    SubmenuModule
   ],
   exports :[
     Router
