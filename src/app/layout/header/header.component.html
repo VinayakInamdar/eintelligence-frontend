@@ -1,5 +1,5 @@
 <!-- START Top Navbar-->
-<nav class="navbar topnavbar" role="navigation" >
+<nav class="navbar topnavbar" role="navigation">
     <!-- START navbar header-->
     <div class="navbar-header">
         <a class="navbar-brand" href="#/">
@@ -16,18 +16,20 @@
     <ul class="navbar-nav mr-auto flex-row">
         <li class="nav-item">
             <!-- Button used to collapse the left sidebar. Only visible on tablet and desktops-->
-            <a class="nav-link d-none d-md-block d-lg-block d-xl-block" trigger-resize="" (click)="toggleCollapsedSideabar()" *ngIf="!isCollapsedText()">
+            <a class="nav-link d-none d-md-block d-lg-block d-xl-block" trigger-resize=""
+                (click)="toggleCollapsedSideabar()" *ngIf="!isCollapsedText()">
                 <em class="fas fa-bars"></em>
             </a>
             <!-- Button to show/hide the sidebar on mobile. Visible on mobile only.-->
-            <a class="nav-link sidebar-toggle d-md-none" (click)="settings.toggleLayoutSetting('asideToggled'); $event.stopPropagation()">
+            <a class="nav-link sidebar-toggle d-md-none"
+                (click)="settings.toggleLayoutSetting('asideToggled'); $event.stopPropagation()">
                 <em class="fas fa-bars"></em>
             </a>
         </li>
         <!-- START User avatar toggle-->
         <li class="nav-item d-none d-md-block">
             <!-- Button used to collapse the left sidebar. Only visible on tablet and desktops-->
-            <a  class="nav-link" (click)="toggleUserBlock($event)">
+            <a class="nav-link" (click)="toggleUserBlock($event)">
                 <em class="icon-user"></em>
             </a>
         </li>
@@ -45,26 +47,32 @@
     <ul class="navbar-nav flex-row" style="display: flex;flex-direction: row;justify-content: space-evenly;">
 
         <li class="nav-item d-none d-md-block">
-            <a class="nav-link"  title="Integrations"   [routerLink]="'/integrations/:id'">
+            <a class="nav-link" title="Add Products" [routerLink]="'/products'">
+                <em class="fas fa-plus"></em>
+            </a>
+        </li>
+        <li class="nav-item d-none d-md-block">
+            <a class="nav-link" title="Integrations" [routerLink]="'/integrations/:id'">
                 <em class="fas fa-cogs"></em>
             </a>
-        </li>        <li class="nav-item d-none d-md-block">
-            <a class="nav-link"  title="Add Products"   [routerLink]="'/products'">
+        </li>
+        <li class="nav-item d-none d-md-block">
+            <a class="nav-link" title="Add Products" [routerLink]="'/products'">
                 <em class="fas fa-list-alt"></em>
             </a>
         </li>
         <li class="nav-item d-none d-md-block">
-            <a class="nav-link"  title="My Payments"   [routerLink]="'/mypayments'">
+            <a class="nav-link" title="My Payments" [routerLink]="'/mypayments'">
                 <em class="fas fa-sticky-note"></em>
             </a>
         </li>
         <li class="nav-item d-none d-md-block">
-            <a class="nav-link"  title="Log Out"  (click)="logout()">
+            <a class="nav-link" title="Log Out" (click)="logout()">
                 <em class="fas fa-sign-out-alt"></em>
             </a>
         </li>
 
-<!-- 
+        <!-- 
     <li style="padding-right: 5px;" *ngFor='let item of menuItems' [ngClass]="{'nav-item': item.heading}" [routerLinkActive]="['active']">
         <span *ngIf="item.heading">{{(item.translate | translate) || item.text}}</span>
         <a class="nav-link" href *ngIf="!item.heading && !item.submenu && item.elink" [attr.target]="item.target" [attr.href]="item.elink" title="{{item.text}}">
@@ -144,7 +152,7 @@
         </ul>
     </li> -->
 
-</ul>
+    </ul>
     <!-- END Left navbar-->
     <!-- START Right Navbar-->
     <ul class="navbar-nav flex-row">
