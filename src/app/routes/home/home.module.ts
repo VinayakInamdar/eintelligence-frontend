@@ -15,8 +15,9 @@ import { AuditreportComponent } from '../auditreport/auditreport/auditreport.com
 import {ToasterModule, ToasterService,ToasterConfig } from 'angular2-toaster/angular2-toaster';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import { ToastrModule } from 'ngx-toastr';
-
-
+import { SocialLoginModule, SocialAuthServiceConfig } from 'angularx-social-login';
+import { GoogleLoginProvider } from 'angularx-social-login';
+import { FacebookModule } from 'ngx-facebook';
 const routes: Routes = [
     { path: '', component: HomeComponent },
     { path: 'campaign', component: CampaginComponent },
@@ -38,14 +39,32 @@ const routes: Routes = [
         NgxSelectModule,
         ChartsModule,
         ToasterModule,
-        ToastrModule.forRoot()
+        ToastrModule.forRoot(),
+        SocialLoginModule,
+        FacebookModule.forRoot(),
     ],
+    providers: [
+        ToasterService,
+        {
+          provide: 'SocialAuthServiceConfig',
+          useValue: {
+            autoLogin: false,
+            providers: [    
+              {
+                id: GoogleLoginProvider.PROVIDER_ID,
+                provider: new GoogleLoginProvider(
+                  '959505317275-v8294ho5b3prni9rqi4l6nnb8463uiig.apps.googleusercontent.com'//CLient id
+                )
+              },
+              
+            ]
+          } as SocialAuthServiceConfig,
+        }
+      ],
     declarations: [HomeComponent, CampaginComponent,OverviewComponent,AuditsComponent,AuditreportComponent],
     exports: [
         RouterModule
     ],
-    providers: [
-        ToasterService
-    ]
+
 })
 export class HomeModule { }

@@ -15,6 +15,8 @@ import { HomeGscService } from '../homeGsc.service';
 import { DatePipe } from '@angular/common';
 import { parseDate } from 'ngx-bootstrap/chronos';
 import { environment } from 'src/environments/environment';
+import { GoogleLoginProvider, SocialAuthService } from 'angularx-social-login';
+import { FacebookService, LoginOptions, LoginResponse } from 'ngx-facebook';
 
 @Component({
   selector: 'app-home',
@@ -155,12 +157,16 @@ export class HomeComponent implements OnInit {
   };
 
 
-  constructor(public datepipe: DatePipe, private homeGscService: HomeGscService, public http: HttpClient, public campaignService: CampaignService, private router: Router,
+  constructor(private authService: SocialAuthService, private facebook: FacebookService, public datepipe: DatePipe, private homeGscService: HomeGscService, public http: HttpClient, public campaignService: CampaignService, private router: Router,
     public auditsService: AuditsService, public toasterService: ToasterService, public toastr: ToastrService
     , fb: FormBuilder, private openIdConnectService: OpenIdConnectService, private accountService: AccountService) {
     //  this.facebookPageToken = localStorage.getItem('FacebookAccessToken');
     //Ranking
-
+    debugger
+    facebook.init({
+      appId: environment.facebook_appid,
+      version: 'v9.0'
+    });
     this.getSerpList();
     this.getRankingGraphData();
     this.getCampaignList();
@@ -207,7 +213,7 @@ export class HomeComponent implements OnInit {
         filter: false
       },
       googleLeads: {
-        title: 'GOOGLE LEADS',
+        title: 'GOOGLE ADS',
         filter: false
       }
     }
@@ -267,39 +273,9 @@ export class HomeComponent implements OnInit {
       this.getData(i);
       this.campaignList[i].ranking = g + "%";
       this.addDataToPieChart(g, 1);
-      this.facebookAccessToken = localStorage.getItem('FacebookAccessToken');
-      
-      this.getFacebookUserId(i);
-
-
-      // this.perpve = this.getPercentage(this.pve, this.total);
-      // this.pernve = this.getPercentage(this.nve, this.total);
-      // this.pernut = this.getPercentage(this.nut, this.total);
-      // if(this.perpve == "undefined" || this.perpve == "NaN"){
-      //   this.perpve = 0;
-      // }
-      // if(this.pernve == "undefined" || this.pernve == "NaN"){
-      //   this.pernve = 0;
-      // }
-      // if(this.pernut == "undefined" || this.pernut == "NaN"){
-      //   this.pernut = 0;
-      // }
-      // this.pieChartData1=[this.perpve, this.pernve,this.pernut ]
-      //GSC
-
-
-
-      // if (i == 0) {
-      //   this.campaignList[i].traffic = "75%";
-      //   this.campaignList[i].googleLeads = "45%";
-      //   this.campaignList[i].socialMedia = "85%";
-      //   this.campaignList[i].gsc = "12%";
-      // } else if (i == 1) {
-      //   this.campaignList[i].traffic = "75%";
-      //   this.campaignList[i].googleLeads = "45%";
-      //   this.campaignList[i].socialMedia = "85%";
-      //   this.campaignList[i].gsc = "10%";
-      // }
+      if(this.facebookAccessToken != null && this.facebookAccessToken != undefined && this.facebookAccessToken!= ''){
+        this.getFacebookUserId(i);
+      }
     }
   }
     this.tableData = this.campaignList;
@@ -755,6 +731,63 @@ export class HomeComponent implements OnInit {
         this.facebookPageToken = res['data'][0].access_token;
         this.facebookDataThisMonth(i);
         this.facebookDataLastMonth(i);
+      }
+    }, error => {
+      alert('Fetch Page Token Failed : ' + JSON.stringify(error.error));
+    });
+  }
+  signInWithGoogle(): void {
+    const googleLoginOptions = {
+      scope: 'profile email https://www.googleapis.com/auth/webmasters.readonly https://www.googleapis.com/auth/webmasters'
+    };
+    this.authService.signIn(GoogleLoginProvider.PROVIDER_ID, googleLoginOptions)
+      .then((res) => {
+        debugger
+        this.accessToken = res['authToken'];
+        localStorage.setItem('googleGscAccessToken', this.accessToken );
+        this.calculateRankings();
+      })
+  }
+  loginWithOptions(i) {
+    const loginOptions: LoginOptions = {
+      enable_profile_selector: true,
+      return_scopes: true,
+      // scope: 'public_profile,user_friends,email,pages_show_list'
+      //scope: 'pages_show_list'
+      scope: 'pages_show_list,read_insights,pages_read_engagement'
+    };
+debugger
+    this.facebook.login(loginOptions)
+      .then((res: LoginResponse) => {
+        console.log('Logged in', res);
+        this.facebookAccessToken = res['authResponse'].accessToken;
+        localStorage.setItem('FacebookAccessToken',this.accessToken);
+        this.getFacebookUserId(i);
+
+
+      })
+      .catch(this.handleError);
+  }
+  private handleError(error) {
+    console.error('Error processing action', error);
+  }
+  getUserId() {
+    const url = "https://graph.facebook.com/me?access_token=" + this.facebookAccessToken + "&fields=id,name";
+    this.http.get(url).subscribe(res => {
+      if (res) {
+        this.facebookUserId = res['id'];
+        this.generatePageToken2();
+      }
+    }, error => {
+      alert('Fetch New Likes Count Failed : ' + JSON.stringify(error.error));
+    });
+  }
+  generatePageToken2() {
+    const url = "https://graph.facebook.com/" + this.facebookUserId + "/accounts?access_token=" + this.facebookAccessToken;
+    // const url = "https://graph.facebook.com/105114094889635/accounts?access_token=EAAGXn3oGklwBAEDY2dpA11KLDG0hhHYWi9pts9qmPJxXs6Ywb4UOq6SRhvr5kFpNDeUrHkG1rIZCxHJMxQS3U7UurncvEnjuuaD4aLmKDAT5uIoSb3QWSE92GkLWOS0Oqub7ZAIcxwtMBAaLOSQWqEiwsMuqaugO5XwiXJx97ekfXeuB8cnQhISZAtINl8ZD";
+    this.http.get(url).subscribe(res => {
+      if (res) {
+        this.facebookPageToken = res['data'][0].access_token;
       }
     }, error => {
       alert('Fetch Page Token Failed : ' + JSON.stringify(error.error));

@@ -1021,7 +1021,10 @@ export class CampaginComponent implements OnInit, AfterViewInit {
     }, 500);
 
   }
-
+  public AddCampaign(): any {
+    this.router.navigate(['/home/campaign']);
+  }
+  
   //using to open div on mouseover event
   public showDiv(event, value, show) {
     this.showdiv = value == 'true' ? true : false;
@@ -1189,6 +1192,7 @@ public goToGSC(event) {
       this.sitespeedCircularProgressouterStrokeColorMobile = '#148B39'
     }
   }
+ //using to open create campaign view to create new campaign in db
 
   public changeDatesFormat(s, i) {
     var one = s.substring(0, s.length - 4);

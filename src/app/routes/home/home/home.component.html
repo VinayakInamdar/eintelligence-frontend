@@ -40,11 +40,34 @@
 </div> -->
 
 <div class="row homemaindiv">
-    <div class="col-sm-1"></div>
+    <div class="col-sm-1">
 
+    
+    </div>
+ 
     <div class="col-lg-10">
 
-
+        <div class="card card-default shadow p-3 mb-5 bg-white rounded  cursor-default">
+            <div class="col-lg-12" >
+    
+                <div class="col-lg-3">
+                    <button class="mr-1 btn btn-primary btn-lg" type="button" (click)="signInWithGoogle()">
+                        <i class="fa fa-twitter mr-1"></i>
+                        Login with Google
+                    </button>
+                </div>
+           
+                <div class="col-lg-3">
+                    <button class="mr-1 btn btn-primary btn-lg" type="button" (click)="loginWithOptions(0)">
+                        <i class="fa fa-twitter mr-1"></i>
+                        Login with Facebook
+                    </button>
+                </div>
+            </div>
+        </div>
+        
+    
+   
         <div class="card card-default shadow p-3 mb-5 bg-white rounded  cursor-default">
             <!-- <div class="card-header">
                 <div class="row">
