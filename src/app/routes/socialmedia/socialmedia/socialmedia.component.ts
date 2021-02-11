@@ -130,6 +130,7 @@ export class SocialmediaComponent implements OnInit {
     this.fb.login()
       .then((res: LoginResponse) => {
         this.accessToken = res['authResponse'].accessToken;
+        localStorage.setItem('FacebookAccessToken',this.accessToken);
         this.testApi();
         console.log('Logged in', res);
       })
@@ -148,12 +149,12 @@ export class SocialmediaComponent implements OnInit {
       .then((res: LoginResponse) => {
         console.log('Logged in', res);
         this.accessToken = res['authResponse'].accessToken;
+        localStorage.setItem('FacebookAccessToken',this.accessToken);
         this.getUserId();
         this.getPageLikes();
         this.getPageNewLikes();
       })
       .catch(this.handleError);
-
   }
   private handleError(error) {
     console.error('Error processing action', error);
@@ -183,6 +184,8 @@ export class SocialmediaComponent implements OnInit {
       if (res) {
         
         this.pageToken = res['data'][0].access_token;
+        localStorage.setItem('FacebookPageToken',this.pageToken);
+
         this.getAllData28Days();
         // this.getPageReachCount();
         // this.getTotalClicksCount();

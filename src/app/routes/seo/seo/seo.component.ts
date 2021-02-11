@@ -41,6 +41,7 @@ export class SeoComponent implements OnInit {
   barDataArray: any[] = [];
   //-------------
   //-------------GSC data variable start-------------------
+  gscUrl;
   clicksData = [];
   dateListData = [];
   impressionData;
@@ -815,12 +816,13 @@ export class SeoComponent implements OnInit {
     public route: ActivatedRoute, public router: Router, private integrationsService: IntegrationsService
     , private overvieswService: OverviewService, location: PlatformLocation,
     public auditsService: AuditsService, private http: HttpClient, public datepipe: DatePipe, private authService: SocialAuthService) {
-debugger
+
     this.campaignModel = new Campaign();
     this.bsInlineRangeValue = [new Date(new Date().setDate(new Date().getDate() - 31)), new Date()];
     // this.getGaSetupByCampaignId();
     let id = this.route.snapshot.paramMap.get('id');
     this.selectedCampId = `${id.substring(3)}`;
+    this.getDateSettings() ;
     this.getGaSetupByCampaignId();
     this.getAnalyticsData();
     this.getCampaignList();
@@ -1433,7 +1435,7 @@ debugger
     this.router.navigate([`./instagram/instagram`, { id: this.selectedCampId }])
   }
   public goToGSC(event) {
-    debugger
+    
     this.router.navigate([`./gsc/gsc`, { id: this.selectedCampId }])
   }
 
@@ -1520,8 +1522,7 @@ RefreshRankingGraphData() {
   }
   this.averageRanking = totalPosition / parseInt(this.serpList.length)
   this.averageRanking = Math.round(this.averageRanking);
-  const monthNames = ["January", "February", "March", "April", "May", "June",
-    "July", "August", "September", "October", "November", "December"
+  const monthNames = ["January", "February", "March", "April", "May", "June", "July", "August", "September", "October", "November", "December"
   ];
 
   const d = new Date();
@@ -1539,8 +1540,7 @@ RefreshRankingGraphData() {
   });
 }
 DeleteRankingGraphData() {
-  const monthNames = ["January", "February", "March", "April", "May", "June",
-    "July", "August", "September", "October", "November", "December"
+  const monthNames = ["January", "February", "March", "April", "May", "June", "July", "August", "September", "October", "November", "December"
   ];
   const d = new Date();
   let currMonth = monthNames[d.getMonth()];
@@ -1571,7 +1571,7 @@ getRankingGraphData() {
         };
         return a.year - b.year || MONTH[a.month] - MONTH[b.month];
       });
-      debugger
+      
       let u =  this.rankingGraphData;
       let p = u.filter(x => x.month == "January")
       if (p != null && p != undefined && p.length > 0) {
@@ -1701,8 +1701,10 @@ signInWithGoogle(): void {
   };
   this.authService.signIn(GoogleLoginProvider.PROVIDER_ID, googleLoginOptions)
     .then((res) => {
-      debugger
+      
       this.accessToken = res['authToken'];
+      localStorage.setItem('googleGscAccessToken', this.accessToken );
+
       this.getData();
 //this.getAdsData();
     })
@@ -1715,7 +1717,8 @@ getDataByDevice(startDate, endDate) {
       'Authorization': 'Bearer ' + this.accessToken,
     })
   };
-  const url = "https://www.googleapis.com/webmasters/v3/sites/https%3A%2F%2Fwww.abhisi.com%2F/searchAnalytics/query?key=AIzaSyC1IsrCeeNXp9ksAmC8szBtYVjTLJC9UWQ";
+  let urlcamp = this.selectedCampIdWebUrl.replace('/', '%2F');
+    const url = "https://www.googleapis.com/webmasters/v3/sites/https:%2F%2F" + urlcamp + "%2F/searchAnalytics/query?key=AIzaSyC1IsrCeeNXp9ksAmC8szBtYVjTLJC9UWQ";
   let data = {};
 
   data = {
@@ -1729,7 +1732,7 @@ getDataByDevice(startDate, endDate) {
   };
   this.http.post(url, data, this.httpOptionJSON).subscribe(res => {
     if (res) {
-      debugger
+      
       let rows = res['rows'];
       this.barDataImpressionsDevice.datasets[0].data = [];
       this.barChartLabelsDevice = [];
@@ -1753,7 +1756,10 @@ getDataCurrentYear(startDate, endDate, all) {
       'Authorization': 'Bearer ' + this.accessToken,
     })
   };
-  const url = "https://www.googleapis.com/webmasters/v3/sites/https%3A%2F%2Fwww.abhisi.com%2F/searchAnalytics/query?key=AIzaSyC1IsrCeeNXp9ksAmC8szBtYVjTLJC9UWQ";
+  debugger
+  let urlcamp = this.selectedCampIdWebUrl.replace('/', '%2F');
+  const url = "https://www.googleapis.com/webmasters/v3/sites/https:%2F%2F" + urlcamp + "%2F/searchAnalytics/query?key=AIzaSyC1IsrCeeNXp9ksAmC8szBtYVjTLJC9UWQ";
+//const url = "https://www.googleapis.com/webmasters/v3/sites/https%3A%2F%2Fwww.abhisi.com%2F/searchAnalytics/query?key=AIzaSyC1IsrCeeNXp9ksAmC8szBtYVjTLJC9UWQ";
   let data = {};
   if (all == 1) {
     data = {
@@ -1809,15 +1815,17 @@ getDataCurrentYear(startDate, endDate, all) {
 
 }
 getDataPreviousYear(startDate, endDate, all) {
-
+debugger
   this.httpOptionJSON = {
     headers: new HttpHeaders({
       'Accept': 'application/json',
       'Authorization': 'Bearer ' + this.accessToken,
     })
   };
-  const url = "https://www.googleapis.com/webmasters/v3/sites/https%3A%2F%2Fwww.abhisi.com%2F/searchAnalytics/query?key=AIzaSyC1IsrCeeNXp9ksAmC8szBtYVjTLJC9UWQ";
-  let data = {
+
+  let urlcamp = this.selectedCampIdWebUrl.replace('/', '%2F');
+  const url = "https://www.googleapis.com/webmasters/v3/sites/https:%2F%2F" + urlcamp + "%2F/searchAnalytics/query?key=AIzaSyC1IsrCeeNXp9ksAmC8szBtYVjTLJC9UWQ";
+let data = {
     "startRow": 0,
     "startDate": startDate,
     "endDate": endDate,
@@ -1837,7 +1845,7 @@ getDataPreviousYear(startDate, endDate, all) {
         this.positionPreviousYear = parseFloat(rows[0].position).toFixed(2).toString();
 
         //pecentgage calculate
-        debugger
+        
         this.percentClicks = this.getYearwiseDifference(this.clicksPreviousYear, this.clicksThisYear);
         this.percentImpressions = this.getYearwiseDifference(this.impressionsPreviousYear, this.impressionsThisYear);
         this.percentPosition = this.getYearwiseDifference(this.positionPreviousYear, this.positionThisYear);
@@ -1898,7 +1906,7 @@ getData() {
   }
 }
 getDateSettings() {
-
+debugger
   this.startDate = this.datepipe.transform(this.fromDate.value, 'yyyy-MM-dd');
   this.currYear = parseInt(this.datepipe.transform(this.fromDate.value, 'yyyy'));
   let prevYear = this.currYear - 1;
@@ -1910,7 +1918,7 @@ getDateSettings() {
 }
 
 getYearwiseDifference(previous, current) {
-  debugger
+  
   let diff = ((parseFloat(previous) - parseFloat(current)) * 100) / parseFloat(previous)
   return parseFloat(diff.toString()).toFixed(2)
 

@@ -25,10 +25,16 @@ export class SubmenuComponent implements OnInit {
   public goToSocialMedia(event) {
     this.router.navigate([`/socialmedia`])
   }
-  /*
-  public goToSeoOverview(event) {
-    this.router.navigate([`/campaign/:id${this.selectedCampId}/seo`])
-  }
+  
+  public goToTest(event) {
+    this.router.navigate(['/campaign', { id: this.selectedCampId }], {
+      queryParams: {
+        view: 'showReport'
+      },
+    });
+
+    //this.router.navigate([`/campaign/:id${this.selectedCampId}`])
+  }/*
   public goToSocialMedia(event) {
 
     this.router.navigate([`/socialmedia`])

@@ -954,7 +954,9 @@ export class CampaginComponent implements OnInit, AfterViewInit {
 
     this.selectedCampaignName = campaign.data.name
     this.selectedCampId = campaign.data.id
-    this.router.navigate(['/campaign', { id: campaign.data.id }]);
+    //this.router.navigate(['/campaign', { id: campaign.data.id }]);
+    localStorage.setItem('selectedCampId', campaign.data.id);
+    this.router.navigate([`../campaign/:id${campaign.data.id}/seo`]);
     this.settingActive = 3
     this.selectedCampIdWebUrl = campaign.data.webUrl
     this.getSelectedCampaignWebsiteAuditReportData()
