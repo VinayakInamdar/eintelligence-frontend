@@ -62,7 +62,7 @@
                                     <p class="pcolorred">*</p>
                                     <input formControlName="password" class="form-control inputheight3rem" type="password" placeholder="Enter new password" />
                                     <span class="text-danger" *ngIf="valForm.controls['password'].hasError('required') && (valForm.controls['password'].dirty || valForm.controls['password'].touched)">
-                                        {{'validation.PASSWORD' | translate}}</span>
+                                        {{'validation.PASSWORDISREQUIRED' | translate}}</span>
                                 </div>
                             </div>
 
@@ -103,23 +103,15 @@
 
                             <div class="form-group">
                                 <div class="row">
-                                    <div class="col-md-5">
-                                        <div class="row">
-                                            <label class="labelcss">COMPANY TYPE</label>
-                                            <p class="pcolorred">*</p>
-                                            <div class="col-md-2"></div><br><br>
-                                            <input type="radio" formControlName="companytype" value="agency"  name="companytype"> AGENCY
-                                        </div>
+                                    <label class="labelcss">COMPANY TYPE</label>
+                                    <p class="pcolorred">*</p>
+                                    <div class="col-md-3">
+                                        <input type="radio" formControlName="companytype" value="agency"  name="companytype"> AGENCY
                                     </div>
-                                    <div class="col-md-2"></div>
-                                    <div class="col-md-5">
-                                        <div class="row">
-
-
-                                            <input type="radio" formControlName="companytype" value="business"  name="companytype"> BUSINESS
-
-                                        </div>
-                                    </div>
+                                    <div class="col-md-2"> </div>
+                                    <div class="col-md-3">
+                                        <input type="radio" formControlName="companytype" value="business"  name="companytype"> BUSINESS
+                                     </div>
                                 </div>
                             </div>
 
