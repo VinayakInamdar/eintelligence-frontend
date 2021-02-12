@@ -250,9 +250,10 @@ export class KeywordsComponent implements OnInit {
     this.router.navigate([], { queryParams: params });
     this.settingActive = 1;
   }
+
   // using to get campaignList
   public getCampaignList(): void {
-    var userid = this.openIdConnectService.user.profile.sub;
+    var userid =  localStorage.getItem("userID");
     this.campaignService.getCampaign(userid).subscribe(res => {
       this.campaignList = res;
       var name = "";
@@ -270,7 +271,7 @@ export class KeywordsComponent implements OnInit {
 
   // using to get list of keyword list
   public getSerpList(): void {
-    this.campaignService.getSerp('01-Jan-2019','31-Jan-2020').subscribe(res => {
+    this.campaignService.getSerp("&tbs=qdr:m").subscribe(res => {
       
       this.serpList = res;
       this.source = new LocalDataSource(this.serpList)
@@ -322,12 +323,10 @@ export class KeywordsComponent implements OnInit {
     keywordDto.Location = result['location']
     keywordDto.Tags = this.tags
     this.showSpinner = true
-    this.campaignService.addNewKeyword(keywordDto.CampaignID, keywordDto.Keyword, keywordDto.Location, keywordDto.Tags,'01-Jan-2019','31-Jan-2020').subscribe((res) => {
+    this.campaignService.addNewKeyword(keywordDto.CampaignID, keywordDto.Keyword, keywordDto.Location, keywordDto.Tags,'').subscribe((res) => {
       event.preventDefault();
       this.showSpinner = false
       this.successAlert()
-
-
     });
   }
 

@@ -370,7 +370,7 @@ export class HomeComponent implements OnInit {
   }
   //Ranking Data
   public getSerpList(): void {
-    this.campaignService.getSerp('01-Jan-2019', '31-Jan-2020').subscribe(res => {
+    this.campaignService.getSerp("&tbs=qdr:m").subscribe(res => {
       this.serpList = res;
 
     });

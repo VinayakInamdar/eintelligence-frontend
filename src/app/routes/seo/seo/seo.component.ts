@@ -1274,6 +1274,25 @@ export class SeoComponent implements OnInit {
       this.previousEndDate =  this.datepipe.transform(currDate.setFullYear(currDate.getFullYear() - 1), 'yyyy-MM-dd');
       this.previousStartDate = this.datepipe.transform(currDate.setDate(currDate.getDate() - 28), 'yyyy-MM-dd');
     }
+    if(period1 == "week" ){
+      debugger
+
+      this.endDate = this.datepipe.transform(currDate, 'yyyy-MM-dd');
+      this.startDate = this.datepipe.transform(currDate.setDate(currDate.getDate() - 7), 'yyyy-MM-dd');
+      currDate = new Date();
+      this.previousEndDate =  this.datepipe.transform(currDate.setFullYear(currDate.getFullYear() - 1), 'yyyy-MM-dd');
+      this.previousStartDate = this.datepipe.transform(currDate.setDate(currDate.getDate() - 7), 'yyyy-MM-dd');
+    }
+    if(period1 == "day" ){
+      debugger
+
+      this.endDate = this.datepipe.transform(currDate, 'yyyy-MM-dd');
+      this.startDate = this.datepipe.transform(currDate.setDate(currDate.getDate() - 1), 'yyyy-MM-dd');
+      currDate = new Date();
+      this.previousEndDate =  this.datepipe.transform(currDate.setFullYear(currDate.getFullYear() - 1), 'yyyy-MM-dd');
+      this.previousStartDate = this.datepipe.transform(currDate.setDate(currDate.getDate() - 1), 'yyyy-MM-dd');
+    }
+    this.getData();
   }
   // using to change properties with changing 1st dropdown value
   public onLabelSelect(event, selectedLabel) {
@@ -1676,8 +1695,9 @@ getRankingGraphData() {
   })
 }
 public getSerpList(): void {
-  this.campaignService.getSerp('01-Jan-2019', '31-Jan-2020').subscribe(res => {
-
+  debugger
+  this.campaignService.getSerp("&tbs=qdr:m").subscribe(res => {
+debugger
     this.serpList = res;
     //this.source = new LocalDataSource(this.serpList) 
     // var serpData = res.map((s, i) => {
