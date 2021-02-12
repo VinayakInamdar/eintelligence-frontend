@@ -33,6 +33,7 @@ export class SeoComponent implements OnInit {
 
   @ViewChild('staticTabs', { static: false }) staticTabs: TabsetComponent;
   @ViewChild(BaseChartDirective)
+  period="28Days";
   //Ranking graph rubina
   rankingGraphData;
   tempRankingGraphData = [];
@@ -809,7 +810,7 @@ export class SeoComponent implements OnInit {
   behaviorsubmenu: boolean = false;
   conversionsubmenu: boolean = false;
   settingActive: number = 3;
-
+  isShowLoginButton = false;
 
   constructor(private translate: TranslateService, fb: FormBuilder,
     private campaignService: CampaignService,private openIdConnectService: OpenIdConnectService, 
@@ -836,7 +837,7 @@ export class SeoComponent implements OnInit {
 
 
     });
-
+   
 
     this.valForm = fb.group({
       'name': [this.campaignModel.name, Validators.required],
@@ -873,6 +874,7 @@ export class SeoComponent implements OnInit {
     this.sub = this.route.params.subscribe(params => {
       this.id = params['id'];
     });
+ 
   }
 
   // using to check Integration Status of selected campaign Id
@@ -1073,6 +1075,7 @@ export class SeoComponent implements OnInit {
 
   // using to get list of campaigns
   public getCampaignList(): void {
+    debugger
     var userid = localStorage.getItem("userID");
     this.campaignService.getCampaign(userid).subscribe(res => {
       this.campaignList = res;
@@ -1089,6 +1092,13 @@ export class SeoComponent implements OnInit {
       })
       this.selectedCampaignName = name !== "" ? name : undefined;
       this.getSelectedCampaignWebsiteAuditReportData()
+      this.accessToken =  localStorage.getItem('googleGscAccessToken');
+      if(this.accessToken != null && this.accessToken != undefined && this.accessToken!= ''){
+        debugger
+      this.getData();
+      }else{
+        this.isShowLoginButton =true;
+      }
     });
 
 
@@ -1251,7 +1261,20 @@ export class SeoComponent implements OnInit {
     this.getAnalyticsData();
 
   }
+  onSelect(period1) {
+    debugger
+    this.period = period1;
+    let currDate = new Date();
+    if(period1 == "28Days" ){
+      debugger
 
+      this.endDate = this.datepipe.transform(currDate, 'yyyy-MM-dd');
+      this.startDate = this.datepipe.transform(currDate.setDate(currDate.getDate() - 28), 'yyyy-MM-dd');
+      currDate = new Date();
+      this.previousEndDate =  this.datepipe.transform(currDate.setFullYear(currDate.getFullYear() - 1), 'yyyy-MM-dd');
+      this.previousStartDate = this.datepipe.transform(currDate.setDate(currDate.getDate() - 28), 'yyyy-MM-dd');
+    }
+  }
   // using to change properties with changing 1st dropdown value
   public onLabelSelect(event, selectedLabel) {
     this.selectedLabel = selectedLabel.id
@@ -1704,7 +1727,7 @@ signInWithGoogle(): void {
       
       this.accessToken = res['authToken'];
       localStorage.setItem('googleGscAccessToken', this.accessToken );
-
+      this.isShowLoginButton = false;
       this.getData();
 //this.getAdsData();
     })
@@ -1891,7 +1914,7 @@ onEndDateChange(event) {
   this.getData();
 }
 getData() {
-
+debugger
   if (this.accessToken == '' || this.accessToken == undefined || this.accessToken == null) {
     alert("Please, Login with Google to fetch data");
   } else if (parseDate(this.endDate) < parseDate(this.startDate)) {
@@ -1907,14 +1930,21 @@ getData() {
 }
 getDateSettings() {
 debugger
-  this.startDate = this.datepipe.transform(this.fromDate.value, 'yyyy-MM-dd');
-  this.currYear = parseInt(this.datepipe.transform(this.fromDate.value, 'yyyy'));
-  let prevYear = this.currYear - 1;
-  this.previousStartDate = prevYear.toString() + '-' + this.datepipe.transform(this.fromDate.value, 'MM-dd');
-  this.endDate = this.datepipe.transform(this.toDate.value, 'yyyy-MM-dd');
-  this.currYear = parseInt(this.datepipe.transform(this.toDate.value, 'yyyy'));
-  prevYear = this.currYear - 1;
-  this.previousEndDate = prevYear.toString() + '-' + this.datepipe.transform(this.toDate.value, 'MM-dd');
+let currDate = new Date();
+this.endDate = this.datepipe.transform(currDate, 'yyyy-MM-dd');
+this.startDate = this.datepipe.transform(currDate.setDate(currDate.getDate() - 28), 'yyyy-MM-dd');
+currDate = new Date();
+this.previousEndDate =  this.datepipe.transform(currDate.setFullYear(currDate.getFullYear() - 1), 'yyyy-MM-dd');
+this.previousStartDate = this.datepipe.transform(currDate.setDate(currDate.getDate() - 28), 'yyyy-MM-dd');
+
+  // this.startDate = this.datepipe.transform(this.fromDate.value, 'yyyy-MM-dd');
+  // this.currYear = parseInt(this.datepipe.transform(this.fromDate.value, 'yyyy'));
+  // let prevYear = this.currYear - 1;
+  // this.previousStartDate = prevYear.toString() + '-' + this.datepipe.transform(this.fromDate.value, 'MM-dd');
+  // this.endDate = this.datepipe.transform(this.toDate.value, 'yyyy-MM-dd');
+  // this.currYear = parseInt(this.datepipe.transform(this.toDate.value, 'yyyy'));
+  // prevYear = this.currYear - 1;
+  // this.previousEndDate = prevYear.toString() + '-' + this.datepipe.transform(this.toDate.value, 'MM-dd');
 }
 
 getYearwiseDifference(previous, current) {

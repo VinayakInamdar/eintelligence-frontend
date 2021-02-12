@@ -24,6 +24,7 @@ import { FacebookService, LoginOptions, LoginResponse } from 'ngx-facebook';
   styleUrls: ['./home.component.scss']
 })
 export class HomeComponent implements OnInit {
+  
   //Ranking
   serpList;
   averageRanking;
