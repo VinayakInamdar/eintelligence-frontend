@@ -210,6 +210,7 @@ li:hover span.only-show-on-hover  {
     display: flex;
     align-items: center;
     justify-content: center;
+    margin-bottom: 5%;
 }
 
 .borderBtm{
@@ -242,8 +243,10 @@ li:hover span.only-show-on-hover  {
  }
 
  .chart-container {
-    width: 1250px;
-    height:210px;
+    // width: 1250px;
+    // height:210px;
+    width: 100%;
+    height: 100%;
 }
 .grey-container {
     padding: 0;
@@ -786,7 +789,19 @@ li:hover span.only-show-on-hover  {
         padding: 1rem;
         margin-left: auto;
         margin-right: auto;
+        width:94%;
     }
     .red-font{
         color:red;
+    }
+    .overflow-hidden{
+        overflow-y: hidden;
+    }
+    .card-padding{
+        padding-left: 3%;
+        padding-right: 3%;
+    }
+    .card-height{
+        height: 312px;
+        margin-bottom: 5%;
     }
