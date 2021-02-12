@@ -11,7 +11,7 @@
 <div *ngIf="settingActive == 1;" class="row w3-container w3-center w3-animate-right paddingtopdiv">
     <div class="col-md-2"> </div>
     <div class="col-md-8">
-        <form [formGroup]="valForm" class="form-horizontal card formh" (keydown.enter)="$event.preventDefault()"
+        <form [formGroup]="valForm" class="form-horizontal card formh cursor-default" (keydown.enter)="$event.preventDefault()"
             (submit)="submitForm(valForm.value)" novalidate="">
             <tabset [justified]="true" #staticTabs>
                 <tab class="tabh">
@@ -85,14 +85,14 @@
                     <ng-template tabHeading>
                         <p class="tabp">Goals</p>
                     </ng-template>
-                    <div class="row">
+                    <div class="row cursor-default">
                         <div class="col-md-12" class="goaldiv">
                             <h1> What would you like to accomplish?</h1>
                             <h3> Set the goal of your campaign by selecting one or all. (Optional)</h3>
                             <hr>
                             <div class="row">
                                 <div class="col-md-4">
-                                    <div class="card card-default shadow p-2 mb-2 bg-white rounded goalsubh">
+                                    <div class="card card-default shadow p-2 mb-2 bg-white rounded goalsubh cursor-default">
                                         <div class="card-body form-check-inline text-center">
                                             <div class="col-md-1">
                                                 <input formControlName="moreTraffic" class="form-check-input"
@@ -106,7 +106,7 @@
                                     </div>
                                 </div>
                                 <div class="col-md-4">
-                                    <div class="card card-default shadow p-2 mb-2 bg-white rounded goalsubh">
+                                    <div class="card card-default shadow p-2 mb-2 bg-white rounded goalsubh cursor-default">
                                         <div class="card-body form-check-inline text-center">
                                             <div class="col-md-1">
                                                 <input type="checkbox" formControlName="sales" class="form-check-input"
@@ -121,7 +121,7 @@
                                     </div>
                                 </div>
                                 <div class="col-md-4">
-                                    <div class="card card-default shadow p-2 mb-2 bg-white rounded">
+                                    <div class="card card-default shadow p-2 mb-2 bg-white rounded cursor-default">
                                         <div class="card-body form-check-inline text-center">
 
                                             <div class="col-md-1">

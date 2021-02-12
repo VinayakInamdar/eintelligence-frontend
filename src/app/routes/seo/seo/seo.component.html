@@ -14,7 +14,7 @@
     </button>
 
 </div>
-<div class="card card-default shadow p-3 mb-5 bg-white rounded set-middle">
+<div class="card card-default shadow p-3 mb-5 bg-white rounded set-middle cursor-default">
     <div class="col-lg-10" [formGroup]="myForm">
         <div class="col-lg-3">
             Please Select Date Range For GSC
@@ -24,7 +24,7 @@
                 <option value='0' selected="selected">Select Date Range</option>
                 <option value='day'>Yesterday</option>
                 <option value='week'>Week</option>
-                <option value='28Days'>28 Days</option>
+                <option value='28Days' [ngValue]="undefined">28 Days</option>
             </select>
             <!-- <mat-form-field appearance="fill" class="pr-sm-4" fxFlex="20">
                 <mat-label>Start date</mat-label>
@@ -55,7 +55,7 @@
     <div class="col-md-12">
     <div class="col-md-6">
         <div class="col-md-12">
-            <div class="card card-default shadow bg-white rounded" (mouseenter)="showDiv($event,'true','seo')">
+            <div class="card card-default shadow bg-white rounded cursor-default" (mouseenter)="showDiv($event,'true','seo')">
                 <div class="card-header">
                     <div class="row borderBtm padding5">
                         <h2 class="col-xs-12 col-12 col-md-11"> Rankings summary</h2>
@@ -82,7 +82,7 @@
     </div>
     <div class="col-lg-6">
 
-        <div class="card card-default shadow bg-white rounded">
+        <div class="card card-default shadow bg-white rounded cursor-default">
             <div class="card-header">
                 <div class="row borderBtm padding5">
                     <h2 class="col-xs-12 col-12 col-md-11">Traffic Sources</h2>
@@ -142,7 +142,7 @@
  
     <div class="col-lg-12">
         <div class="col-lg-6">
-            <div class="card card-default shadow bg-white rounded" >
+            <div class="card card-default shadow bg-white rounded cursor-default" >
                 <div class="card-header">
                     <div class="row borderBtm padding5">
                         <h2 class="col-xs-12 col-12 col-md-5"> Clicks</h2>
@@ -161,7 +161,7 @@
         </div>
         <div class="col-lg-6">
 
-            <div class="card card-default shadow bg-white rounded">
+            <div class="card card-default shadow bg-white rounded cursor-default">
                 <div class="card-header">
                     <div class="row borderBtm padding5">
                         <h2 class="col-xs-12 col-12 col-md-5"> Impressions</h2>
@@ -181,7 +181,7 @@
     </div>
     <div class="col-lg-12">
         <div class="col-lg-6">
-            <div class="card card-default shadow bg-white rounded">
+            <div class="card card-default shadow bg-white rounded cursor-default">
                 <div class="card-header">
                     <div class="row borderBtm padding5">
                         <h2 class="col-xs-12 col-12 col-md-5"> Site CTR</h2>
@@ -199,7 +199,7 @@
             </div>
         </div>
         <div class="col-lg-6">
-            <div class="card card-default shadow bg-white rounded">
+            <div class="card card-default shadow bg-white rounded cursor-default">
                 <div class="card-header">
                     <div class="row borderBtm padding5">
                         <h2 class="col-xs-12 col-12 col-md-5"> Positions</h2>
@@ -218,7 +218,7 @@
         </div>
     </div>
     <div class="col-lg-12">
-    <div class="card card-default shadow bg-white rounded">
+    <div class="card card-default shadow bg-white rounded cursor-default">
         <div class="card-header">
             <div class="row borderBtm padding5">
                 <h3 class="col-xs-12 col-12 col-md-5 paddingtop5px"> Analytics Page (Site Speed)</h3>

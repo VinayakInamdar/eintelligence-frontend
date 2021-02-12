@@ -3,7 +3,9 @@
 @import "../../../shared/styles/bootstrap/_mixins";
 @import '../../../shared/styles/app/variables.scss';
 
-
+.cursor-default{
+    cursor: default;
+}
 h1{
     text-align: center;
     font-size: x-large;
