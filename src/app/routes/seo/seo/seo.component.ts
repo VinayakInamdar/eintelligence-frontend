@@ -886,18 +886,22 @@ export class SeoComponent implements OnInit {
 
   // using to get analytics data of selected campaign Id
   getAnalyticsData(): void {
-    debugger
+    
     this.campaignService.getGaAnalyticsReports(this.selectedCampId, this.startDate, this.endDate).subscribe(
       res => {
 
         this.campaignService.GetTrafficSourcesReports(this.selectedCampId, this.startDate, this.endDate).subscribe(
           trafficsourcers => {
+            debugger
             var array = [trafficsourcers['display'], trafficsourcers['medium'], trafficsourcers['referral'],
             trafficsourcers['social'], trafficsourcers['source']]
+    this.doughnutData.datasets[0].data = [this.calculateObjectTotal(trafficsourcers['medium'].sessions),
+     this.calculateObjectTotal(trafficsourcers['referral'].sessions),this.calculateObjectTotal(trafficsourcers['social'].sessions)
+     ,this.calculateObjectTotal(trafficsourcers['source'].sessions),this.calculateObjectTotal(trafficsourcers['medium'].sessions)]
             this.convertToLineChartsLabels(array)
 
           })
-        debugger
+        
         this.reportsData = res;
         this.dateLabels = this.reportsData.gaPreparedDataDto.date;
         this.convertToLineChartsLabels(this.reportsData.gaPreparedDataDto.date)
@@ -987,7 +991,7 @@ export class SeoComponent implements OnInit {
 
 
 
-    debugger
+    
     var from = new Date(this.startDate);
     var to = new Date(this.endDate);
     var dates = []
@@ -1026,7 +1030,7 @@ export class SeoComponent implements OnInit {
       var f = this.trafficsourcedate.source.find(x => x.date == s)
       return f ? parseInt(f.sessions) : 0;
     })
-    debugger
+    
     console.log(finalData1, finalData2, finalData3, finalData4, finalData5)
     this.lineChartData1[0].data = finalData5
     this.lineChartData1[1].data = finalData2
@@ -1036,7 +1040,6 @@ export class SeoComponent implements OnInit {
     this.lineChartData1[4].data = finalData1
     this.lineChartLabels = LineChartsdate
     this.lineChartLabels1 = LineChartsdate
-    this.doughnutData.datasets[0].data = [this.calculateObjectTotal(finalData5), this.calculateObjectTotal(finalData2),this.calculateObjectTotal(finalData3),this.calculateObjectTotal(finalData4),this.calculateObjectTotal(finalData1)]
 
   }
   calculateObjectTotal(obj) {
@@ -1044,7 +1047,7 @@ export class SeoComponent implements OnInit {
     let total = 0;
     if(obj.length>0){
     for (let i = 0; i < obj.length; i++) {
-      total = total + obj[i];
+      total = parseInt(total.toString()) + parseInt(obj[i].toString());
     }
   }
     return total;
@@ -1092,7 +1095,7 @@ export class SeoComponent implements OnInit {
 
   // using to get list of campaigns
   public getCampaignList(): void {
-    debugger
+    
     var userid = localStorage.getItem("userID");
     this.campaignService.getCampaign(userid).subscribe(res => {
       this.campaignList = res;
@@ -1111,7 +1114,7 @@ export class SeoComponent implements OnInit {
       this.getSelectedCampaignWebsiteAuditReportData()
       this.accessToken = localStorage.getItem('googleGscAccessToken');
       if (this.accessToken != null && this.accessToken != undefined && this.accessToken != '') {
-        debugger
+        
         this.getData();
       } else {
         this.isShowLoginButton = true;
@@ -1279,11 +1282,11 @@ export class SeoComponent implements OnInit {
 
   }
   onSelect(period1) {
-    debugger
+    
     this.period = period1;
     let currDate = new Date();
     if (period1 == "28Days") {
-      debugger
+      
 
       this.endDate = this.datepipe.transform(currDate, 'yyyy-MM-dd');
       this.startDate = this.datepipe.transform(currDate.setDate(currDate.getDate() - 28), 'yyyy-MM-dd');
@@ -1292,7 +1295,7 @@ export class SeoComponent implements OnInit {
       this.previousStartDate = this.datepipe.transform(currDate.setDate(currDate.getDate() - 28), 'yyyy-MM-dd');
     }
     if (period1 == "week") {
-      debugger
+      
 
       this.endDate = this.datepipe.transform(currDate, 'yyyy-MM-dd');
       this.startDate = this.datepipe.transform(currDate.setDate(currDate.getDate() - 7), 'yyyy-MM-dd');
@@ -1301,7 +1304,7 @@ export class SeoComponent implements OnInit {
       this.previousStartDate = this.datepipe.transform(currDate.setDate(currDate.getDate() - 7), 'yyyy-MM-dd');
     }
     if (period1 == "day") {
-      debugger
+      
 
       this.endDate = this.datepipe.transform(currDate, 'yyyy-MM-dd');
       this.startDate = this.datepipe.transform(currDate.setDate(currDate.getDate() - 1), 'yyyy-MM-dd');
@@ -1713,9 +1716,9 @@ export class SeoComponent implements OnInit {
     })
   }
   public getSerpList(): void {
-    debugger
+    
     this.campaignService.getSerp("&tbs=qdr:m").subscribe(res => {
-      debugger
+      
       this.serpList = res;
       //this.source = new LocalDataSource(this.serpList) 
       // var serpData = res.map((s, i) => {
@@ -1817,7 +1820,7 @@ export class SeoComponent implements OnInit {
         'Authorization': 'Bearer ' + this.accessToken,
       })
     };
-    debugger
+    
     let urlcamp = this.selectedCampIdWebUrl.replace('/', '%2F');
     const url = "https://www.googleapis.com/webmasters/v3/sites/https:%2F%2F" + urlcamp + "%2F/searchAnalytics/query?key=AIzaSyC1IsrCeeNXp9ksAmC8szBtYVjTLJC9UWQ";
     //const url = "https://www.googleapis.com/webmasters/v3/sites/https%3A%2F%2Fwww.abhisi.com%2F/searchAnalytics/query?key=AIzaSyC1IsrCeeNXp9ksAmC8szBtYVjTLJC9UWQ";
@@ -1876,7 +1879,7 @@ export class SeoComponent implements OnInit {
 
   }
   getDataPreviousYear(startDate, endDate, all) {
-    debugger
+    
     this.httpOptionJSON = {
       headers: new HttpHeaders({
         'Accept': 'application/json',
@@ -1952,7 +1955,7 @@ export class SeoComponent implements OnInit {
     this.getData();
   }
   getData() {
-    debugger
+    
     if (this.accessToken == '' || this.accessToken == undefined || this.accessToken == null) {
       alert("Please, Login with Google to fetch data");
     } else if (parseDate(this.endDate) < parseDate(this.startDate)) {
@@ -1967,7 +1970,7 @@ export class SeoComponent implements OnInit {
     }
   }
   getDateSettings() {
-    debugger
+    
     let currDate = new Date();
     this.endDate = this.datepipe.transform(currDate, 'yyyy-MM-dd');
     this.startDate = this.datepipe.transform(currDate.setDate(currDate.getDate() - 28), 'yyyy-MM-dd');
