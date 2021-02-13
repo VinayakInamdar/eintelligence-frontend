@@ -13,8 +13,6 @@ import { Label, Color, BaseChartDirective } from 'ng2-charts';
 import { TabsetComponent } from 'ngx-bootstrap/tabs';
 import { SerpDto } from '../serp.model';
 import { find, pull } from 'lodash';
-import { OpenIdConnectService } from '../../../shared/services/open-id-connect.service';
-
 const success = require('sweetalert');
 @Component({
   selector: 'app-keywords',
@@ -201,8 +199,10 @@ export class KeywordsComponent implements OnInit {
     'Wallis and Futuna Islands', 'Western Sahara', 'Yemen', 'Yugoslavia', 'Zaire', 'Zambia', 'Zimbabwe',
     'Global', 'Timor Leste', 'Jersey', 'Isle of Man', 'Catalan Linguistic', 'Serbia', 'Guernsey', 'Palestine',
     'Montenegro', 'Congo Democratic'];
+
+
   constructor(private translate: TranslateService, fb: FormBuilder,
-    private campaignService: CampaignService,private openIdConnectService: OpenIdConnectService, 
+    private campaignService: CampaignService,
     public route: ActivatedRoute, public router: Router, private integrationsService: IntegrationsService
     , private overvieswService: OverviewService, location: PlatformLocation) {
 
@@ -250,11 +250,11 @@ export class KeywordsComponent implements OnInit {
     this.router.navigate([], { queryParams: params });
     this.settingActive = 1;
   }
-
   // using to get campaignList
   public getCampaignList(): void {
     var userid =  localStorage.getItem("userID");
     this.campaignService.getCampaign(userid).subscribe(res => {
+
       this.campaignList = res;
       var name = "";
       if (this.selectedCampId == ":id") {
@@ -272,7 +272,6 @@ export class KeywordsComponent implements OnInit {
   // using to get list of keyword list
   public getSerpList(): void {
     this.campaignService.getSerp("&tbs=qdr:m").subscribe(res => {
-      
       this.serpList = res;
       this.source = new LocalDataSource(this.serpList)
     });
@@ -323,10 +322,12 @@ export class KeywordsComponent implements OnInit {
     keywordDto.Location = result['location']
     keywordDto.Tags = this.tags
     this.showSpinner = true
-    this.campaignService.addNewKeyword(keywordDto.CampaignID, keywordDto.Keyword, keywordDto.Location, keywordDto.Tags,'').subscribe((res) => {
-      event.preventDefault();
+
+    this.campaignService.addNewKeyword(keywordDto.CampaignID, keywordDto.Keyword, keywordDto.Location, keywordDto.Tags,'').subscribe((res) => {      event.preventDefault();
       this.showSpinner = false
       this.successAlert()
+
+
     });
   }
 

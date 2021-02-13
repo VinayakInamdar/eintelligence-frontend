@@ -778,7 +778,7 @@ itemDeselected(event) {
 
   // using to get list of campaigns
   public getCampaignList(): void {
-    var userid = this.openIdConnectService.user.profile.sub;
+    var userid = localStorage.getItem("userID");
     this.campaignService.getCampaign(userid).subscribe(res => {
       this.campaignList = res;
       this.source = new LocalDataSource(this.campaignList)

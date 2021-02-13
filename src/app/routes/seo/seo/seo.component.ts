@@ -33,7 +33,7 @@ export class SeoComponent implements OnInit {
 
   @ViewChild('staticTabs', { static: false }) staticTabs: TabsetComponent;
   @ViewChild(BaseChartDirective)
-  period="28Days";
+  period = "28Days";
   //Ranking graph rubina
   rankingGraphData;
   tempRankingGraphData = [];
@@ -813,7 +813,7 @@ export class SeoComponent implements OnInit {
   isShowLoginButton = false;
 
   constructor(private translate: TranslateService, fb: FormBuilder,
-    private campaignService: CampaignService,private openIdConnectService: OpenIdConnectService, 
+    private campaignService: CampaignService, private openIdConnectService: OpenIdConnectService,
     public route: ActivatedRoute, public router: Router, private integrationsService: IntegrationsService
     , private overvieswService: OverviewService, location: PlatformLocation,
     public auditsService: AuditsService, private http: HttpClient, public datepipe: DatePipe, private authService: SocialAuthService) {
@@ -823,7 +823,7 @@ export class SeoComponent implements OnInit {
     // this.getGaSetupByCampaignId();
     let id = this.route.snapshot.paramMap.get('id');
     this.selectedCampId = `${id.substring(3)}`;
-    this.getDateSettings() ;
+    this.getDateSettings();
     this.getGaSetupByCampaignId();
     this.getAnalyticsData();
     this.getCampaignList();
@@ -837,7 +837,7 @@ export class SeoComponent implements OnInit {
 
 
     });
-   
+
 
     this.valForm = fb.group({
       'name': [this.campaignModel.name, Validators.required],
@@ -874,7 +874,7 @@ export class SeoComponent implements OnInit {
     this.sub = this.route.params.subscribe(params => {
       this.id = params['id'];
     });
- 
+
   }
 
   // using to check Integration Status of selected campaign Id
@@ -886,9 +886,10 @@ export class SeoComponent implements OnInit {
 
   // using to get analytics data of selected campaign Id
   getAnalyticsData(): void {
-
+    debugger
     this.campaignService.getGaAnalyticsReports(this.selectedCampId, this.startDate, this.endDate).subscribe(
       res => {
+
         this.campaignService.GetTrafficSourcesReports(this.selectedCampId, this.startDate, this.endDate).subscribe(
           trafficsourcers => {
             var array = [trafficsourcers['display'], trafficsourcers['medium'], trafficsourcers['referral'],
@@ -896,7 +897,13 @@ export class SeoComponent implements OnInit {
             this.convertToLineChartsLabels(array)
 
           })
-
+        debugger
+        this.reportsData = res;
+        this.dateLabels = this.reportsData.gaPreparedDataDto.date;
+        this.convertToLineChartsLabels(this.reportsData.gaPreparedDataDto.date)
+        this.convertToLineChartsData(this.reportsData.gaPreparedDataDto.sessions)
+        this.showSpinnerBaseChart = false;
+        this.showSpinnerSiteAnalysisContent = false;
         this.reportsData = res;
         this.dateLabels = this.reportsData.gaPreparedDataDto.date;
 
@@ -980,7 +987,7 @@ export class SeoComponent implements OnInit {
 
 
 
-
+    debugger
     var from = new Date(this.startDate);
     var to = new Date(this.endDate);
     var dates = []
@@ -1019,6 +1026,7 @@ export class SeoComponent implements OnInit {
       var f = this.trafficsourcedate.source.find(x => x.date == s)
       return f ? parseInt(f.sessions) : 0;
     })
+    debugger
     console.log(finalData1, finalData2, finalData3, finalData4, finalData5)
     this.lineChartData1[0].data = finalData5
     this.lineChartData1[1].data = finalData2
@@ -1028,10 +1036,19 @@ export class SeoComponent implements OnInit {
     this.lineChartData1[4].data = finalData1
     this.lineChartLabels = LineChartsdate
     this.lineChartLabels1 = LineChartsdate
-    this.showSpinnerBaseChart = false;
+    this.doughnutData.datasets[0].data = [this.calculateObjectTotal(finalData5), this.calculateObjectTotal(finalData2),this.calculateObjectTotal(finalData3),this.calculateObjectTotal(finalData4),this.calculateObjectTotal(finalData1)]
 
   }
-
+  calculateObjectTotal(obj) {
+    debugger
+    let total = 0;
+    if(obj.length>0){
+    for (let i = 0; i < obj.length; i++) {
+      total = total + obj[i];
+    }
+  }
+    return total;
+  }
   // using to get google analytics setup of selected campaign Id
   public getGaSetupByCampaignId(): void {
 
@@ -1092,12 +1109,12 @@ export class SeoComponent implements OnInit {
       })
       this.selectedCampaignName = name !== "" ? name : undefined;
       this.getSelectedCampaignWebsiteAuditReportData()
-      this.accessToken =  localStorage.getItem('googleGscAccessToken');
-      if(this.accessToken != null && this.accessToken != undefined && this.accessToken!= ''){
+      this.accessToken = localStorage.getItem('googleGscAccessToken');
+      if (this.accessToken != null && this.accessToken != undefined && this.accessToken != '') {
         debugger
-      this.getData();
-      }else{
-        this.isShowLoginButton =true;
+        this.getData();
+      } else {
+        this.isShowLoginButton = true;
       }
     });
 
@@ -1140,7 +1157,7 @@ export class SeoComponent implements OnInit {
     })
   }
   // using to get list of keyword list
- 
+
 
   // using to navigate to overview page to view anlytics of selected campaign
   public onCampaignSelect(event, selectedCampaign) {
@@ -1265,34 +1282,35 @@ export class SeoComponent implements OnInit {
     debugger
     this.period = period1;
     let currDate = new Date();
-    if(period1 == "28Days" ){
+    if (period1 == "28Days") {
       debugger
 
       this.endDate = this.datepipe.transform(currDate, 'yyyy-MM-dd');
       this.startDate = this.datepipe.transform(currDate.setDate(currDate.getDate() - 28), 'yyyy-MM-dd');
       currDate = new Date();
-      this.previousEndDate =  this.datepipe.transform(currDate.setFullYear(currDate.getFullYear() - 1), 'yyyy-MM-dd');
+      this.previousEndDate = this.datepipe.transform(currDate.setFullYear(currDate.getFullYear() - 1), 'yyyy-MM-dd');
       this.previousStartDate = this.datepipe.transform(currDate.setDate(currDate.getDate() - 28), 'yyyy-MM-dd');
     }
-    if(period1 == "week" ){
+    if (period1 == "week") {
       debugger
 
       this.endDate = this.datepipe.transform(currDate, 'yyyy-MM-dd');
       this.startDate = this.datepipe.transform(currDate.setDate(currDate.getDate() - 7), 'yyyy-MM-dd');
       currDate = new Date();
-      this.previousEndDate =  this.datepipe.transform(currDate.setFullYear(currDate.getFullYear() - 1), 'yyyy-MM-dd');
+      this.previousEndDate = this.datepipe.transform(currDate.setFullYear(currDate.getFullYear() - 1), 'yyyy-MM-dd');
       this.previousStartDate = this.datepipe.transform(currDate.setDate(currDate.getDate() - 7), 'yyyy-MM-dd');
     }
-    if(period1 == "day" ){
+    if (period1 == "day") {
       debugger
 
       this.endDate = this.datepipe.transform(currDate, 'yyyy-MM-dd');
       this.startDate = this.datepipe.transform(currDate.setDate(currDate.getDate() - 1), 'yyyy-MM-dd');
       currDate = new Date();
-      this.previousEndDate =  this.datepipe.transform(currDate.setFullYear(currDate.getFullYear() - 1), 'yyyy-MM-dd');
+      this.previousEndDate = this.datepipe.transform(currDate.setFullYear(currDate.getFullYear() - 1), 'yyyy-MM-dd');
       this.previousStartDate = this.datepipe.transform(currDate.setDate(currDate.getDate() - 1), 'yyyy-MM-dd');
     }
     this.getData();
+    this.getAnalyticsData();
   }
   // using to change properties with changing 1st dropdown value
   public onLabelSelect(event, selectedLabel) {
@@ -1463,7 +1481,7 @@ export class SeoComponent implements OnInit {
   public goToSeoOverview(event) {
     this.router.navigate([`/campaign/:id${this.selectedCampId}/seo`])
   }
- 
+
   public goToSocialMedia(event) {
 
     this.router.navigate([`./socialmedia/socialmedia`, { id: this.selectedCampId }])
@@ -1477,7 +1495,7 @@ export class SeoComponent implements OnInit {
     this.router.navigate([`./instagram/instagram`, { id: this.selectedCampId }])
   }
   public goToGSC(event) {
-    
+
     this.router.navigate([`./gsc/gsc`, { id: this.selectedCampId }])
   }
 
@@ -1551,261 +1569,324 @@ export class SeoComponent implements OnInit {
     var finaldate = odate + " " + omon
     return finaldate
   }
-//For ranking graph rubina
-RefreshRankingGraphData() {
+  //For ranking graph rubina
+  RefreshRankingGraphData() {
 
-  let p;
-  let totalPosition = 0;
-  p = this.serpList.filter(x => x.campaignID.toString() === this.selectedCampId.toLowerCase());
-  if (p != null && p != undefined && p.length > 0) {
-    for (let i = 0; i < p.length; i++) {
-      totalPosition = totalPosition + p[i].position;
+    let p;
+    let totalPosition = 0;
+    p = this.serpList.filter(x => x.campaignID.toString() === this.selectedCampId.toLowerCase());
+    if (p != null && p != undefined && p.length > 0) {
+      for (let i = 0; i < p.length; i++) {
+        totalPosition = totalPosition + p[i].position;
+      }
     }
-  }
-  this.averageRanking = totalPosition / parseInt(this.serpList.length)
-  this.averageRanking = Math.round(this.averageRanking);
-  const monthNames = ["January", "February", "March", "April", "May", "June", "July", "August", "September", "October", "November", "December"
-  ];
+    this.averageRanking = totalPosition / parseInt(this.serpList.length)
+    this.averageRanking = Math.round(this.averageRanking);
+    const monthNames = ["January", "February", "March", "April", "May", "June", "July", "August", "September", "October", "November", "December"
+    ];
 
-  const d = new Date();
-  let currMonth = monthNames[d.getMonth()];
-  let data = {
-    id: "00000000-0000-0000-0000-000000000000",
-    avragePosition: this.averageRanking,
-    month: currMonth,
-    campaignId: this.selectedCampId,
-  }
-  this.campaignService.createRankingGraph(data).subscribe(response => {
-    if (response) {
-      this.getRankingGraphData();
+    const d = new Date();
+    let currMonth = monthNames[d.getMonth()];
+    let data = {
+      id: "00000000-0000-0000-0000-000000000000",
+      avragePosition: this.averageRanking,
+      month: currMonth,
+      campaignId: this.selectedCampId,
     }
-  });
-}
-DeleteRankingGraphData() {
-  const monthNames = ["January", "February", "March", "April", "May", "June", "July", "August", "September", "October", "November", "December"
-  ];
-  const d = new Date();
-  let currMonth = monthNames[d.getMonth()];
-  let tempId;
-  let p = this.tempRankingGraphData.filter(x => x.month == currMonth)
-  if (p != null && p != undefined && p.length > 0) {
-    tempId = p[0].id;
-    this.campaignService.deleteRankingGraph(tempId).subscribe(response => {
-      //if (response) {
-      //this.snackbarService.show('Product Added');
-      //}
+    this.campaignService.createRankingGraph(data).subscribe(response => {
+      if (response) {
+        this.getRankingGraphData();
+      }
     });
   }
-  this.RefreshRankingGraphData();
-}
-getRankingGraphData() {
-  //  this.barData.datasets[0].data = [10,20,34,6,43,12,56,86,5,33,24,55]
-  const filterOptionModel = this.getFilterOptionPlans();
-  this.campaignService.getFilteredRankingGraph(filterOptionModel).subscribe((response: any) => {
-    if (response) {
-      this.barDataArray = [];
-      this.rankingGraphData = response.body;
-      this.tempRankingGraphData = response.body;
-      this.rankingGraphData.sort(function (a, b) {
-        var MONTH = {
-          January: 1, February: 2, March: 3, April: 4, May: 5, June: 6,
-          July: 7, August: 8, September: 9, October: 10, November: 11, December: 12
-        };
-        return a.year - b.year || MONTH[a.month] - MONTH[b.month];
+  DeleteRankingGraphData() {
+    const monthNames = ["January", "February", "March", "April", "May", "June", "July", "August", "September", "October", "November", "December"
+    ];
+    const d = new Date();
+    let currMonth = monthNames[d.getMonth()];
+    let tempId;
+    let p = this.tempRankingGraphData.filter(x => x.month == currMonth)
+    if (p != null && p != undefined && p.length > 0) {
+      tempId = p[0].id;
+      this.campaignService.deleteRankingGraph(tempId).subscribe(response => {
+        //if (response) {
+        //this.snackbarService.show('Product Added');
+        //}
       });
-      
-      let u =  this.rankingGraphData;
-      let p = u.filter(x => x.month == "January")
-      if (p != null && p != undefined && p.length > 0) {
-        this.barDataArray.push(p[0].avragePosition)
-      }
-      else { this.barDataArray.push(0) }
-
-      u =  this.rankingGraphData;
-      p = this.rankingGraphData.filter(x => x.month == "February")
-      if (p != null && p != undefined && p.length > 0) {
-        this.barDataArray.push(p[0].avragePosition)
-      }
-      else { this.barDataArray.push(0) }
-      u =  this.rankingGraphData;
-      p = this.rankingGraphData.filter(x => x.month == "March")
-      if (p != null && p != undefined && p.length > 0) {
-        this.barDataArray.push(p[0].avragePosition)
-      }
-      else { this.barDataArray.push(0) }
-      u =  this.rankingGraphData;
-      p = this.rankingGraphData.filter(x => x.month == "April")
-      if (p != null && p != undefined && p.length > 0) {
-        this.barDataArray.push(p[0].avragePosition)
-      }
-      else { this.barDataArray.push(0) }
-      u =  this.rankingGraphData;
-      p = this.rankingGraphData.filter(x => x.month == "May")
-      if (p != null && p != undefined && p.length > 0) {
-        this.barDataArray.push(p[0].avragePosition)
-      }
-      else { this.barDataArray.push(0) }
-      u =  this.rankingGraphData;
-      p = this.rankingGraphData.filter(x => x.month == "June")
-      if (p != null && p != undefined && p.length > 0) {
-        this.barDataArray.push(p[0].avragePosition)
-      }
-      else { this.barDataArray.push(0) }
-      u =  this.rankingGraphData;
-      p = this.rankingGraphData.filter(x => x.month == "July")
-      if (p != null && p != undefined && p.length > 0) {
-        this.barDataArray.push(p[0].avragePosition)
-      }
-      else { this.barDataArray.push(0) }
-      u =  this.rankingGraphData;
-      p = this.rankingGraphData.filter(x => x.month == "August")
-      if (p != null && p != undefined && p.length > 0) {
-        this.barDataArray.push(p[0].avragePosition)
-      }
-      else { this.barDataArray.push(0) }
-      u =  this.rankingGraphData;
-      p = this.rankingGraphData.filter(x => x.month == "September")
-      if (p != null && p != undefined && p.length > 0) {
-        this.barDataArray.push(p[0].avragePosition)
-      }
-      else { this.barDataArray.push(0) }
-      u =  this.rankingGraphData;
-      p = this.rankingGraphData.filter(x => x.month == "October")
-      if (p != null && p != undefined && p.length > 0) {
-        this.barDataArray.push(p[0].avragePosition)
-      }
-      else { this.barDataArray.push(0) }
-      u =  this.rankingGraphData;
-      p = this.rankingGraphData.filter(x => x.month == "November")
-      if (p != null && p != undefined && p.length > 0) {
-        this.barDataArray.push(p[0].avragePosition)
-      }
-      else { this.barDataArray.push(0) }
-      u =  this.rankingGraphData;
-      p = this.rankingGraphData.filter(x => x.month == "December")
-      if (p != null && p != undefined && p.length > 0) {
-        this.barDataArray.push(p[0].avragePosition)
-      }
-      else { this.barDataArray.push(0) }
-
-
-      this.barData.datasets[0].data = this.barDataArray;
-      this.chart.chart.update();
     }
-  })
-}
-public getSerpList(): void {
-  debugger
-  this.campaignService.getSerp("&tbs=qdr:m").subscribe(res => {
-debugger
-    this.serpList = res;
-    //this.source = new LocalDataSource(this.serpList) 
-    // var serpData = res.map((s, i) => {
-    //   if (s.position > 0 && s.position <= 3) {
-    //     var positions = []
-    //     for (var x = 0; x < 12; x++) {
-    //       this.barData.datasets[0].data.push(s.position)
-    //     }
-    //   }
-    //   else if (s.position > 3 && s.position <= 10) {
-    //     this.barData.datasets[1].data = s.position
-    //   }
-    //   else if (s.position > 10 && s.position <= 20) {
-    //     this.barData.datasets[2].data = s.position
-    //   }
-    //   else if (s.position > 20 && s.position <= 50) {
-    //     this.barData.datasets[3].data = s.position
-    //   }
-    //   else if (s.position > 50 && s.position <= 100) {
-    //     this.barData.datasets[4].data = s.position
-    //   }
-    //   else if (s.position > 100) {
-    //     this.barData.datasets[5].data = s.position
-    //   }
-
-    // })
-    this.chart.chart.update();
-  });
-}
-private getFilterOptionPlans() {
-  return {
-    pageNumber: 1,
-    pageSize: 1000,
-    fields: '',
-    searchQuery: '',
-    orderBy: ''
+    this.RefreshRankingGraphData();
   }
+  getRankingGraphData() {
+    //  this.barData.datasets[0].data = [10,20,34,6,43,12,56,86,5,33,24,55]
+    const filterOptionModel = this.getFilterOptionPlans();
+    this.campaignService.getFilteredRankingGraph(filterOptionModel).subscribe((response: any) => {
+      if (response) {
+        this.barDataArray = [];
+        this.rankingGraphData = response.body;
+        this.tempRankingGraphData = response.body;
+        this.rankingGraphData.sort(function (a, b) {
+          var MONTH = {
+            January: 1, February: 2, March: 3, April: 4, May: 5, June: 6,
+            July: 7, August: 8, September: 9, October: 10, November: 11, December: 12
+          };
+          return a.year - b.year || MONTH[a.month] - MONTH[b.month];
+        });
 
-}
-//------------------GSC data start---------------------------------------------
-signInWithGoogle(): void {
-  const googleLoginOptions = {
-    scope: 'profile email https://www.googleapis.com/auth/webmasters.readonly https://www.googleapis.com/auth/webmasters'
-  };
-  this.authService.signIn(GoogleLoginProvider.PROVIDER_ID, googleLoginOptions)
-    .then((res) => {
-      
-      this.accessToken = res['authToken'];
-      localStorage.setItem('googleGscAccessToken', this.accessToken );
-      this.isShowLoginButton = false;
-      this.getData();
-//this.getAdsData();
-    })
-}
-getDataByDevice(startDate, endDate) {
+        let u = this.rankingGraphData;
+        let p = u.filter(x => x.month == "January")
+        if (p != null && p != undefined && p.length > 0) {
+          this.barDataArray.push(p[0].avragePosition)
+        }
+        else { this.barDataArray.push(0) }
 
-  this.httpOptionJSON = {
-    headers: new HttpHeaders({
-      'Accept': 'application/json',
-      'Authorization': 'Bearer ' + this.accessToken,
-    })
-  };
-  let urlcamp = this.selectedCampIdWebUrl.replace('/', '%2F');
-    const url = "https://www.googleapis.com/webmasters/v3/sites/https:%2F%2F" + urlcamp + "%2F/searchAnalytics/query?key=AIzaSyC1IsrCeeNXp9ksAmC8szBtYVjTLJC9UWQ";
-  let data = {};
+        u = this.rankingGraphData;
+        p = this.rankingGraphData.filter(x => x.month == "February")
+        if (p != null && p != undefined && p.length > 0) {
+          this.barDataArray.push(p[0].avragePosition)
+        }
+        else { this.barDataArray.push(0) }
+        u = this.rankingGraphData;
+        p = this.rankingGraphData.filter(x => x.month == "March")
+        if (p != null && p != undefined && p.length > 0) {
+          this.barDataArray.push(p[0].avragePosition)
+        }
+        else { this.barDataArray.push(0) }
+        u = this.rankingGraphData;
+        p = this.rankingGraphData.filter(x => x.month == "April")
+        if (p != null && p != undefined && p.length > 0) {
+          this.barDataArray.push(p[0].avragePosition)
+        }
+        else { this.barDataArray.push(0) }
+        u = this.rankingGraphData;
+        p = this.rankingGraphData.filter(x => x.month == "May")
+        if (p != null && p != undefined && p.length > 0) {
+          this.barDataArray.push(p[0].avragePosition)
+        }
+        else { this.barDataArray.push(0) }
+        u = this.rankingGraphData;
+        p = this.rankingGraphData.filter(x => x.month == "June")
+        if (p != null && p != undefined && p.length > 0) {
+          this.barDataArray.push(p[0].avragePosition)
+        }
+        else { this.barDataArray.push(0) }
+        u = this.rankingGraphData;
+        p = this.rankingGraphData.filter(x => x.month == "July")
+        if (p != null && p != undefined && p.length > 0) {
+          this.barDataArray.push(p[0].avragePosition)
+        }
+        else { this.barDataArray.push(0) }
+        u = this.rankingGraphData;
+        p = this.rankingGraphData.filter(x => x.month == "August")
+        if (p != null && p != undefined && p.length > 0) {
+          this.barDataArray.push(p[0].avragePosition)
+        }
+        else { this.barDataArray.push(0) }
+        u = this.rankingGraphData;
+        p = this.rankingGraphData.filter(x => x.month == "September")
+        if (p != null && p != undefined && p.length > 0) {
+          this.barDataArray.push(p[0].avragePosition)
+        }
+        else { this.barDataArray.push(0) }
+        u = this.rankingGraphData;
+        p = this.rankingGraphData.filter(x => x.month == "October")
+        if (p != null && p != undefined && p.length > 0) {
+          this.barDataArray.push(p[0].avragePosition)
+        }
+        else { this.barDataArray.push(0) }
+        u = this.rankingGraphData;
+        p = this.rankingGraphData.filter(x => x.month == "November")
+        if (p != null && p != undefined && p.length > 0) {
+          this.barDataArray.push(p[0].avragePosition)
+        }
+        else { this.barDataArray.push(0) }
+        u = this.rankingGraphData;
+        p = this.rankingGraphData.filter(x => x.month == "December")
+        if (p != null && p != undefined && p.length > 0) {
+          this.barDataArray.push(p[0].avragePosition)
+        }
+        else { this.barDataArray.push(0) }
 
-  data = {
-    "startRow": 0,
-    "startDate": startDate,
-    "endDate": endDate,
-    "dataState": "ALL",
-    "dimensions": [
-      "DEVICE"
-    ]
-  };
-  this.http.post(url, data, this.httpOptionJSON).subscribe(res => {
-    if (res) {
-      
-      let rows = res['rows'];
-      this.barDataImpressionsDevice.datasets[0].data = [];
-      this.barChartLabelsDevice = [];
-      for (let i = 0; i < rows.length; i++) {
-        this.barDataImpressionsDevice.datasets[0].data.push(rows[i].impressions);
-        this.barDataClicksDevice.datasets[0].data.push(rows[i].clicks);
-        this.barDataPositionDevice.datasets[0].data.push(rows[i].position);
 
-        this.barChartLabelsDevice.push(rows[i].keys[0]);
+        this.barData.datasets[0].data = this.barDataArray;
+        this.chart.chart.update();
       }
-    }
-  }, error => {
-    alert('Data fetch failed by device : ' + JSON.stringify(error.error));
-  });
-}
-getDataCurrentYear(startDate, endDate, all) {
-
-  this.httpOptionJSON = {
-    headers: new HttpHeaders({
-      'Accept': 'application/json',
-      'Authorization': 'Bearer ' + this.accessToken,
     })
-  };
-  debugger
-  let urlcamp = this.selectedCampIdWebUrl.replace('/', '%2F');
-  const url = "https://www.googleapis.com/webmasters/v3/sites/https:%2F%2F" + urlcamp + "%2F/searchAnalytics/query?key=AIzaSyC1IsrCeeNXp9ksAmC8szBtYVjTLJC9UWQ";
-//const url = "https://www.googleapis.com/webmasters/v3/sites/https%3A%2F%2Fwww.abhisi.com%2F/searchAnalytics/query?key=AIzaSyC1IsrCeeNXp9ksAmC8szBtYVjTLJC9UWQ";
-  let data = {};
-  if (all == 1) {
+  }
+  public getSerpList(): void {
+    debugger
+    this.campaignService.getSerp("&tbs=qdr:m").subscribe(res => {
+      debugger
+      this.serpList = res;
+      //this.source = new LocalDataSource(this.serpList) 
+      // var serpData = res.map((s, i) => {
+      //   if (s.position > 0 && s.position <= 3) {
+      //     var positions = []
+      //     for (var x = 0; x < 12; x++) {
+      //       this.barData.datasets[0].data.push(s.position)
+      //     }
+      //   }
+      //   else if (s.position > 3 && s.position <= 10) {
+      //     this.barData.datasets[1].data = s.position
+      //   }
+      //   else if (s.position > 10 && s.position <= 20) {
+      //     this.barData.datasets[2].data = s.position
+      //   }
+      //   else if (s.position > 20 && s.position <= 50) {
+      //     this.barData.datasets[3].data = s.position
+      //   }
+      //   else if (s.position > 50 && s.position <= 100) {
+      //     this.barData.datasets[4].data = s.position
+      //   }
+      //   else if (s.position > 100) {
+      //     this.barData.datasets[5].data = s.position
+      //   }
+
+      // })
+      this.chart.chart.update();
+    });
+  }
+  private getFilterOptionPlans() {
+    return {
+      pageNumber: 1,
+      pageSize: 1000,
+      fields: '',
+      searchQuery: '',
+      orderBy: ''
+    }
+
+  }
+  //------------------GSC data start---------------------------------------------
+  signInWithGoogle(): void {
+    const googleLoginOptions = {
+      scope: 'profile email https://www.googleapis.com/auth/webmasters.readonly https://www.googleapis.com/auth/webmasters'
+    };
+    this.authService.signIn(GoogleLoginProvider.PROVIDER_ID, googleLoginOptions)
+      .then((res) => {
+
+        this.accessToken = res['authToken'];
+        localStorage.setItem('googleGscAccessToken', this.accessToken);
+        this.isShowLoginButton = false;
+        this.getData();
+        //this.getAdsData();
+      })
+  }
+  getDataByDevice(startDate, endDate) {
+
+    this.httpOptionJSON = {
+      headers: new HttpHeaders({
+        'Accept': 'application/json',
+        'Authorization': 'Bearer ' + this.accessToken,
+      })
+    };
+    let urlcamp = this.selectedCampIdWebUrl.replace('/', '%2F');
+    const url = "https://www.googleapis.com/webmasters/v3/sites/https:%2F%2F" + urlcamp + "%2F/searchAnalytics/query?key=AIzaSyC1IsrCeeNXp9ksAmC8szBtYVjTLJC9UWQ";
+    let data = {};
+
     data = {
+      "startRow": 0,
+      "startDate": startDate,
+      "endDate": endDate,
+      "dataState": "ALL",
+      "dimensions": [
+        "DEVICE"
+      ]
+    };
+    this.http.post(url, data, this.httpOptionJSON).subscribe(res => {
+      if (res) {
+
+        let rows = res['rows'];
+        this.barDataImpressionsDevice.datasets[0].data = [];
+        this.barChartLabelsDevice = [];
+        for (let i = 0; i < rows.length; i++) {
+          this.barDataImpressionsDevice.datasets[0].data.push(rows[i].impressions);
+          this.barDataClicksDevice.datasets[0].data.push(rows[i].clicks);
+          this.barDataPositionDevice.datasets[0].data.push(rows[i].position);
+
+          this.barChartLabelsDevice.push(rows[i].keys[0]);
+        }
+      }
+    }, error => {
+      alert('Data fetch failed by device : ' + JSON.stringify(error.error));
+    });
+  }
+  getDataCurrentYear(startDate, endDate, all) {
+
+    this.httpOptionJSON = {
+      headers: new HttpHeaders({
+        'Accept': 'application/json',
+        'Authorization': 'Bearer ' + this.accessToken,
+      })
+    };
+    debugger
+    let urlcamp = this.selectedCampIdWebUrl.replace('/', '%2F');
+    const url = "https://www.googleapis.com/webmasters/v3/sites/https:%2F%2F" + urlcamp + "%2F/searchAnalytics/query?key=AIzaSyC1IsrCeeNXp9ksAmC8szBtYVjTLJC9UWQ";
+    //const url = "https://www.googleapis.com/webmasters/v3/sites/https%3A%2F%2Fwww.abhisi.com%2F/searchAnalytics/query?key=AIzaSyC1IsrCeeNXp9ksAmC8szBtYVjTLJC9UWQ";
+    let data = {};
+    if (all == 1) {
+      data = {
+        "startRow": 0,
+        "startDate": startDate,
+        "endDate": endDate,
+        "dataState": "ALL",
+        "dimensions": [
+          "DATE"
+        ]
+      };
+    }
+    if (all == 0) {
+      data = {
+        "startRow": 0,
+        "startDate": startDate,
+        "endDate": endDate,
+        "dataState": "ALL",
+      };
+    }
+    this.http.post(url, data, this.httpOptionJSON).subscribe(res => {
+      if (res) {
+
+        let rows = res['rows'];
+        if (all == 0) {
+          this.clicksThisYear = rows[0].clicks;
+          this.impressionsThisYear = rows[0].impressions;
+          this.cTRThisYear = parseFloat(rows[0].ctr).toFixed(2).toString();
+          this.positionThisYear = parseFloat(rows[0].position).toFixed(2).toString();
+        }
+        else {
+          this.dateListData = [];
+          this.barDataClicks.datasets[0].data = [];
+          this.barDataImpressions.datasets[0].data = [];
+          this.barDataCTR.datasets[0].data = [];
+          this.barDataPositions.datasets[0].data = [];
+          this.barChartLabels = [];
+          for (let i = 0; i < rows.length; i++) {
+            this.currDate = rows[i].keys[0]
+            this.currDate = this.currDate.substring(5, 10);
+            this.barDataClicks.datasets[0].data.push(rows[i].clicks);
+            this.barDataImpressions.datasets[0].data.push(rows[i].impressions);
+            this.barDataCTR.datasets[0].data.push(rows[i].ctr);
+            this.barDataPositions.datasets[0].data.push(rows[i].position);
+            this.barChartLabels.push(this.currDate);
+          }
+        }
+      }
+    }, error => {
+
+      alert('Data fetch failed for current year : ' + JSON.stringify(error.error));
+    });
+
+  }
+  getDataPreviousYear(startDate, endDate, all) {
+    debugger
+    this.httpOptionJSON = {
+      headers: new HttpHeaders({
+        'Accept': 'application/json',
+        'Authorization': 'Bearer ' + this.accessToken,
+      })
+    };
+
+    let urlcamp = this.selectedCampIdWebUrl.replace('/', '%2F');
+    const url = "https://www.googleapis.com/webmasters/v3/sites/https:%2F%2F" + urlcamp + "%2F/searchAnalytics/query?key=AIzaSyC1IsrCeeNXp9ksAmC8szBtYVjTLJC9UWQ";
+    let data = {
       "startRow": 0,
       "startDate": startDate,
       "endDate": endDate,
@@ -1814,167 +1895,104 @@ getDataCurrentYear(startDate, endDate, all) {
         "DATE"
       ]
     };
-  }
-  if (all == 0) {
-    data = {
-      "startRow": 0,
-      "startDate": startDate,
-      "endDate": endDate,
-      "dataState": "ALL",
-    };
-  }
-  this.http.post(url, data, this.httpOptionJSON).subscribe(res => {
-    if (res) {
+    this.http.post(url, data, this.httpOptionJSON).subscribe(res => {
+      if (res) {
 
-      let rows = res['rows'];
-      if (all == 0) {
-        this.clicksThisYear = rows[0].clicks;
-        this.impressionsThisYear = rows[0].impressions;
-        this.cTRThisYear = parseFloat(rows[0].ctr).toFixed(2).toString();
-        this.positionThisYear = parseFloat(rows[0].position).toFixed(2).toString();
-      }
-      else {
-        this.dateListData = [];
-        this.barDataClicks.datasets[0].data = [];
-        this.barDataImpressions.datasets[0].data = [];
-        this.barDataCTR.datasets[0].data = [];
-        this.barDataPositions.datasets[0].data = [];
-        this.barChartLabels = [];
-        for (let i = 0; i < rows.length; i++) {
-          this.currDate = rows[i].keys[0]
-          this.currDate = this.currDate.substring(5, 10);
-          this.barDataClicks.datasets[0].data.push(rows[i].clicks);
-          this.barDataImpressions.datasets[0].data.push(rows[i].impressions);
-          this.barDataCTR.datasets[0].data.push(rows[i].ctr);
-          this.barDataPositions.datasets[0].data.push(rows[i].position);
-          this.barChartLabels.push(this.currDate);
+        let rows = res['rows'];
+        if (all == 0) {
+          this.clicksPreviousYear = rows[0].clicks;
+          this.impressionsPreviousYear = rows[0].impressions;
+          this.cTRPreviousYear = parseFloat(rows[0].ctr).toFixed(2).toString();
+          this.positionPreviousYear = parseFloat(rows[0].position).toFixed(2).toString();
+
+          //pecentgage calculate
+
+          this.percentClicks = this.getYearwiseDifference(this.clicksPreviousYear, this.clicksThisYear);
+          this.percentImpressions = this.getYearwiseDifference(this.impressionsPreviousYear, this.impressionsThisYear);
+          this.percentPosition = this.getYearwiseDifference(this.positionPreviousYear, this.positionThisYear);
+          this.percentCTR = this.getYearwiseDifference(this.cTRPreviousYear, this.cTRThisYear);
+        }
+        else {
+          this.dateListData = [];
+          this.barDataClicks.datasets[1].data = [];
+          this.barDataImpressions.datasets[1].data = [];
+          this.barChartLabels = [];
+          for (let i = 0; i < rows.length; i++) {
+            this.currDate = rows[i].keys[0]
+            this.currDate = this.currDate.substring(5, 10);
+            this.barDataClicks.datasets[1].data.push(rows[i].clicks + 10);
+            this.barDataImpressions.datasets[1].data.push(rows[i].impressions);
+            this.barDataCTR.datasets[1].data.push(rows[i].ctr);
+            this.barDataPositions.datasets[1].data.push(rows[i].position);
+
+            this.barChartLabels.push(this.currDate);
+          }
         }
       }
-    }
-  }, error => {
+    }, error => {
 
-    alert('Data fetch failed for current year : ' + JSON.stringify(error.error));
-  });
+      alert('Data fetch failed for previous year : ' + JSON.stringify(error.error));
+    });
 
-}
-getDataPreviousYear(startDate, endDate, all) {
-debugger
-  this.httpOptionJSON = {
-    headers: new HttpHeaders({
-      'Accept': 'application/json',
-      'Authorization': 'Bearer ' + this.accessToken,
-    })
-  };
-
-  let urlcamp = this.selectedCampIdWebUrl.replace('/', '%2F');
-  const url = "https://www.googleapis.com/webmasters/v3/sites/https:%2F%2F" + urlcamp + "%2F/searchAnalytics/query?key=AIzaSyC1IsrCeeNXp9ksAmC8szBtYVjTLJC9UWQ";
-let data = {
-    "startRow": 0,
-    "startDate": startDate,
-    "endDate": endDate,
-    "dataState": "ALL",
-    "dimensions": [
-      "DATE"
-    ]
-  };
-  this.http.post(url, data, this.httpOptionJSON).subscribe(res => {
-    if (res) {
-
-      let rows = res['rows'];
-      if (all == 0) {
-        this.clicksPreviousYear = rows[0].clicks;
-        this.impressionsPreviousYear = rows[0].impressions;
-        this.cTRPreviousYear = parseFloat(rows[0].ctr).toFixed(2).toString();
-        this.positionPreviousYear = parseFloat(rows[0].position).toFixed(2).toString();
-
-        //pecentgage calculate
-        
-        this.percentClicks = this.getYearwiseDifference(this.clicksPreviousYear, this.clicksThisYear);
-        this.percentImpressions = this.getYearwiseDifference(this.impressionsPreviousYear, this.impressionsThisYear);
-        this.percentPosition = this.getYearwiseDifference(this.positionPreviousYear, this.positionThisYear);
-        this.percentCTR = this.getYearwiseDifference(this.cTRPreviousYear, this.cTRThisYear);
-      }
-      else {
-        this.dateListData = [];
-        this.barDataClicks.datasets[1].data = [];
-        this.barDataImpressions.datasets[1].data = [];
-        this.barChartLabels = [];
-        for (let i = 0; i < rows.length; i++) {
-          this.currDate = rows[i].keys[0]
-          this.currDate = this.currDate.substring(5, 10);
-          this.barDataClicks.datasets[1].data.push(rows[i].clicks + 10);
-          this.barDataImpressions.datasets[1].data.push(rows[i].impressions);
-          this.barDataCTR.datasets[1].data.push(rows[i].ctr);
-          this.barDataPositions.datasets[1].data.push(rows[i].position);
-
-          this.barChartLabels.push(this.currDate);
-        }
-      }
-    }
-  }, error => {
-
-    alert('Data fetch failed for previous year : ' + JSON.stringify(error.error));
-  });
-
-}
-
-onStartDateChange(event) {
-  this.startDate = this.datepipe.transform(this.fromDate.value, 'yyyy-MM-dd');
-  this.currYear = parseInt(this.datepipe.transform(this.fromDate.value, 'yyyy'));
-  let prevYear = this.currYear - 1;
-  this.previousStartDate = prevYear.toString() + '-' + this.datepipe.transform(this.fromDate.value, 'MM-dd');
-  this.getData();
-}
-
-onEndDateChange(event) {
-  this.endDate = this.datepipe.transform(this.toDate.value, 'yyyy-MM-dd');
-  this.currYear = parseInt(this.datepipe.transform(this.toDate.value, 'yyyy'));
-  let prevYear = this.currYear - 1;
-  this.previousEndDate = prevYear.toString() + '-' + this.datepipe.transform(this.toDate.value, 'MM-dd');
-  this.getData();
-}
-getData() {
-debugger
-  if (this.accessToken == '' || this.accessToken == undefined || this.accessToken == null) {
-    alert("Please, Login with Google to fetch data");
-  } else if (parseDate(this.endDate) < parseDate(this.startDate)) {
-    alert("Start Date can not be grater then End Date");
   }
-  else {
-    this.getDataCurrentYear(this.startDate, this.endDate, 0);
-    this.getDataPreviousYear(this.previousStartDate, this.previousEndDate, 0);
-    this.getDataCurrentYear(this.startDate, this.endDate, 1);
-    this.getDataPreviousYear(this.previousStartDate, this.previousEndDate, 1);
-    this.getDataByDevice(this.startDate, this.endDate)
+
+  onStartDateChange(event) {
+    this.startDate = this.datepipe.transform(this.fromDate.value, 'yyyy-MM-dd');
+    this.currYear = parseInt(this.datepipe.transform(this.fromDate.value, 'yyyy'));
+    let prevYear = this.currYear - 1;
+    this.previousStartDate = prevYear.toString() + '-' + this.datepipe.transform(this.fromDate.value, 'MM-dd');
+    this.getData();
   }
-}
-getDateSettings() {
-debugger
-let currDate = new Date();
-this.endDate = this.datepipe.transform(currDate, 'yyyy-MM-dd');
-this.startDate = this.datepipe.transform(currDate.setDate(currDate.getDate() - 28), 'yyyy-MM-dd');
-currDate = new Date();
-this.previousEndDate =  this.datepipe.transform(currDate.setFullYear(currDate.getFullYear() - 1), 'yyyy-MM-dd');
-this.previousStartDate = this.datepipe.transform(currDate.setDate(currDate.getDate() - 28), 'yyyy-MM-dd');
 
-  // this.startDate = this.datepipe.transform(this.fromDate.value, 'yyyy-MM-dd');
-  // this.currYear = parseInt(this.datepipe.transform(this.fromDate.value, 'yyyy'));
-  // let prevYear = this.currYear - 1;
-  // this.previousStartDate = prevYear.toString() + '-' + this.datepipe.transform(this.fromDate.value, 'MM-dd');
-  // this.endDate = this.datepipe.transform(this.toDate.value, 'yyyy-MM-dd');
-  // this.currYear = parseInt(this.datepipe.transform(this.toDate.value, 'yyyy'));
-  // prevYear = this.currYear - 1;
-  // this.previousEndDate = prevYear.toString() + '-' + this.datepipe.transform(this.toDate.value, 'MM-dd');
-}
+  onEndDateChange(event) {
+    this.endDate = this.datepipe.transform(this.toDate.value, 'yyyy-MM-dd');
+    this.currYear = parseInt(this.datepipe.transform(this.toDate.value, 'yyyy'));
+    let prevYear = this.currYear - 1;
+    this.previousEndDate = prevYear.toString() + '-' + this.datepipe.transform(this.toDate.value, 'MM-dd');
+    this.getData();
+  }
+  getData() {
+    debugger
+    if (this.accessToken == '' || this.accessToken == undefined || this.accessToken == null) {
+      alert("Please, Login with Google to fetch data");
+    } else if (parseDate(this.endDate) < parseDate(this.startDate)) {
+      alert("Start Date can not be grater then End Date");
+    }
+    else {
+      this.getDataCurrentYear(this.startDate, this.endDate, 0);
+      this.getDataPreviousYear(this.previousStartDate, this.previousEndDate, 0);
+      this.getDataCurrentYear(this.startDate, this.endDate, 1);
+      this.getDataPreviousYear(this.previousStartDate, this.previousEndDate, 1);
+      this.getDataByDevice(this.startDate, this.endDate)
+    }
+  }
+  getDateSettings() {
+    debugger
+    let currDate = new Date();
+    this.endDate = this.datepipe.transform(currDate, 'yyyy-MM-dd');
+    this.startDate = this.datepipe.transform(currDate.setDate(currDate.getDate() - 28), 'yyyy-MM-dd');
+    currDate = new Date();
+    this.previousEndDate = this.datepipe.transform(currDate.setFullYear(currDate.getFullYear() - 1), 'yyyy-MM-dd');
+    this.previousStartDate = this.datepipe.transform(currDate.setDate(currDate.getDate() - 28), 'yyyy-MM-dd');
 
-getYearwiseDifference(previous, current) {
-  
-  let diff = ((parseFloat(previous) - parseFloat(current)) * 100) / parseFloat(previous)
-  return parseFloat(diff.toString()).toFixed(2)
+    // this.startDate = this.datepipe.transform(this.fromDate.value, 'yyyy-MM-dd');
+    // this.currYear = parseInt(this.datepipe.transform(this.fromDate.value, 'yyyy'));
+    // let prevYear = this.currYear - 1;
+    // this.previousStartDate = prevYear.toString() + '-' + this.datepipe.transform(this.fromDate.value, 'MM-dd');
+    // this.endDate = this.datepipe.transform(this.toDate.value, 'yyyy-MM-dd');
+    // this.currYear = parseInt(this.datepipe.transform(this.toDate.value, 'yyyy'));
+    // prevYear = this.currYear - 1;
+    // this.previousEndDate = prevYear.toString() + '-' + this.datepipe.transform(this.toDate.value, 'MM-dd');
+  }
 
-}
-getPercentage(num, total) {
-  return ((100 * num) / total)
-}
-//#################  GSC data end ###########################################
+  getYearwiseDifference(previous, current) {
+
+    let diff = ((parseFloat(previous) - parseFloat(current)) * 100) / parseFloat(previous)
+    return parseFloat(diff.toString()).toFixed(2)
+
+  }
+  getPercentage(num, total) {
+    return ((100 * num) / total)
+  }
+  //#################  GSC data end ###########################################
 }

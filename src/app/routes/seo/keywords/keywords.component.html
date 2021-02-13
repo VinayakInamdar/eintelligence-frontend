@@ -1,4 +1,126 @@
 <app-submenu></app-submenu>
+
+<div *ngIf="settingActive == 1;" class="row w3-container w3-center w3-animate-right keyworddivpaddingtop">
+    <div class="col-md-2"> </div>
+    <div class="col-md-8">
+
+        <form [formGroup]="valForm" class="form-horizontal card keywordformheight"
+            (keydown.enter)="$event.preventDefault()" (submit)="submitForm(valForm.value)" novalidate="">
+            <div *ngIf="showSpinner" class="la-line-scale la-2x linescaleloadercolortopleft">
+                <div></div>
+                <div></div>
+                <div></div>
+                <div></div>
+                <div></div>
+            </div>
+            <tabset *ngIf="!showSpinner" [justified]="true" #staticTabs>
+                <tab class="keywordtabheight">
+                    <ng-template tabHeading>
+                        <p class="keywordpfontl">Keywords</p>
+                    </ng-template>
+
+                    <div class="row">
+                        <div class="col-md-1"></div>
+                        <div class="col-md-10 keyworddiv1paddingtop">
+                            <h1>What keywords would you like to track?</h1>
+                            <h3>Add one keyword per line or use the suggestion tool to retrieve related keywords.</h3>
+                            <hr>
+                            <label>KEYWORDS</label>
+                            <textarea id="textarea1" (keydown.enter)="triggerFunction($event)" type="textarea"
+                                #keyword_field class="form-controltextareaheight" cols='60' rows="10"
+                                formControlName="keyword" placeholder="Enter keyword here..."></textarea>
+                            <span class="text-danger"
+                                *ngIf="valForm.controls['keyword'].hasError('required') && (valForm.controls['keyword'].dirty || valForm.controls['keyword'].touched)">
+                                {{'validation.KEYWORDISREQUIRED' | translate}}</span>
+                            <br>
+                            <div class="text-center">
+                                <button class="mr-1 btn btn-primary btn-lg" type="submit"
+                                    (click)="goToNextTab($event,keyword_field.value,'keyword',1)">Next </button>
+                            </div>
+                        </div>
+                        <div class="col-md-1"></div>
+                    </div>
+
+                </tab>
+                <tab class="keywordtabheight" tab="2">
+                    <ng-template tabHeading>
+                        <p class="keywordpfontl">Locations</p>
+                    </ng-template>
+                    <div class="row">
+                        <div class="col-md-1"></div>
+                        <div class="col-md-10 keywordaddpaddingtop">
+                            <h1>Where do you want to track these keywords?</h1>
+                            <h3> Add one location by city, country or region</h3>
+                            <hr>
+                            <div class="form-group row ">
+                                <select #location_field class="form-control selectheight" formControlName="location"
+                                    (change)="setSelectedLocation($event)" form="carform" class="col-sm-12">
+                                    <option value={{country}} *ngFor="let country of country">{{country}}</option>
+                                </select>
+                                <span class="text-danger"
+                                    *ngIf="valForm.controls['location'].hasError('required') && (valForm.controls['location'].dirty || valForm.controls['location'].touched)">
+                                    {{'validation.LOCATIONISREQUIRED' | translate}}</span>
+                            </div>
+
+                            <div class="row">
+                                <div class="col-md-3">
+                                    <button class="mr-1 btn btn-secondary btn-lg" type="submit"
+                                        (click)="goToPreviousTab($event,0)">
+                                        < Go Back</button>
+                                </div>
+                                <div class="col-md-6"></div>
+                                <div class="col-md-3">
+                                    <button class="mr-1 btn btn-primary btn-lg" type="submit"
+                                        (click)="goToNextTab($event,location_field.value,'location',2)">Next
+                                        ></button>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col-md-1"></div>
+                    </div>
+                </tab>
+                <tab class="keywordtabheight">
+                    <ng-template tabHeading>
+                        <p class="keywordpfontl">Tags</p>
+                    </ng-template>
+                    <div class="row">
+                        <div class="col-md-12 keyworddiv2paddingtop">
+                            <h1>Do you want to tag your keywords?</h1>
+                            <h3>Adding tags to your keywords can help you organize and filter your data.</h3>
+                            <hr>
+                            <label>Tags</label>
+                            <div class="editor-tag" (click)="focusTagInput()">
+                                <span class="tag-item" *ngFor="let tag of tags">
+                                    {{tag}}
+                                    <span class="remove-tag" (click)="removeTag(tag)">×</span>
+                                </span>
+                                <input placeholder="Enter tags" #tagInput type="text" class="input-tag"
+                                    (keyup)="onKeyUp($event)" formControlName="tag">
+                            </div>
+
+                            <br>
+                            <div class="row">
+                                <div class="col-md-3">
+                                    <button class="mr-1 btn btn-secondary btn-lg" type="submit"
+                                        (click)="goToPreviousTab($event,1)">
+                                        < Go Back</button>
+                                </div>
+                                <div class="col-md-5"></div>
+                                <div class="col-md-4">
+                                    <!-- <a routerLink="./home"> -->
+                                    <button class="mr-1 btn btn-primary btn-lg" type="submit">Submit</button>
+                                    <!-- </a> -->
+                                </div>
+                            </div>
+                        </div>
+
+                    </div>
+                </tab>
+            </tabset>
+        </form>
+    </div>
+    <div class="col-md-2"></div>
+</div>
 <div class="row" *ngIf="settingActive == 0;">
     <div class="col-md-1"></div>
     <div class="col-md-3 keywordfontsw">
