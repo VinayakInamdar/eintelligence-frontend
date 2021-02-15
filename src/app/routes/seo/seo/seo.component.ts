@@ -1780,7 +1780,7 @@ getRankingGraphData() {
 
 }
 getSiteSpeedData(){
-  debugger
+  
   this.httpOptionJSON = {
     headers: new HttpHeaders({
       'Accept': 'application/json',
@@ -1800,7 +1800,7 @@ getSiteSpeedData(){
       this.FIRST_INPUT_DELAY_MS= rows['FIRST_INPUT_DELAY_MS'].category
       this.LARGEST_CONTENTFUL_PAINT_MS= rows['LARGEST_CONTENTFUL_PAINT_MS'].category
       //light house
-      debugger
+      
 
       this.first_contentful_paint =  lighthouse.audits['first-contentful-paint'].displayValue,
 this.speed_index=  lighthouse.audits['speed-index'].displayValue,
@@ -1810,7 +1810,7 @@ this.first_cpu_idle =  lighthouse.audits['first-cpu-idle'].displayValue,
 this.Eestimated_input_latency =  lighthouse.audits['estimated-input-latency'].displayValue
     }
   }, error => {
-    debugger
+    
     console.log('Data fetch failed by device : ' + JSON.stringify(error.error));
   });
 }

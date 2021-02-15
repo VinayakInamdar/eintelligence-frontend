@@ -52,6 +52,7 @@
                             <h1>Where do you want to track these keywords?</h1>
                             <h3> Add one location by city, country or region</h3>
                             <hr>
+                            <label>LOCATIONS</label>
                             <div class="form-group row ">
                                 <select #location_field class="form-control selectheight" formControlName="location"
                                     (change)="setSelectedLocation($event)" form="carform" class="col-sm-12 countrydropdown">
@@ -81,7 +82,7 @@
                 </tab>
                 <tab class="keywordtabheight cursor-default">
                     <ng-template tabHeading>
-                        <p class="keywordpfontl">Tags</p>
+                        <p class="keywordpfontl">TAGS</p>
                     </ng-template>
                     <div class="row cursor-default">
                         <div class="col-md-12 keyworddiv2paddingtop">

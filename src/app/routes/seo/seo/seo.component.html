@@ -59,7 +59,7 @@
             <div class="card card-default shadow bg-white rounded cursor-default card-height"
                 (mouseenter)="showDiv($event,'true','seo')">
                 <div class="card-header borderBtm header-padding">
-                    <h4 class="heading-margin font-weight"> Rankings summary</h4>
+                    <h4 class="heading-margin font-weight">RANKINGS SUMMARY</h4>
                     <!-- <i class="col-md-2 fa fa-info-circle paddingtop3px "
                    matTooltip="Distribution of targeted keywords according to ranking performance"></i> -->
                 </div>
@@ -84,7 +84,7 @@
 
             <div class="card card-default shadow bg-white rounded cursor-default card-height">
                 <div class="card-header borderBtm header-padding">
-                    <h4 class="heading-margin font-weight">Traffic Sources</h4>
+                    <h4 class="heading-margin font-weight">TRAFFIC SOURCES</h4>
                 </div>
                 <div class="card-body row">
                     <div class="chart-wrapper mx-auto chart-container" *ngIf="hasActiveAccount && hasAuthorize">
@@ -165,7 +165,7 @@
                 <div class="col-lg-4">
                     <div class="card card-default shadow bg-white rounded mr-3 cursor-default impressionsCard-height">
                         <div class="card-header borderBtm header-padding">
-                            <h4 class="heading-margin font-weight">Impressions By Device</h4>
+                            <h4 class="heading-margin font-weight">IMPRESSIONS BY DEVICE</h4>
                             <!-- <div class="row borderBtm padding5"> -->
                             <!-- <h2 class="col-xs-12 col-12 col-md-9">Impressions By Device</h2> -->
                             <!-- </div> -->
@@ -200,7 +200,7 @@
         <div class="col-md-6">
             <div class="card card-default shadow bg-white rounded cursor-default card-height">
                 <div class="card-header borderBtm header-padding">
-                    <h4 class="heading-margin font-weight">Clicks</h4>
+                    <h4 class="heading-margin font-weight">CLICKS</h4>
                 </div>
                 <div class="card-body row">
                     <div class="chart-wrapper mx-auto chart-container">
@@ -216,7 +216,7 @@
 
             <div class="card card-default shadow bg-white rounded cursor-default card-height">
                 <div class="card-header borderBtm header-padding">
-                    <h4 class="heading-margin font-weight">Impressions</h4>
+                    <h4 class="heading-margin font-weight">IMPRESSIONS</h4>
                 </div>
                 <div class="card-body row">
                     <div class="chart-wrapper mx-auto chart-container">
@@ -233,7 +233,7 @@
         <div class="col-md-6">
             <div class="card card-default shadow bg-white rounded cursor-default card-height">
                 <div class="card-header borderBtm header-padding">
-                    <h4 class="heading-margin font-weight">Site CTR</h4>
+                    <h4 class="heading-margin font-weight">SITE CTR</h4>
                 </div>
                 <div class="card-body row">
                     <div class="chart-wrapper mx-auto chart-container">
@@ -248,7 +248,7 @@
         <div class="col-md-6">
             <div class="card card-default shadow bg-white rounded cursor-default card-height">
                 <div class="card-header borderBtm header-padding">
-                    <h4 class="heading-margin font-weight">Positions</h4>
+                    <h4 class="heading-margin font-weight">POSITIONS</h4>
                 </div>
                 <div class="card-body row">
                     <div class="chart-wrapper mx-auto chart-container">
@@ -283,7 +283,7 @@
                         </div>
                         <div class="widget-content">
                             <div class="overviewdivborder">
-                                <div class="row">
+                                <!-- <div class="row"> -->
                                     <table class="table table-bordered font-weight-bold">
                                         <thead>
                                             <tr>
@@ -309,7 +309,7 @@
                                                 <td class="text-blue">to retrieve </td>
                                             </tr>
                                     </table>
-                                </div>
+                                <!-- </div> -->
                             </div>
                         </div>
                     </div>
@@ -322,7 +322,7 @@
                         </div>
                         <div class="widget-content">
                             <div class="overviewdivborder">
-                                <div class="row">
+                                <!-- <div class="row"> -->
                                     <table class="table table-bordered font-weight-bold">
                                         <thead>
                                             <tr>
@@ -350,7 +350,7 @@
                                                     | number) + '%'}} </td>
                                             </tr>
                                     </table>
-                                </div>
+                                <!-- </div> -->
                             </div>
                         </div>
                     </div>
@@ -363,7 +363,7 @@
                         </div>
                         <div class="widget-content">
                             <div class="overviewdivborder">
-                                <div class="row">
+                                <!-- <div class="row"> -->
                                     <table class="table table-bordered font-weight-bold">
                                         <thead>
                                             <tr>
@@ -389,7 +389,7 @@
                                                 <td class="text-blue">to retrieve </td>
                                             </tr>
                                     </table>
-                                </div>
+                                <!-- </div> -->
                             </div>
                         </div>
                     </div>
@@ -420,12 +420,12 @@
                                         <canvas id='dougnutChart' baseChart [chartType]="'pie'"
                                             [colors]="doughnutColors" [options]="doughnutOptions"
                                             [datasets]="doughnutData.datasets" [labels]="doughnutData.labels"
-                                            [doughnut]="true" [legend]="true" height="140"></canvas>
-                                        <div class="btn-container footer-buttonsabsolute text-center">
+                                            [doughnut]="true" [legend]="true" height="210"></canvas>
+                                        <!-- <div class="btn-container footer-buttonsabsolute text-center"> -->
                                             <!-- <a href="javascript:void(0)" class="btn btn-link"
                                                 (click)="goToAcquisitonTrafficSources($event)">See More</a> -->
-                                            &nbsp;&nbsp;&nbsp;
-                                        </div>
+                                            <!-- &nbsp;&nbsp;&nbsp; -->
+                                        <!-- </div> -->
                                     </div>
                                 </div>
                             </div>
@@ -448,13 +448,13 @@
                                         <div>
                                             <canvas id='dougnutChart1' baseChart [chartType]="'bar'"
                                                 [options]="doughnutOptions1" [datasets]="doughnutData1.datasets"
-                                                [labels]="doughnutData1.labels" [legend]="true" height="140"></canvas>
+                                                [labels]="doughnutData1.labels" [legend]="true" height="210"></canvas>
                                         </div>
-                                        <div class="btn-container footer-buttonsabsolute text-center">
+                                        <!-- <div class="btn-container footer-buttonsabsolute text-center"> -->
                                             <!-- <a href="javascript:void(0)" class="btn btn-link"
                                                 (click)="goToAudienceDeviceCategory($event)">See More</a> -->
-                                            &nbsp;&nbsp;&nbsp;
-                                        </div>
+                                            <!-- &nbsp;&nbsp;&nbsp; -->
+                                        <!-- </div> -->
                                     </div>
                                 </div>
                             </div>
@@ -462,63 +462,67 @@
                         <div class="col-lg-4">
                             <div class="card card-default shadow bg-white rounded webTrafficCard-height cursor-default">
                                 <div class="card-header borderBtm header-padding">
-                                    <h4 class="heading-margin font-weight">Site Speed</h4>
+                                    <h4 class="heading-margin font-weight">SITE SPEED</h4>
                                 </div>
-                                <div class="widget-content">
+                                <div class="widget-content content-padding">
                                     <div *ngIf="showSpinnerSiteAnalysisContent"
                                         class="la-line-scale  linescaleloadercolortopleft">
                                       
                                     </div>
-                                    <table>
-                                        <tr>
-                                            <td >Load Experience Result</td>
-                                        </tr>
-                                        <tr>
-                                            <td>Layout Shift Score </td>
+                                    <div class="row">
+                                        <div class="col-sm-6">
+                                            <label class="reportmarginbottom font-weight">Load Experience Result</label>
+                                        <table class="table table-bordered table-width">
+                                        <tr class="fontsizesmall">
+                                            <td class="pd-0">Layout Shift Score </td>
                                             <td>{{ CUMULATIVE_LAYOUT_SHIFT_SCORE }}</td>
                                         </tr>
-                                        <tr>
-                                            <td>Largest Contentful paint</td>
+                                        <tr class="fontsizesmall">
+                                            <td class="pd-0">Largest Contentful paint</td>
                                             <td>{{LARGEST_CONTENTFUL_PAINT_MS}}</td>
                                         </tr>
-                                        <tr>
-                                            <td>First Contentful Paint</td>
+                                        <tr class="fontsizesmall">
+                                            <td class="pd-0">First Contentful Paint</td>
                                             <td>{{FIRST_CONTENTFUL_PAINT_MS}}</td>
                                         </tr>
-                                        <tr>
-                                            <td>First Input Delay</td>
+                                        <tr class="fontsizesmall">
+                                            <td class="pd-0">First Input Delay</td>
                                             <td>{{FIRST_INPUT_DELAY_MS}}</td>
                                         </tr>
-                                    </table>
-                                    <table>
-                                        <tr>
-                                            <td >Lighthouse Result</td>
-                                        </tr>
-                                        <tr>
-                                            <td>First Contentful Paint </td>
-                                            <td>{{ first_contentful_paint }}</td>
-                                        </tr>
-                                        <tr>
-                                            <td>Speed Index</td>
-                                            <td>{{speed_index}}</td>
-                                        </tr>
-                                        <tr>
-                                            <td>Time To Interactive</td>
-                                            <td>{{interactive}}</td>
-                                        </tr>
-                                        <tr>
-                                            <td>First Meaningful Paint</td>
-                                            <td>{{first_meaningful_paint}}</td>
-                                        </tr>
-                                        <tr>
-                                            <td>First CPU Idle</td>
-                                            <td>{{first_cpu_idle}}</td>
-                                        </tr>
-                                        <tr>
-                                            <td>Estimated Input Latency</td>
-                                            <td>{{Eestimated_input_latency}}</td>
-                                        </tr>
-                                    </table>
+                                    </table>    
+                                    </div>    
+                                    
+                                    
+                                    <div class="col-sm-6"> 
+                                        <label class="reportmarginbottom font-weight">Lighthouse Result</label>
+                                        <table class="table table-bordered">
+                                            <tr class="fontsizesmall">
+                                                <td class="pd-0">First Contentful Paint </td>
+                                                <td>{{ first_contentful_paint }}</td>
+                                            </tr>
+                                            <tr class="fontsizesmall">
+                                                <td class="pd-0">Speed Index</td>
+                                                <td>{{speed_index}}</td>
+                                            </tr>
+                                            <tr class="fontsizesmall">
+                                                <td class="pd-0">Time To Interactive</td>
+                                                <td>{{interactive}}</td>
+                                            </tr>
+                                            <tr class="fontsizesmall">
+                                                <td class="pd-0">First Meaningful Paint</td>
+                                                <td>{{first_meaningful_paint}}</td>
+                                            </tr>
+                                            <tr class="fontsizesmall">
+                                                <td class="pd-0">First CPU Idle</td>
+                                                <td>{{first_cpu_idle}}</td>
+                                            </tr>
+                                            <tr class="fontsizesmall">
+                                                <td class="pd-0">Estimated Input Latency</td>
+                                                <td>{{Eestimated_input_latency}}</td>
+                                            </tr>
+                                        </table>
+                                    </div>
+                                </div>
                                 </div>
                             </div>
                         </div>
