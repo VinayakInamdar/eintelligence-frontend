@@ -12,7 +12,6 @@ export class SubmenuComponent implements OnInit {
 
 
   constructor(public router: Router) { 
-    debugger
     this.selectedCampId = localStorage.getItem("selectedCampId")
   }
 

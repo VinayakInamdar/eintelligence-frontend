@@ -261,73 +261,6 @@
             </div>
         </div>
     </div>
-    <div class="container-fluid card-padding card-width">
-        <div class="card card-default shadow bg-white rounded cursor-default card-height">
-            <div class="card-header borderBtm pd-0">
-                <div class="row pd-3">
-                    <div class="col-md-4">
-                        <h3>Analytics Page (Site Speed)</h3>
-                    </div>
-                    <div class="col-md-4"> <input type="input" placeholder="Select DateRange" class="form-control"
-                            bsDaterangepicker (bsValueChange)="onDateRangeSelect($event)"
-                            [bsConfig]="{ ranges: ranges, containerClass: 'theme-blue' }"
-                            [bsValue]="bsInlineRangeValue">
-                    </div>
-                    <div class="btn-group">
-                        <div class="btn-group" dropdown>
-                            <button id="button-basic" dropdownToggle type="input" class="btn overviewbtnwidth"
-                                aria-controls="dropdown-basic">
-                                {{selctedLabelName !== undefined ? selctedLabelName : 'select Label'}}
-                                <span class="caret"> </span>
-                            </button>
-                            <ul id="dropdown-basic" *dropdownMenu class="dropdown-menu dropdown-overflow" role="menu"
-                                aria-labelledby="button-basic">
-                                <li role="menuitem" *ngFor="let label of dropdownlabels"
-                                    [ngClass]="{'active': selectedLabel == label.id}"><a class="dropdown-item"
-                                        (click)="onLabelSelect($event,label)"
-                                        href="javascript:void(0);">{{label.label}}</a></li>
-                            </ul>
-                        </div>
-                    </div>
-                    <p class="overviewpvs">VS</p>
-                    <div class="btn-group">
-                        <div class="btn-group" dropdown>
-                            <button id="button-basic" dropdownToggle type="input" class="btn overviewbtnwidth"
-                                aria-controls="dropdown-basic">
-                                {{selctedLabelName1 !== undefined ? selctedLabelName1 : 'select Matrix'}}
-                                <span class="caret"> </span>
-                            </button>
-                            <ul id="dropdown-basic" *dropdownMenu class="dropdown-menu dropdown-overflow" role="menu"
-                                aria-labelledby="button-basic">
-                                <li role="menuitem" *ngFor="let label of dropdownlabels1"
-                                    [ngClass]="{'active': selectedLabel1 == label.id}"><a class="dropdown-item"
-                                        (click)="onLabelSelect1($event,label)"
-                                        href="javascript:void(0);">{{label.label}}</a></li>
-                            </ul>
-                        </div>
-                    </div>
-                </div>
-            </div>
-            <div class="card-body row">
-                <div class="chart-wrapper mx-auto chart-container" *ngIf="hasActiveAccount && hasAuthorize">
-                    <div *ngIf="showSpinnerBaseChart" class="la-line-scale  linescaleloadercolortopleft">
-                        <div></div>
-                        <div></div>
-                        <div></div>
-                        <div></div>
-                        <div></div>
-                    </div>
-                    <canvas *ngIf="!showSpinnerBaseChart" baseChart [datasets]="lineChartData"
-                        [labels]="lineChartLabels" [options]="lineChartOptions" [colors]="lineChartColors"
-                        [legend]="lineChartLegend" [chartType]="lineChartType" [plugins]="lineChartPlugins"
-                        [fullWidth]="true">
-                    </canvas>
-                </div>
-
-            </div>
-        </div>
-    </div>
-
     <div class="container-fluid" *ngIf="settingActive == 3;">
         <div class="row">
             <div class="col-md-1"></div>
@@ -529,17 +462,63 @@
                         <div class="col-lg-4">
                             <div class="card card-default shadow bg-white rounded webTrafficCard-height cursor-default">
                                 <div class="card-header borderBtm header-padding">
-                                    <h4 class="heading-margin font-weight">New chart</h4>
+                                    <h4 class="heading-margin font-weight">Site Speed</h4>
                                 </div>
                                 <div class="widget-content">
                                     <div *ngIf="showSpinnerSiteAnalysisContent"
                                         class="la-line-scale  linescaleloadercolortopleft">
-                                        <div></div>
-                                        <div></div>
-                                        <div></div>
-                                        <div></div>
-                                        <div></div>
+                                      
                                     </div>
+                                    <table>
+                                        <tr>
+                                            <td >Load Experience Result</td>
+                                        </tr>
+                                        <tr>
+                                            <td>Layout Shift Score </td>
+                                            <td>{{ CUMULATIVE_LAYOUT_SHIFT_SCORE }}</td>
+                                        </tr>
+                                        <tr>
+                                            <td>Largest Contentful paint</td>
+                                            <td>{{LARGEST_CONTENTFUL_PAINT_MS}}</td>
+                                        </tr>
+                                        <tr>
+                                            <td>First Contentful Paint</td>
+                                            <td>{{FIRST_CONTENTFUL_PAINT_MS}}</td>
+                                        </tr>
+                                        <tr>
+                                            <td>First Input Delay</td>
+                                            <td>{{FIRST_INPUT_DELAY_MS}}</td>
+                                        </tr>
+                                    </table>
+                                    <table>
+                                        <tr>
+                                            <td >Lighthouse Result</td>
+                                        </tr>
+                                        <tr>
+                                            <td>First Contentful Paint </td>
+                                            <td>{{ first_contentful_paint }}</td>
+                                        </tr>
+                                        <tr>
+                                            <td>Speed Index</td>
+                                            <td>{{speed_index}}</td>
+                                        </tr>
+                                        <tr>
+                                            <td>Time To Interactive</td>
+                                            <td>{{interactive}}</td>
+                                        </tr>
+                                        <tr>
+                                            <td>First Meaningful Paint</td>
+                                            <td>{{first_meaningful_paint}}</td>
+                                        </tr>
+                                        <tr>
+                                            <td>First CPU Idle</td>
+                                            <td>{{first_cpu_idle}}</td>
+                                        </tr>
+                                        <tr>
+                                            <td>Estimated Input Latency</td>
+                                            <td>{{Eestimated_input_latency}}</td>
+                                        </tr>
+                                    </table>
                                 </div>
                             </div>
                         </div>

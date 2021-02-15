@@ -34,6 +34,22 @@ export class SeoComponent implements OnInit {
   @ViewChild('staticTabs', { static: false }) staticTabs: TabsetComponent;
   @ViewChild(BaseChartDirective)
   period = "28Days";
+  //############# Site Speed start############################
+  //for loding
+  CUMULATIVE_LAYOUT_SHIFT_SCORE
+  FIRST_CONTENTFUL_PAINT_MS
+  FIRST_INPUT_DELAY_MS
+  LARGEST_CONTENTFUL_PAINT_MS
+//for light house
+interactive
+first_cpu_idle
+first_contentful_paint
+speed_index
+first_meaningful_paint
+Eestimated_input_latency
+
+  //############# Site Speed end############################
+
   //Ranking graph rubina
   rankingGraphData;
   tempRankingGraphData = [];
@@ -886,1010 +902,990 @@ export class SeoComponent implements OnInit {
 
   // using to get analytics data of selected campaign Id
   getAnalyticsData(): void {
-    
+
     this.campaignService.getGaAnalyticsReports(this.selectedCampId, this.startDate, this.endDate).subscribe(
       res => {
 
         this.campaignService.GetTrafficSourcesReports(this.selectedCampId, this.startDate, this.endDate).subscribe(
           trafficsourcers => {
-            debugger
-            var array = [trafficsourcers['display'], trafficsourcers['medium'], trafficsourcers['referral'],
-            trafficsourcers['social'], trafficsourcers['source']]
-    this.doughnutData.datasets[0].data = [this.calculateObjectTotal(trafficsourcers['medium'].sessions),
-     this.calculateObjectTotal(trafficsourcers['referral'].sessions),this.calculateObjectTotal(trafficsourcers['social'].sessions)
-     ,this.calculateObjectTotal(trafficsourcers['source'].sessions),this.calculateObjectTotal(trafficsourcers['medium'].sessions)]
-            this.convertToLineChartsLabels(array)
+            this.campaignService.GetDeviceCategoryReports(this.selectedCampId, this.startDate, this.endDate).subscribe(
+              resDeviceAnalytics => {
+                
+                this.doughnutData1.datasets[0].data =[resDeviceAnalytics['desktop'].sessions,resDeviceAnalytics['mobile'].sessions,resDeviceAnalytics['tablet'].sessions];
+              })
+                var array = [trafficsourcers['display'], trafficsourcers['medium'], trafficsourcers['referral'],
+                trafficsourcers['social'], trafficsourcers['source']]
+                this.doughnutData.datasets[0].data = [this.calculateObjectTotal(trafficsourcers['medium'].sessions),
+                this.calculateObjectTotal(trafficsourcers['referral'].sessions), this.calculateObjectTotal(trafficsourcers['social'].sessions)
+                  , this.calculateObjectTotal(trafficsourcers['source'].sessions), this.calculateObjectTotal(trafficsourcers['medium'].sessions)]
+                this.convertToLineChartsLabels(array)
+              })
+            this.reportsData = res;
+            this.dateLabels = this.reportsData.gaPreparedDataDto.date;
+            this.convertToLineChartsLabels(this.reportsData.gaPreparedDataDto.date);
+            this.convertToLineChartsData(this.reportsData.gaPreparedDataDto.sessions);
+            this.showSpinnerBaseChart = false;
+            this.showSpinnerSiteAnalysisContent = false;
+            this.reportsData = res;
+            this.dateLabels = this.reportsData.gaPreparedDataDto.date;
 
-          })
+            // this.convertToLineChartsLabels(this.reportsData.gaPreparedDataDto.date)
+            // this.convertToLineChartsData(this.reportsData.gaPreparedDataDto.sessions)
+
+            // this.showSpinnerBaseChart = false;
+          }
+      
         
-        this.reportsData = res;
-        this.dateLabels = this.reportsData.gaPreparedDataDto.date;
-        this.convertToLineChartsLabels(this.reportsData.gaPreparedDataDto.date)
-        this.convertToLineChartsData(this.reportsData.gaPreparedDataDto.sessions)
-        this.showSpinnerBaseChart = false;
-        this.showSpinnerSiteAnalysisContent = false;
-        this.reportsData = res;
-        this.dateLabels = this.reportsData.gaPreparedDataDto.date;
-
-        // this.convertToLineChartsLabels(this.reportsData.gaPreparedDataDto.date)
-        // this.convertToLineChartsData(this.reportsData.gaPreparedDataDto.sessions)
-
-        // this.showSpinnerBaseChart = false;
-      }
     );
 
 
-  }
+}
 
-  //using to show charts data according to selected value in both dropdown
-  convertToLineChartsData(sessions: any) {
-    if (this.lineChartData.length > 1) {
-      this.lineChartData[0].data = this.reportsData.gaPreparedDataDto[this.selectedLabelValue]
-      this.lineChartData[1].data = this.reportsData.gaPreparedDataDto['percentNewSessions']
-      this.lineChartData[2].data = this.reportsData.gaPreparedDataDto['bounceRate']
-      this.lineChartData[3].data = this.reportsData.gaPreparedDataDto['bounceRate']
-      this.lineChartData[4].data = this.reportsData.gaPreparedDataDto['pageviews']
-
-    }
-    else {
-      this.lineChartData[0].data = this.reportsData.gaPreparedDataDto[this.selectedLabelValue]
-      var values = ['sessions', 'percentNewSessions', 'bounceRate', 'bounceRate', 'pageviews']
-      for (var i = 0; i < 5; i++) {
-        this.lineChartData1[i].data = this.reportsData.gaPreparedDataDto[values[i]]
-      }
-    }
-  }
-
-  // using to convert res date in valid chart's date format
-  convertToLineChartsLabels(reportDates) {
-    var LineChartsdate = []
-    var array1 = []
-    var array2 = []
-    var array3 = []
-    var array4 = []
-    var array5 = []
-    this.trafficsourcedate = { display: [], medium: [], referral: [], social: [], source: [] }
-
-    if (reportDates.length == 1 && reportDates[0]['date']) {
-      reportDates[0]['date'].map((s, i) => {
-        var date = this.changeDatesFormat(s, i)
-        array1.push({ date: date, sessions: reportDates[0]['sessions'][i] })
-      }, this.trafficsourcedate.display = array1)
-    }
-
-    if (reportDates.length == 2 && reportDates[1]['date']) {
-      reportDates[1]['date'].map((s, i) => {
-        var date = this.changeDatesFormat(s, i)
-        array2.push({ date: date, sessions: reportDates[1]['sessions'][i] })
-      }, this.trafficsourcedate.medium = array2)
-    }
-
-    if (reportDates.length == 3 && reportDates[2]['date']) {
-      reportDates[2]['date'].map((s, i) => {
-        var date = this.changeDatesFormat(s, i)
-        array3.push({ date: date, sessions: reportDates[2]['sessions'][i] })
-      }, this.trafficsourcedate.referral = array3)
-    }
-
-    if (reportDates.length == 4 && reportDates[3]['date']) {
-      reportDates[3]['date'].map((s, i) => {
-        var date = this.changeDatesFormat(s, i)
-        array4.push({ date: date, sessions: reportDates[3]['sessions'][i] })
-      }, this.trafficsourcedate.social = array4)
-    }
-
-    if (reportDates.length == 5 && reportDates[4]['date']) {
-      reportDates[4]['date'].map((s, i) => {
-        var date = this.changeDatesFormat(s, i)
-        array5.push({ date: date, sessions: reportDates[4]['sessions'][i] })
-      }, this.trafficsourcedate.source = array5)
-    }
-
-
-
-
-
-
-
-    
-    var from = new Date(this.startDate);
-    var to = new Date(this.endDate);
-    var dates = []
-    // loop for every day
-    for (var day = from; day <= to; day.setDate(day.getDate() + 1)) {
-      var date2 = day.toLocaleDateString("en-US", { month: 'short', day: 'numeric' })
-      var arraydate = date2.split(' ')
-      var odate = arraydate[1];
-      var omon = arraydate[0];
-      var finaldate = odate + " " + omon
-      // your day is here
-      dates.push(finaldate)
-
-    }
-    LineChartsdate = dates;
-    console.log(dates)
-
-    var finalData1 = dates.map(s => {
-      var f = this.trafficsourcedate.display.find(x => x.date == s)
-      return f ? parseInt(f.sessions) : 0;
-    })
-    var finalData2 = dates.map(s => {
-      var f = this.trafficsourcedate.medium.find(x => x.date == s)
-      return f ? parseInt(f.sessions) : 0;
-    })
-    var finalData3 = dates.map(s => {
-      var f = this.trafficsourcedate.referral.find(x => x.date == s)
-      return f ? parseInt(f.sessions) : 0;
-    })
-
-    var finalData4 = dates.map(s => {
-      var f = this.trafficsourcedate.social.find(x => x.date == s)
-      return f ? parseInt(f.sessions) : 0;
-    })
-    var finalData5 = dates.map(s => {
-      var f = this.trafficsourcedate.source.find(x => x.date == s)
-      return f ? parseInt(f.sessions) : 0;
-    })
-    
-    console.log(finalData1, finalData2, finalData3, finalData4, finalData5)
-    this.lineChartData1[0].data = finalData5
-    this.lineChartData1[1].data = finalData2
-    this.lineChartData[0].data = finalData2
-    this.lineChartData1[2].data = finalData3
-    this.lineChartData1[3].data = finalData4
-    this.lineChartData1[4].data = finalData1
-    this.lineChartLabels = LineChartsdate
-    this.lineChartLabels1 = LineChartsdate
+//using to show charts data according to selected value in both dropdown
+convertToLineChartsData(sessions: any) {
+  if (this.lineChartData.length > 1) {
+    this.lineChartData[0].data = this.reportsData.gaPreparedDataDto[this.selectedLabelValue]
+    this.lineChartData[1].data = this.reportsData.gaPreparedDataDto['percentNewSessions']
+    this.lineChartData[2].data = this.reportsData.gaPreparedDataDto['bounceRate']
+    this.lineChartData[3].data = this.reportsData.gaPreparedDataDto['bounceRate']
+    this.lineChartData[4].data = this.reportsData.gaPreparedDataDto['pageviews']
 
   }
-  calculateObjectTotal(obj) {
-    debugger
-    let total = 0;
-    if(obj.length>0){
+  else {
+    this.lineChartData[0].data = this.reportsData.gaPreparedDataDto[this.selectedLabelValue]
+    var values = ['sessions', 'percentNewSessions', 'bounceRate', 'bounceRate', 'pageviews']
+    for (var i = 0; i < 5; i++) {
+      this.lineChartData1[i].data = this.reportsData.gaPreparedDataDto[values[i]]
+    }
+  }
+}
+
+// using to convert res date in valid chart's date format
+convertToLineChartsLabels(reportDates) {
+  var LineChartsdate = []
+  var array1 = []
+  var array2 = []
+  var array3 = []
+  var array4 = []
+  var array5 = []
+  this.trafficsourcedate = { display: [], medium: [], referral: [], social: [], source: [] }
+
+  if (reportDates.length == 1 && reportDates[0]['date']) {
+    reportDates[0]['date'].map((s, i) => {
+      var date = this.changeDatesFormat(s, i)
+      array1.push({ date: date, sessions: reportDates[0]['sessions'][i] })
+    }, this.trafficsourcedate.display = array1)
+  }
+
+  if (reportDates.length == 2 && reportDates[1]['date']) {
+    reportDates[1]['date'].map((s, i) => {
+      var date = this.changeDatesFormat(s, i)
+      array2.push({ date: date, sessions: reportDates[1]['sessions'][i] })
+    }, this.trafficsourcedate.medium = array2)
+  }
+
+  if (reportDates.length == 3 && reportDates[2]['date']) {
+    reportDates[2]['date'].map((s, i) => {
+      var date = this.changeDatesFormat(s, i)
+      array3.push({ date: date, sessions: reportDates[2]['sessions'][i] })
+    }, this.trafficsourcedate.referral = array3)
+  }
+
+  if (reportDates.length == 4 && reportDates[3]['date']) {
+    reportDates[3]['date'].map((s, i) => {
+      var date = this.changeDatesFormat(s, i)
+      array4.push({ date: date, sessions: reportDates[3]['sessions'][i] })
+    }, this.trafficsourcedate.social = array4)
+  }
+
+  if (reportDates.length == 5 && reportDates[4]['date']) {
+    reportDates[4]['date'].map((s, i) => {
+      var date = this.changeDatesFormat(s, i)
+      array5.push({ date: date, sessions: reportDates[4]['sessions'][i] })
+    }, this.trafficsourcedate.source = array5)
+  }
+
+
+
+
+
+
+
+
+  var from = new Date(this.startDate);
+  var to = new Date(this.endDate);
+  var dates = []
+  // loop for every day
+  for (var day = from; day <= to; day.setDate(day.getDate() + 1)) {
+    var date2 = day.toLocaleDateString("en-US", { month: 'short', day: 'numeric' })
+    var arraydate = date2.split(' ')
+    var odate = arraydate[1];
+    var omon = arraydate[0];
+    var finaldate = odate + " " + omon
+    // your day is here
+    dates.push(finaldate)
+
+  }
+  LineChartsdate = dates;
+  console.log(dates)
+
+  var finalData1 = dates.map(s => {
+    var f = this.trafficsourcedate.display.find(x => x.date == s)
+    return f ? parseInt(f.sessions) : 0;
+  })
+  var finalData2 = dates.map(s => {
+    var f = this.trafficsourcedate.medium.find(x => x.date == s)
+    return f ? parseInt(f.sessions) : 0;
+  })
+  var finalData3 = dates.map(s => {
+    var f = this.trafficsourcedate.referral.find(x => x.date == s)
+    return f ? parseInt(f.sessions) : 0;
+  })
+
+  var finalData4 = dates.map(s => {
+    var f = this.trafficsourcedate.social.find(x => x.date == s)
+    return f ? parseInt(f.sessions) : 0;
+  })
+  var finalData5 = dates.map(s => {
+    var f = this.trafficsourcedate.source.find(x => x.date == s)
+    return f ? parseInt(f.sessions) : 0;
+  })
+
+  console.log(finalData1, finalData2, finalData3, finalData4, finalData5)
+  this.lineChartData1[0].data = finalData5
+  this.lineChartData1[1].data = finalData2
+  this.lineChartData[0].data = finalData2
+  this.lineChartData1[2].data = finalData3
+  this.lineChartData1[3].data = finalData4
+  this.lineChartData1[4].data = finalData1
+  this.lineChartLabels = LineChartsdate
+  this.lineChartLabels1 = LineChartsdate
+
+}
+calculateObjectTotal(obj) {
+  
+  let total = 0;
+  if (obj.length > 0) {
     for (let i = 0; i < obj.length; i++) {
       total = parseInt(total.toString()) + parseInt(obj[i].toString());
     }
   }
-    return total;
-  }
+  return total;
+}
   // using to get google analytics setup of selected campaign Id
   public getGaSetupByCampaignId(): void {
 
-    this.integrationsService.getGaSetupByCampaignId(this.selectedCampId).subscribe(
+  this.integrationsService.getGaSetupByCampaignId(this.selectedCampId).subscribe(
 
-      res => {
-        this.googleAnalyticsAccountSetupList = res;
-        if (this.googleAnalyticsAccountSetupList && this.googleAnalyticsAccountSetupList.length > 0) {
+    res => {
+      this.googleAnalyticsAccountSetupList = res;
+      if (this.googleAnalyticsAccountSetupList && this.googleAnalyticsAccountSetupList.length > 0) {
 
 
-          this.gaAccounts = this.googleAnalyticsAccountSetupList.map(function (item) { return item.googleAccountSetups; });
+        this.gaAccounts = this.googleAnalyticsAccountSetupList.map(function (item) { return item.googleAccountSetups; });
 
-          this.authorizeGaAccounts = this.gaAccounts.filter(function (item) { return item.isAuthorize == true });
+        this.authorizeGaAccounts = this.gaAccounts.filter(function (item) { return item.isAuthorize == true });
 
-          this.activeAccount = this.googleAnalyticsAccountSetupList.map(function (item) {
-            if (item.active == true) {
-              return item.googleAccountSetups;
-            }
-          })[0];
-
-          if (this.activeAccount) {
-            this.hasActiveAccount = true;
+        this.activeAccount = this.googleAnalyticsAccountSetupList.map(function (item) {
+          if (item.active == true) {
+            return item.googleAccountSetups;
           }
+        })[0];
 
-          if (this.authorizeGaAccounts.length > 0) {
-            this.hasAuthorize = true
-          }
-
-        }
-        else {
-          this.hasActiveAccount = false;
-          this.hasAuthorize = false;
-          this.reportsData = undefined
+        if (this.activeAccount) {
+          this.hasActiveAccount = true;
         }
 
-        //distinct google account
+        if (this.authorizeGaAccounts.length > 0) {
+          this.hasAuthorize = true
+        }
+
+      }
+      else {
+        this.hasActiveAccount = false;
+        this.hasAuthorize = false;
+        this.reportsData = undefined
+      }
+
+      //distinct google account
 
 
-      });
-  };
+    });
+};
 
   // using to get list of campaigns
   public getCampaignList(): void {
-    
-    var userid = localStorage.getItem("userID");
-    this.campaignService.getCampaign(userid).subscribe(res => {
-      this.campaignList = res;
-      // this.source = new LocalDataSource(this.campaignList)
-      var name = "";
-      if (this.selectedCampId == ":id") {
-        this.selectedCampId = this.campaignList[0].id
+
+  var userid = localStorage.getItem("userID");
+  this.campaignService.getCampaign(userid).subscribe(res => {
+    this.campaignList = res;
+    // this.source = new LocalDataSource(this.campaignList)
+    var name = "";
+    if (this.selectedCampId == ":id") {
+      this.selectedCampId = this.campaignList[0].id
+    }
+    this.campaignList.map((s, i) => {
+      if (s.id == this.selectedCampId) {
+        name = s.name
+        this.selectedCampIdWebUrl = s.webUrl
       }
-      this.campaignList.map((s, i) => {
-        if (s.id == this.selectedCampId) {
-          name = s.name
-          this.selectedCampIdWebUrl = s.webUrl
-        }
-      })
-      this.selectedCampaignName = name !== "" ? name : undefined;
-      this.getSelectedCampaignWebsiteAuditReportData()
-      this.accessToken = localStorage.getItem('googleGscAccessToken');
-      if (this.accessToken != null && this.accessToken != undefined && this.accessToken != '') {
-        
-        this.getData();
-      } else {
-        this.isShowLoginButton = true;
-      }
-    });
+    })
+    this.selectedCampaignName = name !== "" ? name : undefined;
+    this.getSelectedCampaignWebsiteAuditReportData()
+    this.accessToken = localStorage.getItem('googleGscAccessToken');
+    if (this.accessToken != null && this.accessToken != undefined && this.accessToken != '') {
+
+      this.getData();
+      this.getSiteSpeedData();
+    } else {
+      this.isShowLoginButton = true;
+    }
+  });
 
 
 
 
-  }
+}
 
   //using to get seleted campaign website audit report data
   public getSelectedCampaignWebsiteAuditReportData() {
-    this.changeCircularProgressOuterStrokeColor()
-    // using to get list of audits
-    this.auditsService.getAudits().subscribe(res => {
-      var selectedCampTaskId = res.filter((s, i) => {
-        var site = s['websiteUrl']
-        if (this.selectedCampIdWebUrl.includes(site) == true && site != undefined) {
-          return s.taskId
-        }
-      })
-      if (selectedCampTaskId[0]) {
-        var taskId = selectedCampTaskId[0].taskId;
-        this.selectedCampaignTaskId = taskId.toString()
-        this.auditsService.getOnPageData(this.selectedCampaignTaskId).subscribe(res => {
-          var technical_seo = {}
-          var on_page_seo = {}
-          res['summary'].map((s, i) => {
-            this.securitySection = {
-              ssl: s.ssl,
-              sslcertificate: s.ssl_certificate_valid,
-              have_sitemap: s.have_sitemap,
-              have_robots: s.have_robots
-            }
-
-          })
-          this.showSpinnerSiteAnalysisContent = false;
-        })
+  this.changeCircularProgressOuterStrokeColor()
+  // using to get list of audits
+  this.auditsService.getAudits().subscribe(res => {
+    var selectedCampTaskId = res.filter((s, i) => {
+      var site = s['websiteUrl']
+      if (this.selectedCampIdWebUrl.includes(site) == true && site != undefined) {
+        return s.taskId
       }
-
-
     })
-  }
+    if (selectedCampTaskId[0]) {
+      var taskId = selectedCampTaskId[0].taskId;
+      this.selectedCampaignTaskId = taskId.toString()
+      this.auditsService.getOnPageData(this.selectedCampaignTaskId).subscribe(res => {
+        var technical_seo = {}
+        var on_page_seo = {}
+        res['summary'].map((s, i) => {
+          this.securitySection = {
+            ssl: s.ssl,
+            sslcertificate: s.ssl_certificate_valid,
+            have_sitemap: s.have_sitemap,
+            have_robots: s.have_robots
+          }
+
+        })
+        this.showSpinnerSiteAnalysisContent = false;
+      })
+    }
+
+
+  })
+}
   // using to get list of keyword list
 
 
   // using to navigate to overview page to view anlytics of selected campaign
   public onCampaignSelect(event, selectedCampaign) {
-    this.selectedCampaignName = selectedCampaign.name
-    this.selectedCampId = selectedCampaign.id
-    this.router.navigate(['/campaign', { id: this.selectedCampId }]);
-    this.settingActive = 3
-    this.selectedCampIdWebUrl = selectedCampaign.webUrl
-    this.getSelectedCampaignWebsiteAuditReportData()
-    this.getGaSetupByCampaignId();
-    this.getAnalyticsData();
+  this.selectedCampaignName = selectedCampaign.name
+  this.selectedCampId = selectedCampaign.id
+  this.router.navigate(['/campaign', { id: this.selectedCampId }]);
+  this.settingActive = 3
+  this.selectedCampIdWebUrl = selectedCampaign.webUrl
+  this.getSelectedCampaignWebsiteAuditReportData()
+  this.getGaSetupByCampaignId();
+  this.getAnalyticsData();
+}
+
+// using to search campaign locally
+onSearch(query: string = '') {
+  if (query == "") {
+    this.source = new LocalDataSource(this.campaignList)
+  }
+  else {
+    this.source.setFilter([
+      // fields we want to include in the search
+      {
+        field: 'name',
+        search: query
+      },
+    ], false);
+    // second parameter specifying whether to perform 'AND' or 'OR' search 
+    // (meaning all columns should contain search query or at least one)
+    // 'AND' by default, so changing to 'OR' by setting false here
   }
 
-  // using to search campaign locally
-  onSearch(query: string = '') {
-    if (query == "") {
-      this.source = new LocalDataSource(this.campaignList)
+}
+
+// using to  create new campaign in db
+submitForm(value: any) {
+
+  var result: Campaign = Object.assign({}, value);
+  //  result.profilePicture = this.fileToUpload.name
+
+  this.campaignService.createCampaign(result).subscribe((res: Campaign) => {
+    this.campaignModel = res;
+    //validation
+    event.preventDefault();
+    for (let c in this.valForm.controls) {
+      this.valForm.controls[c].markAsTouched();
     }
-    else {
-      this.source.setFilter([
-        // fields we want to include in the search
-        {
-          field: 'name',
-          search: query
-        },
-      ], false);
-      // second parameter specifying whether to perform 'AND' or 'OR' search 
-      // (meaning all columns should contain search query or at least one)
-      // 'AND' by default, so changing to 'OR' by setting false here
+    if (!this.valForm.valid) {
+      return;
     }
 
-  }
+  });
+}
 
-  // using to  create new campaign in db
-  submitForm(value: any) {
+// using to select nect tab
+goToNextTab(event, inputvalue, fieldName, tabid) {
+  event.preventDefault()
+  var value = this.validateForm(fieldName)
 
-    var result: Campaign = Object.assign({}, value);
-    //  result.profilePicture = this.fileToUpload.name
-
-    this.campaignService.createCampaign(result).subscribe((res: Campaign) => {
-      this.campaignModel = res;
-      //validation
-      event.preventDefault();
-      for (let c in this.valForm.controls) {
-        this.valForm.controls[c].markAsTouched();
-      }
-      if (!this.valForm.valid) {
-        return;
-      }
-
-    });
-  }
-
-  // using to select nect tab
-  goToNextTab(event, inputvalue, fieldName, tabid) {
-    event.preventDefault()
-    var value = this.validateForm(fieldName)
-
-    if (value == 'VALID') {
-      this.staticTabs.tabs[tabid].disabled = false;
-      this.staticTabs.tabs[tabid].active = true;
-    }
-  }
-
-  // using to validate from 
-  validateForm(fieldName) {
-    if (this.valForm.invalid) {
-      this.valForm.get(fieldName).markAsTouched();
-      var value1 = this.valForm.controls[fieldName].status
-      return value1;
-    }
-  }
-
-  // using to go to previous tab
-  goToPreviousTab(event, tabid) {
-    event.preventDefault()
+  if (value == 'VALID') {
+    this.staticTabs.tabs[tabid].disabled = false;
     this.staticTabs.tabs[tabid].active = true;
   }
+}
 
-  // using to disable tab , user have to go step by step 
-  disableTab() {
-    this.staticTabs.tabs[1].disabled = !this.staticTabs.tabs[1].disabled;
-    this.staticTabs.tabs[2].disabled = !this.staticTabs.tabs[2].disabled;
+// using to validate from 
+validateForm(fieldName) {
+  if (this.valForm.invalid) {
+    this.valForm.get(fieldName).markAsTouched();
+    var value1 = this.valForm.controls[fieldName].status
+    return value1;
   }
+}
+
+// using to go to previous tab
+goToPreviousTab(event, tabid) {
+  event.preventDefault()
+  this.staticTabs.tabs[tabid].active = true;
+}
+
+// using to disable tab , user have to go step by step 
+disableTab() {
+  this.staticTabs.tabs[1].disabled = !this.staticTabs.tabs[1].disabled;
+  this.staticTabs.tabs[2].disabled = !this.staticTabs.tabs[2].disabled;
+}
 
 
-  // using to open sweetalert to show success dialog
-  successAlert() {
-    success({
-      icon: this.translate.instant('sweetalert.SUCCESSICON'),
-      title: this.translate.instant('message.INSERTMSG'),
-      buttons: {
-        confirm: {
-          text: this.translate.instant('sweetalert.OKBUTTON'),
-          value: true,
-          visible: true,
-          className: "bg-primary",
-          closeModal: true,
-        }
+// using to open sweetalert to show success dialog
+successAlert() {
+  success({
+    icon: this.translate.instant('sweetalert.SUCCESSICON'),
+    title: this.translate.instant('message.INSERTMSG'),
+    buttons: {
+      confirm: {
+        text: this.translate.instant('sweetalert.OKBUTTON'),
+        value: true,
+        visible: true,
+        className: "bg-primary",
+        closeModal: true,
       }
-    }).then((isConfirm: any) => {
-      if (isConfirm) {
-        this.router.navigate(['/home']);
-      }
-    });
-  }
+    }
+  }).then((isConfirm: any) => {
+    if (isConfirm) {
+      this.router.navigate(['/home']);
+    }
+  });
+}
 
-  //using to check setup and get analytics data with selected campaign Id
-  userRowSelect(campaign: any): void {
+//using to check setup and get analytics data with selected campaign Id
+userRowSelect(campaign: any): void {
 
-    this.selectedCampaignName = campaign.data.name
+  this.selectedCampaignName = campaign.data.name
     this.selectedCampId = campaign.data.id
     this.router.navigate(['/campaign', { id: campaign.data.id }]);
-    this.settingActive = 3
+  this.settingActive = 3
     this.selectedCampIdWebUrl = campaign.data.webUrl
     this.getSelectedCampaignWebsiteAuditReportData()
     this.getGaSetupByCampaignId();
-    this.getAnalyticsData();
+  this.getAnalyticsData();
 
+}
+onSelect(period1) {
+
+  this.period = period1;
+  let currDate = new Date();
+  if (period1 == "28Days") {
+
+
+    this.endDate = this.datepipe.transform(currDate, 'yyyy-MM-dd');
+    this.startDate = this.datepipe.transform(currDate.setDate(currDate.getDate() - 28), 'yyyy-MM-dd');
+    currDate = new Date();
+    this.previousEndDate = this.datepipe.transform(currDate.setFullYear(currDate.getFullYear() - 1), 'yyyy-MM-dd');
+    this.previousStartDate = this.datepipe.transform(currDate.setDate(currDate.getDate() - 28), 'yyyy-MM-dd');
   }
-  onSelect(period1) {
-    
-    this.period = period1;
-    let currDate = new Date();
-    if (period1 == "28Days") {
-      
+  if (period1 == "week") {
 
-      this.endDate = this.datepipe.transform(currDate, 'yyyy-MM-dd');
-      this.startDate = this.datepipe.transform(currDate.setDate(currDate.getDate() - 28), 'yyyy-MM-dd');
-      currDate = new Date();
-      this.previousEndDate = this.datepipe.transform(currDate.setFullYear(currDate.getFullYear() - 1), 'yyyy-MM-dd');
-      this.previousStartDate = this.datepipe.transform(currDate.setDate(currDate.getDate() - 28), 'yyyy-MM-dd');
-    }
-    if (period1 == "week") {
-      
 
-      this.endDate = this.datepipe.transform(currDate, 'yyyy-MM-dd');
-      this.startDate = this.datepipe.transform(currDate.setDate(currDate.getDate() - 7), 'yyyy-MM-dd');
-      currDate = new Date();
-      this.previousEndDate = this.datepipe.transform(currDate.setFullYear(currDate.getFullYear() - 1), 'yyyy-MM-dd');
-      this.previousStartDate = this.datepipe.transform(currDate.setDate(currDate.getDate() - 7), 'yyyy-MM-dd');
-    }
-    if (period1 == "day") {
-      
-
-      this.endDate = this.datepipe.transform(currDate, 'yyyy-MM-dd');
-      this.startDate = this.datepipe.transform(currDate.setDate(currDate.getDate() - 1), 'yyyy-MM-dd');
-      currDate = new Date();
-      this.previousEndDate = this.datepipe.transform(currDate.setFullYear(currDate.getFullYear() - 1), 'yyyy-MM-dd');
-      this.previousStartDate = this.datepipe.transform(currDate.setDate(currDate.getDate() - 1), 'yyyy-MM-dd');
-    }
-    this.getData();
-    this.getAnalyticsData();
+    this.endDate = this.datepipe.transform(currDate, 'yyyy-MM-dd');
+    this.startDate = this.datepipe.transform(currDate.setDate(currDate.getDate() - 7), 'yyyy-MM-dd');
+    currDate = new Date();
+    this.previousEndDate = this.datepipe.transform(currDate.setFullYear(currDate.getFullYear() - 1), 'yyyy-MM-dd');
+    this.previousStartDate = this.datepipe.transform(currDate.setDate(currDate.getDate() - 7), 'yyyy-MM-dd');
   }
+  if (period1 == "day") {
+
+
+    this.endDate = this.datepipe.transform(currDate, 'yyyy-MM-dd');
+    this.startDate = this.datepipe.transform(currDate.setDate(currDate.getDate() - 1), 'yyyy-MM-dd');
+    currDate = new Date();
+    this.previousEndDate = this.datepipe.transform(currDate.setFullYear(currDate.getFullYear() - 1), 'yyyy-MM-dd');
+    this.previousStartDate = this.datepipe.transform(currDate.setDate(currDate.getDate() - 1), 'yyyy-MM-dd');
+  }
+  this.getData();
+  this.getAnalyticsData();
+}
   // using to change properties with changing 1st dropdown value
   public onLabelSelect(event, selectedLabel) {
-    this.selectedLabel = selectedLabel.id
-    this.selctedLabelName = selectedLabel.label
-    this.selectedLabelValue = selectedLabel.value
-    this.lineChartData[0].label = selectedLabel.label
-    this.updateChart(selectedLabel)
-  }
+  this.selectedLabel = selectedLabel.id
+  this.selctedLabelName = selectedLabel.label
+  this.selectedLabelValue = selectedLabel.value
+  this.lineChartData[0].label = selectedLabel.label
+  this.updateChart(selectedLabel)
+}
 
   // using to change properties with changing select matrix dropdown value
   public onLabelSelect1(event, selectedLabel) {
-    this.selectedLabel1 = selectedLabel.id
-    this.selctedLabelName1 = selectedLabel.label
-    this.selectedLabelValue1 = selectedLabel.value
-    this.updateChart1(selectedLabel)
-  }
+  this.selectedLabel1 = selectedLabel.id
+  this.selctedLabelName1 = selectedLabel.label
+  this.selectedLabelValue1 = selectedLabel.value
+  this.updateChart1(selectedLabel)
+}
 
-  //using to update chart with changing 1st dropdown value
-  updateChart(selectedLabel) {
-    var dataforselectedLabel = []
-    dataforselectedLabel = this.reportsData.gaPreparedDataDto[selectedLabel.value]
-    this.lineChartData[0].data = dataforselectedLabel
-    this.chart.chart.update();
-  }
+//using to update chart with changing 1st dropdown value
+updateChart(selectedLabel) {
+  var dataforselectedLabel = []
+  dataforselectedLabel = this.reportsData.gaPreparedDataDto[selectedLabel.value]
+  this.lineChartData[0].data = dataforselectedLabel
+  this.chart.chart.update();
+}
 
-  // using to update chart with changing select matrix dropdown value
-  updateChart1(selectedLabel) {
-    var dataforselectedLabel = []
-    dataforselectedLabel = this.reportsData.gaPreparedDataDto[selectedLabel.value]
-    if (this.lineChartData.length > 1) {
-      this.lineChartData.splice(1, 1, { backgroundColor: "rgba(255,255,0,0.3)", borderColor: "#f5994e", data: dataforselectedLabel, label: selectedLabel.label, borderCapStyle: 'square', pointBackgroundColor: "white", pointBorderColor: "#2D9EE2" })
-    }
-    else {
-      this.lineChartData.splice(1, 0, { backgroundColor: "rgba(255,255,0,0.3)", borderColor: "#f5994e", data: dataforselectedLabel, label: selectedLabel.label, borderCapStyle: 'square', pointBackgroundColor: "white", pointBorderColor: "#2D9EE2" })
-    }
-    this.chart.chart.update();
+// using to update chart with changing select matrix dropdown value
+updateChart1(selectedLabel) {
+  var dataforselectedLabel = []
+  dataforselectedLabel = this.reportsData.gaPreparedDataDto[selectedLabel.value]
+  if (this.lineChartData.length > 1) {
+    this.lineChartData.splice(1, 1, { backgroundColor: "rgba(255,255,0,0.3)", borderColor: "#f5994e", data: dataforselectedLabel, label: selectedLabel.label, borderCapStyle: 'square', pointBackgroundColor: "white", pointBorderColor: "#2D9EE2" })
   }
+  else {
+    this.lineChartData.splice(1, 0, { backgroundColor: "rgba(255,255,0,0.3)", borderColor: "#f5994e", data: dataforselectedLabel, label: selectedLabel.label, borderCapStyle: 'square', pointBackgroundColor: "white", pointBorderColor: "#2D9EE2" })
+  }
+  this.chart.chart.update();
+}
 
   // using to catch event to change report accroding to selected date range
   public onDateRangeSelect(event) {
-    var StartDate = event[0].toISOString().split("T")[0];
-    var endDate = event[1].toISOString().split("T")[0];
-    this.startDate = StartDate;
-    this.endDate = endDate
-    this.getAnalyticsData();
-  }
+  var StartDate = event[0].toISOString().split("T")[0];
+  var endDate = event[1].toISOString().split("T")[0];
+  this.startDate = StartDate;
+  this.endDate = endDate
+  this.getAnalyticsData();
+}
 
   // using to open create campaign view to add new campaign in db
   public onClick(event): any {
-    this.setCurrentSettingActive = event.settingActive
-    this.settingActive = 1
-    setTimeout(() => {
-      this.disableTab()
-    }, 500);
+  this.setCurrentSettingActive = event.settingActive
+  this.settingActive = 1
+  setTimeout(() => {
+    this.disableTab()
+  }, 500);
 
-  }
+}
 
   //using to open div on mouseover event
   public showDiv(event, value, show) {
-    this.showdiv = value == 'true' ? true : false;
-    this.show = show;
+  this.showdiv = value == 'true' ? true : false;
+  this.show = show;
 
-  }
+}
 
-  //using to view keyword list and also add new keyword
-  goToKeywords(): void {
-    this.router.navigate([`/campaign/:id${this.selectedCampId}/seo/keywords`])
-  }
+//using to view keyword list and also add new keyword
+goToKeywords(): void {
+  this.router.navigate([`/campaign/:id${this.selectedCampId}/seo/keywords`])
+}
 
   public goToAddKeywords(): void {
-    this.router.navigate([`/campaign/:id${this.selectedCampId}/seo/keywords`], {
-      queryParams: {
-        view: 'addKeyword'
-      },
-    })
-  }
+  this.router.navigate([`/campaign/:id${this.selectedCampId}/seo/keywords`], {
+    queryParams: {
+      view: 'addKeyword'
+    },
+  })
+}
 
   // using to navigate to analytics overview page
   public goToAnalyticsOverview(event) {
-    this.router.navigate([`/campaign/:id${this.selectedCampId}/analytics`])
-  }
+  this.router.navigate([`/campaign/:id${this.selectedCampId}/analytics`])
+}
   // using to navigate to  overview page
   public goToCampaignOverview(event) {
-    this.router.navigate(['/campaign', { id: this.selectedCampId }], {
-      queryParams: {
-        view: 'showReport'
-      },
-    });
-  }
+  this.router.navigate(['/campaign', { id: this.selectedCampId }], {
+    queryParams: {
+      view: 'showReport'
+    },
+  });
+}
 
   // using to navigate to analytics acquision page
   public goToAcquisiton(event) {
-    this.router.navigate([`/campaign/:id${this.selectedCampId}/analytics/acquisition`])
-  }
+  this.router.navigate([`/campaign/:id${this.selectedCampId}/analytics/acquisition`])
+}
 
   //using to navigate to analytics acqusition traffic sources page
   public goToAcquisitonTrafficSources(event) {
-    this.router.navigate([`/campaign/:id${this.selectedCampId}/analytics/acquisition/traffic-sources`])
-  }
+  this.router.navigate([`/campaign/:id${this.selectedCampId}/analytics/acquisition/traffic-sources`])
+}
 
   // using to navigate to analytics acquisition sources mediums page
   public goToAcquisitonSourcesMediums(event) {
-    this.router.navigate([`/campaign/:id${this.selectedCampId}/analytics/acquisition/sources-mediums`])
-  }
+  this.router.navigate([`/campaign/:id${this.selectedCampId}/analytics/acquisition/sources-mediums`])
+}
 
   // using to navigate to analytics acqusition campaigns page
   public goToAcquisitonCampaigns(event) {
-    this.router.navigate([`/campaign/:id${this.selectedCampId}/analytics/acquisition/campaigns`])
-  }
+  this.router.navigate([`/campaign/:id${this.selectedCampId}/analytics/acquisition/campaigns`])
+}
 
   // using to navigate to analytics audience page
   public goToAudience(event) {
-    this.router.navigate([`/campaign/:id${this.selectedCampId}/analytics/audience`])
-  }
+  this.router.navigate([`/campaign/:id${this.selectedCampId}/analytics/audience`])
+}
 
   // using to navigate to analytics audience device-category page
   public goToAudienceDeviceCategory(event) {
-    this.router.navigate([`/campaign/:id${this.selectedCampId}/analytics/audience/device-category`])
-  }
+  this.router.navigate([`/campaign/:id${this.selectedCampId}/analytics/audience/device-category`])
+}
 
   // using to navigate to analytics audience geo-locations page
   public goToAudienceGeoLocations(event) {
-    this.router.navigate([`/campaign/:id${this.selectedCampId}/analytics/audience/geolocation`])
-  }
+  this.router.navigate([`/campaign/:id${this.selectedCampId}/analytics/audience/geolocation`])
+}
 
   // using to navigate to analytics audience languages page
   public goToAudienceLanguages(event) {
-    this.router.navigate([`/campaign/:id${this.selectedCampId}/analytics/audience/languages`])
-  }
+  this.router.navigate([`/campaign/:id${this.selectedCampId}/analytics/audience/languages`])
+}
 
   // using to navigate to analytics behavior page
   public goToBehavior(event) {
-    this.router.navigate([`/campaign/:id${this.selectedCampId}/analytics/behavior`])
-  }
+  this.router.navigate([`/campaign/:id${this.selectedCampId}/analytics/behavior`])
+}
 
   // using to navigate to analytics behavior landing-pages page
   public goToBehaviorLandingPages(event) {
-    this.router.navigate([`/campaign/:id${this.selectedCampId}/analytics/behavior/landing-pages`])
-  }
+  this.router.navigate([`/campaign/:id${this.selectedCampId}/analytics/behavior/landing-pages`])
+}
 
   // using to navigate to analytics behavior event page
   public goToBehaviorEvent(event) {
-    this.router.navigate([`/campaign/:id${this.selectedCampId}/analytics/behavior/events`])
-  }
+  this.router.navigate([`/campaign/:id${this.selectedCampId}/analytics/behavior/events`])
+}
 
   // using to navigate to analytics behavior site speed page
   public goToBehaviorSiteSpeed(event) {
-    this.router.navigate([`/campaign/:id${this.selectedCampId}/analytics/behavior/site-speed`])
-  }
+  this.router.navigate([`/campaign/:id${this.selectedCampId}/analytics/behavior/site-speed`])
+}
 
   // using to navigate to analytics conversions page
   public goToConversions(event) {
-    this.router.navigate([`/campaign/:id${this.selectedCampId}/analytics/conversions`])
-  }
+  this.router.navigate([`/campaign/:id${this.selectedCampId}/analytics/conversions`])
+}
 
   // using to navigate to analytics conversion eCommerce page
   public goToConversionseCommerce(event) {
-    this.router.navigate([`/campaign/:id${this.selectedCampId}/analytics/conversions/ecommerce`])
-  }
+  this.router.navigate([`/campaign/:id${this.selectedCampId}/analytics/conversions/ecommerce`])
+}
 
   // using to navigate to analytics conversaion goals page
   public goToConversionsGoals(event) {
-    this.router.navigate([`/campaign/:id${this.selectedCampId}/analytics/conversions/goals`])
-  }
+  this.router.navigate([`/campaign/:id${this.selectedCampId}/analytics/conversions/goals`])
+}
 
   // using to navigate to seo overview page
   public goToSeoOverview(event) {
-    this.router.navigate([`/campaign/:id${this.selectedCampId}/seo`])
-  }
+  this.router.navigate([`/campaign/:id${this.selectedCampId}/seo`])
+}
 
   public goToSocialMedia(event) {
 
-    this.router.navigate([`./socialmedia/socialmedia`, { id: this.selectedCampId }])
-  }
+  this.router.navigate([`./socialmedia/socialmedia`, { id: this.selectedCampId }])
+}
   public goToLinkedIn(event) {
 
-    this.router.navigate([`./linkedin/linkedin`, { id: this.selectedCampId }])
-  }
+  this.router.navigate([`./linkedin/linkedin`, { id: this.selectedCampId }])
+}
   public goToInstagram(event) {
 
-    this.router.navigate([`./instagram/instagram`, { id: this.selectedCampId }])
-  }
+  this.router.navigate([`./instagram/instagram`, { id: this.selectedCampId }])
+}
   public goToGSC(event) {
 
-    this.router.navigate([`./gsc/gsc`, { id: this.selectedCampId }])
-  }
+  this.router.navigate([`./gsc/gsc`, { id: this.selectedCampId }])
+}
 
   //using to close create campaign  component
   public closeCreateCampaignComponent(event) {
-    event.preventDefault()
-    this.settingActive = 3;
-    this.valForm.reset()
-    if (this.url.includes('/home/campaign')) {
-      this.url = undefined;
-      this.router.navigate(['home'])
-
-    }
-
+  event.preventDefault()
+  this.settingActive = 3;
+  this.valForm.reset()
+  if (this.url.includes('/home/campaign')) {
+    this.url = undefined;
+    this.router.navigate(['home'])
 
   }
+
+
+}
   public convertToShortNumber(labelValue) {
 
-    // Nine Zeroes for Billions
-    return Math.abs(Number(labelValue)) >= 1.0e+9
+  // Nine Zeroes for Billions
+  return Math.abs(Number(labelValue)) >= 1.0e+9
 
-      ? Math.abs(Number(labelValue)) / 1.0e+9 + "B"
-      // Six Zeroes for Millions 
-      : Math.abs(Number(labelValue)) >= 1.0e+6
+    ? Math.abs(Number(labelValue)) / 1.0e+9 + "B"
+    // Six Zeroes for Millions 
+    : Math.abs(Number(labelValue)) >= 1.0e+6
 
-        ? Math.abs(Number(labelValue)) / 1.0e+6 + "M"
-        // Three Zeroes for Thousands
-        : Math.abs(Number(labelValue)) >= 1.0e+3
+      ? Math.abs(Number(labelValue)) / 1.0e+6 + "M"
+      // Three Zeroes for Thousands
+      : Math.abs(Number(labelValue)) >= 1.0e+3
 
-          ? Math.abs(Number(labelValue)) / 1.0e+3 + "K"
+        ? Math.abs(Number(labelValue)) / 1.0e+3 + "K"
 
-          : Math.abs(Number(labelValue));
+        : Math.abs(Number(labelValue));
 
-  }
+}
   // using to change color of circulr progrss bar outerstroke accroding value
   public changeCircularProgressOuterStrokeColor() {
 
-    // for desktop speed
-    if (this.progressDesktop > 0 && this.progressDesktop <= 50) {
-      this.sitespeedCircularProgressouterStrokeColorDesktop = '#D32F2F'
-    }
-    else if (this.progressDesktop > 50 && this.progressDesktop <= 80) {
-      this.sitespeedCircularProgressouterStrokeColorDesktop = '#FF6312'
-    }
-    else {
-      this.sitespeedCircularProgressouterStrokeColorDesktop = '#148B39'
-    }
-
-    // for mobile speed
-    if (this.progressMobile > 0 && this.progressMobile <= 50) {
-      this.sitespeedCircularProgressouterStrokeColorMobile = '#D32F2F'
-    }
-    else if (this.progressMobile > 50 && this.progressMobile <= 80) {
-      this.sitespeedCircularProgressouterStrokeColorMobile = '#FF6312'
-    }
-    else {
-      this.sitespeedCircularProgressouterStrokeColorMobile = '#148B39'
-    }
+  // for desktop speed
+  if (this.progressDesktop > 0 && this.progressDesktop <= 50) {
+    this.sitespeedCircularProgressouterStrokeColorDesktop = '#D32F2F'
   }
+  else if (this.progressDesktop > 50 && this.progressDesktop <= 80) {
+    this.sitespeedCircularProgressouterStrokeColorDesktop = '#FF6312'
+  }
+  else {
+    this.sitespeedCircularProgressouterStrokeColorDesktop = '#148B39'
+  }
+
+  // for mobile speed
+  if (this.progressMobile > 0 && this.progressMobile <= 50) {
+    this.sitespeedCircularProgressouterStrokeColorMobile = '#D32F2F'
+  }
+  else if (this.progressMobile > 50 && this.progressMobile <= 80) {
+    this.sitespeedCircularProgressouterStrokeColorMobile = '#FF6312'
+  }
+  else {
+    this.sitespeedCircularProgressouterStrokeColorMobile = '#148B39'
+  }
+}
 
   public changeDatesFormat(s, i) {
-    var one = s.substring(0, s.length - 4);
-    var two = s.substring(s.length - 4, s.length - 2);
-    var three = s.substring(s.length - 2);
-    var finalstring = one + '/' + two + '/' + three
-    var date = new Date(finalstring)
-    var date2 = date.toLocaleDateString("en-US", { month: 'short', day: 'numeric' })
-    var arraydate = date2.split(' ')
-    var odate = arraydate[1];
-    var omon = arraydate[0];
-    var finaldate = odate + " " + omon
-    return finaldate
+  var one = s.substring(0, s.length - 4);
+  var two = s.substring(s.length - 4, s.length - 2);
+  var three = s.substring(s.length - 2);
+  var finalstring = one + '/' + two + '/' + three
+  var date = new Date(finalstring)
+  var date2 = date.toLocaleDateString("en-US", { month: 'short', day: 'numeric' })
+  var arraydate = date2.split(' ')
+  var odate = arraydate[1];
+  var omon = arraydate[0];
+  var finaldate = odate + " " + omon
+  return finaldate
+}
+//For ranking graph rubina
+RefreshRankingGraphData() {
+
+  let p;
+  let totalPosition = 0;
+  p = this.serpList.filter(x => x.campaignID.toString() === this.selectedCampId.toLowerCase());
+  if (p != null && p != undefined && p.length > 0) {
+    for (let i = 0; i < p.length; i++) {
+      totalPosition = totalPosition + p[i].position;
+    }
   }
-  //For ranking graph rubina
-  RefreshRankingGraphData() {
+  this.averageRanking = totalPosition / parseInt(this.serpList.length)
+  this.averageRanking = Math.round(this.averageRanking);
+  const monthNames = ["January", "February", "March", "April", "May", "June", "July", "August", "September", "October", "November", "December"
+  ];
 
-    let p;
-    let totalPosition = 0;
-    p = this.serpList.filter(x => x.campaignID.toString() === this.selectedCampId.toLowerCase());
-    if (p != null && p != undefined && p.length > 0) {
-      for (let i = 0; i < p.length; i++) {
-        totalPosition = totalPosition + p[i].position;
-      }
+  const d = new Date();
+  let currMonth = monthNames[d.getMonth()];
+  let data = {
+    id: "00000000-0000-0000-0000-000000000000",
+    avragePosition: this.averageRanking,
+    month: currMonth,
+    campaignId: this.selectedCampId,
+  }
+  this.campaignService.createRankingGraph(data).subscribe(response => {
+    if (response) {
+      this.getRankingGraphData();
     }
-    this.averageRanking = totalPosition / parseInt(this.serpList.length)
-    this.averageRanking = Math.round(this.averageRanking);
-    const monthNames = ["January", "February", "March", "April", "May", "June", "July", "August", "September", "October", "November", "December"
-    ];
-
-    const d = new Date();
-    let currMonth = monthNames[d.getMonth()];
-    let data = {
-      id: "00000000-0000-0000-0000-000000000000",
-      avragePosition: this.averageRanking,
-      month: currMonth,
-      campaignId: this.selectedCampId,
-    }
-    this.campaignService.createRankingGraph(data).subscribe(response => {
-      if (response) {
-        this.getRankingGraphData();
-      }
+  });
+}
+DeleteRankingGraphData() {
+  const monthNames = ["January", "February", "March", "April", "May", "June", "July", "August", "September", "October", "November", "December"
+  ];
+  const d = new Date();
+  let currMonth = monthNames[d.getMonth()];
+  let tempId;
+  let p = this.tempRankingGraphData.filter(x => x.month == currMonth)
+  if (p != null && p != undefined && p.length > 0) {
+    tempId = p[0].id;
+    this.campaignService.deleteRankingGraph(tempId).subscribe(response => {
+      //if (response) {
+      //this.snackbarService.show('Product Added');
+      //}
     });
   }
-  DeleteRankingGraphData() {
-    const monthNames = ["January", "February", "March", "April", "May", "June", "July", "August", "September", "October", "November", "December"
-    ];
-    const d = new Date();
-    let currMonth = monthNames[d.getMonth()];
-    let tempId;
-    let p = this.tempRankingGraphData.filter(x => x.month == currMonth)
-    if (p != null && p != undefined && p.length > 0) {
-      tempId = p[0].id;
-      this.campaignService.deleteRankingGraph(tempId).subscribe(response => {
-        //if (response) {
-        //this.snackbarService.show('Product Added');
-        //}
+  this.RefreshRankingGraphData();
+}
+getRankingGraphData() {
+  //  this.barData.datasets[0].data = [10,20,34,6,43,12,56,86,5,33,24,55]
+  const filterOptionModel = this.getFilterOptionPlans();
+  this.campaignService.getFilteredRankingGraph(filterOptionModel).subscribe((response: any) => {
+    if (response) {
+      this.barDataArray = [];
+      this.rankingGraphData = response.body;
+      this.tempRankingGraphData = response.body;
+      this.rankingGraphData.sort(function (a, b) {
+        var MONTH = {
+          January: 1, February: 2, March: 3, April: 4, May: 5, June: 6,
+          July: 7, August: 8, September: 9, October: 10, November: 11, December: 12
+        };
+        return a.year - b.year || MONTH[a.month] - MONTH[b.month];
       });
-    }
-    this.RefreshRankingGraphData();
-  }
-  getRankingGraphData() {
-    //  this.barData.datasets[0].data = [10,20,34,6,43,12,56,86,5,33,24,55]
-    const filterOptionModel = this.getFilterOptionPlans();
-    this.campaignService.getFilteredRankingGraph(filterOptionModel).subscribe((response: any) => {
-      if (response) {
-        this.barDataArray = [];
-        this.rankingGraphData = response.body;
-        this.tempRankingGraphData = response.body;
-        this.rankingGraphData.sort(function (a, b) {
-          var MONTH = {
-            January: 1, February: 2, March: 3, April: 4, May: 5, June: 6,
-            July: 7, August: 8, September: 9, October: 10, November: 11, December: 12
-          };
-          return a.year - b.year || MONTH[a.month] - MONTH[b.month];
-        });
 
-        let u = this.rankingGraphData;
-        let p = u.filter(x => x.month == "January")
-        if (p != null && p != undefined && p.length > 0) {
-          this.barDataArray.push(p[0].avragePosition)
-        }
-        else { this.barDataArray.push(0) }
-
-        u = this.rankingGraphData;
-        p = this.rankingGraphData.filter(x => x.month == "February")
-        if (p != null && p != undefined && p.length > 0) {
-          this.barDataArray.push(p[0].avragePosition)
-        }
-        else { this.barDataArray.push(0) }
-        u = this.rankingGraphData;
-        p = this.rankingGraphData.filter(x => x.month == "March")
-        if (p != null && p != undefined && p.length > 0) {
-          this.barDataArray.push(p[0].avragePosition)
-        }
-        else { this.barDataArray.push(0) }
-        u = this.rankingGraphData;
-        p = this.rankingGraphData.filter(x => x.month == "April")
-        if (p != null && p != undefined && p.length > 0) {
-          this.barDataArray.push(p[0].avragePosition)
-        }
-        else { this.barDataArray.push(0) }
-        u = this.rankingGraphData;
-        p = this.rankingGraphData.filter(x => x.month == "May")
-        if (p != null && p != undefined && p.length > 0) {
-          this.barDataArray.push(p[0].avragePosition)
-        }
-        else { this.barDataArray.push(0) }
-        u = this.rankingGraphData;
-        p = this.rankingGraphData.filter(x => x.month == "June")
-        if (p != null && p != undefined && p.length > 0) {
-          this.barDataArray.push(p[0].avragePosition)
-        }
-        else { this.barDataArray.push(0) }
-        u = this.rankingGraphData;
-        p = this.rankingGraphData.filter(x => x.month == "July")
-        if (p != null && p != undefined && p.length > 0) {
-          this.barDataArray.push(p[0].avragePosition)
-        }
-        else { this.barDataArray.push(0) }
-        u = this.rankingGraphData;
-        p = this.rankingGraphData.filter(x => x.month == "August")
-        if (p != null && p != undefined && p.length > 0) {
-          this.barDataArray.push(p[0].avragePosition)
-        }
-        else { this.barDataArray.push(0) }
-        u = this.rankingGraphData;
-        p = this.rankingGraphData.filter(x => x.month == "September")
-        if (p != null && p != undefined && p.length > 0) {
-          this.barDataArray.push(p[0].avragePosition)
-        }
-        else { this.barDataArray.push(0) }
-        u = this.rankingGraphData;
-        p = this.rankingGraphData.filter(x => x.month == "October")
-        if (p != null && p != undefined && p.length > 0) {
-          this.barDataArray.push(p[0].avragePosition)
-        }
-        else { this.barDataArray.push(0) }
-        u = this.rankingGraphData;
-        p = this.rankingGraphData.filter(x => x.month == "November")
-        if (p != null && p != undefined && p.length > 0) {
-          this.barDataArray.push(p[0].avragePosition)
-        }
-        else { this.barDataArray.push(0) }
-        u = this.rankingGraphData;
-        p = this.rankingGraphData.filter(x => x.month == "December")
-        if (p != null && p != undefined && p.length > 0) {
-          this.barDataArray.push(p[0].avragePosition)
-        }
-        else { this.barDataArray.push(0) }
-
-
-        this.barData.datasets[0].data = this.barDataArray;
-        this.chart.chart.update();
+      let u = this.rankingGraphData;
+      let p = u.filter(x => x.month == "January")
+      if (p != null && p != undefined && p.length > 0) {
+        this.barDataArray.push(p[0].avragePosition)
       }
-    })
-  }
-  public getSerpList(): void {
-    
-    this.campaignService.getSerp("&tbs=qdr:m").subscribe(res => {
-      
-      this.serpList = res;
-      //this.source = new LocalDataSource(this.serpList) 
-      // var serpData = res.map((s, i) => {
-      //   if (s.position > 0 && s.position <= 3) {
-      //     var positions = []
-      //     for (var x = 0; x < 12; x++) {
-      //       this.barData.datasets[0].data.push(s.position)
-      //     }
-      //   }
-      //   else if (s.position > 3 && s.position <= 10) {
-      //     this.barData.datasets[1].data = s.position
-      //   }
-      //   else if (s.position > 10 && s.position <= 20) {
-      //     this.barData.datasets[2].data = s.position
-      //   }
-      //   else if (s.position > 20 && s.position <= 50) {
-      //     this.barData.datasets[3].data = s.position
-      //   }
-      //   else if (s.position > 50 && s.position <= 100) {
-      //     this.barData.datasets[4].data = s.position
-      //   }
-      //   else if (s.position > 100) {
-      //     this.barData.datasets[5].data = s.position
-      //   }
+      else { this.barDataArray.push(0) }
 
-      // })
+      u = this.rankingGraphData;
+      p = this.rankingGraphData.filter(x => x.month == "February")
+      if (p != null && p != undefined && p.length > 0) {
+        this.barDataArray.push(p[0].avragePosition)
+      }
+      else { this.barDataArray.push(0) }
+      u = this.rankingGraphData;
+      p = this.rankingGraphData.filter(x => x.month == "March")
+      if (p != null && p != undefined && p.length > 0) {
+        this.barDataArray.push(p[0].avragePosition)
+      }
+      else { this.barDataArray.push(0) }
+      u = this.rankingGraphData;
+      p = this.rankingGraphData.filter(x => x.month == "April")
+      if (p != null && p != undefined && p.length > 0) {
+        this.barDataArray.push(p[0].avragePosition)
+      }
+      else { this.barDataArray.push(0) }
+      u = this.rankingGraphData;
+      p = this.rankingGraphData.filter(x => x.month == "May")
+      if (p != null && p != undefined && p.length > 0) {
+        this.barDataArray.push(p[0].avragePosition)
+      }
+      else { this.barDataArray.push(0) }
+      u = this.rankingGraphData;
+      p = this.rankingGraphData.filter(x => x.month == "June")
+      if (p != null && p != undefined && p.length > 0) {
+        this.barDataArray.push(p[0].avragePosition)
+      }
+      else { this.barDataArray.push(0) }
+      u = this.rankingGraphData;
+      p = this.rankingGraphData.filter(x => x.month == "July")
+      if (p != null && p != undefined && p.length > 0) {
+        this.barDataArray.push(p[0].avragePosition)
+      }
+      else { this.barDataArray.push(0) }
+      u = this.rankingGraphData;
+      p = this.rankingGraphData.filter(x => x.month == "August")
+      if (p != null && p != undefined && p.length > 0) {
+        this.barDataArray.push(p[0].avragePosition)
+      }
+      else { this.barDataArray.push(0) }
+      u = this.rankingGraphData;
+      p = this.rankingGraphData.filter(x => x.month == "September")
+      if (p != null && p != undefined && p.length > 0) {
+        this.barDataArray.push(p[0].avragePosition)
+      }
+      else { this.barDataArray.push(0) }
+      u = this.rankingGraphData;
+      p = this.rankingGraphData.filter(x => x.month == "October")
+      if (p != null && p != undefined && p.length > 0) {
+        this.barDataArray.push(p[0].avragePosition)
+      }
+      else { this.barDataArray.push(0) }
+      u = this.rankingGraphData;
+      p = this.rankingGraphData.filter(x => x.month == "November")
+      if (p != null && p != undefined && p.length > 0) {
+        this.barDataArray.push(p[0].avragePosition)
+      }
+      else { this.barDataArray.push(0) }
+      u = this.rankingGraphData;
+      p = this.rankingGraphData.filter(x => x.month == "December")
+      if (p != null && p != undefined && p.length > 0) {
+        this.barDataArray.push(p[0].avragePosition)
+      }
+      else { this.barDataArray.push(0) }
+
+
+      this.barData.datasets[0].data = this.barDataArray;
       this.chart.chart.update();
-    });
-  }
+    }
+  })
+}
+  public getSerpList(): void {
+
+  this.campaignService.getSerp("&tbs=qdr:m").subscribe(res => {
+
+    this.serpList = res;
+    //this.source = new LocalDataSource(this.serpList) 
+    // var serpData = res.map((s, i) => {
+    //   if (s.position > 0 && s.position <= 3) {
+    //     var positions = []
+    //     for (var x = 0; x < 12; x++) {
+    //       this.barData.datasets[0].data.push(s.position)
+    //     }
+    //   }
+    //   else if (s.position > 3 && s.position <= 10) {
+    //     this.barData.datasets[1].data = s.position
+    //   }
+    //   else if (s.position > 10 && s.position <= 20) {
+    //     this.barData.datasets[2].data = s.position
+    //   }
+    //   else if (s.position > 20 && s.position <= 50) {
+    //     this.barData.datasets[3].data = s.position
+    //   }
+    //   else if (s.position > 50 && s.position <= 100) {
+    //     this.barData.datasets[4].data = s.position
+    //   }
+    //   else if (s.position > 100) {
+    //     this.barData.datasets[5].data = s.position
+    //   }
+
+    // })
+    this.chart.chart.update();
+  });
+}
   private getFilterOptionPlans() {
-    return {
-      pageNumber: 1,
-      pageSize: 1000,
-      fields: '',
-      searchQuery: '',
-      orderBy: ''
+  return {
+    pageNumber: 1,
+    pageSize: 1000,
+    fields: '',
+    searchQuery: '',
+    orderBy: ''
+  }
+
+}
+getSiteSpeedData(){
+  debugger
+  this.httpOptionJSON = {
+    headers: new HttpHeaders({
+      'Accept': 'application/json',
+      'Authorization': 'Bearer ' + this.accessToken,
+    })
+  };
+  let urlcamp = this.selectedCampIdWebUrl.replace('/', '%2F');
+ // const url = "https://www.googleapis.com/pagespeedonline/v5/runPagespeed/https:%2F%2F" + urlcamp + "%2F/searchAnalytics/query?key=AIzaSyC1IsrCeeNXp9ksAmC8szBtYVjTLJC9UWQ";
+  const url = "https://pagespeedonline.googleapis.com/pagespeedonline/v5/runPagespeed?url=https%3A%2F%2Fabhisi.com&key=AIzaSyC1IsrCeeNXp9ksAmC8szBtYVjTLJC9UWQ"
+  this.http.get(url, this.httpOptionJSON).subscribe(res => {
+    if (res) {
+      let rows = res['loadingExperience'].metrics;
+      let lighthouse = res['lighthouseResult'];
+      //load expeience
+      this.CUMULATIVE_LAYOUT_SHIFT_SCORE = rows['CUMULATIVE_LAYOUT_SHIFT_SCORE'].category
+      this.FIRST_CONTENTFUL_PAINT_MS= rows['FIRST_CONTENTFUL_PAINT_MS'].category
+      this.FIRST_INPUT_DELAY_MS= rows['FIRST_INPUT_DELAY_MS'].category
+      this.LARGEST_CONTENTFUL_PAINT_MS= rows['LARGEST_CONTENTFUL_PAINT_MS'].category
+      //light house
+      debugger
+
+      this.first_contentful_paint =  lighthouse.audits['first-contentful-paint'].displayValue,
+this.speed_index=  lighthouse.audits['speed-index'].displayValue,
+this.interactive = lighthouse.audits['interactive'].displayValue,
+this.first_meaningful_paint =  lighthouse.audits['first-meaningful-paint'].displayValue,
+this.first_cpu_idle =  lighthouse.audits['first-cpu-idle'].displayValue,
+this.Eestimated_input_latency =  lighthouse.audits['estimated-input-latency'].displayValue
     }
+  }, error => {
+    debugger
+    console.log('Data fetch failed by device : ' + JSON.stringify(error.error));
+  });
+}
 
-  }
-  //------------------GSC data start---------------------------------------------
-  signInWithGoogle(): void {
-    const googleLoginOptions = {
-      scope: 'profile email https://www.googleapis.com/auth/webmasters.readonly https://www.googleapis.com/auth/webmasters'
-    };
-    this.authService.signIn(GoogleLoginProvider.PROVIDER_ID, googleLoginOptions)
-      .then((res) => {
+//------------------GSC data start---------------------------------------------
+signInWithGoogle(): void {
+  const googleLoginOptions = {
+    scope: 'profile email https://www.googleapis.com/auth/webmasters.readonly https://www.googleapis.com/auth/webmasters'
+  };
+  this.authService.signIn(GoogleLoginProvider.PROVIDER_ID, googleLoginOptions)
+    .then((res) => {
 
-        this.accessToken = res['authToken'];
-        localStorage.setItem('googleGscAccessToken', this.accessToken);
-        this.isShowLoginButton = false;
-        this.getData();
-        //this.getAdsData();
-      })
-  }
-  getDataByDevice(startDate, endDate) {
+      this.accessToken = res['authToken'];
+      localStorage.setItem('googleGscAccessToken', this.accessToken);
+      this.isShowLoginButton = false;
+      this.getData();
+    
+     
+      //this.getAdsData();
+    })
+}
+getDataByDevice(startDate, endDate) {
 
-    this.httpOptionJSON = {
-      headers: new HttpHeaders({
-        'Accept': 'application/json',
-        'Authorization': 'Bearer ' + this.accessToken,
-      })
-    };
-    let urlcamp = this.selectedCampIdWebUrl.replace('/', '%2F');
-    const url = "https://www.googleapis.com/webmasters/v3/sites/https:%2F%2F" + urlcamp + "%2F/searchAnalytics/query?key=AIzaSyC1IsrCeeNXp9ksAmC8szBtYVjTLJC9UWQ";
-    let data = {};
+  this.httpOptionJSON = {
+    headers: new HttpHeaders({
+      'Accept': 'application/json',
+      'Authorization': 'Bearer ' + this.accessToken,
+    })
+  };
+  let urlcamp = this.selectedCampIdWebUrl.replace('/', '%2F');
+  const url = "https://www.googleapis.com/webmasters/v3/sites/https:%2F%2F" + urlcamp + "%2F/searchAnalytics/query?key=AIzaSyC1IsrCeeNXp9ksAmC8szBtYVjTLJC9UWQ";
+  let data = {};
 
+  data = {
+    "startRow": 0,
+    "startDate": startDate,
+    "endDate": endDate,
+    "dataState": "ALL",
+    "dimensions": [
+      "DEVICE"
+    ]
+  };
+  this.http.post(url, data, this.httpOptionJSON).subscribe(res => {
+    if (res) {
+
+      let rows = res['rows'];
+      this.barDataImpressionsDevice.datasets[0].data = [];
+      this.barChartLabelsDevice = [];
+      for (let i = 0; i < rows.length; i++) {
+        this.barDataImpressionsDevice.datasets[0].data.push(rows[i].impressions);
+        this.barDataClicksDevice.datasets[0].data.push(rows[i].clicks);
+        this.barDataPositionDevice.datasets[0].data.push(rows[i].position);
+
+        this.barChartLabelsDevice.push(rows[i].keys[0]);
+      }
+    }
+  }, error => {
+    alert('Data fetch failed by device : ' + JSON.stringify(error.error));
+  });
+}
+getDataCurrentYear(startDate, endDate, all) {
+
+  this.httpOptionJSON = {
+    headers: new HttpHeaders({
+      'Accept': 'application/json',
+      'Authorization': 'Bearer ' + this.accessToken,
+    })
+  };
+
+  let urlcamp = this.selectedCampIdWebUrl.replace('/', '%2F');
+  const url = "https://www.googleapis.com/webmasters/v3/sites/https:%2F%2F" + urlcamp + "%2F/searchAnalytics/query?key=AIzaSyC1IsrCeeNXp9ksAmC8szBtYVjTLJC9UWQ";
+  //const url = "https://www.googleapis.com/webmasters/v3/sites/https%3A%2F%2Fwww.abhisi.com%2F/searchAnalytics/query?key=AIzaSyC1IsrCeeNXp9ksAmC8szBtYVjTLJC9UWQ";
+  let data = {};
+  if (all == 1) {
     data = {
-      "startRow": 0,
-      "startDate": startDate,
-      "endDate": endDate,
-      "dataState": "ALL",
-      "dimensions": [
-        "DEVICE"
-      ]
-    };
-    this.http.post(url, data, this.httpOptionJSON).subscribe(res => {
-      if (res) {
-
-        let rows = res['rows'];
-        this.barDataImpressionsDevice.datasets[0].data = [];
-        this.barChartLabelsDevice = [];
-        for (let i = 0; i < rows.length; i++) {
-          this.barDataImpressionsDevice.datasets[0].data.push(rows[i].impressions);
-          this.barDataClicksDevice.datasets[0].data.push(rows[i].clicks);
-          this.barDataPositionDevice.datasets[0].data.push(rows[i].position);
-
-          this.barChartLabelsDevice.push(rows[i].keys[0]);
-        }
-      }
-    }, error => {
-      alert('Data fetch failed by device : ' + JSON.stringify(error.error));
-    });
-  }
-  getDataCurrentYear(startDate, endDate, all) {
-
-    this.httpOptionJSON = {
-      headers: new HttpHeaders({
-        'Accept': 'application/json',
-        'Authorization': 'Bearer ' + this.accessToken,
-      })
-    };
-    
-    let urlcamp = this.selectedCampIdWebUrl.replace('/', '%2F');
-    const url = "https://www.googleapis.com/webmasters/v3/sites/https:%2F%2F" + urlcamp + "%2F/searchAnalytics/query?key=AIzaSyC1IsrCeeNXp9ksAmC8szBtYVjTLJC9UWQ";
-    //const url = "https://www.googleapis.com/webmasters/v3/sites/https%3A%2F%2Fwww.abhisi.com%2F/searchAnalytics/query?key=AIzaSyC1IsrCeeNXp9ksAmC8szBtYVjTLJC9UWQ";
-    let data = {};
-    if (all == 1) {
-      data = {
-        "startRow": 0,
-        "startDate": startDate,
-        "endDate": endDate,
-        "dataState": "ALL",
-        "dimensions": [
-          "DATE"
-        ]
-      };
-    }
-    if (all == 0) {
-      data = {
-        "startRow": 0,
-        "startDate": startDate,
-        "endDate": endDate,
-        "dataState": "ALL",
-      };
-    }
-    this.http.post(url, data, this.httpOptionJSON).subscribe(res => {
-      if (res) {
-
-        let rows = res['rows'];
-        if (all == 0) {
-          this.clicksThisYear = rows[0].clicks;
-          this.impressionsThisYear = rows[0].impressions;
-          this.cTRThisYear = parseFloat(rows[0].ctr).toFixed(2).toString();
-          this.positionThisYear = parseFloat(rows[0].position).toFixed(2).toString();
-        }
-        else {
-          this.dateListData = [];
-          this.barDataClicks.datasets[0].data = [];
-          this.barDataImpressions.datasets[0].data = [];
-          this.barDataCTR.datasets[0].data = [];
-          this.barDataPositions.datasets[0].data = [];
-          this.barChartLabels = [];
-          for (let i = 0; i < rows.length; i++) {
-            this.currDate = rows[i].keys[0]
-            this.currDate = this.currDate.substring(5, 10);
-            this.barDataClicks.datasets[0].data.push(rows[i].clicks);
-            this.barDataImpressions.datasets[0].data.push(rows[i].impressions);
-            this.barDataCTR.datasets[0].data.push(rows[i].ctr);
-            this.barDataPositions.datasets[0].data.push(rows[i].position);
-            this.barChartLabels.push(this.currDate);
-          }
-        }
-      }
-    }, error => {
-
-      alert('Data fetch failed for current year : ' + JSON.stringify(error.error));
-    });
-
-  }
-  getDataPreviousYear(startDate, endDate, all) {
-    
-    this.httpOptionJSON = {
-      headers: new HttpHeaders({
-        'Accept': 'application/json',
-        'Authorization': 'Bearer ' + this.accessToken,
-      })
-    };
-
-    let urlcamp = this.selectedCampIdWebUrl.replace('/', '%2F');
-    const url = "https://www.googleapis.com/webmasters/v3/sites/https:%2F%2F" + urlcamp + "%2F/searchAnalytics/query?key=AIzaSyC1IsrCeeNXp9ksAmC8szBtYVjTLJC9UWQ";
-    let data = {
       "startRow": 0,
       "startDate": startDate,
       "endDate": endDate,
@@ -1898,104 +1894,167 @@ export class SeoComponent implements OnInit {
         "DATE"
       ]
     };
-    this.http.post(url, data, this.httpOptionJSON).subscribe(res => {
-      if (res) {
+  }
+  if (all == 0) {
+    data = {
+      "startRow": 0,
+      "startDate": startDate,
+      "endDate": endDate,
+      "dataState": "ALL",
+    };
+  }
+  this.http.post(url, data, this.httpOptionJSON).subscribe(res => {
+    if (res) {
 
-        let rows = res['rows'];
-        if (all == 0) {
-          this.clicksPreviousYear = rows[0].clicks;
-          this.impressionsPreviousYear = rows[0].impressions;
-          this.cTRPreviousYear = parseFloat(rows[0].ctr).toFixed(2).toString();
-          this.positionPreviousYear = parseFloat(rows[0].position).toFixed(2).toString();
-
-          //pecentgage calculate
-
-          this.percentClicks = this.getYearwiseDifference(this.clicksPreviousYear, this.clicksThisYear);
-          this.percentImpressions = this.getYearwiseDifference(this.impressionsPreviousYear, this.impressionsThisYear);
-          this.percentPosition = this.getYearwiseDifference(this.positionPreviousYear, this.positionThisYear);
-          this.percentCTR = this.getYearwiseDifference(this.cTRPreviousYear, this.cTRThisYear);
-        }
-        else {
-          this.dateListData = [];
-          this.barDataClicks.datasets[1].data = [];
-          this.barDataImpressions.datasets[1].data = [];
-          this.barChartLabels = [];
-          for (let i = 0; i < rows.length; i++) {
-            this.currDate = rows[i].keys[0]
-            this.currDate = this.currDate.substring(5, 10);
-            this.barDataClicks.datasets[1].data.push(rows[i].clicks + 10);
-            this.barDataImpressions.datasets[1].data.push(rows[i].impressions);
-            this.barDataCTR.datasets[1].data.push(rows[i].ctr);
-            this.barDataPositions.datasets[1].data.push(rows[i].position);
-
-            this.barChartLabels.push(this.currDate);
-          }
+      let rows = res['rows'];
+      if (all == 0) {
+        this.clicksThisYear = rows[0].clicks;
+        this.impressionsThisYear = rows[0].impressions;
+        this.cTRThisYear = parseFloat(rows[0].ctr).toFixed(2).toString();
+        this.positionThisYear = parseFloat(rows[0].position).toFixed(2).toString();
+      }
+      else {
+        this.dateListData = [];
+        this.barDataClicks.datasets[0].data = [];
+        this.barDataImpressions.datasets[0].data = [];
+        this.barDataCTR.datasets[0].data = [];
+        this.barDataPositions.datasets[0].data = [];
+        this.barChartLabels = [];
+        for (let i = 0; i < rows.length; i++) {
+          this.currDate = rows[i].keys[0]
+          this.currDate = this.currDate.substring(5, 10);
+          this.barDataClicks.datasets[0].data.push(rows[i].clicks);
+          this.barDataImpressions.datasets[0].data.push(rows[i].impressions);
+          this.barDataCTR.datasets[0].data.push(rows[i].ctr);
+          this.barDataPositions.datasets[0].data.push(rows[i].position);
+          this.barChartLabels.push(this.currDate);
         }
       }
-    }, error => {
-
-      alert('Data fetch failed for previous year : ' + JSON.stringify(error.error));
-    });
-
-  }
-
-  onStartDateChange(event) {
-    this.startDate = this.datepipe.transform(this.fromDate.value, 'yyyy-MM-dd');
-    this.currYear = parseInt(this.datepipe.transform(this.fromDate.value, 'yyyy'));
-    let prevYear = this.currYear - 1;
-    this.previousStartDate = prevYear.toString() + '-' + this.datepipe.transform(this.fromDate.value, 'MM-dd');
-    this.getData();
-  }
-
-  onEndDateChange(event) {
-    this.endDate = this.datepipe.transform(this.toDate.value, 'yyyy-MM-dd');
-    this.currYear = parseInt(this.datepipe.transform(this.toDate.value, 'yyyy'));
-    let prevYear = this.currYear - 1;
-    this.previousEndDate = prevYear.toString() + '-' + this.datepipe.transform(this.toDate.value, 'MM-dd');
-    this.getData();
-  }
-  getData() {
-    
-    if (this.accessToken == '' || this.accessToken == undefined || this.accessToken == null) {
-      alert("Please, Login with Google to fetch data");
-    } else if (parseDate(this.endDate) < parseDate(this.startDate)) {
-      alert("Start Date can not be grater then End Date");
     }
-    else {
-      this.getDataCurrentYear(this.startDate, this.endDate, 0);
-      this.getDataPreviousYear(this.previousStartDate, this.previousEndDate, 0);
-      this.getDataCurrentYear(this.startDate, this.endDate, 1);
-      this.getDataPreviousYear(this.previousStartDate, this.previousEndDate, 1);
-      this.getDataByDevice(this.startDate, this.endDate)
+  }, error => {
+
+    alert('Data fetch failed for current year : ' + JSON.stringify(error.error));
+  });
+
+}
+getDataPreviousYear(startDate, endDate, all) {
+
+  this.httpOptionJSON = {
+    headers: new HttpHeaders({
+      'Accept': 'application/json',
+      'Authorization': 'Bearer ' + this.accessToken,
+    })
+  };
+
+  let urlcamp = this.selectedCampIdWebUrl.replace('/', '%2F');
+  const url = "https://www.googleapis.com/webmasters/v3/sites/https:%2F%2F" + urlcamp + "%2F/searchAnalytics/query?key=AIzaSyC1IsrCeeNXp9ksAmC8szBtYVjTLJC9UWQ";
+  let data = {
+    "startRow": 0,
+    "startDate": startDate,
+    "endDate": endDate,
+    "dataState": "ALL",
+    "dimensions": [
+      "DATE"
+    ]
+  };
+  this.http.post(url, data, this.httpOptionJSON).subscribe(res => {
+    if (res) {
+
+      let rows = res['rows'];
+      if (all == 0) {
+        this.clicksPreviousYear = rows[0].clicks;
+        this.impressionsPreviousYear = rows[0].impressions;
+        this.cTRPreviousYear = parseFloat(rows[0].ctr).toFixed(2).toString();
+        this.positionPreviousYear = parseFloat(rows[0].position).toFixed(2).toString();
+
+        //pecentgage calculate
+
+        this.percentClicks = this.getYearwiseDifference(this.clicksPreviousYear, this.clicksThisYear);
+        this.percentImpressions = this.getYearwiseDifference(this.impressionsPreviousYear, this.impressionsThisYear);
+        this.percentPosition = this.getYearwiseDifference(this.positionPreviousYear, this.positionThisYear);
+        this.percentCTR = this.getYearwiseDifference(this.cTRPreviousYear, this.cTRThisYear);
+      }
+      else {
+        this.dateListData = [];
+        this.barDataClicks.datasets[1].data = [];
+        this.barDataImpressions.datasets[1].data = [];
+        this.barChartLabels = [];
+        for (let i = 0; i < rows.length; i++) {
+          this.currDate = rows[i].keys[0]
+          this.currDate = this.currDate.substring(5, 10);
+          this.barDataClicks.datasets[1].data.push(rows[i].clicks + 10);
+          this.barDataImpressions.datasets[1].data.push(rows[i].impressions);
+          this.barDataCTR.datasets[1].data.push(rows[i].ctr);
+          this.barDataPositions.datasets[1].data.push(rows[i].position);
+
+          this.barChartLabels.push(this.currDate);
+        }
+      }
     }
-  }
-  getDateSettings() {
-    
-    let currDate = new Date();
-    this.endDate = this.datepipe.transform(currDate, 'yyyy-MM-dd');
-    this.startDate = this.datepipe.transform(currDate.setDate(currDate.getDate() - 28), 'yyyy-MM-dd');
-    currDate = new Date();
-    this.previousEndDate = this.datepipe.transform(currDate.setFullYear(currDate.getFullYear() - 1), 'yyyy-MM-dd');
-    this.previousStartDate = this.datepipe.transform(currDate.setDate(currDate.getDate() - 28), 'yyyy-MM-dd');
+  }, error => {
 
-    // this.startDate = this.datepipe.transform(this.fromDate.value, 'yyyy-MM-dd');
-    // this.currYear = parseInt(this.datepipe.transform(this.fromDate.value, 'yyyy'));
-    // let prevYear = this.currYear - 1;
-    // this.previousStartDate = prevYear.toString() + '-' + this.datepipe.transform(this.fromDate.value, 'MM-dd');
-    // this.endDate = this.datepipe.transform(this.toDate.value, 'yyyy-MM-dd');
-    // this.currYear = parseInt(this.datepipe.transform(this.toDate.value, 'yyyy'));
-    // prevYear = this.currYear - 1;
-    // this.previousEndDate = prevYear.toString() + '-' + this.datepipe.transform(this.toDate.value, 'MM-dd');
-  }
+    alert('Data fetch failed for previous year : ' + JSON.stringify(error.error));
+  });
 
-  getYearwiseDifference(previous, current) {
+}
 
-    let diff = ((parseFloat(previous) - parseFloat(current)) * 100) / parseFloat(previous)
-    return parseFloat(diff.toString()).toFixed(2)
+onStartDateChange(event) {
+  this.startDate = this.datepipe.transform(this.fromDate.value, 'yyyy-MM-dd');
+  this.currYear = parseInt(this.datepipe.transform(this.fromDate.value, 'yyyy'));
+  let prevYear = this.currYear - 1;
+  this.previousStartDate = prevYear.toString() + '-' + this.datepipe.transform(this.fromDate.value, 'MM-dd');
+  this.getData();
+}
 
+onEndDateChange(event) {
+  this.endDate = this.datepipe.transform(this.toDate.value, 'yyyy-MM-dd');
+  this.currYear = parseInt(this.datepipe.transform(this.toDate.value, 'yyyy'));
+  let prevYear = this.currYear - 1;
+  this.previousEndDate = prevYear.toString() + '-' + this.datepipe.transform(this.toDate.value, 'MM-dd');
+  this.getData();
+}
+getData() {
+
+  if (this.accessToken == '' || this.accessToken == undefined || this.accessToken == null) {
+    alert("Please, Login with Google to fetch data");
+  } else if (parseDate(this.endDate) < parseDate(this.startDate)) {
+    alert("Start Date can not be grater then End Date");
   }
-  getPercentage(num, total) {
-    return ((100 * num) / total)
+  else {
+    this.getDataCurrentYear(this.startDate, this.endDate, 0);
+    this.getDataPreviousYear(this.previousStartDate, this.previousEndDate, 0);
+    this.getDataCurrentYear(this.startDate, this.endDate, 1);
+    this.getDataPreviousYear(this.previousStartDate, this.previousEndDate, 1);
+    this.getDataByDevice(this.startDate, this.endDate)
   }
+}
+getDateSettings() {
+
+  let currDate = new Date();
+  this.endDate = this.datepipe.transform(currDate, 'yyyy-MM-dd');
+  this.startDate = this.datepipe.transform(currDate.setDate(currDate.getDate() - 28), 'yyyy-MM-dd');
+  currDate = new Date();
+  this.previousEndDate = this.datepipe.transform(currDate.setFullYear(currDate.getFullYear() - 1), 'yyyy-MM-dd');
+  this.previousStartDate = this.datepipe.transform(currDate.setDate(currDate.getDate() - 28), 'yyyy-MM-dd');
+
+  // this.startDate = this.datepipe.transform(this.fromDate.value, 'yyyy-MM-dd');
+  // this.currYear = parseInt(this.datepipe.transform(this.fromDate.value, 'yyyy'));
+  // let prevYear = this.currYear - 1;
+  // this.previousStartDate = prevYear.toString() + '-' + this.datepipe.transform(this.fromDate.value, 'MM-dd');
+  // this.endDate = this.datepipe.transform(this.toDate.value, 'yyyy-MM-dd');
+  // this.currYear = parseInt(this.datepipe.transform(this.toDate.value, 'yyyy'));
+  // prevYear = this.currYear - 1;
+  // this.previousEndDate = prevYear.toString() + '-' + this.datepipe.transform(this.toDate.value, 'MM-dd');
+}
+
+getYearwiseDifference(previous, current) {
+
+  let diff = ((parseFloat(previous) - parseFloat(current)) * 100) / parseFloat(previous)
+  return parseFloat(diff.toString()).toFixed(2)
+
+}
+getPercentage(num, total) {
+  return ((100 * num) / total)
+}
   //#################  GSC data end ###########################################
 }
