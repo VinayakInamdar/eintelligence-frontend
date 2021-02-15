@@ -633,7 +633,7 @@ li:hover span.only-show-on-hover  {
     .footer-buttons {
         text-align: center;
         position: relative;
-        bottom: 16px;
+        bottom: 15%;
         width: 100%;
         left: 0;
     }
@@ -766,10 +766,10 @@ li:hover span.only-show-on-hover  {
         padding-left: 20px;
     }
     .height200px {
-        height: 200px;
+        height: 150px;
     }
-    .paddingtop10px{
-        padding-top: 10px;
+    .paddingtop3px{
+        padding-top: 3px;
     }
     .alert {
         padding: 14px 25px;
@@ -817,12 +817,37 @@ li:hover span.only-show-on-hover  {
         width: 98% !important;
     }
     .impressionsCard-height{
-        height: 210px !important;
+        height: 96% !important;
     }
     .indicatorBoxShadow{
         box-shadow: 2px 2px #e9e6e6;
         margin-left: 100px;
     }
     .webTrafficCard-height{
-        height: 260px !important;
+        height: 240px !important;
+    }
+    .header-padding{
+        padding: 0% !important;
+        height: 20px;
+    }
+    .heading-margin{
+        margin: 0% !important;
+        font-size: smaller;
+        margin-left: 2% !important;
+    }
+    .font-weight{
+        font-weight: 500;
+    }
+    .fontxxlrge{
+        font-size: xx-large !important;
+    }
+    .pd-0{
+        padding:0% !important;
+    }
+    .pd-3{
+        padding: 0.3% !important;
+    }
+    .dropdown-overflow{
+        overflow-y: auto !important;
+        height: 700%;
     }
