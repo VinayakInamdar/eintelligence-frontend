@@ -163,7 +163,7 @@ export class HomeComponent implements OnInit {
     , fb: FormBuilder, private openIdConnectService: OpenIdConnectService, private accountService: AccountService) {
     //  this.facebookPageToken = localStorage.getItem('FacebookAccessToken');
     //Ranking
-    debugger
+    
     facebook.init({
       appId: environment.facebook_appid,
       version: 'v9.0'
@@ -250,7 +250,7 @@ export class HomeComponent implements OnInit {
   }
   calculateRankings() {
     this.accessToken = localStorage.getItem('googleGscAccessToken');
-    debugger
+    
     if(this.accessToken != null && this.accessToken != undefined && this.accessToken!= ''){
     const d = new Date();
     let currYear = d.getFullYear();
@@ -283,7 +283,7 @@ export class HomeComponent implements OnInit {
     this.source = new LocalDataSource(this.campaignList)
   }
   addDataToPieChart(g, chartNo) {
-    debugger
+    
     this.pve =0;
     this.nve =0;
     this.nut =0;
@@ -490,17 +490,18 @@ export class HomeComponent implements OnInit {
       alert('Data fetch failed by device : ' + JSON.stringify(error.error));
     });
   }
-  getDataCurrentYear(startDate, endDate, all) {
-
+  getDataCurrentYear(startDate, endDate, all,url) {
     this.httpOptionJSON = {
       headers: new HttpHeaders({
         'Accept': 'application/json',
         'Authorization': 'Bearer ' + this.accessToken,
       })
     };
+    debugger
 
-    let urlcamp = this.selectedCampIdWebUrl.replace('/', '%2F');
-    const url = "https://www.googleapis.com/webmasters/v3/sites/https:%2F%2F" + urlcamp + "%2F/searchAnalytics/query?key=AIzaSyC1IsrCeeNXp9ksAmC8szBtYVjTLJC9UWQ";
+    //let urlcamp = this.selectedCampIdWebUrl.replace('/', '%2F');
+    //const url = "https://www.googleapis.com/webmasters/v3/sites/https%3A%2F%2Feintelligence.azurewebsites.net%2F/searchAnalytics/query";
+    //const url = "https://www.googleapis.com/webmasters/v3/sites/http:%2F%2F" + urlcamp + "%2F/searchAnalytics/query";
     //const url = "https://www.googleapis.com/webmasters/v3/sites/https%3A%2F%2Fwww.abhisi.com%2F/searchAnalytics/query?key=AIzaSyC1IsrCeeNXp9ksAmC8szBtYVjTLJC9UWQ";
     let data = {};
     if (all == 1) {
@@ -524,7 +525,7 @@ export class HomeComponent implements OnInit {
     }
     this.http.post(url, data, this.httpOptionJSON).subscribe(res => {
       if (res) {
-
+        debugger
         let rows = res['rows'];
         if (all == 0) {
           this.clicksThisYear = rows[0].clicks;
@@ -545,7 +546,7 @@ export class HomeComponent implements OnInit {
     });
 
   }
-  getDataPreviousYear(startDate, endDate, all, i) {
+  getDataPreviousYear(startDate, endDate, all, i,url) {
 
     this.httpOptionJSON = {
       headers: new HttpHeaders({
@@ -553,8 +554,8 @@ export class HomeComponent implements OnInit {
         'Authorization': 'Bearer ' + this.accessToken,
       })
     };
-    let urlcamp = this.selectedCampIdWebUrl.replace('/', '%2F');
-    const url = "https://www.googleapis.com/webmasters/v3/sites/https%3A%2F%2F" + urlcamp + "%2F/searchAnalytics/query?key=AIzaSyC1IsrCeeNXp9ksAmC8szBtYVjTLJC9UWQ";
+    //let urlcamp = this.selectedCampIdWebUrl.replace('/', '%2F');
+    //const url = "https://www.googleapis.com/webmasters/v3/sites/https%3A%2F%2F" + urlcamp + "%2F/searchAnalytics/query?key=AIzaSyC1IsrCeeNXp9ksAmC8szBtYVjTLJC9UWQ";
     let data = {
       "startRow": 0,
       "startDate": startDate,
@@ -619,6 +620,7 @@ export class HomeComponent implements OnInit {
     this.getData(0);
   }
   getData(i) {
+    
     this.accessToken = localStorage.getItem('googleGscAccessToken');
     this.getDateSettings();
     if (this.accessToken == '' || this.accessToken == undefined || this.accessToken == null) {
@@ -627,11 +629,16 @@ export class HomeComponent implements OnInit {
       alert("Start Date can not be grater then End Date");
     }
     else {
-
-      this.getDataCurrentYear(this.startDate, this.endDate, 0);
-      this.getDataPreviousYear(this.previousStartDate, this.previousEndDate, 0, i);
-      this.getDataCurrentYear(this.startDate, this.endDate, 1);
-      this.getDataPreviousYear(this.previousStartDate, this.previousEndDate, 1, i);
+      debugger
+      let urlcamp = this.selectedCampIdWebUrl.replace('/', '%2F');
+   const url = "https://www.googleapis.com/webmasters/v3/sites/https%3A%2F%2F" + urlcamp + "/searchAnalytics/query?key=AIzaSyC1IsrCeeNXp9ksAmC8szBtYVjTLJC9UWQ";
+     //const url = "https://searchconsole.googleapis.com/webmasters/v3/sites/https%3A%2F%2Fpatwa.co.in/searchAnalytics/query?key=AIzaSyC1IsrCeeNXp9ksAmC8szBtYVjTLJC9UWQ"
+     // const url = "https://www.googleapis.com/webmasters/v3/sites/https%3A%2F%2F" + urlcamp + "%2F/searchAnalytics/query?key=AIzaSyC1IsrCeeNXp9ksAmC8szBtYVjTLJC9UWQ";
+    //const url = "https://www.googleapis.com/webmasters/v3/sites/https%3A%2F%2Fwww.abhisi.com%2F/searchAnalytics/query?key=AIzaSyC1IsrCeeNXp9ksAmC8szBtYVjTLJC9UWQ";
+      this.getDataCurrentYear(this.startDate, this.endDate, 0,url);
+      this.getDataPreviousYear(this.previousStartDate, this.previousEndDate, 0, i,url);
+      this.getDataCurrentYear(this.startDate, this.endDate, 1,url);
+      this.getDataPreviousYear(this.previousStartDate, this.previousEndDate, 1, i,url);
       // this.getDataByDevice(this.startDate, this.endDate)
 
     }
@@ -738,12 +745,13 @@ export class HomeComponent implements OnInit {
     });
   }
   signInWithGoogle(): void {
+    
     const googleLoginOptions = {
       scope: 'profile email https://www.googleapis.com/auth/webmasters.readonly https://www.googleapis.com/auth/webmasters'
     };
     this.authService.signIn(GoogleLoginProvider.PROVIDER_ID, googleLoginOptions)
       .then((res) => {
-        debugger
+        
         this.accessToken = res['authToken'];
         localStorage.setItem('googleGscAccessToken', this.accessToken );
         this.calculateRankings();
@@ -757,7 +765,7 @@ export class HomeComponent implements OnInit {
       //scope: 'pages_show_list'
       scope: 'pages_show_list,read_insights,pages_read_engagement'
     };
-debugger
+
     this.facebook.login(loginOptions)
       .then((res: LoginResponse) => {
         console.log('Logged in', res);

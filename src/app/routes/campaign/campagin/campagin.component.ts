@@ -381,6 +381,7 @@ export class CampaginComponent implements OnInit, AfterViewInit {
     this.campaignModel = new Campaign();
     this.bsInlineRangeValue = [new Date(new Date().setDate(new Date().getDate() - 31)), new Date()];
     // this.getGaSetupByCampaignId();
+    debugger
     let id = this.route.snapshot.paramMap.get('id');
     this.selectedCampId = `${id}`;
     if (this.route.snapshot.queryParams.view !== undefined) {
