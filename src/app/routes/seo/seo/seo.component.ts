@@ -1796,8 +1796,8 @@ getSiteSpeedData(){
  // const url = "https://pagespeedonline.googleapis.com/pagespeedonline/v5/runPagespeed?url=https%3A%2F%2Fpatwa.co.in&key=AIzaSyC1IsrCeeNXp9ksAmC8szBtYVjTLJC9UWQ"
   this.http.get(url, this.httpOptionJSON).subscribe(res => {
     if (res) {
-      debugger
-      let rows = res['loadingExperience'];
+      this.showSpinnerSiteAnalysisContent=true;
+      let rows = res['loadingExperience'].metrics;
       let lighthouse = res['lighthouseResult'];
       //load expeience
      // this.CUMULATIVE_LAYOUT_SHIFT_SCORE = rows['CUMULATIVE_LAYOUT_SHIFT_SCORE'].category

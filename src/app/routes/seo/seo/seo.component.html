@@ -402,7 +402,7 @@
                                     <h4 class="heading-margin font-weight">WEB TRAFFIC BY CHANNEL</h4>
                                 </div>
                                 <div class="widget-content">
-                                    <div *ngIf="showSpinnerSiteAnalysisContent"
+                                    <div *ngIf="!showSpinnerSiteAnalysisContent"
                                         class="la-line-scale  linescaleloadercolortopleft">
                                         <div></div>
                                         <div></div>
@@ -410,7 +410,7 @@
                                         <div></div>
                                         <div></div>
                                     </div>
-                                    <div *ngIf=" !showSpinnerSiteAnalysisContent">
+                                    <div *ngIf="showSpinnerSiteAnalysisContent">
                                         <!-- <canvas *ngIf="!showSpinnerBaseChart" baseChart [datasets]="lineChartData1"
                                         [labels]="lineChartLabels1" [options]="lineChartOptions1" [colors]="lineChartColors1"
                                         [legend]="lineChartLegend1" [chartType]="pie" [plugins]="lineChartPlugins1"
@@ -435,7 +435,7 @@
                                     <h4 class="heading-margin font-weight">WEB TRAFFIC BY DEVICE </h4>
                                 </div>
                                 <div class="widget-content">
-                                    <div *ngIf="showSpinnerSiteAnalysisContent"
+                                    <div *ngIf="!showSpinnerSiteAnalysisContent"
                                         class="la-line-scale  linescaleloadercolortopleft">
                                         <div></div>
                                         <div></div>
@@ -443,7 +443,7 @@
                                         <div></div>
                                         <div></div>
                                     </div>
-                                    <div *ngIf=" !showSpinnerSiteAnalysisContent">
+                                    <div *ngIf="showSpinnerSiteAnalysisContent">
                                         <div>
                                             <canvas id='dougnutChart1' baseChart [chartType]="'bar'"
                                                 [options]="doughnutOptions1" [datasets]="doughnutData1.datasets"
@@ -464,11 +464,15 @@
                                     <h4 class="heading-margin font-weight">SITE SPEED</h4>
                                 </div>
                                 <div class="widget-content content-padding">
-                                    <div *ngIf="showSpinnerSiteAnalysisContent"
+                                    <div *ngIf="!showSpinnerSiteAnalysisContent"
                                         class="la-line-scale  linescaleloadercolortopleft">
-                                      
+                                        <div></div>
+                                        <div></div>
+                                        <div></div>
+                                        <div></div>
+                                        <div></div>
                                     </div>
-                                    <div class="row">
+                                    <div class="row" *ngIf="showSpinnerSiteAnalysisContent">
                                         <!-- <div class="col-sm-6"> -->
                                             <!-- <label class="reportmarginbottom font-weight">Load Experience Result</label> -->
                                         <!-- <table class="table table-bordered table-width">
