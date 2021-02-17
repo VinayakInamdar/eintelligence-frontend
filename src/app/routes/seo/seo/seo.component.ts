@@ -1115,10 +1115,10 @@ calculateObjectTotal(obj) {
 
   // using to get list of campaigns
   public getCampaignList(): void {
-debugger
+
   var userid = localStorage.getItem("userID");
   this.campaignService.getCampaign(userid).subscribe(res => {
-    debugger
+    
     this.campaignList = res;
     // this.source = new LocalDataSource(this.campaignList)
     var name = "";
@@ -1135,7 +1135,8 @@ debugger
     this.getSelectedCampaignWebsiteAuditReportData()
     this.accessToken = localStorage.getItem('googleGscAccessToken');
     if (this.accessToken != null && this.accessToken != undefined && this.accessToken != '') {
-      debugger
+      
+      this.getGoogleAnalyticsData();
       this.getData();
       this.getSiteSpeedData();
     } else {
@@ -1147,7 +1148,46 @@ debugger
 
 
 }
+getGoogleAnalyticsData(){
+  debugger
+  let currDate = new Date();
+  let endDate1 = this.datepipe.transform(currDate, 'yyyy-MM-dd');
+  let startDate1 = this.datepipe.transform(currDate.setDate(currDate.getDate() - 28), 'yyyy-MM-dd');
+  this.httpOptionJSON = {
+    headers: new HttpHeaders({
+      'Accept': 'application/json',
+      'Authorization': 'Bearer ' + this.accessToken,
+    })
+  };
+  let urlcamp = this.selectedCampIdWebUrl.replace('/', '%2F');
+  //const url ="https://www.googleapis.com/analytics/v3/management/accounts";
+  const url = "https://www.googleapis.com/analytics/v3/data/ga?ids=ga:49139272&start-date=2020-10-01&end-date=2021-02-15&metrics=ga:sessions,ga:bounces";
 
+  // let urlcamp = this.selectedCampIdWebUrl.replace('/', '%2F');
+  // const url = "https://www.googleapis.com/webmasters/v3/sites/https:%2F%2F" + urlcamp + "%2F/searchAnalytics/query?key=AIzaSyC1IsrCeeNXp9ksAmC8szBtYVjTLJC9UWQ";
+  //const url = "https://www.googleapis.com/webmasters/v3/sites/https:%2F%2F" + urlcamp + "%2F/searchAnalytics/query?key=AIzaSyC1IsrCeeNXp9ksAmC8szBtYVjTLJC9UWQ";
+  //const url = "https://www.googleapis.com/webmasters/v3/sites/https%3A%2F%2Fwww.abhisi.com%2F/searchAnalytics/query?key=AIzaSyC1IsrCeeNXp9ksAmC8szBtYVjTLJC9UWQ";
+  let data = {};
+
+    data = {
+      "startRow": 0,
+      "startDate": startDate1,
+      "endDate": endDate1,
+      "dataState": "ALL",
+    };
+
+  this.http.get(url, this.httpOptionJSON).subscribe(res => {
+    if (res) {
+      debugger
+      let rows = res['rows'];
+ 
+
+    }
+  }, error => {
+
+    alert('Analytics Data Fetch failed : ' + JSON.stringify(error.error));
+  });
+}
   //using to get seleted campaign website audit report data
   public getSelectedCampaignWebsiteAuditReportData() {
   this.changeCircularProgressOuterStrokeColor()
@@ -1791,7 +1831,7 @@ getSiteSpeedData(){
     })
   };
   let urlcamp = this.selectedCampIdWebUrl.replace('/', '%2F');
-  debugger
+  
  const url = "https://pagespeedonline.googleapis.com/pagespeedonline/v5/runPagespeed?url=https%3A%2F%2F" + urlcamp + "?key=AIzaSyC1IsrCeeNXp9ksAmC8szBtYVjTLJC9UWQ";
  // const url = "https://pagespeedonline.googleapis.com/pagespeedonline/v5/runPagespeed?url=https%3A%2F%2Fpatwa.co.in&key=AIzaSyC1IsrCeeNXp9ksAmC8szBtYVjTLJC9UWQ"
   this.http.get(url, this.httpOptionJSON).subscribe(res => {
@@ -1827,7 +1867,7 @@ signInWithGoogle(): void {
   };
   this.authService.signIn(GoogleLoginProvider.PROVIDER_ID, googleLoginOptions)
     .then((res) => {
-      debugger
+      
       this.accessToken = res['authToken'];
       localStorage.setItem('googleGscAccessToken', this.accessToken);
       this.isShowLoginButton = false;
@@ -1877,7 +1917,7 @@ getDataByDevice(startDate, endDate, url) {
   });
 }
 getDataCurrentYear(startDate, endDate, all, url) {
-debugger
+
   this.httpOptionJSON = {
     headers: new HttpHeaders({
       'Accept': 'application/json',
@@ -1911,7 +1951,7 @@ debugger
   }
   this.http.post(url, data, this.httpOptionJSON).subscribe(res => {
     if (res) {
-      debugger
+      
       let rows = res['rows'];
       if (all == 0) {
         this.clicksThisYear = rows[0].clicks;
@@ -2027,11 +2067,11 @@ getData() {
     alert("Start Date can not be grater then End Date");
   }
   else {
-    debugger
+    
     let urlcamp = this.selectedCampIdWebUrl.replace('/', '%2F');
-   //const url = "https://www.googleapis.com/webmasters/v3/sites/https%3A%2F%2F" + urlcamp + "/searchAnalytics/query?key=AIzaSyC1IsrCeeNXp9ksAmC8szBtYVjTLJC9UWQ";
+   const url = "https://www.googleapis.com/webmasters/v3/sites/https%3A%2F%2F" + urlcamp + "/searchAnalytics/query?key=AIzaSyC1IsrCeeNXp9ksAmC8szBtYVjTLJC9UWQ";
 
-    const url = "https://searchconsole.googleapis.com/webmasters/v3/sites/https%3A%2F%2Fpatwa.co.in/searchAnalytics/query?key=AIzaSyC1IsrCeeNXp9ksAmC8szBtYVjTLJC9UWQ"
+    //const url = "https://searchconsole.googleapis.com/webmasters/v3/sites/https%3A%2F%2Fpatwa.co.in/searchAnalytics/query?key=AIzaSyC1IsrCeeNXp9ksAmC8szBtYVjTLJC9UWQ"
     this.getDataCurrentYear(this.startDate, this.endDate, 0,url);
     this.getDataPreviousYear(this.previousStartDate, this.previousEndDate, 0, url);
     this.getDataCurrentYear(this.startDate, this.endDate, 1,url);

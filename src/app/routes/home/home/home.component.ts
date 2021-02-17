@@ -747,11 +747,11 @@ export class HomeComponent implements OnInit {
   signInWithGoogle(): void {
     
     const googleLoginOptions = {
-      scope: 'profile email https://www.googleapis.com/auth/webmasters.readonly https://www.googleapis.com/auth/webmasters'
+      scope: 'profile email https://www.googleapis.com/auth/webmasters.readonly https://www.googleapis.com/auth/webmasters https://www.googleapis.com/auth/analytics https://www.googleapis.com/auth/analytics.readonly'
     };
     this.authService.signIn(GoogleLoginProvider.PROVIDER_ID, googleLoginOptions)
       .then((res) => {
-        
+        debugger
         this.accessToken = res['authToken'];
         localStorage.setItem('googleGscAccessToken', this.accessToken );
         this.calculateRankings();
