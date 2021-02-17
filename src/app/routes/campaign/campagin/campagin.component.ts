@@ -163,7 +163,10 @@ export class CampaginComponent implements OnInit, AfterViewInit {
   hasAuthorize: boolean;
   reportsData: any;
   settings = {
-    actions: { add: false, edit: false, delete: false },
+    //actions: { add: false, edit: { confirmSave: true }, delete: false },
+    actions: {
+      custom: [{ name: 'ourCustomAction', title: "View " }]
+    },
     columns: {
       name: {
         title: 'NAME',
@@ -451,12 +454,13 @@ export class CampaginComponent implements OnInit, AfterViewInit {
     this.campaignModel = new Campaign();
     this.bsInlineRangeValue = [new Date(new Date().setDate(new Date().getDate() - 31)), new Date()];
     // this.getGaSetupByCampaignId();
-    debugger
+
     let id = this.route.snapshot.paramMap.get('id');
     this.selectedCampId = `${id}`;
     if (this.route.snapshot.queryParams.view !== undefined) {
       this.checkqueryparams();
     }
+   
     this.getCampaignList();
     this.getSerpList();
     this.getRankingGraphData();
@@ -503,6 +507,13 @@ export class CampaginComponent implements OnInit, AfterViewInit {
     });
 
   }
+  onCustomAction(campaign: any) {
+   this.selectedCampId = campaign.data.id
+   this.settingActive = 4;
+   this.campaignService.getcampaign(this.selectedCampId).subscribe(res => {
+    this.campaignModel=res;
+   });
+   }
 
   // using to check Integration Status of selected campaign Id
   goToOverview(): void {
@@ -812,7 +823,7 @@ export class CampaginComponent implements OnInit, AfterViewInit {
           };
           return a.year - b.year || MONTH[a.month] - MONTH[b.month];
         });
-        debugger
+      
         let u =  this.rankingGraphData;
         let p = u.filter(x => x.month == "January")
         if (p != null && p != undefined && p.length > 0) {
@@ -931,6 +942,21 @@ export class CampaginComponent implements OnInit, AfterViewInit {
     }
 
   }
+  //Update Campaign
+  updateCampaignForm(value: Campaign) {
+    var result: Campaign = Object.assign({}, value);
+    this.campaignService.updatecampaign(this.selectedCampId,result).subscribe((res: Campaign) => {
+      this.campaignModel = res;
+      //validation
+      event.preventDefault();
+      for (let c in this.valForm.controls) {
+        this.valForm.controls[c].markAsTouched();
+      }
+      if (!this.valForm.valid) {
+        return;
+      }
+    });
+  }
 
   // using to  create new campaign in db
   submitForm(value: any) {
@@ -990,6 +1016,26 @@ export class CampaginComponent implements OnInit, AfterViewInit {
     success({
       icon: this.translate.instant('sweetalert.SUCCESSICON'),
       title: this.translate.instant('message.INSERTMSG'),
+      buttons: {
+        confirm: {
+          text: this.translate.instant('sweetalert.OKBUTTON'),
+          value: true,
+          visible: true,
+          className: "bg-primary",
+          closeModal: true,
+        }
+      }
+    }).then((isConfirm: any) => {
+      if (isConfirm) {
+        this.router.navigate(['/home']);
+      }
+    });
+  }
+//Campaign Update 
+  updateSuccessAlert() {
+    success({
+      icon: this.translate.instant('sweetalert.SUCCESSICON'),
+      title: this.translate.instant('message.UPDATEMSG'),
       buttons: {
         confirm: {
           text: this.translate.instant('sweetalert.OKBUTTON'),
@@ -1206,10 +1252,14 @@ public goToInstagram(event) {
   this.router.navigate([`./instagram/instagram`, { id: this.selectedCampId }])
 }
 public goToGSC(event) {
-  debugger
+ 
   this.router.navigate([`./gsc/gsc`, { id: this.selectedCampId }])
 }
-
+public closeCampaignComponent(event) {
+  event.preventDefault()
+  this.valForm.reset()
+  this.router.navigate(['home'])
+}
   //using to close create campaign  component
   public closeCreateCampaignComponent(event) {
     event.preventDefault()
@@ -1315,7 +1365,7 @@ public goToGSC(event) {
   //###########################################################################
   calculateRankings() {
     this.accessToken = localStorage.getItem('googleGscAccessToken');
-    debugger
+   
     if(this.accessToken != null && this.accessToken != undefined && this.accessToken!= ''){
     const d = new Date();
     let currYear = d.getFullYear();
@@ -1395,7 +1445,7 @@ public goToGSC(event) {
         'Authorization': 'Bearer ' + this.accessToken,
       })
     };
-    debugger
+    
 
     //let urlcamp = this.selectedCampIdWebUrl.replace('/', '%2F');
     //const url = "https://www.googleapis.com/webmasters/v3/sites/https%3A%2F%2Feintelligence.azurewebsites.net%2F/searchAnalytics/query";
@@ -1423,7 +1473,7 @@ public goToGSC(event) {
     }
     this.http.post(url, data, this.httpOptionJSON).subscribe(res => {
       if (res) {
-        debugger
+       
         let rows = res['rows'];
         if (all == 0) {
           this.clicksThisYear = rows[0].clicks;
@@ -1524,7 +1574,7 @@ public goToGSC(event) {
       alert("Start Date can not be grater then End Date");
     }
     else {
-      debugger
+ 
       let urlcamp = this.selectedCampIdWebUrl.replace('/', '%2F');
    const url = "https://www.googleapis.com/webmasters/v3/sites/https%3A%2F%2F" + urlcamp + "/searchAnalytics/query?key=AIzaSyC1IsrCeeNXp9ksAmC8szBtYVjTLJC9UWQ";
      //const url = "https://searchconsole.googleapis.com/webmasters/v3/sites/https%3A%2F%2Fpatwa.co.in/searchAnalytics/query?key=AIzaSyC1IsrCeeNXp9ksAmC8szBtYVjTLJC9UWQ"
@@ -1645,7 +1695,7 @@ public goToGSC(event) {
   //   };
   //   this.authService.signIn(GoogleLoginProvider.PROVIDER_ID, googleLoginOptions)
   //     .then((res) => {
-  //       debugger
+  //       
   //       this.accessToken = res['authToken'];
   //       localStorage.setItem('googleGscAccessToken', this.accessToken );
   //       this.calculateRankings();
