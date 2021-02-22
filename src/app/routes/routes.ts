@@ -203,6 +203,11 @@ export const routes: Routes = [
                 // component: LayoutComponent,
                 loadChildren: () => import('./terms-and-conditions/terms-and-conditions.module').then(m => m.TermsAndConditionsModule)
             },
+            {
+                path: 'google-ads',
+                component: LayoutComponent,
+                loadChildren: () => import('./google-ads/google-ads.module').then(m => m.GoogleAdsModule)
+            },
         ]
     },
     

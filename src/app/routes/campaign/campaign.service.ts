@@ -35,6 +35,10 @@ export class CampaignService {
 
     return this.http.post<Campaign>(this.Url + 'campaigns', campaignSetupData);
   }
+  //Delete Campaign
+   deleteCampaignById(id: string): Observable<Campaign> {
+    return this.http.delete<Campaign>(this.Url + 'campaigns/' + id);
+  }
   getFilteredRankingGraph(filter: FilterOptionModel): Observable<any> {
     
     const params = `PageNumber=${filter.pageNumber}&PageSize=${filter.pageSize}&SearchQuery=${filter.searchQuery}&OrderBy=${filter.orderBy}&Fields=${filter.fields}`;

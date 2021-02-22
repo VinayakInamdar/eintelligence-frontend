@@ -163,9 +163,17 @@ export class CampaginComponent implements OnInit, AfterViewInit {
   hasAuthorize: boolean;
   reportsData: any;
   settings = {
+    defaultStyle:false,
+    attr: {
+      class: 'table table-responsive',
+
+    },
     //actions: { add: false, edit: { confirmSave: true }, delete: false },
     actions: {
-      custom: [{ name: 'ourCustomAction', title: "View " }]
+      columnTitle: '',
+      custom: [{ name: 'editCampaign', title: '<i class="fas fa-edit"></i>' },
+      { name: 'deleteCampaign', title: '<span class="text-danger col" style="padding-left:1rem"><i class="fas fa-trash-alt"></i></span>' }],
+      add: false, edit: false, delete: false, position: 'right'
     },
     columns: {
       name: {
@@ -206,8 +214,8 @@ export class CampaginComponent implements OnInit, AfterViewInit {
   setCurrentSettingActive: number;
   selectedCampaignTaskId: string;
   securitySection: { ssl: any; sslcertificate: any; have_sitemap: any; have_robots: any; };
-  
- // endDate = new Date().toISOString().split("T")[0];
+
+  // endDate = new Date().toISOString().split("T")[0];
   firstDay = new Date(this.date.getFullYear(), this.date.getMonth(), 1);
   lastDay = new Date(this.date.getFullYear(), this.date.getMonth() + 1, 0);
 
@@ -507,14 +515,22 @@ export class CampaginComponent implements OnInit, AfterViewInit {
     });
 
   }
-  onCustomAction(campaign: any) {
-   this.selectedCampId = campaign.data.id
-   this.settingActive = 4;
-   this.campaignService.getcampaign(this.selectedCampId).subscribe(res => {
-    this.campaignModel=res;
-   });
-   }
-
+  editCampaign(campaign: any) {
+    this.selectedCampId = campaign.id
+    this.settingActive = 4;
+    this.campaignService.getcampaign(this.selectedCampId).subscribe(res => {
+      this.campaignModel = res;
+    });
+  }
+  onCustomAction(event) {
+    switch (event.action) {
+      case 'editCampaign':
+        this.editCampaign(event.data);
+        break;
+      case 'deleteCampaign':
+        this.deleteCampaign(event.data);
+    }
+  }
   // using to check Integration Status of selected campaign Id
   goToOverview(): void {
     let id = this.route.snapshot.paramMap.get('id');
@@ -728,7 +744,7 @@ export class CampaginComponent implements OnInit, AfterViewInit {
 
   // using to get list of campaigns
   public getCampaignList(): void {
-    var userid =localStorage.getItem("userID");
+    var userid = localStorage.getItem("userID");
 
     this.campaignService.getCampaign(userid).subscribe(res => {
       this.campaignList = res;
@@ -823,75 +839,75 @@ export class CampaginComponent implements OnInit, AfterViewInit {
           };
           return a.year - b.year || MONTH[a.month] - MONTH[b.month];
         });
-      
-        let u =  this.rankingGraphData;
+
+        let u = this.rankingGraphData;
         let p = u.filter(x => x.month == "January")
         if (p != null && p != undefined && p.length > 0) {
           this.barDataArray.push(p[0].avragePosition)
         }
         else { this.barDataArray.push(0) }
 
-        u =  this.rankingGraphData;
+        u = this.rankingGraphData;
         p = this.rankingGraphData.filter(x => x.month == "February")
         if (p != null && p != undefined && p.length > 0) {
           this.barDataArray.push(p[0].avragePosition)
         }
         else { this.barDataArray.push(0) }
-        u =  this.rankingGraphData;
+        u = this.rankingGraphData;
         p = this.rankingGraphData.filter(x => x.month == "March")
         if (p != null && p != undefined && p.length > 0) {
           this.barDataArray.push(p[0].avragePosition)
         }
         else { this.barDataArray.push(0) }
-        u =  this.rankingGraphData;
+        u = this.rankingGraphData;
         p = this.rankingGraphData.filter(x => x.month == "April")
         if (p != null && p != undefined && p.length > 0) {
           this.barDataArray.push(p[0].avragePosition)
         }
         else { this.barDataArray.push(0) }
-        u =  this.rankingGraphData;
+        u = this.rankingGraphData;
         p = this.rankingGraphData.filter(x => x.month == "May")
         if (p != null && p != undefined && p.length > 0) {
           this.barDataArray.push(p[0].avragePosition)
         }
         else { this.barDataArray.push(0) }
-        u =  this.rankingGraphData;
+        u = this.rankingGraphData;
         p = this.rankingGraphData.filter(x => x.month == "June")
         if (p != null && p != undefined && p.length > 0) {
           this.barDataArray.push(p[0].avragePosition)
         }
         else { this.barDataArray.push(0) }
-        u =  this.rankingGraphData;
+        u = this.rankingGraphData;
         p = this.rankingGraphData.filter(x => x.month == "July")
         if (p != null && p != undefined && p.length > 0) {
           this.barDataArray.push(p[0].avragePosition)
         }
         else { this.barDataArray.push(0) }
-        u =  this.rankingGraphData;
+        u = this.rankingGraphData;
         p = this.rankingGraphData.filter(x => x.month == "August")
         if (p != null && p != undefined && p.length > 0) {
           this.barDataArray.push(p[0].avragePosition)
         }
         else { this.barDataArray.push(0) }
-        u =  this.rankingGraphData;
+        u = this.rankingGraphData;
         p = this.rankingGraphData.filter(x => x.month == "September")
         if (p != null && p != undefined && p.length > 0) {
           this.barDataArray.push(p[0].avragePosition)
         }
         else { this.barDataArray.push(0) }
-        u =  this.rankingGraphData;
+        u = this.rankingGraphData;
         p = this.rankingGraphData.filter(x => x.month == "October")
         if (p != null && p != undefined && p.length > 0) {
           this.barDataArray.push(p[0].avragePosition)
         }
         else { this.barDataArray.push(0) }
-        u =  this.rankingGraphData;
+        u = this.rankingGraphData;
         p = this.rankingGraphData.filter(x => x.month == "November")
         if (p != null && p != undefined && p.length > 0) {
           this.barDataArray.push(p[0].avragePosition)
         }
         else { this.barDataArray.push(0) }
-        u =  this.rankingGraphData;
+        u = this.rankingGraphData;
         p = this.rankingGraphData.filter(x => x.month == "December")
         if (p != null && p != undefined && p.length > 0) {
           this.barDataArray.push(p[0].avragePosition)
@@ -945,7 +961,7 @@ export class CampaginComponent implements OnInit, AfterViewInit {
   //Update Campaign
   updateCampaignForm(value: Campaign) {
     var result: Campaign = Object.assign({}, value);
-    this.campaignService.updatecampaign(this.selectedCampId,result).subscribe((res: Campaign) => {
+    this.campaignService.updatecampaign(this.selectedCampId, result).subscribe((res: Campaign) => {
       this.campaignModel = res;
       //validation
       event.preventDefault();
@@ -988,6 +1004,77 @@ export class CampaginComponent implements OnInit, AfterViewInit {
       this.staticTabs.tabs[tabid].active = true;
     }
   }
+  //using to go to next tab while edit
+  goToNextTabForEdit(event, inputvalue, fieldName, tabid) {
+    event.preventDefault()
+    var value = this.validateForm(fieldName);
+    this.staticTabs.tabs[tabid].disabled = false;
+    this.staticTabs.tabs[tabid].active = true;
+  }
+
+  //Delete campaign
+  deleteCampaign(event) {
+    success({
+      icon: this.translate.instant('sweetalert.WARNINGICON'),
+      title: this.translate.instant('message.DELETEMSG'),
+      buttons: {
+        cancel: {
+          text: this.translate.instant('sweetalert.CANCELBUTTON'),
+          value: null,
+          visible: true,
+          className: "",
+          closeModal: false
+        },
+        confirm: {
+          text: this.translate.instant('sweetalert.CONFIRMBUTTON'),
+          value: true,
+          visible: true,
+          className: "bg-danger",
+          closeModal: false
+        }
+      }
+    }).then((isConfirm: any) => {
+      if (isConfirm) {
+        ;
+        this.campaignService.deleteCampaignById(event.id).subscribe(res => {
+          ;
+          success({
+            icon: this.translate.instant('sweetalert.WARNINGICON'),
+            title: this.translate.instant('message.DELETEMSG'),
+            buttons: {
+              confirm: {
+                text: this.translate.instant('sweetalert.OKBUTTON'),
+                value: true,
+                visible: true,
+                className: "bg-primary",
+                closeModal: true,
+              }
+            }
+          }).then((isConfirm) => {
+            if (isConfirm) {
+              this.router.navigate(['/home']);
+            }
+          })
+        });
+      } else {
+        success({
+          icon: this.translate.instant('sweetalert.WARNINGICON'),
+          title: this.translate.instant('message.CANCLEMSG'),
+          buttons: {
+            confirm: {
+                text: this.translate.instant('sweetalert.OKBUTTON'),
+                value: true,
+                visible: true,
+                className: "bg-primary",
+                closeModal: true,
+            }
+        }
+        }).then((isConfirm) => {
+           this.router.navigate(['/home']);
+        })
+      }
+    });
+  }
 
   // using to validate from 
   validateForm(fieldName) {
@@ -1027,11 +1114,11 @@ export class CampaginComponent implements OnInit, AfterViewInit {
       }
     }).then((isConfirm: any) => {
       if (isConfirm) {
-        this.router.navigate(['/home']);
+        this.router.navigate(['/campaign']);
       }
     });
   }
-//Campaign Update 
+  //Campaign Update 
   updateSuccessAlert() {
     success({
       icon: this.translate.instant('sweetalert.SUCCESSICON'),
@@ -1236,30 +1323,30 @@ export class CampaginComponent implements OnInit, AfterViewInit {
   }
 
 
-public goToSeoOverview(event) {
-  this.router.navigate([`/campaign/:id${this.selectedCampId}/seo`])
-}
-public goToSocialMedia(event) {
+  public goToSeoOverview(event) {
+    this.router.navigate([`/campaign/:id${this.selectedCampId}/seo`])
+  }
+  public goToSocialMedia(event) {
 
-  this.router.navigate([`./socialmedia/socialmedia`, { id: this.selectedCampId }])
-}
-public goToLinkedIn(event) {
+    this.router.navigate([`./socialmedia/socialmedia`, { id: this.selectedCampId }])
+  }
+  public goToLinkedIn(event) {
 
-  this.router.navigate([`./linkedin/linkedin`, { id: this.selectedCampId }])
-}
-public goToInstagram(event) {
+    this.router.navigate([`./linkedin/linkedin`, { id: this.selectedCampId }])
+  }
+  public goToInstagram(event) {
 
-  this.router.navigate([`./instagram/instagram`, { id: this.selectedCampId }])
-}
-public goToGSC(event) {
- 
-  this.router.navigate([`./gsc/gsc`, { id: this.selectedCampId }])
-}
-public closeCampaignComponent(event) {
-  event.preventDefault()
-  this.valForm.reset()
-  this.router.navigate(['home'])
-}
+    this.router.navigate([`./instagram/instagram`, { id: this.selectedCampId }])
+  }
+  public goToGSC(event) {
+
+    this.router.navigate([`./gsc/gsc`, { id: this.selectedCampId }])
+  }
+  public closeCampaignComponent(event) {
+    event.preventDefault()
+    this.valForm.reset()
+    this.router.navigate(['home'])
+  }
   //using to close create campaign  component
   public closeCreateCampaignComponent(event) {
     event.preventDefault()
@@ -1299,7 +1386,7 @@ public closeCampaignComponent(event) {
       this.sitespeedCircularProgressouterStrokeColorMobile = '#148B39'
     }
   }
- //using to open create campaign view to create new campaign in db
+  //using to open create campaign view to create new campaign in db
 
   public changeDatesFormat(s, i) {
     var one = s.substring(0, s.length - 4);
@@ -1365,38 +1452,38 @@ public closeCampaignComponent(event) {
   //###########################################################################
   calculateRankings() {
     this.accessToken = localStorage.getItem('googleGscAccessToken');
-   
-    if(this.accessToken != null && this.accessToken != undefined && this.accessToken!= ''){
-    const d = new Date();
-    let currYear = d.getFullYear();
-    for (let i = 0; i < this.campaignList.length; i++) {
-      let p = this.tempRankingGraphData.filter(x => x.campaignId.toString().toLowerCase() === this.campaignList[i].id.toString().toLowerCase() && x.year == currYear)
-      p.sort(function (a, b) {
-        var MONTH = {
-          January: 1, February: 2, March: 3, April: 4, May: 5, June: 6,
-          July: 7, August: 8, September: 9, October: 10, November: 11, December: 12
-        };
-        return a.year - b.year || MONTH[a.month] - MONTH[b.month];
-      });
-      let thisMonth = p[p.length - 1];
-      let PrevMonth = p[p.length - 2];
-      let g = this.getDifference(PrevMonth.avragePosition, thisMonth.avragePosition);
+
+    if (this.accessToken != null && this.accessToken != undefined && this.accessToken != '') {
+      const d = new Date();
+      let currYear = d.getFullYear();
+      for (let i = 0; i < this.campaignList.length; i++) {
+        let p = this.tempRankingGraphData.filter(x => x.campaignId.toString().toLowerCase() === this.campaignList[i].id.toString().toLowerCase() && x.year == currYear)
+        p.sort(function (a, b) {
+          var MONTH = {
+            January: 1, February: 2, March: 3, April: 4, May: 5, June: 6,
+            July: 7, August: 8, September: 9, October: 10, November: 11, December: 12
+          };
+          return a.year - b.year || MONTH[a.month] - MONTH[b.month];
+        });
+        let thisMonth = p[p.length - 1];
+        let PrevMonth = p[p.length - 2];
+        let g = this.getDifference(PrevMonth.avragePosition, thisMonth.avragePosition);
 
 
-      if (g == 'NaN') { g = "0"; }
-      this.total = p.length;
-      this.selectedCampIdWebUrl = this.campaignList[i].webUrl;
-      this.getData(i);
-      this.campaignList[i].ranking = g + "%";
-      if(this.facebookAccessToken != null && this.facebookAccessToken != undefined && this.facebookAccessToken!= ''){
-        this.getFacebookUserId(i);
+        if (g == 'NaN') { g = "0"; }
+        this.total = p.length;
+        this.selectedCampIdWebUrl = this.campaignList[i].webUrl;
+        this.getData(i);
+        this.campaignList[i].ranking = g + "%";
+        if (this.facebookAccessToken != null && this.facebookAccessToken != undefined && this.facebookAccessToken != '') {
+          this.getFacebookUserId(i);
+        }
       }
     }
-  }
     this.tableData = this.campaignList;
     this.source = new LocalDataSource(this.campaignList)
   }
-  
+
   getDifference(previous, current) {
 
     let diff = ((parseFloat(previous) - parseFloat(current)) * 100) / parseFloat(previous)
@@ -1435,10 +1522,10 @@ public closeCampaignComponent(event) {
 
       }
     }, error => {
-      alert('Data fetch failed by device : ' + JSON.stringify(error.error));
+       alert('Data fetch failed by device : ' + JSON.stringify(error.error));
     });
   }
-  getDataCurrentYear(startDate, endDate, all,url) {
+  getDataCurrentYear(startDate, endDate, all, url) {
     this.httpOptionJSON = {
       headers: new HttpHeaders({
         'Accept': 'application/json',
@@ -1473,7 +1560,7 @@ public closeCampaignComponent(event) {
     }
     this.http.post(url, data, this.httpOptionJSON).subscribe(res => {
       if (res) {
-       
+
         let rows = res['rows'];
         if (all == 0) {
           this.clicksThisYear = rows[0].clicks;
@@ -1494,7 +1581,7 @@ public closeCampaignComponent(event) {
     });
 
   }
-  getDataPreviousYear(startDate, endDate, all, i,url) {
+  getDataPreviousYear(startDate, endDate, all, i, url) {
 
     this.httpOptionJSON = {
       headers: new HttpHeaders({
@@ -1574,16 +1661,16 @@ public closeCampaignComponent(event) {
       alert("Start Date can not be grater then End Date");
     }
     else {
- 
+
       let urlcamp = this.selectedCampIdWebUrl.replace('/', '%2F');
-   const url = "https://www.googleapis.com/webmasters/v3/sites/https%3A%2F%2F" + urlcamp + "/searchAnalytics/query?key=AIzaSyC1IsrCeeNXp9ksAmC8szBtYVjTLJC9UWQ";
-     //const url = "https://searchconsole.googleapis.com/webmasters/v3/sites/https%3A%2F%2Fpatwa.co.in/searchAnalytics/query?key=AIzaSyC1IsrCeeNXp9ksAmC8szBtYVjTLJC9UWQ"
-     // const url = "https://www.googleapis.com/webmasters/v3/sites/https%3A%2F%2F" + urlcamp + "%2F/searchAnalytics/query?key=AIzaSyC1IsrCeeNXp9ksAmC8szBtYVjTLJC9UWQ";
-    //const url = "https://www.googleapis.com/webmasters/v3/sites/https%3A%2F%2Fwww.abhisi.com%2F/searchAnalytics/query?key=AIzaSyC1IsrCeeNXp9ksAmC8szBtYVjTLJC9UWQ";
-      this.getDataCurrentYear(this.startDate, this.endDate, 0,url);
-      this.getDataPreviousYear(this.previousStartDate, this.previousEndDate, 0, i,url);
-      this.getDataCurrentYear(this.startDate, this.endDate, 1,url);
-      this.getDataPreviousYear(this.previousStartDate, this.previousEndDate, 1, i,url);
+      const url = "https://www.googleapis.com/webmasters/v3/sites/https%3A%2F%2F" + urlcamp + "/searchAnalytics/query?key=AIzaSyC1IsrCeeNXp9ksAmC8szBtYVjTLJC9UWQ";
+      //const url = "https://searchconsole.googleapis.com/webmasters/v3/sites/https%3A%2F%2Fpatwa.co.in/searchAnalytics/query?key=AIzaSyC1IsrCeeNXp9ksAmC8szBtYVjTLJC9UWQ"
+      // const url = "https://www.googleapis.com/webmasters/v3/sites/https%3A%2F%2F" + urlcamp + "%2F/searchAnalytics/query?key=AIzaSyC1IsrCeeNXp9ksAmC8szBtYVjTLJC9UWQ";
+      //const url = "https://www.googleapis.com/webmasters/v3/sites/https%3A%2F%2Fwww.abhisi.com%2F/searchAnalytics/query?key=AIzaSyC1IsrCeeNXp9ksAmC8szBtYVjTLJC9UWQ";
+      this.getDataCurrentYear(this.startDate, this.endDate, 0, url);
+      this.getDataPreviousYear(this.previousStartDate, this.previousEndDate, 0, i, url);
+      this.getDataCurrentYear(this.startDate, this.endDate, 1, url);
+      this.getDataPreviousYear(this.previousStartDate, this.previousEndDate, 1, i, url);
       // this.getDataByDevice(this.startDate, this.endDate)
 
     }
@@ -1627,16 +1714,16 @@ public closeCampaignComponent(event) {
         }
       }
     }
-    , error => {
-      alert('Fetch Facebook Data Failed : ' + JSON.stringify(error.error));
-    });
+      , error => {
+        alert('Fetch Facebook Data Failed : ' + JSON.stringify(error.error));
+      });
   }
   facebookDataLastMonth(index) {
-    
+
     const url = "https://graph.facebook.com/" + environment.facebook_pageid + "/insights/page_impressions_unique,page_total_actions,page_positive_feedback_by_type,page_negative_feedback,page_views_total,page_impressions,page_views_external_referrals,page_fans_by_unlike_source_unique,page_impressions_organic,page_impressions_paid,page_fan_removes_unique?access_token=" + this.facebookPageToken;
     this.http.get(url).subscribe(res => {
-      if (res) {   
-            
+      if (res) {
+
         for (let i = 0; i < res['data'].length; i++) {
           let p = res['data'][i];
           //Page Reach
@@ -1646,9 +1733,9 @@ public closeCampaignComponent(event) {
             for (let k = 0; k < l.length; k++) {
               this.pageReachTotal = parseInt(this.pageReachTotal) + parseInt(l[k].value)
             }
-            
+
             this.lastMonthFacebook = this.pageReachTotal;
-            this.percentFacebook = this.getDifference(this.thisMonthFacebook,this.lastMonthFacebook);
+            this.percentFacebook = this.getDifference(this.thisMonthFacebook, this.lastMonthFacebook);
             this.campaignList[index].socialMedia = this.percentFacebook;
             this.tableData = this.campaignList;
             this.source = new LocalDataSource(this.campaignList)
@@ -1656,21 +1743,21 @@ public closeCampaignComponent(event) {
         }
       }
     }
-    , error => {
-      alert('Fetch Facebook Data Failed : ' + JSON.stringify(error.error));
-    });
+      , error => {
+         alert('Fetch Facebook Data Failed : ' + JSON.stringify(error.error));
+      });
   }
   getFacebookUserId(i) {
 
     const url = "https://graph.facebook.com/me?access_token=" + this.facebookAccessToken + "&fields=id,name";
     this.http.get(url).subscribe(res => {
       if (res) {
-        
+
         this.facebookUserId = res['id'];
         this.generatePageToken(i);
       }
     }, error => {
-      alert('Fetch Facebook USerId Failed : ' + JSON.stringify(error.error));
+       alert('Fetch Facebook USerId Failed : ' + JSON.stringify(error.error));
     });
   }
   generatePageToken(i) {
@@ -1679,7 +1766,7 @@ public closeCampaignComponent(event) {
     // const url = "https://graph.facebook.com/105114094889635/accounts?access_token=EAAGXn3oGklwBAEDY2dpA11KLDG0hhHYWi9pts9qmPJxXs6Ywb4UOq6SRhvr5kFpNDeUrHkG1rIZCxHJMxQS3U7UurncvEnjuuaD4aLmKDAT5uIoSb3QWSE92GkLWOS0Oqub7ZAIcxwtMBAaLOSQWqEiwsMuqaugO5XwiXJx97ekfXeuB8cnQhISZAtINl8ZD";
     this.http.get(url).subscribe(res => {
       if (res) {
-        
+
         this.facebookPageToken = res['data'][0].access_token;
         this.facebookDataThisMonth(i);
         this.facebookDataLastMonth(i);
@@ -1689,7 +1776,7 @@ public closeCampaignComponent(event) {
     });
   }
   // signInWithGoogle(): void {
-    
+
   //   const googleLoginOptions = {
   //     scope: 'profile email https://www.googleapis.com/auth/webmasters.readonly https://www.googleapis.com/auth/webmasters https://www.googleapis.com/auth/analytics https://www.googleapis.com/auth/analytics.readonly'
   //   };
@@ -1732,7 +1819,7 @@ public closeCampaignComponent(event) {
         this.generatePageToken2();
       }
     }, error => {
-      alert('Fetch New Likes Count Failed : ' + JSON.stringify(error.error));
+       alert('Fetch New Likes Count Failed : ' + JSON.stringify(error.error));
     });
   }
   generatePageToken2() {
@@ -1743,7 +1830,7 @@ public closeCampaignComponent(event) {
         this.facebookPageToken = res['data'][0].access_token;
       }
     }, error => {
-      alert('Fetch Page Token Failed : ' + JSON.stringify(error.error));
+        alert('Fetch Page Token Failed : ' + JSON.stringify(error.error));
     });
   }
 }
