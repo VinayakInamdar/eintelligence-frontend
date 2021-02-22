@@ -1,0 +1,267 @@
+<div class="row" *ngIf="settingActive == 1;">
+    <div class="col-md-2"></div>
+    <div class="col-md-8 closebtn paddingtop8px">
+        <a href="javascript:void(0);">
+            <em class="fa-2x mr-2 fas fa-times"></em></a>
+    </div>
+    <div class="col-md-2"> </div>
+</div>
+<app-submenu></app-submenu>
+<div class="row">
+    <div class="container-fluid card-padding">
+        <div class="card card-default shadow bg-white rounded cursor-default">
+            <div class="row">
+                <div class="col-md-3"> </div>
+                <div class="col-md-3 form-group mt-1">
+                    <input type="input" placeholder="Select DateRange" class="form-control" bsDaterangepicker
+                        (bsValueChange)="onDateRangeSelect($event)"
+                        [bsConfig]="{ ranges: ranges, containerClass: 'theme-blue' }" [bsValue]="bsInlineRangeValue">
+                </div>
+                <div class="col-md-3  mt-1">
+                    <div class="btn-group">
+                        <div class="btn-group" dropdown>
+                            <button id="button-basic" dropdownToggle type="input"
+                                class="btn dropdown-toggle btn-secondary" aria-controls="dropdown-basic">
+                                {{selectedCampaignName !== undefined ? selectedCampaignName : 'select your campaign'}}
+                                <span class="caret"> </span>
+                            </button>
+                            <ul id="dropdown-basic" *dropdownMenu class="dropdown-menu integrationsulheightmax"
+                                role="menu" aria-labelledby="button-basic">
+                                <li role="menuitem" *ngFor="let campaign of campaignList"
+                                    [ngClass]="{'active': selectedCampId == campaign.id}"><a class="dropdown-item"
+                                        (click)="onCampaignSelect($event,campaign)" href="#">{{campaign.name}}</a></li>
+                            </ul>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<div class="row">
+    <div class="container-fluid card-padding">
+        <div class="card card-default shadow bg-white rounded cursor-default">
+            <div class="row card-margin">
+                <div class="col-sm-1">
+                </div>
+                <div class="vl"></div>
+                <div class="col-sm-1">
+                    <h3 class="colour-light">Clicks</h3>
+                    <h1 class="fontxxlrge">29,904</h1>
+                    <h3 class="fontsizesmall green-font">38.9%</h3>
+                </div>
+                <div class="vl"></div>
+                <div class="col-sm-1">
+                    <h3 class="colour-light">CTR</h3>
+                    <h1 class="fontxxlrge">2.70%</h1>
+                    <h3 class="fontsizesmall green-font">41.9%</h3>
+                </div>
+                <div class="vl"></div>
+                <div class="col-sm-1">
+                    <h3 class="colour-light">Avg. CPC</h3>
+                    <h1 class="fontxxlrge">$0.21</h1>
+                    <h3 class="fontsizesmall red-font">-24.5%
+                    </h3>
+                </div>
+                <div class="vl"></div>
+                <div class="col-sm-2">
+                    <h3 class="colour-light">Conversations</h3>
+                    <h1 class="fontxxlrge">1,871</h1>
+                    <h3 class="fontsizesmall green-font">82.7%</h3>
+                </div>
+                <div class="vl"></div>
+                <div class="col-sm-2">
+                    <h3 class="colour-light">Conversation rate</h3>
+                    <h1 class="fontxxlrge">6.26%</h1>
+                    <h3 class="fontsizesmall green-font">31.5%</h3>
+                </div>
+                <div class="vl"></div>
+                <div class="col-sm-2">
+                    <h3 class="colour-light">Cost/Conv.</h3>
+                    <h1 class="fontxxlrge">$3.42</h1>
+                    <h3 class="fontsizesmall red-font">-42.6%</h3>
+                </div>
+                <div class="vl"></div>
+                <div class="col-sm-2">
+                    <h3 class="colour-light">ROAS</h3>
+                    <h1 class="fontxxlrge">$20.00</h1>
+                    <h3 class="fontsizesmall green-font">37.9%</h3>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<div class="row">
+    <div class="container-fluid card-padding">
+        <div class="card card-default shadow bg-white rounded cursor-default">
+            <div class="row">
+                <div class="col-md-6">
+                    <table class="table table-mr">
+                        <thead>
+                            <tr class="tableHeadingColor">
+                                <th scope="col">Campaign Name</th>
+                                <th scope="col">Cost</th>
+                                <th scope="col">Conversations</th>
+                                <th scope="col">Const/Conversations</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr>
+                                <td>Campaign-Biking</td>
+                                <td>$1,492</td>
+                                <td>488</td>
+                                <td class="text-end">$3.06</td>
+                            </tr>
+                            <tr>
+                                <td>Campaign-Fun</td>
+                                <td>$1,070</td>
+                                <td>469</td>
+                                <td class="text-end">$2.28</td>
+                            </tr>
+                            <tr>
+                                <td>Campaign-Jackets</td>
+                                <td>$891</td>
+                                <td>136</td>
+                                <td class="text-end">$6.55</td>
+                            </tr>
+                            <tr>
+                                <td>Campaign-T-Shirts</td>
+                                <td>$582</td>
+                                <td>199</td>
+                                <td class="text-end">$2.92</td>
+                            </tr>
+                            <tr>
+                                <td>Campaign-Dynamic Search Ads</td>
+                                <td>$1,164</td>
+                                <td>192</td>
+                                <td class="text-end">$6.06</td>
+                            </tr>
+                            <tr>
+                                <td>Campaign-Wearables</td>
+                                <td>$643</td>
+                                <td>85</td>
+                                <td class="text-end">$7.56</td>
+                            </tr>
+                            <tr>
+                                <td>Campaign-Active Wear</td>
+                                <td>$238</td>
+                                <td>231</td>
+                                <td class="text-end">$1.03</td>
+                            </tr>
+                            <tr>
+                                <td>Campaign-Accessories</td>
+                                <td>$265</td>
+                                <td>67</td>
+                                <td class="text-end">$3.96</td>
+                            </tr>
+                            <tr>
+                                <td>Campaign-Holiday</td>
+                                <td>$48</td>
+                                <td>4</td>
+                                <td class="text-end">$12</td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+
+                <div class="col-md-6">
+                    <div class="card-wrapper">
+                        <div class="card-body">
+                            <div class="row">
+                                <div class="col-md-6">
+                                    <canvas baseChart [chartType]="'doughnut'" [options]="doughnutOptions"
+                                        [datasets]="doughnutData.datasets" [colors]="doughnutColors"
+                                        [labels]="doughnutData.labels" [legend]="false" height="300"></canvas>
+                                </div>
+                                <div class="col-md-6">
+                                    <div class="legend">
+                                        <table class="table-position">
+                                            <tbody>
+                                                <tr>
+                                                    <td>
+                                                        <div class="box-border">
+                                                            <div class="box-color"> </div>
+                                                        </div>
+                                                    </td>
+                                                    <td class="legendLabel">Campaign-Biking</td>
+                                                </tr>
+                                                <tr>
+                                                    <td>
+                                                        <div class="box-border">
+                                                            <div class="box-color"> </div>
+                                                        </div>
+                                                    </td>
+                                                    <td class="legendLabel">Campaign-Fun</td>
+                                                </tr>
+                                                <tr>
+                                                    <td>
+                                                        <div class="box-border">
+                                                            <div class="box-color"> </div>
+                                                        </div>
+                                                    </td>
+                                                    <td class="legendLabel">Campaign-Jackets</td>
+                                                </tr>
+                                                <tr>
+                                                    <td>
+                                                        <div class="box-border">
+                                                            <div class="box-color"> </div>
+                                                        </div>
+                                                    </td>
+                                                    <td class="legendLabel">Campaign-T-Shirts</td>
+                                                </tr>
+                                                <tr>
+                                                    <td>
+                                                        <div class="box-border">
+                                                            <div class="box-color"> </div>
+                                                        </div>
+                                                    </td>
+                                                    <td class="legendLabel">Campaign-Dynamic Search Ads</td>
+                                                </tr>
+                                                <tr>
+                                                    <td>
+                                                        <div class="box-border">
+                                                            <div class="box-color"> </div>
+                                                        </div>
+                                                    </td>
+                                                    <td class="legendLabel">Campaign-Wearables</td>
+                                                </tr>
+                                                <tr>
+                                                    <td>
+                                                        <div class="box-border">
+                                                            <div class="box-color"> </div>
+                                                        </div>
+                                                    </td>
+                                                    <td class="legendLabel">Campaign-Active Wear</td>
+                                                </tr>
+                                                <tr>
+                                                    <td>
+                                                        <div class="box-border">
+                                                            <div class="box-color"> </div>
+                                                        </div>
+                                                    </td>
+                                                    <td class="legendLabel">Campaign-Accessories</td>
+                                                </tr>
+                                                <tr>
+                                                    <td>
+                                                        <div class="box-border">
+                                                            <div class="box-color"> </div>
+                                                        </div>
+                                                    </td>
+                                                    <td class="legendLabel">Campaign-Holiday</td>
+                                                </tr>
+                                            </tbody>
+                                        </table>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                </div>
+            </div>
+
+        </div>
+    </div>
+</div>

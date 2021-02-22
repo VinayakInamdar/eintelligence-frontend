@@ -19,6 +19,14 @@ export class CampaignService {
 
   constructor(private http: HttpClient, private openIdConnectService: OpenIdConnectService) { }
 
+  //Get Campaign
+  getcampaign(id: string): Observable<any> {
+  return this.http.get<any>(this.Url + `campaigns/${id}`);
+  }
+  //Update Campaign
+  updatecampaign(id: string, selectedCampaign: Campaign): Observable<Campaign> {
+    return this.http.put<Campaign>(this.Url + 'campaigns/' + id, selectedCampaign);
+  }
   // using to create new campaign in db 
   createCampaign(campaignSetupData: Campaign): Observable<Campaign> {
     if (localStorage.getItem('companyID')) {
@@ -26,6 +34,10 @@ export class CampaignService {
     }
 
     return this.http.post<Campaign>(this.Url + 'campaigns', campaignSetupData);
+  }
+  //Delete Campaign
+   deleteCampaignById(id: string): Observable<Campaign> {
+    return this.http.delete<Campaign>(this.Url + 'campaigns/' + id);
   }
   getFilteredRankingGraph(filter: FilterOptionModel): Observable<any> {
     

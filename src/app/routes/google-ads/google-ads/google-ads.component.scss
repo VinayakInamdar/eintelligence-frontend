@@ -1,0 +1,58 @@
+@import "../../../shared/styles/bootstrap/_functions.scss";
+@import "../../../shared/styles/bootstrap/_variables.scss";
+@import "../../../shared/styles/bootstrap/_mixins";
+@import '../../../shared/styles/app/variables.scss';
+
+
+.mt-1{
+    margin-top: 2% !important;
+}
+.cursor-default{
+    cursor: default;
+}
+.card-padding{
+    padding-left: 3%;
+    padding-right: 3%;
+}
+.red-font{
+    color:red !important;
+}
+.green-font{
+    color: green !important;
+}
+.tableHeadingColor{
+    background-color:#4385F4;
+    color: white;
+    font-size: smaller;
+    font-weight: unset !important;
+    font-family: sans-serif;
+}
+ .legend>table tr td:first-child {
+    padding-left: 3px;
+ }
+ .legend>table tr td {
+    padding: 3px;
+}
+.text-end{
+    text-align: end;
+}
+.table-mr{
+    margin: 2%;
+}
+.table-position{
+    position:absolute;
+    top:5px;
+    right:5px;
+    font-size:smaller;
+    color:#545454
+}
+.box-border{
+    border:1px solid #ccc;
+    padding:1px;
+}
+.box-color{
+    width:4px;
+    height:0;
+    border:5px solid #1D88E5;
+    overflow:hidden;
+}
