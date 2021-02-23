@@ -24,7 +24,25 @@ import { FacebookService, LoginOptions, LoginResponse } from 'ngx-facebook';
   styleUrls: ['./home.component.scss']
 })
 export class HomeComponent implements OnInit {
-  
+  //Traffic
+  thisMonthTraffic = 0;
+  lastMonthTraffic = 0;
+  IsError = true;
+  trafficPve = 0;
+  trafficNve = 0;
+  trafficNut = 0;
+  trafficPvePer = 0;
+  trafficNvePer = 0;
+  trafficNutPer = 0;
+  //Conversions
+  thisMonthConversions = 0;
+  lastMonthConversions = 0;
+  ConversionsPve = 0;
+  ConversionsNve = 0;
+  ConversionsNut = 0;
+  ConversionsPvePer = 0;
+  ConversionsNvePer = 0;
+  ConversionsNutPer = 0;
   //Ranking
   serpList;
   averageRanking;
@@ -163,7 +181,7 @@ export class HomeComponent implements OnInit {
     , fb: FormBuilder, private openIdConnectService: OpenIdConnectService, private accountService: AccountService) {
     //  this.facebookPageToken = localStorage.getItem('FacebookAccessToken');
     //Ranking
-    
+
     facebook.init({
       appId: environment.facebook_appid,
       version: 'v9.0'
@@ -173,8 +191,8 @@ export class HomeComponent implements OnInit {
     this.getCampaignList();
     this.getRankingGraphData();
     this.getCompany();
- 
-   
+
+
     this.toaster = {
       type: 'success',
       title: 'Audit report',
@@ -250,43 +268,47 @@ export class HomeComponent implements OnInit {
   }
   calculateRankings() {
     this.accessToken = localStorage.getItem('googleGscAccessToken');
-    
-    if(this.accessToken != null && this.accessToken != undefined && this.accessToken!= ''){
-    const d = new Date();
-    let currYear = d.getFullYear();
-    for (let i = 0; i < this.campaignList.length; i++) {
-      let p = this.tempRankingGraphData.filter(x => x.campaignId.toString().toLowerCase() === this.campaignList[i].id.toString().toLowerCase() && x.year == currYear)
-      p.sort(function (a, b) {
-        var MONTH = {
-          January: 1, February: 2, March: 3, April: 4, May: 5, June: 6,
-          July: 7, August: 8, September: 9, October: 10, November: 11, December: 12
-        };
-        return a.year - b.year || MONTH[a.month] - MONTH[b.month];
-      });
-      let thisMonth = p[p.length - 1];
-      let PrevMonth = p[p.length - 2];
-      let g = this.getDifference(PrevMonth.avragePosition, thisMonth.avragePosition);
+
+    if (this.accessToken != null && this.accessToken != undefined && this.accessToken != '') {
+      const d = new Date();
+      let currYear = d.getFullYear();
+      for (let i = 0; i < this.campaignList.length; i++) {
+        let p = this.tempRankingGraphData.filter(x => x.campaignId.toString().toLowerCase() === this.campaignList[i].id.toString().toLowerCase() && x.year == currYear)
+        p.sort(function (a, b) {
+          var MONTH = {
+            January: 1, February: 2, March: 3, April: 4, May: 5, June: 6,
+            July: 7, August: 8, September: 9, October: 10, November: 11, December: 12
+          };
+          return a.year - b.year || MONTH[a.month] - MONTH[b.month];
+        });
+        let thisMonth = p[p.length - 1];
+        let PrevMonth = p[p.length - 2];
+        let g = this.getDifference(PrevMonth.avragePosition, thisMonth.avragePosition);
 
 
-      if (g == 'NaN') { g = "0"; }
-      this.total = p.length;
-      this.selectedCampIdWebUrl = this.campaignList[i].webUrl;
-      this.getData(i);
-      this.campaignList[i].ranking = g + "%";
-      this.addDataToPieChart(g, 1);
-      if(this.facebookAccessToken != null && this.facebookAccessToken != undefined && this.facebookAccessToken!= ''){
-        this.getFacebookUserId(i);
+        if (g == 'NaN') { g = "0"; }
+        this.total = this.campaignList.length;
+        
+        this.selectedCampIdWebUrl = this.campaignList[i].webUrl;
+        if (this.IsError == false) {
+          this.getData(i);
+          this.getAnalyticsProfileIds(i);
+          this.campaignList[i].ranking = g + "%";
+          this.addDataToPieChart(g, 1);
+        }
+        if (this.facebookAccessToken != null && this.facebookAccessToken != undefined && this.facebookAccessToken != '') {
+          this.getFacebookUserId(i);
+        }
       }
     }
-  }
     this.tableData = this.campaignList;
     this.source = new LocalDataSource(this.campaignList)
   }
   addDataToPieChart(g, chartNo) {
-    
-    this.pve =0;
-    this.nve =0;
-    this.nut =0;
+
+    this.pve = 0;
+    this.nve = 0;
+    this.nut = 0;
     if (parseFloat(g) > 0) { this.pve = this.pve + 1; }
     if (parseFloat(g) < 0) { this.nve = this.nve + 1; }
     if (parseInt(g) == 0) { this.nut = this.nut + 1; }
@@ -312,6 +334,7 @@ export class HomeComponent implements OnInit {
       this.pieChartData5 = [this.perpve, this.pernve, this.pernut];
     }
   }
+
   // using to view list of audits
   public goToAudits(event) {
     event.preventDefault()
@@ -450,10 +473,13 @@ export class HomeComponent implements OnInit {
   }
 
   getDifference(previous, current) {
-
-    let diff = ((parseFloat(previous) - parseFloat(current)) * 100) / parseFloat(previous)
-    return parseFloat(diff.toString()).toFixed(2);
-
+   // Decrease = Original Number - New Number
+   // % Decrease = Decrease ÷ Original Number × 100
+    // let diff = ((parseFloat(previous) - parseFloat(current)) * 100) / parseFloat(previous)
+    // return parseFloat(diff.toString()).toFixed(2);
+    let diff = (parseFloat(previous) - parseFloat(current)) ;
+    let per = (diff / parseFloat(current)) * 100
+    return parseFloat(per.toString()).toFixed(2);
   }
 
   //############################################### GSC data
@@ -487,17 +513,17 @@ export class HomeComponent implements OnInit {
 
       }
     }, error => {
-      alert('Data fetch failed by device : ' + JSON.stringify(error.error));
+      console.log('Data fetch failed by device : ' + JSON.stringify(error.error));
     });
   }
-  getDataCurrentYear(startDate, endDate, all,url) {
+  getDataCurrentYear(startDate, endDate, all, url, i) {
     this.httpOptionJSON = {
       headers: new HttpHeaders({
         'Accept': 'application/json',
         'Authorization': 'Bearer ' + this.accessToken,
       })
     };
-    debugger
+    
 
     //let urlcamp = this.selectedCampIdWebUrl.replace('/', '%2F');
     //const url = "https://www.googleapis.com/webmasters/v3/sites/https%3A%2F%2Feintelligence.azurewebsites.net%2F/searchAnalytics/query";
@@ -525,7 +551,7 @@ export class HomeComponent implements OnInit {
     }
     this.http.post(url, data, this.httpOptionJSON).subscribe(res => {
       if (res) {
-        debugger
+        
         let rows = res['rows'];
         if (all == 0) {
           this.clicksThisYear = rows[0].clicks;
@@ -540,14 +566,19 @@ export class HomeComponent implements OnInit {
             this.currDate = this.currDate.substring(5, 10);
           }
         }
+        this.getDataPreviousYear(this.previousStartDate, this.previousEndDate, 0, i, url);
+        this.getDataCurrentYear(this.startDate, this.endDate, 1, url, i);
+        this.getDataPreviousYear(this.previousStartDate, this.previousEndDate, 1, i, url);
       }
     }, error => {
-      debugger
-      alert('Data fetch failed for current year for URL : ' + this.selectedCampIdWebUrl + " --Error : - " + JSON.stringify(error.error));
+      
+      this.IsError = true;
+      console.log("Please Login with your google account");
+      // console.log('Data fetch failed for current year for URL : ' + this.selectedCampIdWebUrl + " --Error : - " + JSON.stringify(error.error));
     });
 
   }
-  getDataPreviousYear(startDate, endDate, all, i,url) {
+  getDataPreviousYear(startDate, endDate, all, i, url) {
 
     this.httpOptionJSON = {
       headers: new HttpHeaders({
@@ -568,16 +599,13 @@ export class HomeComponent implements OnInit {
     };
     this.http.post(url, data, this.httpOptionJSON).subscribe(res => {
       if (res) {
-
         let rows = res['rows'];
         if (all == 0) {
           this.clicksPreviousYear = rows[0].clicks;
           this.impressionsPreviousYear = rows[0].impressions;
           this.cTRPreviousYear = parseFloat(rows[0].ctr).toFixed(2).toString();
           this.positionPreviousYear = parseFloat(rows[0].position).toFixed(2).toString();
-
           //pecentgage calculate
-
           this.percentClicks = this.getYearwiseDifference(this.clicksPreviousYear, this.clicksThisYear);
           this.campaignList[i].gsc = this.percentClicks + "%";
           this.addDataToPieChart(this.percentClicks, 4);
@@ -598,10 +626,22 @@ export class HomeComponent implements OnInit {
     }, error => {
       this.campaignList[i].gsc = "0%";
       this.addDataToPieChart("", 4);
-      alert('Data fetch failed for previous year for URL : ' + this.selectedCampIdWebUrl + " --Error : - " + JSON.stringify(error.error));
+      console.log('Data fetch failed for previous year for URL : ' + this.selectedCampIdWebUrl + " --Error : - " + JSON.stringify(error.error));
     });
   }
   ngOnInit() {
+    this.trafficPvePer = 0;
+    this.trafficNvePer =  0;
+    this.trafficNutPer =  0;
+    this.trafficPve = 0;
+    this.trafficNve =  0;
+    this.trafficNut =  0;
+    this.ConversionsPvePer = 0;
+    this.ConversionsNvePer =  0;
+    this.ConversionsNutPer =  0;
+    this.ConversionsPve = 0;
+    this.ConversionsNve =  0;
+    this.ConversionsNut =  0;
   }
   onStartDateChange(event) {
     this.startDate = this.datepipe.transform(this.fromDate.value, 'yyyy-MM-dd');
@@ -625,21 +665,21 @@ export class HomeComponent implements OnInit {
     this.accessToken = localStorage.getItem('googleGscAccessToken');
     this.getDateSettings();
     if (this.accessToken == '' || this.accessToken == undefined || this.accessToken == null) {
-      alert("Please, Login with Google to fetch data");
+      console.log("Please, Login with Google to fetch data");
     } else if (parseDate(this.endDate) < parseDate(this.startDate)) {
-      alert("Start Date can not be grater then End Date");
+      console.log("Start Date can not be grater then End Date");
     }
     else {
-      debugger
+      
       let urlcamp = this.selectedCampIdWebUrl.replace('/', '%2F');
-   const url = "https://www.googleapis.com/webmasters/v3/sites/https%3A%2F%2F" + urlcamp + "/searchAnalytics/query?key=AIzaSyC1IsrCeeNXp9ksAmC8szBtYVjTLJC9UWQ";
-     //const url = "https://searchconsole.googleapis.com/webmasters/v3/sites/https%3A%2F%2Fpatwa.co.in/searchAnalytics/query?key=AIzaSyC1IsrCeeNXp9ksAmC8szBtYVjTLJC9UWQ"
-     // const url = "https://www.googleapis.com/webmasters/v3/sites/https%3A%2F%2F" + urlcamp + "%2F/searchAnalytics/query?key=AIzaSyC1IsrCeeNXp9ksAmC8szBtYVjTLJC9UWQ";
-    //const url = "https://www.googleapis.com/webmasters/v3/sites/https%3A%2F%2Fwww.abhisi.com%2F/searchAnalytics/query?key=AIzaSyC1IsrCeeNXp9ksAmC8szBtYVjTLJC9UWQ";
-      this.getDataCurrentYear(this.startDate, this.endDate, 0,url);
-      this.getDataPreviousYear(this.previousStartDate, this.previousEndDate, 0, i,url);
-      this.getDataCurrentYear(this.startDate, this.endDate, 1,url);
-      this.getDataPreviousYear(this.previousStartDate, this.previousEndDate, 1, i,url);
+      const url = "https://www.googleapis.com/webmasters/v3/sites/https%3A%2F%2F" + urlcamp + "/searchAnalytics/query?key=AIzaSyC1IsrCeeNXp9ksAmC8szBtYVjTLJC9UWQ";
+      //const url = "https://searchconsole.googleapis.com/webmasters/v3/sites/https%3A%2F%2Fpatwa.co.in/searchAnalytics/query?key=AIzaSyC1IsrCeeNXp9ksAmC8szBtYVjTLJC9UWQ"
+      // const url = "https://www.googleapis.com/webmasters/v3/sites/https%3A%2F%2F" + urlcamp + "%2F/searchAnalytics/query?key=AIzaSyC1IsrCeeNXp9ksAmC8szBtYVjTLJC9UWQ";
+      //const url = "https://www.googleapis.com/webmasters/v3/sites/https%3A%2F%2Fwww.abhisi.com%2F/searchAnalytics/query?key=AIzaSyC1IsrCeeNXp9ksAmC8szBtYVjTLJC9UWQ";
+      this.getDataCurrentYear(this.startDate, this.endDate, 0, url, i);
+      if (this.IsError == false) {
+
+      }
       // this.getDataByDevice(this.startDate, this.endDate)
 
     }
@@ -653,9 +693,11 @@ export class HomeComponent implements OnInit {
   }
 
   getYearwiseDifference(previous, current) {
-
-    let diff = ((parseFloat(previous) - parseFloat(current)) * 100) / parseFloat(previous)
-    return parseFloat(diff.toString()).toFixed(2)
+    let diff = (parseFloat(previous) - parseFloat(current)) ;
+    let per = (diff / parseFloat(current)) * 100
+    return parseFloat(per.toString()).toFixed(2);
+    // let diff = ((parseFloat(previous) - parseFloat(current)) * 100) / parseFloat(previous)
+    // return parseFloat(diff.toString()).toFixed(2)
 
   }
   getPercentage(num, total) {
@@ -667,7 +709,7 @@ export class HomeComponent implements OnInit {
     const url = "https://graph.facebook.com/" + environment.facebook_pageid + "/insights/page_impressions_unique,page_total_actions,page_positive_feedback_by_type,page_negative_feedback,page_views_total,page_impressions,page_views_external_referrals,page_fans_by_unlike_source_unique,page_impressions_organic,page_impressions_paid,page_fan_removes_unique?access_token=" + this.facebookPageToken;
     this.http.get(url).subscribe(res => {
       if (res) {
-        
+
         for (let i = 0; i < res['data'].length; i++) {
           let p = res['data'][i];
           //Page Reach
@@ -683,16 +725,16 @@ export class HomeComponent implements OnInit {
         }
       }
     }
-    , error => {
-      alert('Fetch Facebook Data Failed : ' + JSON.stringify(error.error));
-    });
+      , error => {
+        console.log('Fetch Facebook Data Failed : ' + JSON.stringify(error.error));
+      });
   }
   facebookDataLastMonth(index) {
-    
+
     const url = "https://graph.facebook.com/" + environment.facebook_pageid + "/insights/page_impressions_unique,page_total_actions,page_positive_feedback_by_type,page_negative_feedback,page_views_total,page_impressions,page_views_external_referrals,page_fans_by_unlike_source_unique,page_impressions_organic,page_impressions_paid,page_fan_removes_unique?access_token=" + this.facebookPageToken;
     this.http.get(url).subscribe(res => {
-      if (res) {   
-            
+      if (res) {
+
         for (let i = 0; i < res['data'].length; i++) {
           let p = res['data'][i];
           //Page Reach
@@ -702,32 +744,32 @@ export class HomeComponent implements OnInit {
             for (let k = 0; k < l.length; k++) {
               this.pageReachTotal = parseInt(this.pageReachTotal) + parseInt(l[k].value)
             }
-            
+
             this.lastMonthFacebook = this.pageReachTotal;
-            this.percentFacebook = this.getDifference(this.thisMonthFacebook,this.lastMonthFacebook);
+            this.percentFacebook = this.getDifference(this.thisMonthFacebook, this.lastMonthFacebook);
             this.campaignList[index].socialMedia = this.percentFacebook;
             this.tableData = this.campaignList;
             this.source = new LocalDataSource(this.campaignList)
-            this.addDataToPieChart(this.percentFacebook,5);
+            this.addDataToPieChart(this.percentFacebook, 5);
           }
         }
       }
     }
-    , error => {
-      alert('Fetch Facebook Data Failed : ' + JSON.stringify(error.error));
-    });
+      , error => {
+        console.log('Fetch Facebook Data Failed : ' + JSON.stringify(error.error));
+      });
   }
   getFacebookUserId(i) {
 
     const url = "https://graph.facebook.com/me?access_token=" + this.facebookAccessToken + "&fields=id,name";
     this.http.get(url).subscribe(res => {
       if (res) {
-        
+
         this.facebookUserId = res['id'];
         this.generatePageToken(i);
       }
     }, error => {
-      alert('Fetch Facebook USerId Failed : ' + JSON.stringify(error.error));
+      console.log('Fetch Facebook USerId Failed : ' + JSON.stringify(error.error));
     });
   }
   generatePageToken(i) {
@@ -736,25 +778,37 @@ export class HomeComponent implements OnInit {
     // const url = "https://graph.facebook.com/105114094889635/accounts?access_token=EAAGXn3oGklwBAEDY2dpA11KLDG0hhHYWi9pts9qmPJxXs6Ywb4UOq6SRhvr5kFpNDeUrHkG1rIZCxHJMxQS3U7UurncvEnjuuaD4aLmKDAT5uIoSb3QWSE92GkLWOS0Oqub7ZAIcxwtMBAaLOSQWqEiwsMuqaugO5XwiXJx97ekfXeuB8cnQhISZAtINl8ZD";
     this.http.get(url).subscribe(res => {
       if (res) {
-        
+
         this.facebookPageToken = res['data'][0].access_token;
         this.facebookDataThisMonth(i);
         this.facebookDataLastMonth(i);
       }
     }, error => {
-      alert('Fetch Page Token Failed : ' + JSON.stringify(error.error));
+      console.log('Fetch Page Token Failed : ' + JSON.stringify(error.error));
     });
   }
   signInWithGoogle(): void {
-    
+
     const googleLoginOptions = {
       scope: 'profile email https://www.googleapis.com/auth/webmasters.readonly https://www.googleapis.com/auth/webmasters https://www.googleapis.com/auth/analytics https://www.googleapis.com/auth/analytics.readonly https://www.googleapis.com/auth/analytics.edit'
     };
     this.authService.signIn(GoogleLoginProvider.PROVIDER_ID, googleLoginOptions)
       .then((res) => {
-        debugger
+        this.trafficPvePer = 0;
+        this.trafficNvePer =  0;
+        this.trafficNutPer =  0;
+        this.trafficPve = 0;
+        this.trafficNve =  0;
+        this.trafficNut =  0;
+        this.ConversionsPvePer = 0;
+        this.ConversionsNvePer =  0;
+        this.ConversionsNutPer =  0;
+        this.ConversionsPve = 0;
+        this.ConversionsNve =  0;
+        this.ConversionsNut =  0;
+        this.IsError = false;
         this.accessToken = res['authToken'];
-        localStorage.setItem('googleGscAccessToken', this.accessToken );
+        localStorage.setItem('googleGscAccessToken', this.accessToken);
         this.calculateRankings();
       })
   }
@@ -771,7 +825,7 @@ export class HomeComponent implements OnInit {
       .then((res: LoginResponse) => {
         console.log('Logged in', res);
         this.facebookAccessToken = res['authResponse'].accessToken;
-        localStorage.setItem('FacebookAccessToken',this.accessToken);
+        localStorage.setItem('FacebookAccessToken', this.accessToken);
         this.getFacebookUserId(i);
 
 
@@ -789,7 +843,7 @@ export class HomeComponent implements OnInit {
         this.generatePageToken2();
       }
     }, error => {
-      alert('Fetch New Likes Count Failed : ' + JSON.stringify(error.error));
+      console.log('Fetch New Likes Count Failed : ' + JSON.stringify(error.error));
     });
   }
   generatePageToken2() {
@@ -800,7 +854,120 @@ export class HomeComponent implements OnInit {
         this.facebookPageToken = res['data'][0].access_token;
       }
     }, error => {
-      alert('Fetch Page Token Failed : ' + JSON.stringify(error.error));
+      console.log('Fetch Page Token Failed : ' + JSON.stringify(error.error));
     });
   }
+  //Google Analytics
+
+  getAnalyticsProfileIds(campaignIndex) {
+    
+   
+      let currDate = new Date();
+      let endDate1 = this.datepipe.transform(currDate, 'yyyy-MM-dd');
+      let startDate1 = this.datepipe.transform(currDate.setDate(currDate.getDate() - 28), 'yyyy-MM-dd');
+      this.httpOptionJSON = {
+        headers: new HttpHeaders({
+          'Accept': 'application/json',
+          'Authorization': 'Bearer ' + this.accessToken,
+        })
+      };
+      let urlcamp = this.selectedCampIdWebUrl.replace('/', '%2F');
+      const url = "https://www.googleapis.com/analytics/v3/management/accountSummaries";
+      //const url = "https://www.googleapis.com/analytics/v3/data/ga?ids=ga:83658108&dimensions=ga:date&start-date=2019-10-01&end-date=2021-02-15&metrics=ga:sessions";
+      //https://www.googleapis.com/analytics/v3/management/accounts/49139272/webproperties
+      this.http.get(url, this.httpOptionJSON).subscribe(res => {
+        if (res) {
+          
+          let rows = res['items'];
+          //let accountSummaryIds=[];
+          for (let i = 0; i < rows.length; i++) {
+            
+            let p = rows[i]
+            let q = p['webProperties']['0'].websiteUrl.toString();
+            
+            let u = this.campaignList[campaignIndex].webUrl;
+            if (q.includes(u)) {
+              this.getAnalyticsOrganicTrafficThisMonth(rows[i].webProperties[0].profiles[0].id, campaignIndex);
+              this.getAnalyticsOrganicTrafficLastMonth(rows[i].webProperties[0].profiles[0].id, campaignIndex);
+
+              break;
+            }
+            // accountSummaryIds.push(rows[i].webProperties[0].profiles[0].id);
+          }
+
+        }
+      }, error => {
+
+        alert('Analytics Data Fetch failed : ' + JSON.stringify(error.error));
+      });
+    
+  }
+  getAnalyticsOrganicTrafficThisMonth(profileid, campaignIndex) {
+    
+    this.httpOptionJSON = {
+      headers: new HttpHeaders({
+        'Accept': 'application/json',
+        'Authorization': 'Bearer ' + this.accessToken,
+      })
+    };
+    let urlcamp = this.selectedCampIdWebUrl.replace('/', '%2F');
+    const url = "https://www.googleapis.com/analytics/v3/data/ga?ids=ga:" + profileid + "&start-date=" + this.startDate + "&end-date=" + this.endDate + "&metrics=ga%3AorganicSearches%2Cga%3AgoalConversionRateAll";
+    this.http.get(url, this.httpOptionJSON).subscribe(res => {
+      if (res) {
+        
+        let rows = res['rows'];
+
+        this.thisMonthTraffic = rows[0]["0"];
+        this.lastMonthConversions = rows[0]["1"];
+        debugger
+      }
+    }, error => {
+
+      alert('Analytics Data Fetch failed : ' + JSON.stringify(error.error));
+    });
+  }
+  getAnalyticsOrganicTrafficLastMonth(profileid, campaignIndex) {
+    
+    this.httpOptionJSON = {
+      headers: new HttpHeaders({
+        'Accept': 'application/json',
+        'Authorization': 'Bearer ' + this.accessToken,
+      })
+    };
+    let urlcamp = this.selectedCampIdWebUrl.replace('/', '%2F');
+    const url = "https://www.googleapis.com/analytics/v3/data/ga?ids=ga:" + profileid + "&start-date=" + this.previousStartDate + "&end-date=" + this.previousEndDate + "&metrics=ga%3AorganicSearches%2Cga%3AgoalConversionRateAll";
+    this.http.get(url, this.httpOptionJSON).subscribe(res => {
+      if (res) {
+        debugger
+        let rows = res['rows'];
+        //Traffic Calculation
+        this.lastMonthTraffic = rows[0]["0"];
+        let perTraffic = this.getDifference(this.lastMonthTraffic, this.thisMonthTraffic);
+        if (parseFloat(perTraffic) > 0) { this.trafficPve = this.trafficPve + 1; }
+        if (parseFloat(perTraffic) < 0) { this.trafficNve = this.trafficNve + 1; }
+        if (parseInt(perTraffic) == 0) { this.trafficNut = this.trafficNut + 1; }
+        this.trafficPvePer = this.getPercentage(this.trafficPve, this.total);
+        this.trafficNvePer = this.getPercentage(this.trafficNve, this.total);
+        this.trafficNutPer = this.getPercentage(this.trafficNut, this.total);
+        this.pieChartData2 = [this.trafficPvePer.toString(), this.trafficNvePer.toString(), this.trafficNutPer.toString()];
+        //Converssions calculation for chart
+        this.thisMonthConversions = rows[0]["1"];        
+        let perConversions = this.getDifference(this.lastMonthConversions, this.thisMonthConversions);
+        if (parseFloat(perConversions) > 0) { this.ConversionsPve = this.ConversionsPve + 1; }
+        if (parseFloat(perConversions) < 0) { this.ConversionsNve = this.ConversionsNve + 1; }
+        if (parseInt(perConversions) == 0) { this.ConversionsNut = this.ConversionsNut + 1; }
+        this.ConversionsPvePer = this.getPercentage(this.ConversionsPve, this.total);
+        this.ConversionsNvePer = this.getPercentage(this.ConversionsNve, this.total);
+        this.ConversionsNutPer = this.getPercentage(this.ConversionsNut, this.total);
+        this.pieChartData3 = [this.ConversionsPvePer.toString(), this.ConversionsNvePer.toString(), this.ConversionsNutPer.toString()];
+        this.campaignList[campaignIndex].traffic = perTraffic;
+        this.tableData = this.campaignList;
+        this.source = new LocalDataSource(this.campaignList)
+      }
+    }, error => {
+
+      alert('Analytics Data Fetch failed : ' + JSON.stringify(error.error));
+    });
+  }
+
 }

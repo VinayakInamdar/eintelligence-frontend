@@ -1752,6 +1752,7 @@ export class SeoComponent implements OnInit {
     }
     this.campaignService.createRankingGraph(data).subscribe(response => {
       if (response) {
+        debugger
         this.getRankingGraphData();
       }
     });
