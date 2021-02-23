@@ -20,6 +20,7 @@ import { parseDate } from 'ngx-bootstrap/chronos';
 import { DatePipe } from '@angular/common';
 import { HttpClient, HttpHeaders } from '@angular/common/http';
 import { environment } from 'src/environments/environment';
+import { GoogleLoginProvider,SocialAuthService } from 'angularx-social-login';
 const success = require('sweetalert');
 
 @Component({
@@ -59,6 +60,25 @@ export class CampaginComponent implements OnInit, AfterViewInit {
     fromDate: this.fromDate,
     toDate: this.toDate,
   });
+
+  //Traffic
+  thisMonthTraffic = 0;
+  lastMonthTraffic = 0;
+  IsError = true;
+  trafficPve = 0;
+  trafficNve = 0;
+  trafficNut = 0;
+  trafficPvePer = 0;
+  trafficNvePer = 0;
+  trafficNutPer = 0;
+  public pieChartLabels2 = ['Positive', 'Negative', 'Neutral'];
+  public pieChartData2 = ['75', '36', '55'];
+  public pieChartType2 = 'pie';
+  public pieOptions2 = {
+    legend: {
+      display: false
+    }
+  };
 
   startDate;
   endDate;
@@ -454,7 +474,7 @@ export class CampaginComponent implements OnInit, AfterViewInit {
 
 
   constructor(private translate: TranslateService, fb: FormBuilder,
-    private campaignService: CampaignService,
+    private campaignService: CampaignService,private authService: SocialAuthService,
     public route: ActivatedRoute, public http: HttpClient, public datepipe: DatePipe, public router: Router, private openIdConnectService: OpenIdConnectService, private integrationsService: IntegrationsService
     , private overvieswService: OverviewService, location: PlatformLocation,
     public auditsService: AuditsService) {
@@ -513,7 +533,13 @@ export class CampaginComponent implements OnInit, AfterViewInit {
     this.sub = this.route.params.subscribe(params => {
       this.id = params['id'];
     });
-
+    //Traffic
+    this.trafficPvePer = 0;
+    this.trafficNvePer = 0;
+    this.trafficNutPer = 0;
+    this.trafficPve = 0;
+    this.trafficNve = 0;
+    this.trafficNut = 0;
   }
   editCampaign(campaign: any) {
     this.selectedCampId = campaign.id
@@ -1471,9 +1497,10 @@ export class CampaginComponent implements OnInit, AfterViewInit {
 
 
         if (g == 'NaN') { g = "0"; }
-        this.total = p.length;
+        this.total = this.campaignList.length;
         this.selectedCampIdWebUrl = this.campaignList[i].webUrl;
         this.getData(i);
+        this.getAnalyticsProfileIds(i);
         this.campaignList[i].ranking = g + "%";
         if (this.facebookAccessToken != null && this.facebookAccessToken != undefined && this.facebookAccessToken != '') {
           this.getFacebookUserId(i);
@@ -1832,5 +1859,144 @@ export class CampaginComponent implements OnInit, AfterViewInit {
     }, error => {
         alert('Fetch Page Token Failed : ' + JSON.stringify(error.error));
     });
+  }
+
+
+  //Google Analytics
+  getAnalyticsProfileIds(campaignIndex) {
+
+    let currDate = new Date();
+    let endDate1 = this.datepipe.transform(currDate, 'yyyy-MM-dd');
+    let startDate1 = this.datepipe.transform(currDate.setDate(currDate.getDate() - 28), 'yyyy-MM-dd');
+    this.httpOptionJSON = {
+      headers: new HttpHeaders({
+        'Accept': 'application/json',
+        'Authorization': 'Bearer ' + this.accessToken,
+      })
+    };
+    let urlcamp = this.selectedCampIdWebUrl.replace('/', '%2F');
+    const url = "https://www.googleapis.com/analytics/v3/management/accountSummaries";
+    //const url = "https://www.googleapis.com/analytics/v3/data/ga?ids=ga:83658108&dimensions=ga:date&start-date=2019-10-01&end-date=2021-02-15&metrics=ga:sessions";
+    //https://www.googleapis.com/analytics/v3/management/accounts/49139272/webproperties
+    this.http.get(url, this.httpOptionJSON).subscribe(res => {
+      if (res) {
+
+        let rows = res['items'];
+        //let accountSummaryIds=[];
+        for (let i = 0; i < rows.length; i++) {
+
+          let p = rows[i]
+          let q = p['webProperties']['0'].websiteUrl.toString();
+
+          let u = this.campaignList[campaignIndex].webUrl;
+          if (q.includes(u)) {
+            this.getAnalyticsOrganicTrafficThisMonth(rows[i].webProperties[0].profiles[0].id, campaignIndex);
+            this.getAnalyticsOrganicTrafficLastMonth(rows[i].webProperties[0].profiles[0].id, campaignIndex);
+
+            break;
+          }
+          // accountSummaryIds.push(rows[i].webProperties[0].profiles[0].id);
+        }
+
+      }
+    }, error => {
+
+      alert('Analytics Data Fetch failed : ' + JSON.stringify(error.error));
+    });
+
+  }
+  //Traffic
+  getAnalyticsOrganicTrafficThisMonth(profileid, campaignIndex) {
+
+    this.httpOptionJSON = {
+      headers: new HttpHeaders({
+        'Accept': 'application/json',
+        'Authorization': 'Bearer ' + this.accessToken,
+      })
+    };
+    let urlcamp = this.selectedCampIdWebUrl.replace('/', '%2F');
+    const url = "https://www.googleapis.com/analytics/v3/data/ga?ids=ga:" + profileid + "&start-date=" + this.startDate + "&end-date=" + this.endDate + "&metrics=ga%3AorganicSearches%2Cga%3AgoalConversionRateAll";
+    this.http.get(url, this.httpOptionJSON).subscribe(res => {
+      if (res) {
+
+        let rows = res['rows'];
+
+        this.thisMonthTraffic = rows[0]["0"];
+        //this.lastMonthConversions = rows[0]["1"];
+ 
+      }
+    }, error => {
+
+      alert('Analytics Data Fetch failed : ' + JSON.stringify(error.error));
+    });
+  }
+
+  getAnalyticsOrganicTrafficLastMonth(profileid, campaignIndex) {
+
+    this.httpOptionJSON = {
+      headers: new HttpHeaders({
+        'Accept': 'application/json',
+        'Authorization': 'Bearer ' + this.accessToken,
+      })
+    };
+    let urlcamp = this.selectedCampIdWebUrl.replace('/', '%2F');
+    const url = "https://www.googleapis.com/analytics/v3/data/ga?ids=ga:" + profileid + "&start-date=" + this.previousStartDate + "&end-date=" + this.previousEndDate + "&metrics=ga%3AorganicSearches%2Cga%3AgoalConversionRateAll";
+    this.http.get(url, this.httpOptionJSON).subscribe(res => {
+      if (res) {
+       
+        let rows = res['rows'];
+        //Traffic Calculation
+        this.lastMonthTraffic = rows[0]["0"];
+        let perTraffic = this.getDifference(this.lastMonthTraffic, this.thisMonthTraffic);
+        if (parseFloat(perTraffic) > 0) { this.trafficPve = this.trafficPve + 1; }
+        if (parseFloat(perTraffic) < 0) { this.trafficNve = this.trafficNve + 1; }
+        if (parseInt(perTraffic) == 0) { this.trafficNut = this.trafficNut + 1; }
+        this.trafficPvePer = this.getPercentage(this.trafficPve, this.total);
+        this.trafficNvePer = this.getPercentage(this.trafficNve, this.total);
+        this.trafficNutPer = this.getPercentage(this.trafficNut, this.total);
+        this.pieChartData2 = [this.trafficPvePer.toString(), this.trafficNvePer.toString(), this.trafficNutPer.toString()];
+        //Converssions calculation for chart
+        //  this.thisMonthConversions = rows[0]["1"];        
+        // let perConversions = this.getDifference(this.lastMonthConversions, this.thisMonthConversions);
+        // if (parseFloat(perConversions) > 0) { this.ConversionsPve = this.ConversionsPve + 1; }
+        //  if (parseFloat(perConversions) < 0) { this.ConversionsNve = this.ConversionsNve + 1; }
+        // if (parseInt(perConversions) == 0) { this.ConversionsNut = this.ConversionsNut + 1; }
+        //  this.ConversionsPvePer = this.getPercentage(this.ConversionsPve, this.total);
+        // this.ConversionsNvePer = this.getPercentage(this.ConversionsNve, this.total);
+        // this.ConversionsNutPer = this.getPercentage(this.ConversionsNut, this.total);
+        // this.pieChartData3 = [this.ConversionsPvePer.toString(), this.ConversionsNvePer.toString(), this.ConversionsNutPer.toString()];
+        this.campaignList[campaignIndex].traffic = perTraffic;
+        this.tableData = this.campaignList;
+        this.source = new LocalDataSource(this.campaignList)
+      }
+    }, error => {
+
+      alert('Analytics Data Fetch failed : ' + JSON.stringify(error.error));
+    });
+  }
+  signInWithGoogle(): void {
+
+    const googleLoginOptions = {
+      scope: 'profile email https://www.googleapis.com/auth/webmasters.readonly https://www.googleapis.com/auth/webmasters https://www.googleapis.com/auth/analytics https://www.googleapis.com/auth/analytics.readonly https://www.googleapis.com/auth/analytics.edit'
+    };
+    this.authService.signIn(GoogleLoginProvider.PROVIDER_ID, googleLoginOptions)
+      .then((res) => {
+        this.trafficPvePer = 0;
+        this.trafficNvePer = 0;
+        this.trafficNutPer = 0;
+        this.trafficPve = 0;
+        this.trafficNve = 0;
+        this.trafficNut = 0;
+        //  this.ConversionsPvePer = 0;
+        // this.ConversionsNvePer =  0;
+        // this.ConversionsNutPer =  0;
+        // this.ConversionsPve = 0;
+        // this.ConversionsNve =  0;
+        //  this.ConversionsNut =  0;
+        this.IsError = false;
+        this.accessToken = res['authToken'];
+        localStorage.setItem('googleGscAccessToken', this.accessToken);
+        this.calculateRankings();
+      })
   }
 }
