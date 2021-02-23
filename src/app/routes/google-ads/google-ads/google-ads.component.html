@@ -112,55 +112,55 @@
                                 <td>Campaign-Biking</td>
                                 <td>$1,492</td>
                                 <td>488</td>
-                                <td class="text-end">$3.06</td>
+                                <td class="text-end" style="background-color: #C7DAEE;">$3.06</td>
                             </tr>
                             <tr>
                                 <td>Campaign-Fun</td>
                                 <td>$1,070</td>
                                 <td>469</td>
-                                <td class="text-end">$2.28</td>
+                                <td class="text-end" style="background-color: #C7DAEE;">$2.28</td>
                             </tr>
                             <tr>
                                 <td>Campaign-Jackets</td>
                                 <td>$891</td>
                                 <td>136</td>
-                                <td class="text-end">$6.55</td>
+                                <td class="text-end" style="background-color: #98C2EC;">$6.55</td>
                             </tr>
                             <tr>
                                 <td>Campaign-T-Shirts</td>
                                 <td>$582</td>
                                 <td>199</td>
-                                <td class="text-end">$2.92</td>
+                                <td class="text-end" style="background-color: #C7DAEE;">$2.92</td>
                             </tr>
                             <tr>
                                 <td>Campaign-Dynamic Search Ads</td>
                                 <td>$1,164</td>
                                 <td>192</td>
-                                <td class="text-end">$6.06</td>
+                                <td class="text-end" style="background-color: #98C2EC;">$6.06</td>
                             </tr>
                             <tr>
                                 <td>Campaign-Wearables</td>
                                 <td>$643</td>
                                 <td>85</td>
-                                <td class="text-end">$7.56</td>
+                                <td class="text-end" style="background-color: #98C2EC;">$7.56</td>
                             </tr>
                             <tr>
                                 <td>Campaign-Active Wear</td>
                                 <td>$238</td>
                                 <td>231</td>
-                                <td class="text-end">$1.03</td>
+                                <td class="text-end" style="background-color: #DDE5EE;">$1.03</td>
                             </tr>
                             <tr>
                                 <td>Campaign-Accessories</td>
                                 <td>$265</td>
                                 <td>67</td>
-                                <td class="text-end">$3.96</td>
+                                <td class="text-end" style="background-color: #C7DAEE;">$3.96</td>
                             </tr>
                             <tr>
                                 <td>Campaign-Holiday</td>
                                 <td>$48</td>
                                 <td>4</td>
-                                <td class="text-end">$12</td>
+                                <td class="text-end" style="background-color: #68AAE9;">$12</td>
                             </tr>
                         </tbody>
                     </table>
@@ -258,10 +258,56 @@
                             </div>
                         </div>
                     </div>
-
                 </div>
             </div>
+        </div>
+    </div>
+</div>
 
+<div class="row">
+    <div class="container-fluid card-padding">
+        <div class="card card-default shadow bg-white rounded cursor-default">
+            <div class="row">
+                <div class="col-md-6">
+                    <div class="card card-default shadow bg-white rounded cursor-default" style="margin: 4%;">
+                        <canvas baseChart [datasets]="barChartData" [labels]="barChartLabels"
+                            [options]="barChartOptions" [plugins]="barChartPlugins" [legend]="barChartLegend"
+                            [chartType]="barChartType" height="100">
+                        </canvas>
+                    </div>
+                </div>
+                <div class="col-md-6">
+                    <div class="card card-default shadow bg-white rounded cursor-default" style="margin: 4%;">
+                        <canvas baseChart id="canvas" [chartType]="'line'" [options]="barOptions"
+                            [datasets]="barDataClicks.datasets" [colors]="barColors" [labels]="barChartLabels1"
+                            [legend]="true" height="100">
+                        </canvas>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<div class="row">
+    <div class="container-fluid card-padding">
+        <div class="card card-default shadow bg-white rounded cursor-default">
+            <div class="row">
+                <div class="col-md-6">
+                    <div class="card card-default shadow bg-white rounded cursor-default" style="margin: 4%;">
+                        <canvas id="canvas" baseChart [chartType]="chartType" [datasets]="chartData"
+                            [labels]="chartLabels" [colors]="chartColors" [options]="chartOptions" height="100">
+                        </canvas>
+                    </div>
+                </div>
+                <div class="col-md-6">
+                    <div class="card card-default shadow bg-white rounded cursor-default" style="margin: 4%;">
+                        <canvas id="canvas1" baseChart [chartType]="chartType1" [datasets]="chartData1"
+                            [labels]="chartLabels1" [colors]="chartColors1" [options]="chartOptions1" height="100">
+                        </canvas>
+                    </div>
+                </div>
+            </div>
         </div>
     </div>
 </div>

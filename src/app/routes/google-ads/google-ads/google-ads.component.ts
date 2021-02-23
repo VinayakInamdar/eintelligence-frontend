@@ -1,9 +1,11 @@
 import { DatePipe } from '@angular/common';
 import { HttpClient } from '@angular/common/http';
-import { Component, OnInit } from '@angular/core';
+import { Component, ElementRef, OnInit } from '@angular/core';
 import { FormBuilder } from '@angular/forms';
 import { ActivatedRoute, Router } from '@angular/router';
 import { TranslateService } from '@ngx-translate/core';
+import { ChartDataSets, ChartOptions } from 'chart.js';
+import { Label } from 'ng2-charts';
 import { ColorsService } from 'src/app/shared/colors/colors.service';
 import { OpenIdConnectService } from 'src/app/shared/services/open-id-connect.service';
 import { Campaign } from '../../campaign/campaign.model';
@@ -39,6 +41,8 @@ export class GoogleAdsComponent implements OnInit {
   }
 
   ngOnInit(): void {
+    this.flotChart1();
+    this.flotChart2();
   }
 
   //Doughnut
@@ -76,6 +80,58 @@ export class GoogleAdsComponent implements OnInit {
     }]
   };
 
+  //horizontalBar
+  public barChartOptions: ChartOptions = {
+    responsive: true,
+    scales: {
+      xAxes: [{
+        scaleLabel: {
+          display: true,
+          fontSize: 18,
+          fontStyle: 'bold'
+        }
+      }],
+      yAxes: [{
+        scaleLabel: {
+          display: true,
+          fontSize: 18,
+          fontStyle: 'bold'
+        }
+      }]
+    }
+  };
+
+  public barChartLabels: Label[] = ['Mobile Phone', 'Computer', 'Tablets'];
+  public barChartType: string = 'horizontalBar';
+  public barChartLegend = true;
+  public barChartPlugins = [];
+
+  public barChartData: ChartDataSets[] = [
+    {
+      data: [0, 2, 4, 6, 8, 10, 12, 14, 16], label: 'Click',
+      backgroundColor: "#1D88E5", hoverBackgroundColor: "#1D88E5"
+    },
+
+  ];
+
+  //Flot chart
+  barChartLabels1: Label[] = ['Aug18', 'Aug21', 'Aug24', 'Aug27', 'Aug30', 'Sep2', 'Sep5', 'Sep8', 'Sep11', 'Sep14'];
+
+  barDataClicks = {
+    labels: ['January'],
+    'legend': {
+      'onClick': function (evt, item) {
+
+      },
+    },
+    datasets: [
+      {
+        data: [0, 100, 200, 300, 400], label: 'Conversion', legend: false, fill: false
+      }, {
+        data: [0, 2.5, 5, 7.5, 10], label: 'Conversion rate', legend: false, fill: false,
+      }
+    ]
+  };
   barColors = [
     {
       backgroundColor: 'rgba(12, 162, 235, 0.2)',
@@ -89,91 +145,172 @@ export class GoogleAdsComponent implements OnInit {
       pointHoverBackgroundColor: '#2DEEE2',
       pointHoverBorderColor: 'white'
     }];
-  barDataImpressionsDevice = {
-    labels: ['January'],
-    'legend': {
-      'onClick': function (evt, item) {
-
-      },
-    },
-    datasets: [
-      {
-        data: [], label: 'Impressions', legend: false, fill: false
-      }]
-  };
 
   barOptions = {
-    scaleShowVerticalLines: false,
-    responsive: true,
-    legend: {
-      position: 'bottom',
-      onHover: function (event, legendItem) {
-        document.getElementById("canvas").style.cursor = 'pointer';
-      },
-      onClick: function (e, legendItem) {
-        var index = legendItem.datasetIndex;
-        var ci = this.chart;
-        var alreadyHidden = (ci.getDatasetMeta(index).hidden === null) ? false : ci.getDatasetMeta(index).hidden;
 
-        ci.data.datasets.forEach(function (e, i) {
-          var meta = ci.getDatasetMeta(i);
-
-          if (i === index) {
-            if (alreadyHidden) {
-              meta.hidden = meta.hidden === null ? !meta.hidden : null;
-            }
-            else {
-              meta.hidden = true;
-            }
-
-          }
-        });
-
-        ci.update();
-      },
-    },
     scales: {
-      xAxes: [{
-        gridLines: {
-          display: false
-        },
-        barPercentage: 0.4,
-        ticks: {
-          autoSkip: true,
-          maxTicksLimit: 15,
-          callback: function (value) {
-            if (value.length > 9) {
-              return value.substr(0, 4) + '...'; //truncate
-            } else {
-              return value
-            }
-
-          },
-        }
-      }],
       yAxes: [{
-        gridLines: {
-          display: false
+        id: "left-y-axis",
+        position: "left",
+        ticks: {
+          beginAtZero: true,
+          stepSize: 100
+        }
+      }, {
+        id: "right-y-axis",
+        position: "right",
+        ticks: {
+          beginAtZero: true,
+          stepSize: 1 + '%'
         }
       }]
-    },
-    tooltips: {
-      enabled: true,
-      mode: 'label',
-      callbacks: {
-        title: function (tooltipItems, data) {
-          var idx = tooltipItems[0].index;
-          return data.labels[idx]; //do something with title
-        },
-        label: function (tooltipItems, data) {
-          //var idx = tooltipItems.index;
-          //return data.labels[idx] + ' €';
-          return tooltipItems.yLabel + '  Keywords'
-        }
-      }
-    },
+    }
   };
 
+  //Float chart
+  public canvas: ElementRef;
+  public context: CanvasRenderingContext2D;
+  public chartType: string = 'line';
+  public chartData: any[];
+  public chartLabels: any[];
+  public chartColors: any[];
+  public chartOptions: any;
+  public chartType1: string = 'line';
+  public chartData1: any[];
+  public chartLabels1: any[];
+  public chartColors1: any[];
+  public chartOptions1: any;
+
+
+
+  public flotChart1() {
+    //properties for first graph
+    this.chartData = [{
+      data: [2000, 2500, 3000, 4000, 1000, 2000, 3000, 2900, 0, 4000],
+      label: 'Clicks',
+      fill: false
+    }, {
+      data: [2900, 0, 1000, 2000, 2500, 3000, 1500, 2000, 2354, 3500], label: 'CTR', fill: false,
+    }];
+    this.chartLabels = ['Aug 18', 'Aug 21', 'Aug 24', 'Aug 27', 'Aug 30', 'Sep 2', 'Sep 5', 'Sep 8', 'Sep 11', 'Sep 14'];
+    this.chartColors = [{
+      backgroundColor: 'orange',
+      borderColor: 'orange'
+    }, {
+      backgroundColor: 'blue',
+      borderColor: 'blue'
+    }];
+    this.chartOptions = {
+      scales: {
+        yAxes: [{
+          id: "left-y-axis",
+          position: "left",
+          ticks: {
+            beginAtZero: true,
+            stepSize: 1000
+          }
+        }, {
+          id: "right-y-axis",
+          position: "right",
+          ticks: {
+            beginAtZero: true,
+            stepSize: 1 + '%'
+          }
+        }]
+      },
+      annotation: {
+        drawTime: 'beforeDatasetsDraw',
+        annotations: [{
+          type: 'box',
+          id: 'a-box-1',
+          yScaleID: 'y-axis-0',
+          yMin: 0,
+          yMax: 1,
+          backgroundColor: '#4cf03b'
+        }, {
+          type: 'box',
+          id: 'a-box-2',
+          yScaleID: 'y-axis-0',
+          yMin: 1,
+          yMax: 2.7,
+          backgroundColor: '#fefe32'
+        }, {
+          type: 'box',
+          id: 'a-box-3',
+          yScaleID: 'y-axis-0',
+          yMin: 2.7,
+          yMax: 5,
+          backgroundColor: '#fe3232'
+        }]
+      }
+    }
+  }
+
+  flotChart2() {
+    //properties for second graph
+    this.chartData1 = [{
+      data: [100, 200, 500, 600, 600, 700, 1000, 0, 0, 1500],
+      label: 'Cost',
+      fill: false
+    }, {
+      data: [2000, 100, 245, 587, 0, 0, 1008, 1677, 100, 100], label: 'Avg. CPC', fill: false,
+    }];
+    this.chartLabels1 = ['Aug 18', 'Aug 21', 'Aug 24', 'Aug 27', 'Aug 30', 'Sep 2', 'Sep 5', 'Sep 8', 'Sep 11', 'Sep 14'];
+    this.chartColors1 = [{
+      backgroundColor: 'orange',
+      borderColor: 'orange'
+    }, {
+      backgroundColor: 'blue',
+      borderColor: 'blue'
+    }];
+    this.chartOptions1 = {
+      scales: {
+        yAxes: [{
+          ticks: {
+            beginAtZero: true,
+            stepSize: 500
+          }
+        },
+        {
+          id: "right-y-axis1",
+          position: "right",
+          ticks: {
+            beginAtZero: true,
+            stepSize: 1 + '%'
+          }
+        }]
+      },
+      annotation: {
+        drawTime: 'beforeDatasetsDraw',
+        annotations: [{
+          type: 'box',
+          id: 'a-box-1',
+          yScaleID: 'y-axis-0',
+          yMin: 0,
+          yMax: 1,
+          backgroundColor: '#4cf03b'
+        }, {
+          type: 'box',
+          id: 'a-box-2',
+          yScaleID: 'y-axis-0',
+          yMin: 1,
+          yMax: 2.7,
+          backgroundColor: '#fefe32'
+        }, {
+          type: 'box',
+          id: 'a-box-3',
+          yScaleID: 'y-axis-0',
+          yMin: 2.7,
+          yMax: 5,
+          backgroundColor: '#fe3232'
+        }]
+      }
+    }
+  }
+
+
+
+  //Datepicker
   firstDay = new Date(this.date.getFullYear(), this.date.getMonth(), 1);
   lastDay = new Date(this.date.getFullYear(), this.date.getMonth() + 1, 0);
 
@@ -205,7 +342,7 @@ export class GoogleAdsComponent implements OnInit {
 
   // using to get campaignList
   public getCampaignList(): void {
-   
+
     var userid = this.openIdConnectService.user.profile.sub;
     this.campaignService.getCampaign(userid).subscribe(res => {
       this.campaignList = res;
