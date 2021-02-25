@@ -187,9 +187,8 @@ export class HomeComponent implements OnInit {
       version: 'v9.0'
     });
     this.getSerpList();
-    this.getRankingGraphData();
     this.getCampaignList();
-    this.getRankingGraphData();
+    this.getRankingGraphDataAll();
     this.getCompany();
 
 
@@ -260,19 +259,20 @@ export class HomeComponent implements OnInit {
     var userid = this.openIdConnectService.user.profile.sub;
     this.campaignService.getCampaign(userid).subscribe(res => {
       this.campaignList = res;
-
+      debugger
       for (let i = 0; i < res.length; i++) {
-        this.DeleteRankingGraphData(res[i].id);
+        this.getRankingGraphDataDelete(res[i].id);
       }
     });
   }
   calculateRankings() {
     this.accessToken = localStorage.getItem('googleGscAccessToken');
-
+    debugger
     if (this.accessToken != null && this.accessToken != undefined && this.accessToken != '') {
       const d = new Date();
       let currYear = d.getFullYear();
       for (let i = 0; i < this.campaignList.length; i++) {
+        //  this.DeleteRankingGraphData(this.campaignList[i].id.toString());
         let p = this.tempRankingGraphData.filter(x => x.campaignId.toString().toLowerCase() === this.campaignList[i].id.toString().toLowerCase() && x.year == currYear)
         p.sort(function (a, b) {
           var MONTH = {
@@ -283,12 +283,14 @@ export class HomeComponent implements OnInit {
         });
         let thisMonth = p[p.length - 1];
         let PrevMonth = p[p.length - 2];
-        let g = this.getDifference(PrevMonth.avragePosition, thisMonth.avragePosition);
-
+        let tap = 0, pap = 0;
+        if (thisMonth != undefined) { tap = thisMonth.avragePosition }
+        if (PrevMonth != undefined) { pap = PrevMonth.avragePosition }
+        let g = this.getDifference(pap, tap);
 
         if (g == 'NaN') { g = "0"; }
         this.total = this.campaignList.length;
-        
+
         this.selectedCampIdWebUrl = this.campaignList[i].webUrl;
         if (this.IsError == false) {
           this.getData(i);
@@ -398,70 +400,7 @@ export class HomeComponent implements OnInit {
 
     });
   }
-  RefreshRankingGraphData(selectedCampId) {
 
-    let p;
-    let totalPosition = 0;
-    const d = new Date();
-    const monthNames = ["January", "February", "March", "April", "May", "June",
-      "July", "August", "September", "October", "November", "December"
-    ];
-    let currMonth = monthNames[d.getMonth()];
-    let currYear = d.getFullYear();
-    p = this.serpList.filter(x => x.campaignID.toString() === selectedCampId.toLowerCase());
-    if (p != null && p != undefined && p.length > 0) {
-      for (let i = 0; i < p.length; i++) {
-        totalPosition = totalPosition + p[i].position;
-      }
-    }
-    this.averageRanking = totalPosition / parseInt(this.serpList.length)
-    this.averageRanking = Math.round(this.averageRanking);
-
-    let data = {
-      id: "00000000-0000-0000-0000-000000000000",
-      avragePosition: this.averageRanking,
-      month: currMonth,
-      campaignId: selectedCampId,
-      year: currYear,
-    }
-
-    this.campaignService.createRankingGraph(data).subscribe(response => {
-      if (response) {
-      }
-    });
-  }
-  DeleteRankingGraphData(selectedCampId) {
-
-    const monthNames = ["January", "February", "March", "April", "May", "June",
-      "July", "August", "September", "October", "November", "December"
-    ];
-    const d = new Date();
-    let currMonth = monthNames[d.getMonth()];
-    let tempId;
-    let p = this.tempRankingGraphData.filter(x => x.month == currMonth && x.campaignId == selectedCampId)
-    if (p != null && p != undefined && p.length > 0) {
-      tempId = p[0].id;
-      this.campaignService.deleteRankingGraph(tempId).subscribe(response => {
-
-        this.RefreshRankingGraphData(selectedCampId);
-      });
-    } else {
-
-      this.RefreshRankingGraphData(selectedCampId);
-    }
-  }
-  getRankingGraphData() {
-    //  this.barData.datasets[0].data = [10,20,34,6,43,12,56,86,5,33,24,55]
-    const filterOptionModel = this.getFilterOptionPlans();
-    this.campaignService.getFilteredRankingGraph(filterOptionModel).subscribe((response: any) => {
-      if (response) {
-
-        this.tempRankingGraphData = response.body;
-        this.RankingGraphData = response.body;
-        this.calculateRankings();
-      }
-    })
-  }
   private getFilterOptionPlans() {
     return {
       pageNumber: 1,
@@ -473,11 +412,11 @@ export class HomeComponent implements OnInit {
   }
 
   getDifference(previous, current) {
-   // Decrease = Original Number - New Number
-   // % Decrease = Decrease ÷ Original Number × 100
+    // Decrease = Original Number - New Number
+    // % Decrease = Decrease ÷ Original Number × 100
     // let diff = ((parseFloat(previous) - parseFloat(current)) * 100) / parseFloat(previous)
     // return parseFloat(diff.toString()).toFixed(2);
-    let diff = (parseFloat(previous) - parseFloat(current)) ;
+    let diff = (parseFloat(previous) - parseFloat(current));
     let per = (diff / parseFloat(current)) * 100
     return parseFloat(per.toString()).toFixed(2);
   }
@@ -523,7 +462,7 @@ export class HomeComponent implements OnInit {
         'Authorization': 'Bearer ' + this.accessToken,
       })
     };
-    
+
 
     //let urlcamp = this.selectedCampIdWebUrl.replace('/', '%2F');
     //const url = "https://www.googleapis.com/webmasters/v3/sites/https%3A%2F%2Feintelligence.azurewebsites.net%2F/searchAnalytics/query";
@@ -551,7 +490,7 @@ export class HomeComponent implements OnInit {
     }
     this.http.post(url, data, this.httpOptionJSON).subscribe(res => {
       if (res) {
-        
+
         let rows = res['rows'];
         if (all == 0) {
           this.clicksThisYear = rows[0].clicks;
@@ -571,7 +510,7 @@ export class HomeComponent implements OnInit {
         this.getDataPreviousYear(this.previousStartDate, this.previousEndDate, 1, i, url);
       }
     }, error => {
-      
+
       this.IsError = true;
       console.log("Please Login with your google account");
       // console.log('Data fetch failed for current year for URL : ' + this.selectedCampIdWebUrl + " --Error : - " + JSON.stringify(error.error));
@@ -631,17 +570,17 @@ export class HomeComponent implements OnInit {
   }
   ngOnInit() {
     this.trafficPvePer = 0;
-    this.trafficNvePer =  0;
-    this.trafficNutPer =  0;
+    this.trafficNvePer = 0;
+    this.trafficNutPer = 0;
     this.trafficPve = 0;
-    this.trafficNve =  0;
-    this.trafficNut =  0;
+    this.trafficNve = 0;
+    this.trafficNut = 0;
     this.ConversionsPvePer = 0;
-    this.ConversionsNvePer =  0;
-    this.ConversionsNutPer =  0;
+    this.ConversionsNvePer = 0;
+    this.ConversionsNutPer = 0;
     this.ConversionsPve = 0;
-    this.ConversionsNve =  0;
-    this.ConversionsNut =  0;
+    this.ConversionsNve = 0;
+    this.ConversionsNut = 0;
   }
   onStartDateChange(event) {
     this.startDate = this.datepipe.transform(this.fromDate.value, 'yyyy-MM-dd');
@@ -661,7 +600,7 @@ export class HomeComponent implements OnInit {
     this.getData(0);
   }
   getData(i) {
-    
+
     this.accessToken = localStorage.getItem('googleGscAccessToken');
     this.getDateSettings();
     if (this.accessToken == '' || this.accessToken == undefined || this.accessToken == null) {
@@ -670,7 +609,7 @@ export class HomeComponent implements OnInit {
       console.log("Start Date can not be grater then End Date");
     }
     else {
-      
+
       let urlcamp = this.selectedCampIdWebUrl.replace('/', '%2F');
       const url = "https://www.googleapis.com/webmasters/v3/sites/https%3A%2F%2F" + urlcamp + "/searchAnalytics/query?key=AIzaSyC1IsrCeeNXp9ksAmC8szBtYVjTLJC9UWQ";
       //const url = "https://searchconsole.googleapis.com/webmasters/v3/sites/https%3A%2F%2Fpatwa.co.in/searchAnalytics/query?key=AIzaSyC1IsrCeeNXp9ksAmC8szBtYVjTLJC9UWQ"
@@ -693,7 +632,7 @@ export class HomeComponent implements OnInit {
   }
 
   getYearwiseDifference(previous, current) {
-    let diff = (parseFloat(previous) - parseFloat(current)) ;
+    let diff = (parseFloat(previous) - parseFloat(current));
     let per = (diff / parseFloat(current)) * 100
     return parseFloat(per.toString()).toFixed(2);
     // let diff = ((parseFloat(previous) - parseFloat(current)) * 100) / parseFloat(previous)
@@ -795,17 +734,17 @@ export class HomeComponent implements OnInit {
     this.authService.signIn(GoogleLoginProvider.PROVIDER_ID, googleLoginOptions)
       .then((res) => {
         this.trafficPvePer = 0;
-        this.trafficNvePer =  0;
-        this.trafficNutPer =  0;
+        this.trafficNvePer = 0;
+        this.trafficNutPer = 0;
         this.trafficPve = 0;
-        this.trafficNve =  0;
-        this.trafficNut =  0;
+        this.trafficNve = 0;
+        this.trafficNut = 0;
         this.ConversionsPvePer = 0;
-        this.ConversionsNvePer =  0;
-        this.ConversionsNutPer =  0;
+        this.ConversionsNvePer = 0;
+        this.ConversionsNutPer = 0;
         this.ConversionsPve = 0;
-        this.ConversionsNve =  0;
-        this.ConversionsNut =  0;
+        this.ConversionsNve = 0;
+        this.ConversionsNut = 0;
         this.IsError = false;
         this.accessToken = res['authToken'];
         localStorage.setItem('googleGscAccessToken', this.accessToken);
@@ -860,50 +799,50 @@ export class HomeComponent implements OnInit {
   //Google Analytics
 
   getAnalyticsProfileIds(campaignIndex) {
-    
-   
-      let currDate = new Date();
-      let endDate1 = this.datepipe.transform(currDate, 'yyyy-MM-dd');
-      let startDate1 = this.datepipe.transform(currDate.setDate(currDate.getDate() - 28), 'yyyy-MM-dd');
-      this.httpOptionJSON = {
-        headers: new HttpHeaders({
-          'Accept': 'application/json',
-          'Authorization': 'Bearer ' + this.accessToken,
-        })
-      };
-      let urlcamp = this.selectedCampIdWebUrl.replace('/', '%2F');
-      const url = "https://www.googleapis.com/analytics/v3/management/accountSummaries";
-      //const url = "https://www.googleapis.com/analytics/v3/data/ga?ids=ga:83658108&dimensions=ga:date&start-date=2019-10-01&end-date=2021-02-15&metrics=ga:sessions";
-      //https://www.googleapis.com/analytics/v3/management/accounts/49139272/webproperties
-      this.http.get(url, this.httpOptionJSON).subscribe(res => {
-        if (res) {
-          
-          let rows = res['items'];
-          //let accountSummaryIds=[];
-          for (let i = 0; i < rows.length; i++) {
-            
-            let p = rows[i]
-            let q = p['webProperties']['0'].websiteUrl.toString();
-            
-            let u = this.campaignList[campaignIndex].webUrl;
-            if (q.includes(u)) {
-              this.getAnalyticsOrganicTrafficThisMonth(rows[i].webProperties[0].profiles[0].id, campaignIndex);
-              this.getAnalyticsOrganicTrafficLastMonth(rows[i].webProperties[0].profiles[0].id, campaignIndex);
 
-              break;
-            }
-            // accountSummaryIds.push(rows[i].webProperties[0].profiles[0].id);
+
+    let currDate = new Date();
+    let endDate1 = this.datepipe.transform(currDate, 'yyyy-MM-dd');
+    let startDate1 = this.datepipe.transform(currDate.setDate(currDate.getDate() - 28), 'yyyy-MM-dd');
+    this.httpOptionJSON = {
+      headers: new HttpHeaders({
+        'Accept': 'application/json',
+        'Authorization': 'Bearer ' + this.accessToken,
+      })
+    };
+    let urlcamp = this.selectedCampIdWebUrl.replace('/', '%2F');
+    const url = "https://www.googleapis.com/analytics/v3/management/accountSummaries";
+    //const url = "https://www.googleapis.com/analytics/v3/data/ga?ids=ga:83658108&dimensions=ga:date&start-date=2019-10-01&end-date=2021-02-15&metrics=ga:sessions";
+    //https://www.googleapis.com/analytics/v3/management/accounts/49139272/webproperties
+    this.http.get(url, this.httpOptionJSON).subscribe(res => {
+      if (res) {
+
+        let rows = res['items'];
+        //let accountSummaryIds=[];
+        for (let i = 0; i < rows.length; i++) {
+
+          let p = rows[i]
+          let q = p['webProperties']['0'].websiteUrl.toString();
+
+          let u = this.campaignList[campaignIndex].webUrl;
+          if (q.includes(u)) {
+            this.getAnalyticsOrganicTrafficThisMonth(rows[i].webProperties[0].profiles[0].id, campaignIndex);
+            this.getAnalyticsOrganicTrafficLastMonth(rows[i].webProperties[0].profiles[0].id, campaignIndex);
+
+            break;
           }
-
+          // accountSummaryIds.push(rows[i].webProperties[0].profiles[0].id);
         }
-      }, error => {
 
-        alert('Analytics Data Fetch failed : ' + JSON.stringify(error.error));
-      });
-    
+      }
+    }, error => {
+
+      alert('Analytics Data Fetch failed : ' + JSON.stringify(error.error));
+    });
+
   }
   getAnalyticsOrganicTrafficThisMonth(profileid, campaignIndex) {
-    
+
     this.httpOptionJSON = {
       headers: new HttpHeaders({
         'Accept': 'application/json',
@@ -914,7 +853,7 @@ export class HomeComponent implements OnInit {
     const url = "https://www.googleapis.com/analytics/v3/data/ga?ids=ga:" + profileid + "&start-date=" + this.startDate + "&end-date=" + this.endDate + "&metrics=ga%3AorganicSearches%2Cga%3AgoalConversionRateAll";
     this.http.get(url, this.httpOptionJSON).subscribe(res => {
       if (res) {
-        
+
         let rows = res['rows'];
 
         this.thisMonthTraffic = rows[0]["0"];
@@ -927,7 +866,7 @@ export class HomeComponent implements OnInit {
     });
   }
   getAnalyticsOrganicTrafficLastMonth(profileid, campaignIndex) {
-    
+
     this.httpOptionJSON = {
       headers: new HttpHeaders({
         'Accept': 'application/json',
@@ -951,7 +890,7 @@ export class HomeComponent implements OnInit {
         this.trafficNutPer = this.getPercentage(this.trafficNut, this.total);
         this.pieChartData2 = [this.trafficPvePer.toString(), this.trafficNvePer.toString(), this.trafficNutPer.toString()];
         //Converssions calculation for chart
-        this.thisMonthConversions = rows[0]["1"];        
+        this.thisMonthConversions = rows[0]["1"];
         let perConversions = this.getDifference(this.lastMonthConversions, this.thisMonthConversions);
         if (parseFloat(perConversions) > 0) { this.ConversionsPve = this.ConversionsPve + 1; }
         if (parseFloat(perConversions) < 0) { this.ConversionsNve = this.ConversionsNve + 1; }
@@ -969,5 +908,108 @@ export class HomeComponent implements OnInit {
       alert('Analytics Data Fetch failed : ' + JSON.stringify(error.error));
     });
   }
+  //For ranking graph rubina
+  RefreshRankingGraphData(selectedCampId) {
+    debugger
+    const d = new Date();
+    let currYear = d.getFullYear();
+    let p;
+    let totalPosition = 0;
+    p = this.serpList.filter(x => x.campaignID.toString() === selectedCampId.toLowerCase());
+    if (p != null && p != undefined && p.length > 0) {
+      for (let i = 0; i < p.length; i++) {
+        totalPosition = totalPosition + p[i].position;
+      }
+    }
+    this.averageRanking = totalPosition / parseInt(this.serpList.length)
+    this.averageRanking = Math.round(this.averageRanking);
+    const monthNames = ["January", "February", "March", "April", "May", "June", "July", "August", "September", "October", "November", "December"
+    ];
 
+    let currMonth = monthNames[d.getMonth()];
+    let data = {
+      id: "00000000-0000-0000-0000-000000000000",
+      avragePosition: this.averageRanking,
+      month: currMonth,
+      campaignId: selectedCampId,
+      year: currYear,
+    }
+    this.campaignService.createRankingGraph(data).subscribe(response => {
+      if (response) {
+        debugger
+        this.getRankingGraphData(selectedCampId);
+      }
+    });
+  }
+  DeleteRankingGraphData(selectedCampId) {
+    debugger
+    const monthNames = ["January", "February", "March", "April", "May", "June", "July", "August", "September", "October", "November", "December"
+    ];
+    const d = new Date();
+    let currMonth = monthNames[d.getMonth()];
+    let tempId;
+    let p = this.tempRankingGraphData.filter(x => x.month == currMonth)
+    if (p != null && p != undefined && p.length > 0) {
+      tempId = p[0].id;
+      this.campaignService.deleteRankingGraph(tempId).subscribe(response => {
+        debugger
+        this.RefreshRankingGraphData(selectedCampId);
+      });
+    } else {
+      this.RefreshRankingGraphData(selectedCampId);
+    }
+  }
+  getRankingGraphDataDelete(selectedCampId) {
+    const d = new Date();
+    let currYear = d.getFullYear();
+    //  this.barData.datasets[0].data = [10,20,34,6,43,12,56,86,5,33,24,55]
+    const filterOptionModel = this.getFilterOptionPlans();
+    this.campaignService.getFilteredRankingGraph(filterOptionModel).subscribe((response: any) => {
+      if (response) {
+        debugger
+        this.RankingGraphData = response.body;
+        this.RankingGraphData = this.RankingGraphData.filter(x => x.campaignId.toString() === selectedCampId.toLowerCase() && x.year == currYear);
+        this.tempRankingGraphData = this.RankingGraphData;
+        this.DeleteRankingGraphData(selectedCampId);
+      }
+    });
+  }
+  getRankingGraphDataAll() {
+    const d = new Date();
+    let currYear = d.getFullYear();
+    //  this.barData.datasets[0].data = [10,20,34,6,43,12,56,86,5,33,24,55]
+    const filterOptionModel = this.getFilterOptionPlans();
+    this.campaignService.getFilteredRankingGraph(filterOptionModel).subscribe((response: any) => {
+      if (response) {
+        debugger
+        this.RankingGraphData = response.body;
+        this.RankingGraphData = this.RankingGraphData.filter(x => x.year == currYear);
+        this.tempRankingGraphData = this.RankingGraphData;
+        this.calculateRankings();
+      }
+    });
+  }
+  getRankingGraphData(selectedCampId) {
+    debugger
+    const d = new Date();
+
+    let currYear = d.getFullYear();
+    //  this.barData.datasets[0].data = [10,20,34,6,43,12,56,86,5,33,24,55]
+    const filterOptionModel = this.getFilterOptionPlans();
+    this.campaignService.getFilteredRankingGraph(filterOptionModel).subscribe((response: any) => {
+      if (response) {
+        debugger
+        this.RankingGraphData = response.body;
+        this.RankingGraphData = this.RankingGraphData.filter(x => x.campaignId.toString() === selectedCampId.toLowerCase() && x.year == currYear);
+        this.tempRankingGraphData = this.RankingGraphData;
+        this.RankingGraphData.sort(function (a, b) {
+          var MONTH = {
+            January: 1, February: 2, March: 3, April: 4, May: 5, June: 6,
+            July: 7, August: 8, September: 9, October: 10, November: 11, December: 12
+          };
+          return a.year - b.year || MONTH[a.month] - MONTH[b.month];
+        });
+      }
+    })
+  }
 }

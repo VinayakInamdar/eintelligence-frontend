@@ -1493,7 +1493,10 @@ export class CampaginComponent implements OnInit, AfterViewInit {
         });
         let thisMonth = p[p.length - 1];
         let PrevMonth = p[p.length - 2];
-        let g = this.getDifference(PrevMonth.avragePosition, thisMonth.avragePosition);
+        let tap = 0, pap = 0;
+        if (thisMonth != undefined) { tap = thisMonth.avragePosition }
+        if (PrevMonth != undefined) { pap = PrevMonth.avragePosition }
+        let g = this.getDifference(pap, tap);
 
 
         if (g == 'NaN') { g = "0"; }
