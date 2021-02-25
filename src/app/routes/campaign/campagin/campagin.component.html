@@ -1,7 +1,7 @@
 <div class="row" *ngIf="settingActive == 1;">
     <div class="col-md-2"></div>
-    <div class="col-md-8 closebtn paddingtop8px"><a href="javascript:void(0);"
-            (click)="closeCreateCampaignComponent($event)">
+    <div class="col-md-8 closebtn paddingtop8px">
+        <a href="javascript:void(0);" (click)="closeCreateCampaignComponent($event)">
             <em class="fa-2x mr-2 fas fa-times"></em></a>
     </div>
     <div class="col-md-2"> </div>
@@ -10,8 +10,8 @@
 <div *ngIf="settingActive == 1;" class="row w3-container w3-center w3-animate-right paddingtopdiv">
     <div class="col-md-2"> </div>
     <div class="col-md-8">
-        <form [formGroup]="valForm" class="form-horizontal card formh cursor-default" (keydown.enter)="$event.preventDefault()"
-            (submit)="submitForm(valForm.value)" novalidate="">
+        <form [formGroup]="valForm" class="form-horizontal card formh cursor-default"
+            (keydown.enter)="$event.preventDefault()" (submit)="submitForm(valForm.value)" novalidate="">
             <tabset [justified]="true" #staticTabs>
                 <tab class="tabh">
                     <ng-template tabHeading>
@@ -184,7 +184,7 @@
         <div class="card card-default shadow p-3 mb-5 bg-white rounded cursor-default">
             <div class="table-responsive cursor-pointer">
                 <ng2-smart-table [settings]="settings" [source]="source" (userRowSelect)="userRowSelect($event)"
-                (custom)="onCustomAction($event)">
+                    (custom)="onCustomAction($event)">
                 </ng2-smart-table>
             </div>
         </div>
@@ -193,19 +193,20 @@
 </div>
 
 <!-- Update Campagin -->
+
 <div class="row" *ngIf="settingActive == 4;">
     <div class="col-md-2"></div>
-    <div class="col-md-8 closebtn paddingtop8px"><a href="javascript:void(0);"
-            (click)="closeCampaignComponent($event)">
+    <div class="col-md-8 closebtn paddingtop8px">
+        <a href="javascript:void(0);" (click)="closeCampaignComponent($event)">
             <em class="fa-2x mr-2 fas fa-times"></em></a>
     </div>
     <div class="col-md-2"> </div>
 </div>
-<div  *ngIf="settingActive == 4;" class="row w3-container w3-center w3-animate-right paddingtopdiv">
+<div *ngIf="settingActive == 4;" class="row w3-container w3-center w3-animate-right paddingtopdiv">
     <div class="col-md-2"> </div>
     <div class="col-md-8">
-        <form [formGroup]="valForm" class="form-horizontal card formh cursor-default" (keydown.enter)="$event.preventDefault()"
-            (submit)="updateCampaignForm(campaignModel)" novalidate="">
+        <form [formGroup]="valForm" class="form-horizontal card formh cursor-default"
+            (keydown.enter)="$event.preventDefault()" (submit)="updateCampaignForm(campaignModel)" novalidate="">
             <tabset [justified]="true" #staticTabs>
                 <tab class="tabh">
                     <ng-template tabHeading>
@@ -227,7 +228,7 @@
                             <br>
                             <div class="text-center">
                                 <button class="mr-1 btn btn-primary btn-lg" type="submit"
-                                    (click)="goToNextTab($event,name_field.value,'name',1)">Next </button>
+                                    (click)="goToNextTabForEdit($event,name_field.value,'name',1)">Next </button>
                             </div>
                         </div>
                         <div class="col-md-1"></div>
@@ -266,7 +267,7 @@
                                 <div class="col-md-6"></div>
                                 <div class="col-md-3">
                                     <button class="mr-1 btn btn-primary btn-lg" type="submit"
-                                        (click)="goToNextTab($event,webUrl_field.value,'webUrl',2)">Next
+                                        (click)="goToNextTabForEdit($event,webUrl_field.value,'webUrl',2)">Next
                                         ></button>
                                 </div>
                             </div>
@@ -319,7 +320,8 @@
 
                                             <div class="col-md-1">
                                                 <input type="checkbox" formControlName="leadGeneration"
-                                                    class="form-check-input" value="" [(ngModel)]='campaignModel.leadGeneration'>
+                                                    class="form-check-input" value=""
+                                                    [(ngModel)]='campaignModel.leadGeneration'>
                                             </div>
                                             <div class="col-md-11">
                                                 <em class="fa-2x mr-2 fas fa-users"></em><br>
@@ -339,7 +341,7 @@
                                 <div class="col-md-4">
                                     <!-- <a routerLink="./home"> -->
                                     <button class="mr-1 btn btn-primary btn-lg" type="submit"
-                                        (click)="updateSuccessAlert()">Update
+                                        (click)="updateSuccessAlert();">Update
                                         campaign</button>
                                     <!-- </a> -->
                                 </div>

@@ -108,7 +108,8 @@
         "CREATEMSG":"Created Successfully",
         "DELETEMSG":"Deleted Successfully",
         "INSERTMSG":"Inserted Successfully",
-        "SAVEMSG":"Saved Successfully"
+        "SAVEMSG":"Saved Successfully",
+        "CANCLEMSG":"Cancle Successfully"
     },
     "toaster": {
         "success": {

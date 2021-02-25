@@ -843,7 +843,7 @@ export class SeoComponent implements OnInit {
     //this.getAnalyticsData();
     this.getCampaignList();
     this.getSerpList();
-    this.getRankingGraphData();
+    this.getRankingGraphDataDelete();
     this.showdiv = true;
     this.show = 'seo';
     this.showDefault = 'seo';
@@ -1728,10 +1728,12 @@ export class SeoComponent implements OnInit {
   }
   //For ranking graph rubina
   RefreshRankingGraphData() {
-
+    debugger
+    const d = new Date();
+    let currYear = d.getFullYear();
     let p;
     let totalPosition = 0;
-    p = this.serpList.filter(x => x.campaignID.toString() === this.selectedCampId.toLowerCase());
+    p = this.serpList.filter(x => x.campaignID.toString() === this.selectedCampId.toLowerCase() );
     if (p != null && p != undefined && p.length > 0) {
       for (let i = 0; i < p.length; i++) {
         totalPosition = totalPosition + p[i].position;
@@ -1742,21 +1744,23 @@ export class SeoComponent implements OnInit {
     const monthNames = ["January", "February", "March", "April", "May", "June", "July", "August", "September", "October", "November", "December"
     ];
 
-    const d = new Date();
     let currMonth = monthNames[d.getMonth()];
     let data = {
       id: "00000000-0000-0000-0000-000000000000",
       avragePosition: this.averageRanking,
       month: currMonth,
       campaignId: this.selectedCampId,
+      year:currYear,
     }
     this.campaignService.createRankingGraph(data).subscribe(response => {
       if (response) {
+        debugger
         this.getRankingGraphData();
       }
     });
   }
   DeleteRankingGraphData() {
+    debugger
     const monthNames = ["January", "February", "March", "April", "May", "June", "July", "August", "September", "October", "November", "December"
     ];
     const d = new Date();
@@ -1766,21 +1770,43 @@ export class SeoComponent implements OnInit {
     if (p != null && p != undefined && p.length > 0) {
       tempId = p[0].id;
       this.campaignService.deleteRankingGraph(tempId).subscribe(response => {
-        //if (response) {
-        //this.snackbarService.show('Product Added');
-        //}
+        debugger
+        this.RefreshRankingGraphData();
       });
-    }
+    }else{
     this.RefreshRankingGraphData();
+    }
   }
-  getRankingGraphData() {
+  getRankingGraphDataDelete() {
+    const d = new Date();
+    let currYear = d.getFullYear();
     //  this.barData.datasets[0].data = [10,20,34,6,43,12,56,86,5,33,24,55]
     const filterOptionModel = this.getFilterOptionPlans();
     this.campaignService.getFilteredRankingGraph(filterOptionModel).subscribe((response: any) => {
       if (response) {
+        debugger
         this.barDataArray = [];
         this.rankingGraphData = response.body;
-        this.tempRankingGraphData = response.body;
+        this.rankingGraphData = this.rankingGraphData.filter(x => x.campaignId.toString() === this.selectedCampId.toLowerCase() && x.year == currYear );
+        this.tempRankingGraphData =  this.rankingGraphData ;
+        this.DeleteRankingGraphData();
+      }
+    });
+  }
+  getRankingGraphData() {
+    debugger
+    const d = new Date();
+
+    let currYear = d.getFullYear();
+    //  this.barData.datasets[0].data = [10,20,34,6,43,12,56,86,5,33,24,55]
+    const filterOptionModel = this.getFilterOptionPlans();
+    this.campaignService.getFilteredRankingGraph(filterOptionModel).subscribe((response: any) => {
+      if (response) {
+        debugger
+        this.barDataArray = [];
+        this.rankingGraphData = response.body;
+        this.rankingGraphData = this.rankingGraphData.filter(x => x.campaignId.toString() === this.selectedCampId.toLowerCase() && x.year == currYear );
+        this.tempRankingGraphData =  this.rankingGraphData ;
         this.rankingGraphData.sort(function (a, b) {
           var MONTH = {
             January: 1, February: 2, March: 3, April: 4, May: 5, June: 6,
@@ -1815,13 +1841,13 @@ export class SeoComponent implements OnInit {
         }
         else { this.barDataArray.push(0) }
         u = this.rankingGraphData;
-        p = this.rankingGraphData.filter(x => x.month == "May")
+        p = this.rankingGraphData.filter(x => x.month == "May" )
         if (p != null && p != undefined && p.length > 0) {
           this.barDataArray.push(p[0].avragePosition)
         }
         else { this.barDataArray.push(0) }
         u = this.rankingGraphData;
-        p = this.rankingGraphData.filter(x => x.month == "June")
+        p = this.rankingGraphData.filter(x => x.month == "June" )
         if (p != null && p != undefined && p.length > 0) {
           this.barDataArray.push(p[0].avragePosition)
         }
@@ -1862,10 +1888,9 @@ export class SeoComponent implements OnInit {
           this.barDataArray.push(p[0].avragePosition)
         }
         else { this.barDataArray.push(0) }
-
-
         this.barData.datasets[0].data = this.barDataArray;
-        this.chart.chart.update();
+      
+        // this.chart.chart.update();
       }
     })
   }

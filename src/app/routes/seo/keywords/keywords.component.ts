@@ -32,7 +32,12 @@ export class KeywordsComponent implements OnInit {
   campaignList: Campaign[];
   queryParams: string;
   settings = {
-    actions: { add: false, edit: false, delete: false },
+    actions: {
+      columnTitle: '',
+      custom: [
+      { name: 'deleteKeyword', title: '<span class="text-danger col" style="padding-left:1rem"><i class="fas fa-trash-alt"></i></span>' }],
+      add: false, edit: false, delete: false, position: 'right'
+    }, 
     columns: {
       keywords: {
         title: 'KEYWORD PHRASE',
@@ -268,13 +273,26 @@ export class KeywordsComponent implements OnInit {
       this.selectedCampaignName = name !== "" ? name : undefined;
     });
   }
+  private getFilterOptionPlans() {
+    return {
+      pageNumber: 1,
+      pageSize: 1000,
+      fields: '',
+      searchQuery: '',
+      orderBy: ''
+    }
 
+  }
   // using to get list of keyword list
   public getSerpList(): void {
-    this.campaignService.getSerp("&tbs=qdr:m").subscribe(res => {
-      this.serpList = res;
-      this.source = new LocalDataSource(this.serpList)
-    });
+    const filterOptionModel = this.getFilterOptionPlans();
+    let id = this.route.snapshot.paramMap.get('id');
+    this.selectedCampId = `${id.substring(3)}`;
+    filterOptionModel.searchQuery= 'CampaignID=="'+this.selectedCampId+'"'
+    this.campaignService.getSerpForKeyword(filterOptionModel,"&tbs=qdr:m").subscribe(res => {
+         this.serpList = res;
+         this.source = new LocalDataSource(this.serpList)
+      });
   }
 
   // using to change serp list with changing campaign from dropdown
@@ -553,4 +571,73 @@ export class KeywordsComponent implements OnInit {
 
   }
 
+  //Edit,Delete Keyword
+  onCustomAction(event) {
+    switch (event.action) {
+      case 'deleteKeyword':
+        this.deleteKeyword(event.data);
+    }
+  }
+ 
+ //Delete campaign
+ deleteKeyword(event) {
+  success({
+    icon: this.translate.instant('sweetalert.WARNINGICON'),
+    title: this.translate.instant('message.DELETEMSG'),
+    buttons: {
+      cancel: {
+        text: this.translate.instant('sweetalert.CANCELBUTTON'),
+        value: null,
+        visible: true,
+        className: "",
+        closeModal: false
+      },
+      confirm: {
+        text: this.translate.instant('sweetalert.CONFIRMBUTTON'),
+        value: true,
+        visible: true,
+        className: "bg-danger",
+        closeModal: false
+      }
+    }
+  }).then((isConfirm: any) => {
+    if (isConfirm) {
+      this.campaignService.deleteKeywordById(event.id).subscribe(res => {
+        success({
+          icon: this.translate.instant('sweetalert.WARNINGICON'),
+          title: this.translate.instant('message.DELETEMSG'),
+          buttons: {
+            confirm: {
+              text: this.translate.instant('sweetalert.OKBUTTON'),
+              value: true,
+              visible: true,
+              className: "bg-primary",
+              closeModal: true,
+            }
+          }
+        }).then((isConfirm) => {
+          if (isConfirm) {
+            this.router.navigate([`/campaign/:id${this.selectedCampId}/seo`])
+          }
+        })
+      });
+    } else {
+      success({
+        icon: this.translate.instant('sweetalert.WARNINGICON'),
+        title: this.translate.instant('message.CANCLEMSG'),
+        buttons: {
+          confirm: {
+              text: this.translate.instant('sweetalert.OKBUTTON'),
+              value: true,
+              visible: true,
+              className: "bg-primary",
+              closeModal: true,
+          }
+      }
+      }).then((isConfirm) => {
+        this.router.navigate([`/campaign/:id${this.selectedCampId}/seo`])
+      })
+    }
+  });
+}
 }

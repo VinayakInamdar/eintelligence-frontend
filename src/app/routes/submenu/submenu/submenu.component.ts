@@ -18,7 +18,6 @@ export class SubmenuComponent implements OnInit {
   ngOnInit(): void {
   }
   public goToSeoOverview(event) {
-    debugger
     this.router.navigate([`../campaign/:id${this.selectedCampId}/seo`])
   }
   public goToSocialMedia(event) {
@@ -33,7 +32,13 @@ export class SubmenuComponent implements OnInit {
     });
 
     //this.router.navigate([`/campaign/:id${this.selectedCampId}`])
-  }/*
+  }
+  goToGoogleAdsOverview(event){
+    this.router.navigate([`/google-ads`])
+  }
+  
+  /*
+  
   public goToSocialMedia(event) {
 
     this.router.navigate([`/socialmedia`])

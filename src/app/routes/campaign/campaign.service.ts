@@ -19,6 +19,10 @@ export class CampaignService {
 
   constructor(private http: HttpClient, private openIdConnectService: OpenIdConnectService) { }
 
+  //Delete Keyword
+  deleteKeywordById(id: string): Observable<SerpDto> {
+    return this.http.delete<SerpDto>(this.Url + 'serps/' + id);
+  }
   //Get Campaign
   getcampaign(id: string): Observable<any> {
   return this.http.get<any>(this.Url + `campaigns/${id}`);
@@ -34,6 +38,10 @@ export class CampaignService {
     }
 
     return this.http.post<Campaign>(this.Url + 'campaigns', campaignSetupData);
+  }
+  //Delete Campaign
+   deleteCampaignById(id: string): Observable<Campaign> {
+    return this.http.delete<Campaign>(this.Url + 'campaigns/' + id);
   }
   getFilteredRankingGraph(filter: FilterOptionModel): Observable<any> {
     
@@ -64,6 +72,11 @@ export class CampaignService {
       params: new HttpParams().set('pageSize', '1000').set("searchParam", searchParam)
     })
   }
+  getSerpForKeyword(filter: FilterOptionModel,searchParam: string): Observable<any> {
+    const params = `PageNumber=${filter.pageNumber}&PageSize=${filter.pageSize}&SearchQuery=${filter.searchQuery}&OrderBy=${filter.orderBy}&Fields=${filter.fields}`;
+    return this.http.get<any>(`${this.Url}serps?${params}`, { 
+      params: new HttpParams().set('pageSize', '1000').set("searchParam", searchParam) });
+}
 
   // using to add new keyword in selected campaign Id
   addNewKeyword(CampaignID: string, Keyword: any, Location: string, Tags: any, searchParam:string): Observable<SerpDto> {
