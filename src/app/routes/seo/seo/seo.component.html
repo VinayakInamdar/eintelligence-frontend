@@ -1,7 +1,7 @@
 <div class="row" *ngIf="settingActive == 1;">
     <div class="col-md-2"></div>
-    <div class="col-md-8 closebtn paddingtop8px"><a href="javascript:void(0);"
-            (click)="closeCreateCampaignComponent($event)">
+    <div class="col-md-8 closebtn paddingtop8px">
+        <a href="javascript:void(0);" (click)="closeCreateCampaignComponent($event)">
             <em class="fa-2x mr-2 fas fa-times"></em></a>
     </div>
     <div class="col-md-2"> </div>
@@ -12,6 +12,11 @@
         <i class="fa fa-twitter mr-1"></i>
         Login with Google
     </button>
+</div>
+<div class="card card-default shadow p-3 mb-5 bg-white rounded  set-cursor">
+    <div class="card-text-center setcampaign">
+        {{selectedCampaignName}}
+    </div>
 </div>
 <div class="card card-default shadow p-3 mb-5 bg-white rounded set-middle cursor-default">
     <div class="col-lg-10" [formGroup]="myForm">
@@ -52,7 +57,7 @@
 </div>
 
 
-<div class="row overflow-hidden" >
+<div class="row overflow-hidden">
     <div class="container-fluid card-padding">
         <div class="col-md-6">
             <div class="card card-default shadow bg-white rounded cursor-default card-height">
@@ -62,23 +67,20 @@
                    matTooltip="Distribution of targeted keywords according to ranking performance"></i> -->
                 </div>
                 <div class="card-body row">
-                    <div class="chart-wrapper mx-auto chart-container" >
-                        <canvas baseChart id="canvas" [chartType]="'bar'" [options]="barOptions"
-                            [datasets]="barData.datasets" [colors]="barColors1" [labels]="barChartLabels1"
-                            [legend]="true" height="90">
+                    <div class="chart-wrapper mx-auto chart-container">
+                        <canvas baseChart id="canvas" [chartType]="'bar'" [options]="barOptions" [datasets]="barData.datasets" [colors]="barColors1" [labels]="barChartLabels1" [legend]="true" height="90">
                         </canvas>
                     </div>
                     <div class="btn-container footer-buttons text-center">
                         <a href="javascript:void(0)" class="btn btn-link" (click)="goToKeywords($event)">All
-                            Rankings</a>
-                        &nbsp;&nbsp;&nbsp;
+                            Rankings</a> &nbsp;&nbsp;&nbsp;
                         <a href="javascript:void(0)" class="btn btn-link" (click)="goToAddKeywords($event)">Add
                             Keywords</a>
                     </div>
                 </div>
             </div>
         </div>
-        
+
         <div class="col-md-6">
 
             <div class="card card-default shadow bg-white rounded cursor-default card-height">
@@ -86,7 +88,7 @@
                     <h4 class="heading-margin font-weight">TRAFFIC SOURCES</h4>
                 </div>
                 <div class="card-body row">
-                    <div class="chart-wrapper mx-auto chart-container" >
+                    <div class="chart-wrapper mx-auto chart-container">
                         <div *ngIf="showSpinnerSiteAnalysisContent" class="la-line-scale  linescaleloadercolortopleft">
                             <div></div>
                             <div></div>
@@ -94,9 +96,7 @@
                             <div></div>
                             <div></div>
                         </div>
-                        <canvas *ngIf="!showSpinnerSiteAnalysisContent" baseChart [datasets]="lineChartData1"
-                            [labels]="lineChartLabels1" [options]="lineChartOptions1" [colors]="lineChartColors1"
-                            [legend]="lineChartLegend1" [chartType]="lineChartType1" [plugins]="lineChartPlugins1"
+                        <canvas *ngIf="!showSpinnerSiteAnalysisContent" baseChart [datasets]="lineChartData1" [labels]="lineChartLabels1" [options]="lineChartOptions1" [colors]="lineChartColors1" [legend]="lineChartLegend1" [chartType]="lineChartType1" [plugins]="lineChartPlugins1"
                             [fullWidth]="true">
                         </canvas>
                     </div>
@@ -171,9 +171,7 @@
                         </div>
                         <div class="card-body row">
                             <div class="chart-wrapper mx-auto chart-container">
-                                <canvas baseChart id="canvas1" [chartType]="'horizontalBar'" [options]="barOptions"
-                                    [datasets]="barDataImpressionsDevice.datasets" [colors]="barColors"
-                                    [labels]="barChartLabelsDevice" [legend]="true" height="85">
+                                <canvas baseChart id="canvas1" [chartType]="'horizontalBar'" [options]="barOptions" [datasets]="barDataImpressionsDevice.datasets" [colors]="barColors" [labels]="barChartLabelsDevice" [legend]="true" height="85">
                                 </canvas>
                             </div>
                         </div>
@@ -201,9 +199,7 @@
                 </div>
                 <div class="card-body row">
                     <div class="chart-wrapper mx-auto chart-container">
-                        <canvas baseChart id="canvas" [chartType]="'line'" [options]="barOptions"
-                            [datasets]="barDataClicks.datasets" [colors]="barColors" [labels]="barChartLabels"
-                            [legend]="true" height="100">
+                        <canvas baseChart id="canvas" [chartType]="'line'" [options]="barOptions" [datasets]="barDataClicks.datasets" [colors]="barColors" [labels]="barChartLabels" [legend]="true" height="100">
                         </canvas>
                     </div>
                 </div>
@@ -217,9 +213,7 @@
                 </div>
                 <div class="card-body row">
                     <div class="chart-wrapper mx-auto chart-container">
-                        <canvas baseChart id="canvas1" [chartType]="'line'" [options]="barOptions"
-                            [datasets]="barDataImpressions.datasets" [colors]="barColors" [labels]="barChartLabels"
-                            [legend]="true" height="100">
+                        <canvas baseChart id="canvas1" [chartType]="'line'" [options]="barOptions" [datasets]="barDataImpressions.datasets" [colors]="barColors" [labels]="barChartLabels" [legend]="true" height="100">
                         </canvas>
                     </div>
                 </div>
@@ -234,9 +228,7 @@
                 </div>
                 <div class="card-body row">
                     <div class="chart-wrapper mx-auto chart-container">
-                        <canvas baseChart id="canvas1" [chartType]="'line'" [options]="barOptions"
-                            [datasets]="barDataCTR.datasets" [colors]="barColors" [labels]="barChartLabels"
-                            [legend]="true" height="100">
+                        <canvas baseChart id="canvas1" [chartType]="'line'" [options]="barOptions" [datasets]="barDataCTR.datasets" [colors]="barColors" [labels]="barChartLabels" [legend]="true" height="100">
                         </canvas>
                     </div>
                 </div>
@@ -249,9 +241,7 @@
                 </div>
                 <div class="card-body row">
                     <div class="chart-wrapper mx-auto chart-container">
-                        <canvas baseChart id="canvas1" [chartType]="'line'" [options]="barOptions"
-                            [datasets]="barDataPositions.datasets" [colors]="barColors" [labels]="barChartLabels"
-                            [legend]="true" height="100">
+                        <canvas baseChart id="canvas1" [chartType]="'line'" [options]="barOptions" [datasets]="barDataPositions.datasets" [colors]="barColors" [labels]="barChartLabels" [legend]="true" height="100">
                         </canvas>
                     </div>
                 </div>
@@ -262,8 +252,7 @@
         <div class="row">
             <div class="col-md-1"></div>
             <div class="col-md-10">
-                <div class="navbar navbar-default navbar-fixed-top bg-white cursor-default indicatorBoxShadow"
-                    role="navigation">
+                <div class="navbar navbar-default navbar-fixed-top bg-white cursor-default indicatorBoxShadow" role="navigation">
                     <a class="navbar-brand" href="#" style="padding-top: 2%; ">
                         KEY PERFORMANCE INDICATOR - MOST IMPORTANT MATRICS
                     </a>
@@ -394,8 +383,7 @@
                                     <h4 class="heading-margin font-weight">WEB TRAFFIC BY CHANNEL</h4>
                                 </div>
                                 <div class="widget-content">
-                                    <div *ngIf="showSpinnerSiteAnalysisContent"
-                                        class="la-line-scale  linescaleloadercolortopleft">
+                                    <div *ngIf="showSpinnerSiteAnalysisContent" class="la-line-scale  linescaleloadercolortopleft">
                                         <div></div>
                                         <div></div>
                                         <div></div>
@@ -408,14 +396,11 @@
                                         [legend]="lineChartLegend1" [chartType]="pie" [plugins]="lineChartPlugins1"
                                         [fullWidth]="true">
                                     </canvas> -->
-                                        <canvas id='dougnutChart' baseChart [chartType]="'pie'"
-                                            [colors]="doughnutColors" [options]="doughnutOptions"
-                                            [datasets]="doughnutData.datasets" [labels]="doughnutData.labels"
-                                            [doughnut]="true" [legend]="true" height="210"></canvas>
+                                        <canvas id='dougnutChart' baseChart [chartType]="'pie'" [colors]="doughnutColors" [options]="doughnutOptions" [datasets]="doughnutData.datasets" [labels]="doughnutData.labels" [doughnut]="true" [legend]="true" height="210"></canvas>
                                         <!-- <div class="btn-container footer-buttonsabsolute text-center"> -->
-                                            <!-- <a href="javascript:void(0)" class="btn btn-link"
+                                        <!-- <a href="javascript:void(0)" class="btn btn-link"
                                                 (click)="goToAcquisitonTrafficSources($event)">See More</a> -->
-                                            <!-- &nbsp;&nbsp;&nbsp; -->
+                                        <!-- &nbsp;&nbsp;&nbsp; -->
                                         <!-- </div> -->
                                     </div>
                                 </div>
@@ -427,8 +412,7 @@
                                     <h4 class="heading-margin font-weight">WEB TRAFFIC BY DEVICE </h4>
                                 </div>
                                 <div class="widget-content">
-                                    <div *ngIf="showSpinnerSiteAnalysisContent"
-                                        class="la-line-scale  linescaleloadercolortopleft">
+                                    <div *ngIf="showSpinnerSiteAnalysisContent" class="la-line-scale  linescaleloadercolortopleft">
                                         <div></div>
                                         <div></div>
                                         <div></div>
@@ -437,14 +421,12 @@
                                     </div>
                                     <div *ngIf=" !showSpinnerSiteAnalysisContent">
                                         <div>
-                                            <canvas id='dougnutChart1' baseChart [chartType]="'bar'"
-                                                [options]="doughnutOptions1" [datasets]="doughnutData1.datasets"
-                                                [labels]="doughnutData1.labels" [legend]="true" height="210"></canvas>
+                                            <canvas id='dougnutChart1' baseChart [chartType]="'bar'" [options]="doughnutOptions1" [datasets]="doughnutData1.datasets" [labels]="doughnutData1.labels" [legend]="true" height="210"></canvas>
                                         </div>
                                         <!-- <div class="btn-container footer-buttonsabsolute text-center"> -->
-                                            <!-- <a href="javascript:void(0)" class="btn btn-link"
+                                        <!-- <a href="javascript:void(0)" class="btn btn-link"
                                                 (click)="goToAudienceDeviceCategory($event)">See More</a> -->
-                                            <!-- &nbsp;&nbsp;&nbsp; -->
+                                        <!-- &nbsp;&nbsp;&nbsp; -->
                                         <!-- </div> -->
                                     </div>
                                 </div>
@@ -456,13 +438,12 @@
                                     <h4 class="heading-margin font-weight">SITE SPEED</h4>
                                 </div>
                                 <div class="widget-content content-padding">
-                                    <div *ngIf="showSpinnerSiteAnalysisContent"
-                                        class="la-line-scale  linescaleloadercolortopleft">
-                                      
+                                    <div *ngIf="showSpinnerSiteAnalysisContent" class="la-line-scale  linescaleloadercolortopleft">
+
                                     </div>
                                     <div class="row">
                                         <!-- <div class="col-sm-6"> -->
-                                            <!-- <label class="reportmarginbottom font-weight">Load Experience Result</label> -->
+                                        <!-- <label class="reportmarginbottom font-weight">Load Experience Result</label> -->
                                         <!-- <table class="table table-bordered table-width">
                                         <tr class="fontsizesmall">
                                             <td class="pd-0">Layout Shift Score </td>
@@ -481,10 +462,10 @@
                                             <td>{{FIRST_INPUT_DELAY_MS}}</td>
                                         </tr>
                                     </table>     -->
-                                    </div>    
-                                    
-                                    
-                                    <div class="col-sm-6"> 
+                                    </div>
+
+
+                                    <div class="col-sm-6">
                                         <label class="reportmarginbottom font-weight">Lighthouse Result</label>
                                         <table class="table table-bordered">
                                             <tr class="fontsizesmall">
@@ -514,7 +495,6 @@
                                         </table>
                                     </div>
                                 </div>
-                                </div>
                             </div>
                         </div>
                     </div>
@@ -522,3 +502,4 @@
             </div>
         </div>
     </div>
+</div>
