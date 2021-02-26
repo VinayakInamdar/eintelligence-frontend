@@ -1127,7 +1127,6 @@ export class SeoComponent implements OnInit {
         let rows = res['items'];
         //let accountSummaryIds=[];
         for (let i = 0; i < rows.length; i++) {
-          debugger
 
           let p = rows[i]
           let q = p['webProperties']['0'].websiteUrl.toString();
@@ -1191,7 +1190,7 @@ export class SeoComponent implements OnInit {
     let urlcamp = this.selectedCampIdWebUrl.replace('/', '%2F');
     const url = "https://www.googleapis.com/analytics/v3/data/ga?ids=ga:" + profileid + "&start-date=" + startdate + "&end-date=" + endDate + "&metrics=ga%3Asessions&dimensions=ga%3Asource%2Cga%3Amedium%2Cga%3AadContent%2Cga%3AsocialNetwork%2Cga%3AdeviceCategory"
     //const url = "https://www.googleapis.com/analytics/v3/data/ga?ids=ga:"+profileid+"&dimensions=ga:date&start-date="+startdate+"&end-date="+endDate+"&metrics=ga:organicsearches";
-    debugger
+   
     this.http.get(url, this.httpOptionJSON).subscribe(res => {
       if (res) {
 
@@ -1249,7 +1248,7 @@ export class SeoComponent implements OnInit {
     let urlcamp = this.selectedCampIdWebUrl.replace('/', '%2F');
     const url = "https://www.googleapis.com/analytics/v3/data/ga?ids=ga:" + profileid + "&start-date=" + startdate + "&end-date=" + endDate + "&metrics=ga%3Asessions&dimensions=ga%3Asource%2Cga%3Amedium%2Cga%3AadContent%2Cga%3AsocialNetwork"
     //const url = "https://www.googleapis.com/analytics/v3/data/ga?ids=ga:"+profileid+"&dimensions=ga:date&start-date="+startdate+"&end-date="+endDate+"&metrics=ga:organicsearches";
-    debugger
+    
     this.http.get(url, this.httpOptionJSON).subscribe(res => {
       if (res) {
 
@@ -1728,7 +1727,7 @@ export class SeoComponent implements OnInit {
   }
   //For ranking graph rubina
   RefreshRankingGraphData() {
-    debugger
+   
     const d = new Date();
     let currYear = d.getFullYear();
     let p;
@@ -1754,13 +1753,13 @@ export class SeoComponent implements OnInit {
     }
     this.campaignService.createRankingGraph(data).subscribe(response => {
       if (response) {
-        debugger
+       
         this.getRankingGraphData();
       }
     });
   }
   DeleteRankingGraphData() {
-    debugger
+   
     const monthNames = ["January", "February", "March", "April", "May", "June", "July", "August", "September", "October", "November", "December"
     ];
     const d = new Date();
@@ -1770,7 +1769,7 @@ export class SeoComponent implements OnInit {
     if (p != null && p != undefined && p.length > 0) {
       tempId = p[0].id;
       this.campaignService.deleteRankingGraph(tempId).subscribe(response => {
-        debugger
+      
         this.RefreshRankingGraphData();
       });
     }else{
@@ -1784,7 +1783,7 @@ export class SeoComponent implements OnInit {
     const filterOptionModel = this.getFilterOptionPlans();
     this.campaignService.getFilteredRankingGraph(filterOptionModel).subscribe((response: any) => {
       if (response) {
-        debugger
+       
         this.barDataArray = [];
         this.rankingGraphData = response.body;
         this.rankingGraphData = this.rankingGraphData.filter(x => x.campaignId.toString() === this.selectedCampId.toLowerCase() && x.year == currYear );
@@ -1794,7 +1793,7 @@ export class SeoComponent implements OnInit {
     });
   }
   getRankingGraphData() {
-    debugger
+
     const d = new Date();
 
     let currYear = d.getFullYear();
@@ -1802,7 +1801,7 @@ export class SeoComponent implements OnInit {
     const filterOptionModel = this.getFilterOptionPlans();
     this.campaignService.getFilteredRankingGraph(filterOptionModel).subscribe((response: any) => {
       if (response) {
-        debugger
+  
         this.barDataArray = [];
         this.rankingGraphData = response.body;
         this.rankingGraphData = this.rankingGraphData.filter(x => x.campaignId.toString() === this.selectedCampId.toLowerCase() && x.year == currYear );
@@ -2163,8 +2162,12 @@ export class SeoComponent implements OnInit {
   onStartDateChange(event) {
     this.startDate = this.datepipe.transform(this.fromDate.value, 'yyyy-MM-dd');
     this.currYear = parseInt(this.datepipe.transform(this.fromDate.value, 'yyyy'));
-    let prevYear = this.currYear - 1;
-    this.previousStartDate = prevYear.toString() + '-' + this.datepipe.transform(this.fromDate.value, 'MM-dd');
+    let getMonth = parseInt(this.datepipe.transform(this.fromDate.value, 'MM'));
+    let prevMonth= getMonth - 1;
+    this.previousStartDate = this.currYear.toString() +'-' + prevMonth + '-' +  this.datepipe.transform(this.fromDate.value, 'dd');
+   
+    // let prevYear = this.currYear - 1;
+    // this.previousStartDate = prevYear.toString() + '-' + this.datepipe.transform(this.fromDate.value, 'MM-dd');
     this.getData();
     this.getAnalyticsProfileIds();
   }
@@ -2172,8 +2175,11 @@ export class SeoComponent implements OnInit {
   onEndDateChange(event) {
     this.endDate = this.datepipe.transform(this.toDate.value, 'yyyy-MM-dd');
     this.currYear = parseInt(this.datepipe.transform(this.toDate.value, 'yyyy'));
-    let prevYear = this.currYear - 1;
-    this.previousEndDate = prevYear.toString() + '-' + this.datepipe.transform(this.toDate.value, 'MM-dd');
+    let getMonth = parseInt(this.datepipe.transform(this.toDate.value, 'MM'));
+    let prevMonth= getMonth - 1;
+    this.previousEndDate =this.currYear.toString() +'-' + prevMonth + '-' +  this.datepipe.transform(this.toDate.value, 'dd');
+    // let prevYear = this.currYear - 1;
+    // this.previousEndDate = prevYear.toString() + '-' + this.datepipe.transform(this.toDate.value, 'MM-dd');
     this.getData();
     this.getAnalyticsProfileIds();
   }
