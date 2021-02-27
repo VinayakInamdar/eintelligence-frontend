@@ -1096,7 +1096,9 @@ export class SeoComponent implements OnInit {
 
         this.getAnalyticsProfileIds();
         this.getData();
-        this.getSiteSpeedData();
+        this.getSiteSpeedDataMobile();
+        this.getSiteSpeedDataDesktop();
+
       } else {
         this.isShowLoginButton = true;
       }
@@ -1936,7 +1938,7 @@ export class SeoComponent implements OnInit {
     }
 
   }
-  getSiteSpeedData() {
+  getSiteSpeedDataMobile() {
 
     this.httpOptionJSON = {
       headers: new HttpHeaders({
@@ -1946,7 +1948,7 @@ export class SeoComponent implements OnInit {
     };
     let urlcamp = this.selectedCampIdWebUrl.replace('/', '%2F');
 
-    const url = "https://pagespeedonline.googleapis.com/pagespeedonline/v5/runPagespeed?url=https%3A%2F%2F" + urlcamp + "?key=AIzaSyC1IsrCeeNXp9ksAmC8szBtYVjTLJC9UWQ";
+    const url = "https://pagespeedonline.googleapis.com/pagespeedonline/v5/runPagespeed?url=https%3A%2F%2F" + urlcamp + "?strategy=MOBILE&key=AIzaSyC1IsrCeeNXp9ksAmC8szBtYVjTLJC9UWQ";
     // const url = "https://pagespeedonline.googleapis.com/pagespeedonline/v5/runPagespeed?url=https%3A%2F%2Fpatwa.co.in&key=AIzaSyC1IsrCeeNXp9ksAmC8szBtYVjTLJC9UWQ"
     this.http.get(url, this.httpOptionJSON).subscribe(res => {
       if (res) {
@@ -1976,7 +1978,46 @@ export class SeoComponent implements OnInit {
       console.log('Data fetch failed by device : ' + JSON.stringify(error.error));
     });
   }
+  getSiteSpeedDataDesktop() {
 
+    this.httpOptionJSON = {
+      headers: new HttpHeaders({
+        'Accept': 'application/json',
+        'Authorization': 'Bearer ' + this.accessToken,
+      })
+    };
+    let urlcamp = this.selectedCampIdWebUrl.replace('/', '%2F');
+    //&strategy=DESKTOP
+    const url = "https://pagespeedonline.googleapis.com/pagespeedonline/v5/runPagespeed?url=https%3A%2F%2F" + urlcamp + "?strategy=DESKTOP&key=AIzaSyC1IsrCeeNXp9ksAmC8szBtYVjTLJC9UWQ";
+    // const url = "https://pagespeedonline.googleapis.com/pagespeedonline/v5/runPagespeed?url=https%3A%2F%2Fpatwa.co.in&key=AIzaSyC1IsrCeeNXp9ksAmC8szBtYVjTLJC9UWQ"
+    this.http.get(url, this.httpOptionJSON).subscribe(res => {
+      if (res) {
+        debugger
+        //FCP 2320 green
+        this.showSpinnerSiteAnalysisContent = true;
+        let rows = res['loadingExperience'].metrics;
+        let lighthouse = res['lighthouseResult'];
+        //load expeience
+        // this.CUMULATIVE_LAYOUT_SHIFT_SCORE = rows['CUMULATIVE_LAYOUT_SHIFT_SCORE'].category
+        //this.FIRST_CONTENTFUL_PAINT_MS= rows['FIRST_CONTENTFUL_PAINT_MS'].category
+        //this.FIRST_INPUT_DELAY_MS= rows['FIRST_INPUT_DELAY_MS'].category
+        //this.LARGEST_CONTENTFUL_PAINT_MS= rows['LARGEST_CONTENTFUL_PAINT_MS'].category
+        //light house
+
+
+          this.first_contentful_paint = lighthouse.audits['first-contentful-paint'].displayValue,
+          this.speed_index = lighthouse.audits['speed-index'].displayValue,
+          this.interactive = lighthouse.audits['interactive'].displayValue,
+          this.first_meaningful_paint = lighthouse.audits['first-meaningful-paint'].displayValue,
+          this.first_cpu_idle = lighthouse.audits['first-cpu-idle'].displayValue,
+          this.Eestimated_input_latency = lighthouse.audits['estimated-input-latency'].displayValue
+        this.showSpinnerSiteAnalysisContent = false;
+      }
+    }, error => {
+
+      console.log('Data fetch failed by device : ' + JSON.stringify(error.error));
+    });
+  }
   //------------------GSC data start---------------------------------------------
   signInWithGoogle(): void {
     const googleLoginOptions = {
