@@ -1742,7 +1742,7 @@ export class SeoComponent implements OnInit {
     this.averageRanking = Math.round(this.averageRanking);
     const monthNames = ["January", "February", "March", "April", "May", "June", "July", "August", "September", "October", "November", "December"
     ];
-
+    if(this.averageRanking == null){this.averageRanking =0;}
     let currMonth = monthNames[d.getMonth()];
     let data = {
       id: "00000000-0000-0000-0000-000000000000",
@@ -1950,6 +1950,8 @@ export class SeoComponent implements OnInit {
     // const url = "https://pagespeedonline.googleapis.com/pagespeedonline/v5/runPagespeed?url=https%3A%2F%2Fpatwa.co.in&key=AIzaSyC1IsrCeeNXp9ksAmC8szBtYVjTLJC9UWQ"
     this.http.get(url, this.httpOptionJSON).subscribe(res => {
       if (res) {
+        debugger
+        //FCP 2320 green
         this.showSpinnerSiteAnalysisContent = true;
         let rows = res['loadingExperience'].metrics;
         let lighthouse = res['lighthouseResult'];
@@ -1961,7 +1963,7 @@ export class SeoComponent implements OnInit {
         //light house
 
 
-        this.first_contentful_paint = lighthouse.audits['first-contentful-paint'].displayValue,
+          this.first_contentful_paint = lighthouse.audits['first-contentful-paint'].displayValue,
           this.speed_index = lighthouse.audits['speed-index'].displayValue,
           this.interactive = lighthouse.audits['interactive'].displayValue,
           this.first_meaningful_paint = lighthouse.audits['first-meaningful-paint'].displayValue,

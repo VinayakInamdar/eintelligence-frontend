@@ -17,6 +17,8 @@ import { LocalDataSource } from 'ng2-smart-table';
 })
 export class SocialmediaComponent implements OnInit {
 
+  pageid;
+  pagename;
   accessToken;
   tokenType;
   pagelikesTotal;
@@ -59,7 +61,7 @@ export class SocialmediaComponent implements OnInit {
   constructor(private http: HttpClient, private snackbarService: SnackbarService, private fb: FacebookService, public router: Router,
     private campaignService: CampaignService, public openIdConnectService: OpenIdConnectService, public route: ActivatedRoute) {
     fb.init({
-      appId: environment.facebook_appid,
+      appId: '3574916862576976',//environment.facebook_appid,//3574916862576976
       version: 'v9.0'
     });
     //let id = this.route.snapshot.paramMap.get('id');
@@ -126,6 +128,7 @@ export class SocialmediaComponent implements OnInit {
       this.router.navigate(['./gsc/gsc', { id: this.selectedCampId }]);
   
     }
+    
   login() {
     this.fb.login()
       .then((res: LoginResponse) => {
@@ -142,15 +145,18 @@ export class SocialmediaComponent implements OnInit {
       return_scopes: true,
       // scope: 'public_profile,user_friends,email,pages_show_list'
       //scope: 'pages_show_list'
-      scope: 'pages_show_list,read_insights,pages_read_engagement'
+      scope: 'pages_show_list,read_insights,pages_read_engagement,pages_manage_metadata'
     };
-
+  
     this.fb.login(loginOptions)
       .then((res: LoginResponse) => {
         console.log('Logged in', res);
         this.accessToken = res['authResponse'].accessToken;
         localStorage.setItem('FacebookAccessToken',this.accessToken);
+        debugger
         this.getUserId();
+
+        this.getAllPagesList();
         this.getPageLikes();
         this.getPageNewLikes();
       })
@@ -165,24 +171,68 @@ export class SocialmediaComponent implements OnInit {
   }
   getUserId() {
 
-    const url = "https://graph.facebook.com/me?access_token=" + this.accessToken + "&fields=id,name";
+    const url = "https://graph.facebook.com/me?access_token=" + this.accessToken ;
     this.http.get(url).subscribe(res => {
       if (res) {
+        debugger
+
         this.userId = res['id'];
         this.userName = res['name'];
+        this.getUserPermission();
+        this.generatePageToken();
+
+      }
+    }, error => {
+      this.snackbarService.show('Fetch New Likes Count Failed : ' + JSON.stringify(error.error));
+    });
+  }
+  getAllPagesList(){
+    // this.fb.api({method: 'fql.multiquery',
+    //     access_token: this.accessToken,
+    //     queries: {
+    //         query1: 'select page_id from page_admin where uid = ' + this.userId,
+    //         query2: 'select page_id, name, page_url from page where page_id in (select page_id from #query1)'
+    //     }
+    //    }, function(queries){
+    //        var pages = queries[1].fql_result_set;
+    //    }}
+    // )
+    const url = "https://graph.facebook.com/me/accounts?fields=name,access_token&access_token=" + this.accessToken;
+
+  // const  url = "https://graph.facebook.com/" + this.userId + "/accounts?access_token=" + this.accessToken;
+    this.http.get(url).subscribe(res => {
+      if (res) {
+        debugger
+        let i = res['data'] ;
+        this.pageid =i[0].id 
         this.generatePageToken();
       }
     }, error => {
       this.snackbarService.show('Fetch New Likes Count Failed : ' + JSON.stringify(error.error));
     });
   }
-  generatePageToken() {
+  getUserPermission() {
 
-    const url = "https://graph.facebook.com/" + this.userId + "/accounts?access_token=" + this.accessToken;
+    const url = "https://graph.facebook.com/" + this.userId + "/permissions?access_token=" + this.accessToken;
     // const url = "https://graph.facebook.com/105114094889635/accounts?access_token=EAAGXn3oGklwBAEDY2dpA11KLDG0hhHYWi9pts9qmPJxXs6Ywb4UOq6SRhvr5kFpNDeUrHkG1rIZCxHJMxQS3U7UurncvEnjuuaD4aLmKDAT5uIoSb3QWSE92GkLWOS0Oqub7ZAIcxwtMBAaLOSQWqEiwsMuqaugO5XwiXJx97ekfXeuB8cnQhISZAtINl8ZD";
     this.http.get(url).subscribe(res => {
       if (res) {
-        
+        debugger
+        this.pageToken = res['data'][0].access_token;
+        localStorage.setItem('FacebookPageToken',this.pageToken);
+      }
+    }, error => {
+      this.snackbarService.show('Fetch Page Token Failed : ' + JSON.stringify(error.error));
+    });
+  }
+  generatePageToken() {
+  //  const url = "https://graph.facebook.com/{page-id}?fields=access_token&access_token=" + this.accessToken;
+
+    const url = "https://graph.facebook.com/me/accounts?fields=name,access_token&access_token=" + this.accessToken;
+    // const url = "https://graph.facebook.com/105114094889635/accounts?access_token=EAAGXn3oGklwBAEDY2dpA11KLDG0hhHYWi9pts9qmPJxXs6Ywb4UOq6SRhvr5kFpNDeUrHkG1rIZCxHJMxQS3U7UurncvEnjuuaD4aLmKDAT5uIoSb3QWSE92GkLWOS0Oqub7ZAIcxwtMBAaLOSQWqEiwsMuqaugO5XwiXJx97ekfXeuB8cnQhISZAtINl8ZD";
+    this.http.get(url).subscribe(res => {
+      if (res) {
+        debugger
         this.pageToken = res['data'][0].access_token;
         localStorage.setItem('FacebookPageToken',this.pageToken);
 
@@ -217,7 +267,7 @@ export class SocialmediaComponent implements OnInit {
   }
   getAllDataByPeriod(period) {
     
-    const url = "https://graph.facebook.com/" + environment.facebook_pageid + "/insights/page_impressions_unique,page_total_actions,page_positive_feedback_by_type,page_negative_feedback,page_views_total,page_impressions,page_views_external_referrals,page_fans_by_unlike_source_unique,page_impressions_organic,page_impressions_paid,page_fan_removes_unique?access_token=" + this.pageToken;
+    const url = "https://graph.facebook.com/" + this.pageid + "/insights/page_impressions_unique,page_total_actions,page_positive_feedback_by_type,page_negative_feedback,page_views_total,page_impressions,page_views_external_referrals,page_fans_by_unlike_source_unique,page_impressions_organic,page_impressions_paid,page_fan_removes_unique?access_token=" + this.pageToken;
     this.http.get(url).subscribe(res => {
       if (res) {
         
@@ -347,7 +397,7 @@ export class SocialmediaComponent implements OnInit {
   }
   getAllDataWeek() {
     
-    const url = "https://graph.facebook.com/" + environment.facebook_pageid + "/insights/page_impressions_unique,page_total_actions,page_positive_feedback_by_type,page_negative_feedback,page_views_total,page_impressions,page_views_external_referrals,page_fans_by_unlike_source_unique,page_impressions_organic,page_impressions_paid,page_fan_removes_unique?access_token=" + this.pageToken;
+    const url = "https://graph.facebook.com/" + this.pageid + "/insights/page_impressions_unique,page_total_actions,page_positive_feedback_by_type,page_negative_feedback,page_views_total,page_impressions,page_views_external_referrals,page_fans_by_unlike_source_unique,page_impressions_organic,page_impressions_paid,page_fan_removes_unique?access_token=" + this.pageToken;
     this.http.get(url).subscribe(res => {
       if (res) {
         
@@ -474,7 +524,7 @@ export class SocialmediaComponent implements OnInit {
   }
   getAllData28Days() {
     
-    const url = "https://graph.facebook.com/" + environment.facebook_pageid + "/insights/page_impressions_unique,page_total_actions,page_positive_feedback_by_type,page_negative_feedback,page_views_total,page_impressions,page_views_external_referrals,page_fans_by_unlike_source_unique,page_impressions_organic,page_impressions_paid,page_fan_removes_unique?access_token=" + this.pageToken;
+    const url = "https://graph.facebook.com/" + this.pageid + "/insights/page_impressions_unique,page_total_actions,page_positive_feedback_by_type,page_negative_feedback,page_views_total,page_impressions,page_views_external_referrals,page_fans_by_unlike_source_unique,page_impressions_organic,page_impressions_paid,page_fan_removes_unique?access_token=" + this.pageToken;
     this.http.get(url).subscribe(res => {
       if (res) {
         
@@ -601,7 +651,7 @@ export class SocialmediaComponent implements OnInit {
   }
   getAllDataOneDays() {
     
-    const url = "https://graph.facebook.com/" + environment.facebook_pageid + "/insights/page_impressions_unique,page_total_actions,page_positive_feedback_by_type,page_negative_feedback,page_views_total,page_impressions,page_views_external_referrals,page_fans_by_unlike_source_unique,page_impressions_organic,page_impressions_paid,page_fan_removes_unique?access_token=" + this.pageToken;
+    const url = "https://graph.facebook.com/" + this.pageid + "/insights/page_impressions_unique,page_total_actions,page_positive_feedback_by_type,page_negative_feedback,page_views_total,page_impressions,page_views_external_referrals,page_fans_by_unlike_source_unique,page_impressions_organic,page_impressions_paid,page_fan_removes_unique?access_token=" + this.pageToken;
     this.http.get(url).subscribe(res => {
       if (res) {
         
@@ -727,7 +777,7 @@ export class SocialmediaComponent implements OnInit {
     });
   }
   getPageLikes() {
-    const url = "https://graph.facebook.com/" + environment.facebook_pageid + "?access_token=" + this.accessToken + "&fields=new_like_count";
+    const url = "https://graph.facebook.com/" + this.pageid + "?access_token=" + this.accessToken + "&fields=new_like_count";
     this.http.get(url).subscribe(res => {
       if (res) {
         this.pageNewlikesTotal = res['new_like_count'];
@@ -737,7 +787,7 @@ export class SocialmediaComponent implements OnInit {
     });
   }
   getPageNewLikes() {
-    const url = "https://graph.facebook.com/" + environment.facebook_pageid + "?access_token=" + this.accessToken + "&fields=country_page_likes";
+    const url = "https://graph.facebook.com/" + this.pageid + "?access_token=" + this.accessToken + "&fields=country_page_likes";
     this.http.get(url).subscribe(res => {
       if (res) {
         this.pagelikesTotal = res['country_page_likes'];
@@ -748,7 +798,7 @@ export class SocialmediaComponent implements OnInit {
   }
   getProfileViewCount() {
     //page_views_unique Page Views from users logged into Facebook day
-    const url = "https://graph.facebook.com/" + environment.facebook_pageid + "/insights/page_views_total?access_token=" + this.pageToken;
+    const url = "https://graph.facebook.com/" + this.pageid + "/insights/page_views_total?access_token=" + this.pageToken;
     //const url = "https://graph.facebook.com/102988865108273/insights/page_impressions_unique?access_token=EAAGXn3oGklwBAAni75mymZAVNH0RB7ecJ7BSj6lYmnRwWewDSJMvhUZCxwMlnPH1HnMHWYKccrsDR6dyjeeQPBDpucGeN6EtvYTYcZC1OeWa2ObRAlHS2ZC2yMMmOLB5AkJWuxK0YtLBv2EpaD2RtsEjeb8EgbPUUeJLkDnbG4jplrccWCKgzu8LU4ie0abbeBrdzscvuATZCusuSOXku";
     this.http.get(url).subscribe(res => {
       if (res) {
@@ -767,7 +817,7 @@ export class SocialmediaComponent implements OnInit {
   }
   getPageImpression() {
 
-    const url = "https://graph.facebook.com/" + environment.facebook_pageid + "/insights/page_impressions?access_token=" + this.pageToken;
+    const url = "https://graph.facebook.com/" + this.pageid + "/insights/page_impressions?access_token=" + this.pageToken;
     this.http.get(url).subscribe(res => {
       if (res) {
 
@@ -784,7 +834,7 @@ export class SocialmediaComponent implements OnInit {
   }
   getPageReachCount() {
     //page_views_unique Page Views from users logged into Facebook day
-    const url = "https://graph.facebook.com/" + environment.facebook_pageid + "/insights/page_impressions_unique?access_token=" + this.pageToken;
+    const url = "https://graph.facebook.com/" + this.pageid + "/insights/page_impressions_unique?access_token=" + this.pageToken;
     //const url = "https://graph.facebook.com/102988865108273/insights/page_impressions_unique?access_token=EAAGXn3oGklwBAAni75mymZAVNH0RB7ecJ7BSj6lYmnRwWewDSJMvhUZCxwMlnPH1HnMHWYKccrsDR6dyjeeQPBDpucGeN6EtvYTYcZC1OeWa2ObRAlHS2ZC2yMMmOLB5AkJWuxK0YtLBv2EpaD2RtsEjeb8EgbPUUeJLkDnbG4jplrccWCKgzu8LU4ie0abbeBrdzscvuATZCusuSOXku";
     this.http.get(url).subscribe(res => {
       if (res) {
@@ -801,7 +851,7 @@ export class SocialmediaComponent implements OnInit {
   }
   getPageReachOrganicCount() {
     //if this field name wrong then try for page_impressions_organic_unique
-    const url = "https://graph.facebook.com/" + environment.facebook_pageid + "/insights/page_impressions_organic?access_token=" + this.pageToken;
+    const url = "https://graph.facebook.com/" + this.pageid + "/insights/page_impressions_organic?access_token=" + this.pageToken;
     //const url = "https://graph.facebook.com/102988865108273/insights/page_impressions_unique?access_token=EAAGXn3oGklwBAAni75mymZAVNH0RB7ecJ7BSj6lYmnRwWewDSJMvhUZCxwMlnPH1HnMHWYKccrsDR6dyjeeQPBDpucGeN6EtvYTYcZC1OeWa2ObRAlHS2ZC2yMMmOLB5AkJWuxK0YtLBv2EpaD2RtsEjeb8EgbPUUeJLkDnbG4jplrccWCKgzu8LU4ie0abbeBrdzscvuATZCusuSOXku";
     this.http.get(url).subscribe(res => {
       if (res) {
@@ -819,7 +869,7 @@ export class SocialmediaComponent implements OnInit {
   }
   getPageReachPaidCount() {
     //if this field name wrong then try for page_impressions_paid_unique
-    const url = "https://graph.facebook.com/" + environment.facebook_pageid + "/insights/page_impressions_paid?access_token=" + this.pageToken;
+    const url = "https://graph.facebook.com/" + this.pageid + "/insights/page_impressions_paid?access_token=" + this.pageToken;
     //const url = "https://graph.facebook.com/102988865108273/insights/page_impressions_unique?access_token=EAAGXn3oGklwBAAni75mymZAVNH0RB7ecJ7BSj6lYmnRwWewDSJMvhUZCxwMlnPH1HnMHWYKccrsDR6dyjeeQPBDpucGeN6EtvYTYcZC1OeWa2ObRAlHS2ZC2yMMmOLB5AkJWuxK0YtLBv2EpaD2RtsEjeb8EgbPUUeJLkDnbG4jplrccWCKgzu8LU4ie0abbeBrdzscvuATZCusuSOXku";
     this.http.get(url).subscribe(res => {
       if (res) {
@@ -839,7 +889,7 @@ export class SocialmediaComponent implements OnInit {
     });
   }
   getTotalClicksCount() {
-    const url = "https://graph.facebook.com/" + environment.facebook_pageid + "/insights/page_total_actions?access_token=" + this.pageToken;
+    const url = "https://graph.facebook.com/" + this.pageid + "/insights/page_total_actions?access_token=" + this.pageToken;
     this.http.get(url).subscribe(res => {
       if (res) {
         
@@ -857,7 +907,7 @@ export class SocialmediaComponent implements OnInit {
   }
   getPageUnlikeBySOurceCount() {
 
-    const url = "https://graph.facebook.com/" + environment.facebook_pageid + "/insights/page_fans_by_unlike_source_unique?access_token=" + this.pageToken;
+    const url = "https://graph.facebook.com/" + this.pageid + "/insights/page_fans_by_unlike_source_unique?access_token=" + this.pageToken;
     this.http.get(url).subscribe(res => {
       if (res) {
 
@@ -873,7 +923,7 @@ export class SocialmediaComponent implements OnInit {
     });
   }
   getTotalExternamReferrer() {
-    const url = "https://graph.facebook.com/" + environment.facebook_pageid + "/insights/page_views_external_referrals?access_token=" + this.pageToken;
+    const url = "https://graph.facebook.com/" + this.pageid + "/insights/page_views_external_referrals?access_token=" + this.pageToken;
     this.http.get(url).subscribe(res => {
       if (res) {
         
@@ -889,7 +939,7 @@ export class SocialmediaComponent implements OnInit {
     });
   }
   getTotalLikesLost() {
-    const url = "https://graph.facebook.com/" + environment.facebook_pageid + "/insights/page_fan_removes_unique?access_token=" + this.pageToken;
+    const url = "https://graph.facebook.com/" + this.pageid + "/insights/page_fan_removes_unique?access_token=" + this.pageToken;
     this.http.get(url).subscribe(res => {
       if (res) {
         
@@ -906,7 +956,7 @@ export class SocialmediaComponent implements OnInit {
     });
   }
   getPositiveFeedbackCount() {
-    const url = "https://graph.facebook.com/" + environment.facebook_pageid + "/insights/page_positive_feedback_by_type?access_token=" + this.pageToken;
+    const url = "https://graph.facebook.com/" + this.pageid + "/insights/page_positive_feedback_by_type?access_token=" + this.pageToken;
     this.http.get(url).subscribe(res => {
       if (res) {
         let p = res['data'][2];
@@ -929,7 +979,7 @@ export class SocialmediaComponent implements OnInit {
     });
   }
   getNegativeFeedbackCount() {
-    const url = "https://graph.facebook.com/" + environment.facebook_pageid + "/insights/page_negative_feedback?access_token=" + this.pageToken;
+    const url = "https://graph.facebook.com/" + this.pageid + "/insights/page_negative_feedback?access_token=" + this.pageToken;
     this.http.get(url).subscribe(res => {
       if (res) {
         let p = res['data'][2];
@@ -959,7 +1009,7 @@ export class SocialmediaComponent implements OnInit {
   }
   testApi() {
     //page_views_unique Page Views from users logged into Facebook day
-    const url = "https://graph.facebook.com/" + environment.facebook_pageid + "/insights/page_impressions_unique?access_token=" + this.accessToken;
+    const url = "https://graph.facebook.com/" + this.pageid + "/insights/page_impressions_unique?access_token=" + this.accessToken;
 
     this.http.get(url).subscribe(res => {
       if (res) {
