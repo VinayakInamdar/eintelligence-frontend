@@ -253,16 +253,16 @@
             <div class="col-md-1"></div>
             <div class="col-md-10">
                 <div class="navbar navbar-default navbar-fixed-top bg-white cursor-default indicatorBoxShadow" role="navigation">
-                    <a class="navbar-brand" href="#" style="padding-top: 2%; ">
+                    <a class="navbar-brand matrics-padding" href="#">
                         KEY PERFORMANCE INDICATOR - MOST IMPORTANT MATRICS
                     </a>
                 </div>
             </div>
             <div class="col-md-1"> </div>
         </div>
-        <div class="container-fluid" style="width: 93%;">
-            <div class="row">
-                <!-- <div class="col-lg-4">
+
+
+        <!-- <div class="col-lg-4">
                     <div class="card card-default shadow bg-white rounded height200px cursor-default">
                         <div class="card-header borderBtm header-padding">
                             <h4 class="heading-margin font-weight">ACQUISITION</h4>
@@ -375,76 +375,84 @@
                     </div>
                 </div> -->
 
-                <div class="container-fluid card-width">
-                    <div class="row">
-                        <div class="col-lg-4">
-                            <div class="card card-default shadow bg-white rounded cursor-default webTrafficCard-height">
-                                <div class="card-header borderBtm header-padding">
-                                    <h4 class="heading-margin font-weight">WEB TRAFFIC BY CHANNEL</h4>
-                                </div>
-                                <div class="widget-content">
-                                    <div *ngIf="showSpinnerSiteAnalysisContent" class="la-line-scale  linescaleloadercolortopleft">
-                                        <div></div>
-                                        <div></div>
-                                        <div></div>
-                                        <div></div>
-                                        <div></div>
-                                    </div>
-                                    <div *ngIf=" !showSpinnerSiteAnalysisContent">
-                                        <!-- <canvas *ngIf="!showSpinnerBaseChart" baseChart [datasets]="lineChartData1"
+
+
+        <div class="container-fluid card-padding">
+            <div class="col-md-6">
+
+                <div class="card card-default shadow bg-white rounded cursor-default card-height">
+                    <div class="card-header borderBtm header-padding">
+                        <h4 class="heading-margin font-weight">WEB TRAFFIC BY CHANNEL</h4>
+                    </div>
+                    <div class="widget-content">
+                        <div *ngIf="showSpinnerSiteAnalysisContent" class="la-line-scale  linescaleloadercolortopleft">
+                            <div></div>
+                            <div></div>
+                            <div></div>
+                            <div></div>
+                            <div></div>
+                        </div>
+                        <div *ngIf=" !showSpinnerSiteAnalysisContent">
+                            <!-- <canvas *ngIf="!showSpinnerBaseChart" baseChart [datasets]="lineChartData1"
                                         [labels]="lineChartLabels1" [options]="lineChartOptions1" [colors]="lineChartColors1"
                                         [legend]="lineChartLegend1" [chartType]="pie" [plugins]="lineChartPlugins1"
                                         [fullWidth]="true">
                                     </canvas> -->
-                                        <canvas id='dougnutChart' baseChart [chartType]="'pie'" [colors]="doughnutColors" [options]="doughnutOptions" [datasets]="doughnutData.datasets" [labels]="doughnutData.labels" [doughnut]="true" [legend]="true" height="210"></canvas>
-                                        <!-- <div class="btn-container footer-buttonsabsolute text-center"> -->
-                                        <!-- <a href="javascript:void(0)" class="btn btn-link"
+                            <canvas id='dougnutChart' baseChart [chartType]="'pie'" [colors]="doughnutColors" [options]="doughnutOptions" [datasets]="doughnutData.datasets" [labels]="doughnutData.labels" [doughnut]="true" [legend]="true" height="100"></canvas>
+                            <!-- <div class="btn-container footer-buttonsabsolute text-center"> -->
+                            <!-- <a href="javascript:void(0)" class="btn btn-link"
                                                 (click)="goToAcquisitonTrafficSources($event)">See More</a> -->
-                                        <!-- &nbsp;&nbsp;&nbsp; -->
-                                        <!-- </div> -->
-                                    </div>
-                                </div>
-                            </div>
+                            <!-- &nbsp;&nbsp;&nbsp; -->
+                            <!-- </div> -->
                         </div>
-                        <div class="col-lg-4">
-                            <div class="card card-default shadow bg-white rounded cursor-default webTrafficCard-height">
-                                <div class="card-header borderBtm header-padding">
-                                    <h4 class="heading-margin font-weight">WEB TRAFFIC BY DEVICE </h4>
-                                </div>
-                                <div class="widget-content">
-                                    <div *ngIf="showSpinnerSiteAnalysisContent" class="la-line-scale  linescaleloadercolortopleft">
-                                        <div></div>
-                                        <div></div>
-                                        <div></div>
-                                        <div></div>
-                                        <div></div>
-                                    </div>
-                                    <div *ngIf=" !showSpinnerSiteAnalysisContent">
-                                        <div>
-                                            <canvas id='dougnutChart1' baseChart [chartType]="'bar'" [options]="doughnutOptions1" [datasets]="doughnutData1.datasets" [labels]="doughnutData1.labels" [legend]="true" height="210"></canvas>
-                                        </div>
-                                        <!-- <div class="btn-container footer-buttonsabsolute text-center"> -->
-                                        <!-- <a href="javascript:void(0)" class="btn btn-link"
+                    </div>
+                </div>
+            </div>
+            <div class="col-md-6">
+                <div class="card card-default shadow bg-white rounded cursor-default card-height">
+                    <div class="card-header borderBtm header-padding">
+                        <h4 class="heading-margin font-weight">WEB TRAFFIC BY DEVICE </h4>
+                    </div>
+                    <div class="widget-content">
+                        <div *ngIf="showSpinnerSiteAnalysisContent" class="la-line-scale  linescaleloadercolortopleft">
+                            <div></div>
+                            <div></div>
+                            <div></div>
+                            <div></div>
+                            <div></div>
+                        </div>
+                        <div *ngIf=" !showSpinnerSiteAnalysisContent">
+                            <div>
+                                <canvas id='dougnutChart1' baseChart [chartType]="'bar'" [options]="doughnutOptions1" [datasets]="doughnutData1.datasets" [labels]="doughnutData1.labels" [legend]="true" height="100"></canvas>
+                            </div>
+                            <!-- <div class="btn-container footer-buttonsabsolute text-center"> -->
+                            <!-- <a href="javascript:void(0)" class="btn btn-link"
                                                 (click)="goToAudienceDeviceCategory($event)">See More</a> -->
-                                        <!-- &nbsp;&nbsp;&nbsp; -->
-                                        <!-- </div> -->
-                                    </div>
-                                </div>
-                            </div>
+                            <!-- &nbsp;&nbsp;&nbsp; -->
+                            <!-- </div> -->
                         </div>
-                        <div class="col-lg-4">
-                            <div class="card card-default shadow bg-white rounded webTrafficCard-height cursor-default">
-                                <div class="card-header borderBtm header-padding">
-                                    <h4 class="heading-margin font-weight">SITE SPEED</h4>
-                                </div>
-                                <div class="widget-content content-padding">
-                                    <div *ngIf="showSpinnerSiteAnalysisContent" class="la-line-scale  linescaleloadercolortopleft">
+                    </div>
+                </div>
+            </div>
+        </div>
 
-                                    </div>
-                                    <div class="row">
-                                        <!-- <div class="col-sm-6"> -->
-                                        <!-- <label class="reportmarginbottom font-weight">Load Experience Result</label> -->
-                                        <!-- <table class="table table-bordered table-width">
+        <div class="card card-default shadow p-3 mb-5 bg-white rounded set-middle cursor-default">
+            <div class="col-lg-12">
+                <div class="card-header borderBtm header-padding">
+
+
+                    <h4 class="heading-margin font-weight">SITE SPEED</h4>
+
+                </div>
+                <div class="widget-content">
+                    <div class="overviewdivborder">
+                        <div *ngIf="showSpinnerSiteAnalysisContent" class="la-line-scale  linescaleloadercolortopleft">
+
+                        </div>
+                        <!--div class="row">
+                             <div class="col-sm-6"> -->
+                        <!-- <label class="reportmarginbottom font-weight">Load Experience Result</label> -->
+                        <!-- <table class="table table-bordered table-width">
                                         <tr class="fontsizesmall">
                                             <td class="pd-0">Layout Shift Score </td>
                                             <td>{{ CUMULATIVE_LAYOUT_SHIFT_SCORE }}</td>
@@ -462,37 +470,206 @@
                                             <td>{{FIRST_INPUT_DELAY_MS}}</td>
                                         </tr>
                                     </table>     -->
+                        <!--/div-->
+
+
+
+
+                        <label class="reportmarginbottom font-weight">Lighthouse Result</label>
+                        <br>
+                        <div class="container-fluid card-padding">
+                            <div class="card">
+                                <div class="row">
+                                    <div class="col-md-5"></div>
+                                    <div class="col-md-4">
+                                        <div class="row">
+                                            <img src="../../../../assets/img/triangle.png" alt="triangle-img" class="set-staticiconsize">
+                                            <h5 class="set-statictitle">0-49</h5>
+                                            <img src="../../../../assets/img/orange.png" alt="orange-img" class="set-staticiconsize">
+                                            <h5 class="set-statictitle">50-89</h5>
+                                            <!--div class="row" style="margin-left: 1rem;"-->
+                                            <img src="../../../../assets/img/green-circle-icon.png " alt="orange-img " class="set-staticiconsize">
+                                            <h5 class="set-statictitle">90-100</h5>
+                                        </div>
                                     </div>
+                                    <div class="col-md-3"></div>
 
+                                    <!--/div-->
+                                </div>
+                                <div class="row">
+                                    <div class="col-md-6">
 
-                                    <div class="col-sm-6">
-                                        <label class="reportmarginbottom font-weight">Lighthouse Result</label>
-                                        <table class="table table-bordered">
-                                            <tr class="fontsizesmall">
-                                                <td class="pd-0">First Contentful Paint </td>
-                                                <td> {{ first_contentful_paint }}</td>
-                                            </tr>
-                                            <tr class="fontsizesmall">
-                                                <td class="pd-0">Speed Index</td>
-                                                <td>{{speed_index}}</td>
-                                            </tr>
-                                            <tr class="fontsizesmall">
-                                                <td class="pd-0">Time To Interactive</td>
-                                                <td>{{interactive}}</td>
-                                            </tr>
-                                            <tr class="fontsizesmall">
-                                                <td class="pd-0">First Meaningful Paint</td>
-                                                <td>{{first_meaningful_paint}}</td>
-                                            </tr>
-                                            <tr class="fontsizesmall">
-                                                <td class="pd-0">First CPU Idle</td>
-                                                <td>{{first_cpu_idle}}</td>
-                                            </tr>
-                                            <tr class="fontsizesmall">
-                                                <td class="pd-0">Estimated Input Latency</td>
-                                                <td>{{Eestimated_input_latency}}</td>
-                                            </tr>
-                                        </table>
+                                        <div class="card-body row">
+                                            <h3 class="fontsizesmall">For Desktop</h3>
+
+                                            <table class="table table-bordered">
+                                                <tr class="fontsizesmall ">
+                                                    <td *ngIf="showGreenZoneFCP"><img src="../../../../assets/img/green-circle-icon.png " alt="orange-img " class="set-iconsize"></td>
+                                                    <td *ngIf="showOrangezoneFCP"><img src="../../../../assets/img/orange.png" alt="orange-img" class="set-iconsize"></td>
+                                                    <td *ngIf="showRedZoneFCP"><img src="../../../../assets/img/triangle.png" alt="triangle-img" class="set-iconsize"></td>
+                                                    <td class="pd-0">First Contentful Paint </td>
+                                                    <td *ngIf="showRedZoneFCP" class="set-redzone"> {{ first_contentful_paint }}
+                                                    </td>
+                                                    <td *ngIf="showGreenZoneFCP" class="set-greenzone"> {{ first_contentful_paint }}
+                                                    </td>
+                                                    <td *ngIf="showOrangezoneFCP" class="set-orangezone"> {{ first_contentful_paint }}
+                                                    </td>
+                                                </tr>
+                                                <tr class="fontsizesmall ">
+                                                    <td *ngIf="showGreenZoneSI"><img src="../../../../assets/img/green-circle-icon.png " alt="orange-img " class="set-iconsize"></td>
+                                                    <td *ngIf="showOrangezoneSI"><img src="../../../../assets/img/orange.png" alt="orange-img" class="set-iconsize"></td>
+                                                    <td *ngIf="showRedZoneSI"><img src="../../../../assets/img/triangle.png" alt="triangle-img" class="set-iconsize"></td>
+                                                    <td class="pd-0">Speed Index</td>
+                                                    <td *ngIf="showRedZoneSI" class="set-redzone">{{speed_index}}</td>
+                                                    <td *ngIf="showGreenZoneSI" class="set-greenzone"> {{ speed_index }}</td>
+                                                    <td *ngIf="showOrangezoneSI" class="set-orangezone"> {{speed_index }}</td>
+                                                </tr>
+                                                <tr class="fontsizesmall ">
+                                                    <td *ngIf="showGreenZoneLCP"><img src="../../../../assets/img/green-circle-icon.png " alt="orange-img " class="set-iconsize"></td>
+                                                    <td *ngIf="showOrangezoneLCP"><img src="../../../../assets/img/orange.png" alt="orange-img" class="set-iconsize"></td>
+                                                    <td *ngIf="showRedZoneLCP"><img src="../../../../assets/img/triangle.png" alt="triangle-img" class="set-iconsize"></td>
+                                                    <td class="pd-0">Largest Contentful Paint</td>
+                                                    <td *ngIf="showRedZoneLCP" class="set-redzone">{{largest_contentful_paint}}
+                                                    </td>
+                                                    <td *ngIf="showGreenZoneLCP" class="set-greenzone">
+                                                        {{largest_contentful_paint}}</td>
+                                                    <td *ngIf="showOrangezoneLCP" class="set-orangezone">
+                                                        {{largest_contentful_paint}}</td>
+
+                                                </tr>
+                                                <tr class="fontsizesmall ">
+
+                                                    <td *ngIf="showGreenZoneTOT"><img src="../../../../assets/img/green-circle-icon.png " alt="orange-img " class="set-iconsize"></td>
+                                                    <td *ngIf="showOrangezoneTOT"><img src="../../../../assets/img/orange.png" alt="orange-img" class="set-iconsize"></td>
+                                                    <td *ngIf="showRedZoneTOT"><img src="../../../../assets/img/triangle.png" alt="triangle-img" class="set-iconsize"></td>
+                                                    <td class="pd-0">Time To Interactive</td>
+                                                    <td *ngIf="showRedZoneTOT" class="set-redzone">{{interactive}}</td>
+                                                    <td *ngIf="showGreenZoneTOT" class="set-greenzone">{{interactive}}</td>
+                                                    <td *ngIf="showOrangezoneTOT" class="set-orangezone">{{interactive}}</td>
+                                                </tr>
+                                                <tr class="fontsizesmall ">
+                                                    <td *ngIf="showGreenZoneTBT"><img src="../../../../assets/img/green-circle-icon.png " alt="orange-img " class="set-iconsize"></td>
+                                                    <td *ngIf="showOrangezoneTBT"><img src="../../../../assets/img/orange.png" alt="orange-img" class="set-iconsize"></td>
+                                                    <td *ngIf="showRedZoneTBT"><img src="../../../../assets/img/triangle.png" alt="triangle-img" class="set-iconsize"></td>
+                                                    <td class="pd-0">Total Blocking Time</td>
+                                                    <td *ngIf="showRedZoneTBT" class="set-redzone">{{total_blocking_time}}</td>
+                                                    <td *ngIf="showGreenZoneTBT" class="set-greenzone">{{total_blocking_time}}
+                                                    </td>
+                                                    <td *ngIf="showOrangezoneTBT" class="set-orangezone">{{total_blocking_time}}
+                                                    </td>
+
+                                                </tr>
+                                                <tr class="fontsizesmall ">
+
+                                                    <td *ngIf="showGreenZoneCLS"><img src="../../../../assets/img/green-circle-icon.png " alt="orange-img " class="set-iconsize"></td>
+                                                    <td *ngIf="showOrangezoneCLS"><img src="../../../../assets/img/orange.png" alt="orange-img" class="set-iconsize"></td>
+                                                    <td *ngIf="showRedZoneCLS"><img src="../../../../assets/img/triangle.png" alt="triangle-img" class="set-iconsize"></td>
+                                                    <td class="pd-0">Cumulative Layout Shift</td>
+                                                    <td *ngIf="showRedZoneCLS" class="set-redzone">{{cumulative_layout_shift}}</td>
+                                                    <td *ngIf="showGreenZoneCLS" class="set-greenzone">{{cumulative_layout_shift}}</td>
+                                                    <td *ngIf="showOrangezoneCLS" class="set-orangezone">{{cumulative_layout_shift}}</td>
+                                                </tr>
+                                                <!-- <tr class="fontsizesmall">
+                                                                                                <td class="pd-0">First Meaningful Paint</td>
+                                                                                                <td>{{first_meaningful_paint}}</td>
+                                                                                            </tr>
+                                                                                            <tr class="fontsizesmall">
+                                                                                                <td class="pd-0">First CPU Idle</td>
+                                                                                                <td>{{first_cpu_idle}}</td>
+                                                                                            </tr> -->
+                                                <!-- <tr class="fontsizesmall">
+                                                                                                <td class="pd-0">Estimated Input Latency</td>
+                                                                                                <td>{{Eestimated_input_latency}}</td>
+                                                                                            </tr> -->
+                                            </table>
+                                        </div>
+                                    </div>
+                                    <div class="col-md-6">
+                                        <div class="card-body row">
+                                            <h3 class="fontsizesmall">For Mobile</h3>
+
+                                            <table class="table table-bordered">
+                                                <tr class="fontsizesmall ">
+                                                    <td *ngIf="showGreenZoneFCP"><img src="../../../../assets/img/green-circle-icon.png " alt="orange-img " class="set-iconsize"></td>
+                                                    <td *ngIf="showOrangezoneFCP"><img src="../../../../assets/img/orange.png" alt="orange-img" class="set-iconsize"></td>
+                                                    <td *ngIf="showRedZoneFCP"><img src="../../../../assets/img/triangle.png" alt="triangle-img" class="set-iconsize"></td>
+                                                    <td class="pd-0">First Contentful Paint </td>
+                                                    <td *ngIf="showRedZoneFCP" class="set-redzone"> {{ first_contentful_paint }}
+                                                    </td>
+                                                    <td *ngIf="showGreenZoneFCP" class="set-greenzone"> {{ first_contentful_paint }}
+                                                    </td>
+                                                    <td *ngIf="showOrangezoneFCP" class="set-orangezone"> {{ first_contentful_paint }}
+                                                    </td>
+                                                </tr>
+                                                <tr class="fontsizesmall ">
+                                                    <td *ngIf="showGreenZoneSI"><img src="../../../../assets/img/green-circle-icon.png " alt="orange-img " class="set-iconsize"></td>
+                                                    <td *ngIf="showOrangezoneSI"><img src="../../../../assets/img/orange.png" alt="orange-img" class="set-iconsize">
+                                                    </td>
+                                                    <td *ngIf="showRedZoneSI"><img src="../../../../assets/img/triangle.png" alt="triangle-img" class="set-iconsize"></td>
+                                                    <td class="pd-0">Speed Index</td>
+                                                    <td *ngIf="showRedZoneSI" class="set-redzone">{{speed_index}}</td>
+                                                    <td *ngIf="showGreenZoneSI" class="set-greenzone"> {{ speed_index }}</td>
+                                                    <td *ngIf="showOrangezoneSI" class="set-orangezone"> {{speed_index }}</td>
+                                                </tr>
+                                                <tr class="fontsizesmall ">
+                                                    <td *ngIf="showGreenZoneLCP"><img src="../../../../assets/img/green-circle-icon.png " alt="orange-img " class="set-iconsize"></td>
+                                                    <td *ngIf="showOrangezoneLCP"><img src="../../../../assets/img/orange.png" alt="orange-img" class="set-iconsize"></td>
+                                                    <td *ngIf="showRedZoneLCP"><img src="../../../../assets/img/triangle.png" alt="triangle-img" class="set-iconsize"></td>
+                                                    <td class="pd-0">Largest Contentful Paint</td>
+                                                    <td *ngIf="showRedZoneLCP" class="set-redzone">{{largest_contentful_paint}}
+                                                    </td>
+                                                    <td *ngIf="showGreenZoneLCP" class="set-greenzone">
+                                                        {{largest_contentful_paint}}</td>
+                                                    <td *ngIf="showOrangezoneLCP" class="set-orangezone">
+                                                        {{largest_contentful_paint}}</td>
+
+                                                </tr>
+                                                <tr class="fontsizesmall ">
+
+                                                    <td *ngIf="showGreenZoneTOT"><img src="../../../../assets/img/green-circle-icon.png " alt="orange-img " class="set-iconsize"></td>
+                                                    <td *ngIf="showOrangezoneTOT"><img src="../../../../assets/img/orange.png" alt="orange-img" class="set-iconsize"></td>
+                                                    <td *ngIf="showRedZoneTOT"><img src="../../../../assets/img/triangle.png" alt="triangle-img" class="set-iconsize"></td>
+                                                    <td class="pd-0">Time To Interactive</td>
+                                                    <td *ngIf="showRedZoneTOT" class="set-redzone">{{interactive}}</td>
+                                                    <td *ngIf="showGreenZoneTOT" class="set-greenzone">{{interactive}}</td>
+                                                    <td *ngIf="showOrangezoneTOT" class="set-orangezone">{{interactive}}</td>
+                                                </tr>
+                                                <tr class="fontsizesmall ">
+                                                    <td *ngIf="showGreenZoneTBT"><img src="../../../../assets/img/green-circle-icon.png " alt="orange-img " class="set-iconsize"></td>
+                                                    <td *ngIf="showOrangezoneTBT"><img src="../../../../assets/img/orange.png" alt="orange-img" class="set-iconsize"></td>
+                                                    <td *ngIf="showRedZoneTBT"><img src="../../../../assets/img/triangle.png" alt="triangle-img" class="set-iconsize"></td>
+                                                    <td class="pd-0">Total Blocking Time</td>
+                                                    <td *ngIf="showRedZoneTBT" class="set-redzone">{{total_blocking_time}}</td>
+                                                    <td *ngIf="showGreenZoneTBT" class="set-greenzone">{{total_blocking_time}}
+                                                    </td>
+                                                    <td *ngIf="showOrangezoneTBT" class="set-orangezone">{{total_blocking_time}}
+                                                    </td>
+
+                                                </tr>
+                                                <tr class="fontsizesmall ">
+
+                                                    <td *ngIf="showGreenZoneCLS"><img src="../../../../assets/img/green-circle-icon.png " alt="orange-img " class="set-iconsize"></td>
+                                                    <td *ngIf="showOrangezoneCLS"><img src="../../../../assets/img/orange.png" alt="orange-img" class="set-iconsize"></td>
+                                                    <td *ngIf="showRedZoneCLS"><img src="../../../../assets/img/triangle.png" alt="triangle-img" class="set-iconsize"></td>
+                                                    <td class="pd-0">Cumulative Layout Shift</td>
+                                                    <td *ngIf="showRedZoneCLS" class="set-redzone">{{cumulative_layout_shift}}</td>
+                                                    <td *ngIf="showGreenZoneCLS" class="set-greenzone">{{cumulative_layout_shift}}</td>
+                                                    <td *ngIf="showOrangezoneCLS" class="set-orangezone">{{cumulative_layout_shift}}</td>
+                                                </tr>
+                                                <!-- <tr class="fontsizesmall">
+                                                                                                                            <td class="pd-0">First Meaningful Paint</td>
+                                                                                                                            <td>{{first_meaningful_paint}}</td>
+                                                                                                                        </tr>
+                                                                                                                        <tr class="fontsizesmall">
+                                                                                                                            <td class="pd-0">First CPU Idle</td>
+                                                                                                                            <td>{{first_cpu_idle}}</td>
+                                                                                                                        </tr> -->
+                                                <!-- <tr class="fontsizesmall">
+                                                                                                                            <td class="pd-0">Estimated Input Latency</td>
+                                                                                                                            <td>{{Eestimated_input_latency}}</td>
+                                                                                                                        </tr> -->
+                                            </table>
+                                        </div>
                                     </div>
                                 </div>
                             </div>
@@ -501,5 +678,9 @@
                 </div>
             </div>
         </div>
+
+
     </div>
+
+
 </div>

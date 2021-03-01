@@ -47,7 +47,28 @@ export class SeoComponent implements OnInit {
   speed_index
   first_meaningful_paint
   Eestimated_input_latency
-
+  largest_contentful_paint
+  total_blocking_time
+  cumulative_layout_shift
+  //for sitespeed table-showing icons-red,green,orange 
+  showGreenZoneFCP: boolean;
+  showOrangezoneFCP: boolean;
+  showRedZoneFCP: boolean;
+  showGreenZoneSI: boolean;
+  showOrangezoneSI: boolean;
+  showRedZoneSI: boolean
+  showGreenZoneLCP: boolean;
+  showOrangezoneLCP: boolean;
+  showRedZoneLCP: boolean
+  showGreenZoneTOT: boolean;
+  showOrangezoneTOT: boolean;
+  showRedZoneTOT: boolean
+  showGreenZoneTBT: boolean;
+  showOrangezoneTBT: boolean;
+  showRedZoneTBT: boolean
+  showGreenZoneCLS: boolean;
+  showOrangezoneCLS: boolean;
+  showRedZoneCLS: boolean;
   //############# Site Speed end############################
 
   //Ranking graph rubina
@@ -1125,7 +1146,7 @@ export class SeoComponent implements OnInit {
     //https://www.googleapis.com/analytics/v3/management/accounts/49139272/webproperties
     this.http.get(url, this.httpOptionJSON).subscribe(res => {
       if (res) {
-        
+
         let rows = res['items'];
         //let accountSummaryIds=[];
         for (let i = 0; i < rows.length; i++) {
@@ -1164,8 +1185,8 @@ export class SeoComponent implements OnInit {
 
         let rows = res['rows'];
         this.showSpinnerBaseChart = false;
-        this.lineChartData1[0].data=[];
-        this.lineChartLabels1=[];
+        this.lineChartData1[0].data = [];
+        this.lineChartLabels1 = [];
         for (let i = 0; i < rows.length; i++) {
           this.lineChartData1[0].data.push(rows[i]["1"]);
           let dt = rows[i]["0"].toString().substring(4, 6) + '-' + rows[i]["0"].toString().substring(6, 8);
@@ -1192,12 +1213,12 @@ export class SeoComponent implements OnInit {
     let urlcamp = this.selectedCampIdWebUrl.replace('/', '%2F');
     const url = "https://www.googleapis.com/analytics/v3/data/ga?ids=ga:" + profileid + "&start-date=" + startdate + "&end-date=" + endDate + "&metrics=ga%3Asessions&dimensions=ga%3Asource%2Cga%3Amedium%2Cga%3AadContent%2Cga%3AsocialNetwork%2Cga%3AdeviceCategory"
     //const url = "https://www.googleapis.com/analytics/v3/data/ga?ids=ga:"+profileid+"&dimensions=ga:date&start-date="+startdate+"&end-date="+endDate+"&metrics=ga:organicsearches";
-   
+
     this.http.get(url, this.httpOptionJSON).subscribe(res => {
       if (res) {
 
         let rows = res['rows'];
-        let organic = 0, referral = 0, social = 0,desktop = 0, mobile = 0, tablet = 0;
+        let organic = 0, referral = 0, social = 0, desktop = 0, mobile = 0, tablet = 0;
         this.showSpinnerSiteAnalysisContent = false;
         for (let i = 0; i < rows.length; i++) {
           if (rows[i]["1"] == 'organic') {
@@ -1221,7 +1242,7 @@ export class SeoComponent implements OnInit {
         }
         //Web traffic by channel
         this.doughnutData.datasets[0].data = [];
-        let direct  = parseInt(rows[0]["5"]) + parseInt(rows[0]["5"])+ parseInt(rows[0]["5"]);
+        let direct = parseInt(rows[0]["5"]) + parseInt(rows[0]["5"]) + parseInt(rows[0]["5"]);
         this.doughnutData.datasets[0].data.push(direct);//direct
         this.doughnutData.datasets[0].data.push(organic);//rganic Search
         this.doughnutData.datasets[0].data.push(referral);//referral
@@ -1250,7 +1271,7 @@ export class SeoComponent implements OnInit {
     let urlcamp = this.selectedCampIdWebUrl.replace('/', '%2F');
     const url = "https://www.googleapis.com/analytics/v3/data/ga?ids=ga:" + profileid + "&start-date=" + startdate + "&end-date=" + endDate + "&metrics=ga%3Asessions&dimensions=ga%3Asource%2Cga%3Amedium%2Cga%3AadContent%2Cga%3AsocialNetwork"
     //const url = "https://www.googleapis.com/analytics/v3/data/ga?ids=ga:"+profileid+"&dimensions=ga:date&start-date="+startdate+"&end-date="+endDate+"&metrics=ga:organicsearches";
-    
+
     this.http.get(url, this.httpOptionJSON).subscribe(res => {
       if (res) {
 
@@ -1729,12 +1750,12 @@ export class SeoComponent implements OnInit {
   }
   //For ranking graph rubina
   RefreshRankingGraphData() {
-   
+
     const d = new Date();
     let currYear = d.getFullYear();
     let p;
     let totalPosition = 0;
-    p = this.serpList.filter(x => x.campaignID.toString() === this.selectedCampId.toLowerCase() );
+    p = this.serpList.filter(x => x.campaignID.toString() === this.selectedCampId.toLowerCase());
     if (p != null && p != undefined && p.length > 0) {
       for (let i = 0; i < p.length; i++) {
         totalPosition = totalPosition + p[i].position;
@@ -1744,24 +1765,24 @@ export class SeoComponent implements OnInit {
     this.averageRanking = Math.round(this.averageRanking);
     const monthNames = ["January", "February", "March", "April", "May", "June", "July", "August", "September", "October", "November", "December"
     ];
-    if(this.averageRanking == null){this.averageRanking =0;}
+    if (this.averageRanking == null) { this.averageRanking = 0; }
     let currMonth = monthNames[d.getMonth()];
     let data = {
       id: "00000000-0000-0000-0000-000000000000",
       avragePosition: this.averageRanking,
       month: currMonth,
       campaignId: this.selectedCampId,
-      year:currYear,
+      year: currYear,
     }
     this.campaignService.createRankingGraph(data).subscribe(response => {
       if (response) {
-       
+
         this.getRankingGraphData();
       }
     });
   }
   DeleteRankingGraphData() {
-   
+
     const monthNames = ["January", "February", "March", "April", "May", "June", "July", "August", "September", "October", "November", "December"
     ];
     const d = new Date();
@@ -1771,11 +1792,11 @@ export class SeoComponent implements OnInit {
     if (p != null && p != undefined && p.length > 0) {
       tempId = p[0].id;
       this.campaignService.deleteRankingGraph(tempId).subscribe(response => {
-      
+
         this.RefreshRankingGraphData();
       });
-    }else{
-    this.RefreshRankingGraphData();
+    } else {
+      this.RefreshRankingGraphData();
     }
   }
   getRankingGraphDataDelete() {
@@ -1785,11 +1806,11 @@ export class SeoComponent implements OnInit {
     const filterOptionModel = this.getFilterOptionPlans();
     this.campaignService.getFilteredRankingGraph(filterOptionModel).subscribe((response: any) => {
       if (response) {
-       
+
         this.barDataArray = [];
         this.rankingGraphData = response.body;
-        this.rankingGraphData = this.rankingGraphData.filter(x => x.campaignId.toString() === this.selectedCampId.toLowerCase() && x.year == currYear );
-        this.tempRankingGraphData =  this.rankingGraphData ;
+        this.rankingGraphData = this.rankingGraphData.filter(x => x.campaignId.toString() === this.selectedCampId.toLowerCase() && x.year == currYear);
+        this.tempRankingGraphData = this.rankingGraphData;
         this.DeleteRankingGraphData();
       }
     });
@@ -1803,11 +1824,11 @@ export class SeoComponent implements OnInit {
     const filterOptionModel = this.getFilterOptionPlans();
     this.campaignService.getFilteredRankingGraph(filterOptionModel).subscribe((response: any) => {
       if (response) {
-  
+
         this.barDataArray = [];
         this.rankingGraphData = response.body;
-        this.rankingGraphData = this.rankingGraphData.filter(x => x.campaignId.toString() === this.selectedCampId.toLowerCase() && x.year == currYear );
-        this.tempRankingGraphData =  this.rankingGraphData ;
+        this.rankingGraphData = this.rankingGraphData.filter(x => x.campaignId.toString() === this.selectedCampId.toLowerCase() && x.year == currYear);
+        this.tempRankingGraphData = this.rankingGraphData;
         this.rankingGraphData.sort(function (a, b) {
           var MONTH = {
             January: 1, February: 2, March: 3, April: 4, May: 5, June: 6,
@@ -1842,13 +1863,13 @@ export class SeoComponent implements OnInit {
         }
         else { this.barDataArray.push(0) }
         u = this.rankingGraphData;
-        p = this.rankingGraphData.filter(x => x.month == "May" )
+        p = this.rankingGraphData.filter(x => x.month == "May")
         if (p != null && p != undefined && p.length > 0) {
           this.barDataArray.push(p[0].avragePosition)
         }
         else { this.barDataArray.push(0) }
         u = this.rankingGraphData;
-        p = this.rankingGraphData.filter(x => x.month == "June" )
+        p = this.rankingGraphData.filter(x => x.month == "June")
         if (p != null && p != undefined && p.length > 0) {
           this.barDataArray.push(p[0].avragePosition)
         }
@@ -1890,7 +1911,7 @@ export class SeoComponent implements OnInit {
         }
         else { this.barDataArray.push(0) }
         this.barData.datasets[0].data = this.barDataArray;
-      
+
         // this.chart.chart.update();
       }
     })
@@ -1925,7 +1946,7 @@ export class SeoComponent implements OnInit {
       //   }
 
       // })
-     // this.chart.chart.update();
+      // this.chart.chart.update();
     });
   }
   private getFilterOptionPlans() {
@@ -1952,7 +1973,7 @@ export class SeoComponent implements OnInit {
     // const url = "https://pagespeedonline.googleapis.com/pagespeedonline/v5/runPagespeed?url=https%3A%2F%2Fpatwa.co.in&key=AIzaSyC1IsrCeeNXp9ksAmC8szBtYVjTLJC9UWQ"
     this.http.get(url, this.httpOptionJSON).subscribe(res => {
       if (res) {
-        debugger
+
         //FCP 2320 green
         this.showSpinnerSiteAnalysisContent = true;
         let rows = res['loadingExperience'].metrics;
@@ -1965,12 +1986,113 @@ export class SeoComponent implements OnInit {
         //light house
 
 
-          this.first_contentful_paint = lighthouse.audits['first-contentful-paint'].displayValue,
-          this.speed_index = lighthouse.audits['speed-index'].displayValue,
-          this.interactive = lighthouse.audits['interactive'].displayValue,
-          this.first_meaningful_paint = lighthouse.audits['first-meaningful-paint'].displayValue,
-          this.first_cpu_idle = lighthouse.audits['first-cpu-idle'].displayValue,
-          this.Eestimated_input_latency = lighthouse.audits['estimated-input-latency'].displayValue
+        // this.first_contentful_paint = lighthouse.audits['first-contentful-paint'].displayValue,
+        // this.speed_index = lighthouse.audits['speed-index'].displayValue,
+        // this.interactive = lighthouse.audits['interactive'].displayValue,
+        // this.first_meaningful_paint = lighthouse.audits['first-meaningful-paint'].displayValue,
+        // this.first_cpu_idle = lighthouse.audits['first-cpu-idle'].displayValue,
+        // this.Eestimated_input_latency = lighthouse.audits['estimated-input-latency'].displayValue
+        this.first_contentful_paint = lighthouse.audits['first-contentful-paint'].displayValue;
+        this.speed_index = lighthouse.audits['speed-index'].displayValue;
+        this.largest_contentful_paint = lighthouse.audits['largest-contentful-paint'].displayValue;
+        this.interactive = lighthouse.audits['interactive'].displayValue;
+        this.total_blocking_time = lighthouse.audits['total-blocking-time'].displayValue;
+        this.cumulative_layout_shift = lighthouse.audits['cumulative-layout-shift'].displayValue
+
+        var fcp: any = (parseFloat(this.first_contentful_paint) * 1000).toFixed(0).toString();
+        var si: any = (parseFloat(this.speed_index) * 1000).toFixed(0);
+        var lcp: any = (parseFloat(this.largest_contentful_paint) * 1000).toFixed(0);
+        var tot: any = (parseFloat(this.interactive) * 1000).toFixed(0);
+        var tbt: any = this.total_blocking_time.replace("ms", "");
+
+        if (fcp < 2350) {
+
+          //Icon
+          this.showGreenZoneFCP = true;
+          this.showOrangezoneFCP = false;
+          this.showRedZoneFCP = false;
+
+        } else if ((fcp < 4020) && (fcp > 2350)) {
+          this.showOrangezoneFCP = true;
+          this.showGreenZoneFCP = false;
+          this.showRedZoneFCP = false;
+
+        } else {
+          this.showRedZoneFCP = true;
+          this.showOrangezoneFCP = false;
+          this.showGreenZoneFCP = false;
+        }
+
+        if ((si <= 3340)) {
+
+          this.showGreenZoneSI = true;
+          this.showOrangezoneSI = false;
+          this.showRedZoneSI = false;
+        } else if ((si > 3340) && (si < 5790)) {
+          this.showOrangezoneSI = true;
+          this.showGreenZoneSI = false;
+          this.showRedZoneSI = false;
+        } else {
+          this.showRedZoneSI = true;
+          this.showOrangezoneSI = false;
+          this.showGreenZoneSI = false;
+        }
+        if ((lcp <= 2520)) {
+
+          this.showGreenZoneLCP = true;
+          this.showOrangezoneLCP = false;
+          this.showRedZoneLCP = false;
+        } else if ((lcp > 2520) && (lcp < 3990)) {
+          this.showOrangezoneLCP = true;
+          this.showGreenZoneLCP = false;
+          this.showRedZoneLCP = false;
+        } else {
+          this.showRedZoneLCP = true;
+          this.showOrangezoneLCP = false;
+          this.showGreenZoneLCP = false;
+        }
+        if ((tot <= 3810)) {
+
+          this.showGreenZoneTOT = true;
+          this.showOrangezoneTOT = false;
+          this.showRedZoneTOT = false;
+        } else if ((tot > 3810) && (tot < 7310)) {
+          this.showOrangezoneTOT = true;
+          this.showGreenZoneTOT = false;
+          this.showRedZoneTOT = false;
+        } else {
+          this.showRedZoneTOT = true;
+          this.showOrangezoneTOT = false;
+          this.showGreenZoneTOT = false;
+        }
+        if ((tbt <= 290)) {
+
+          this.showGreenZoneTBT = true;
+          this.showOrangezoneTBT = false;
+          this.showRedZoneTBT = false;
+        } else if ((tbt > 290) && (tbt < 600)) {
+          this.showOrangezoneTBT = true;
+          this.showGreenZoneTBT = false;
+          this.showRedZoneTBT = false;
+        } else {
+          this.showRedZoneTBT = true;
+          this.showOrangezoneTBT = false;
+          this.showGreenZoneTBT = false;
+        }
+        if ((this.cumulative_layout_shift <= 0.10)) {
+
+          this.showGreenZoneCLS = true;
+          this.showOrangezoneCLS = false;
+          this.showRedZoneCLS = false;
+        } else if ((this.cumulative_layout_shift > 0.10) && (this.cumulative_layout_shift < 0.25)) {
+          this.showOrangezoneCLS = true;
+          this.showGreenZoneCLS = false;
+          this.showRedZoneCLS = false;
+        } else {
+          this.showRedZoneCLS = true;
+          this.showOrangezoneCLS = false;
+          this.showGreenZoneCLS = false;
+        }
         this.showSpinnerSiteAnalysisContent = false;
       }
     }, error => {
@@ -1992,7 +2114,7 @@ export class SeoComponent implements OnInit {
     // const url = "https://pagespeedonline.googleapis.com/pagespeedonline/v5/runPagespeed?url=https%3A%2F%2Fpatwa.co.in&key=AIzaSyC1IsrCeeNXp9ksAmC8szBtYVjTLJC9UWQ"
     this.http.get(url, this.httpOptionJSON).subscribe(res => {
       if (res) {
-        debugger
+
         //FCP 2320 green
         this.showSpinnerSiteAnalysisContent = true;
         let rows = res['loadingExperience'].metrics;
@@ -2005,12 +2127,113 @@ export class SeoComponent implements OnInit {
         //light house
 
 
-          this.first_contentful_paint = lighthouse.audits['first-contentful-paint'].displayValue,
-          this.speed_index = lighthouse.audits['speed-index'].displayValue,
-          this.interactive = lighthouse.audits['interactive'].displayValue,
-          this.first_meaningful_paint = lighthouse.audits['first-meaningful-paint'].displayValue,
-          this.first_cpu_idle = lighthouse.audits['first-cpu-idle'].displayValue,
-          this.Eestimated_input_latency = lighthouse.audits['estimated-input-latency'].displayValue
+        //this.first_contentful_paint = lighthouse.audits['first-contentful-paint'].displayValue,
+        //this.speed_index = lighthouse.audits['speed-index'].displayValue,
+        //this.interactive = lighthouse.audits['interactive'].displayValue,
+        //this.first_meaningful_paint = lighthouse.audits['first-meaningful-paint'].displayValue,
+        //this.first_cpu_idle = lighthouse.audits['first-cpu-idle'].displayValue,
+        //this.Eestimated_input_latency = lighthouse.audits['estimated-input-latency'].displayValue
+        this.first_contentful_paint = lighthouse.audits['first-contentful-paint'].displayValue;
+        this.speed_index = lighthouse.audits['speed-index'].displayValue;
+        this.largest_contentful_paint = lighthouse.audits['largest-contentful-paint'].displayValue;
+        this.interactive = lighthouse.audits['interactive'].displayValue;
+        this.total_blocking_time = lighthouse.audits['total-blocking-time'].displayValue;
+        this.cumulative_layout_shift = lighthouse.audits['cumulative-layout-shift'].displayValue
+
+        var fcp: any = (parseFloat(this.first_contentful_paint) * 1000).toFixed(0).toString();
+        var si: any = (parseFloat(this.speed_index) * 1000).toFixed(0);
+        var lcp: any = (parseFloat(this.largest_contentful_paint) * 1000).toFixed(0);
+        var tot: any = (parseFloat(this.interactive) * 1000).toFixed(0);
+        var tbt: any = this.total_blocking_time.replace("ms", "");
+
+        if (fcp < 930) {
+
+          //Icon
+          this.showGreenZoneFCP = true;
+          this.showOrangezoneFCP = false;
+          this.showRedZoneFCP = false;
+
+        } else if ((fcp < 1590) && (fcp > 930)) {
+          this.showOrangezoneFCP = true;
+          this.showGreenZoneFCP = false;
+          this.showRedZoneFCP = false;
+
+        } else {
+          this.showRedZoneFCP = true;
+          this.showOrangezoneFCP = false;
+          this.showGreenZoneFCP = false;
+        }
+
+        if ((si <= 1290)) {
+
+          this.showGreenZoneSI = true;
+          this.showOrangezoneSI = false;
+          this.showRedZoneSI = false;
+        } else if ((si > 1290) && (si < 2300)) {
+          this.showOrangezoneSI = true;
+          this.showGreenZoneSI = false;
+          this.showRedZoneSI = false;
+        } else {
+          this.showRedZoneSI = true;
+          this.showOrangezoneSI = false;
+          this.showGreenZoneSI = false;
+        }
+        if ((lcp <= 1200)) {
+
+          this.showGreenZoneLCP = true;
+          this.showOrangezoneLCP = false;
+          this.showRedZoneLCP = false;
+        } else if ((lcp > 1200) && (lcp < 2390)) {
+          this.showOrangezoneLCP = true;
+          this.showGreenZoneLCP = false;
+          this.showRedZoneLCP = false;
+        } else {
+          this.showRedZoneLCP = true;
+          this.showOrangezoneLCP = false;
+          this.showGreenZoneLCP = false;
+        }
+        if ((tot <= 2470)) {
+
+          this.showGreenZoneTOT = true;
+          this.showOrangezoneTOT = false;
+          this.showRedZoneTOT = false;
+        } else if ((tot > 2470) && (tot < 4510)) {
+          this.showOrangezoneTOT = true;
+          this.showGreenZoneTOT = false;
+          this.showRedZoneTOT = false;
+        } else {
+          this.showRedZoneTOT = true;
+          this.showOrangezoneTOT = false;
+          this.showGreenZoneTOT = false;
+        }
+        if ((tbt <= 150)) {
+
+          this.showGreenZoneTBT = true;
+          this.showOrangezoneTBT = false;
+          this.showRedZoneTBT = false;
+        } else if ((tbt > 150) && (tbt < 350)) {
+          this.showOrangezoneTBT = true;
+          this.showGreenZoneTBT = false;
+          this.showRedZoneTBT = false;
+        } else {
+          this.showRedZoneTBT = true;
+          this.showOrangezoneTBT = false;
+          this.showGreenZoneTBT = false;
+        }
+        if ((this.cumulative_layout_shift <= 0.10)) {
+
+          this.showGreenZoneCLS = true;
+          this.showOrangezoneCLS = false;
+          this.showRedZoneCLS = false;
+        } else if ((this.cumulative_layout_shift > 0.10) && (this.cumulative_layout_shift < 0.25)) {
+          this.showOrangezoneCLS = true;
+          this.showGreenZoneCLS = false;
+          this.showRedZoneCLS = false;
+        } else {
+          this.showRedZoneCLS = true;
+          this.showOrangezoneCLS = false;
+          this.showGreenZoneCLS = false;
+        }
         this.showSpinnerSiteAnalysisContent = false;
       }
     }, error => {
@@ -2206,9 +2429,9 @@ export class SeoComponent implements OnInit {
     this.startDate = this.datepipe.transform(this.fromDate.value, 'yyyy-MM-dd');
     this.currYear = parseInt(this.datepipe.transform(this.fromDate.value, 'yyyy'));
     let getMonth = parseInt(this.datepipe.transform(this.fromDate.value, 'MM'));
-    let prevMonth= getMonth - 1;
-    this.previousStartDate = this.currYear.toString() +'-' + prevMonth + '-' +  this.datepipe.transform(this.fromDate.value, 'dd');
-   
+    let prevMonth = getMonth - 1;
+    this.previousStartDate = this.currYear.toString() + '-' + prevMonth + '-' + this.datepipe.transform(this.fromDate.value, 'dd');
+
     // let prevYear = this.currYear - 1;
     // this.previousStartDate = prevYear.toString() + '-' + this.datepipe.transform(this.fromDate.value, 'MM-dd');
     this.getData();
@@ -2219,8 +2442,8 @@ export class SeoComponent implements OnInit {
     this.endDate = this.datepipe.transform(this.toDate.value, 'yyyy-MM-dd');
     this.currYear = parseInt(this.datepipe.transform(this.toDate.value, 'yyyy'));
     let getMonth = parseInt(this.datepipe.transform(this.toDate.value, 'MM'));
-    let prevMonth= getMonth - 1;
-    this.previousEndDate =this.currYear.toString() +'-' + prevMonth + '-' +  this.datepipe.transform(this.toDate.value, 'dd');
+    let prevMonth = getMonth - 1;
+    this.previousEndDate = this.currYear.toString() + '-' + prevMonth + '-' + this.datepipe.transform(this.toDate.value, 'dd');
     // let prevYear = this.currYear - 1;
     // this.previousEndDate = prevYear.toString() + '-' + this.datepipe.transform(this.toDate.value, 'MM-dd');
     this.getData();

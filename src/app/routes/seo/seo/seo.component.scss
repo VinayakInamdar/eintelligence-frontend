@@ -151,7 +151,9 @@ ul {
 }
 
 .fontsizesmall {
-    font-size: small !important;
+    font-size: medium;
+    margin: 1rem;
+    font-weight: 450;
 }
 
 .fontsizemedium {
@@ -997,7 +999,7 @@ h4.text-link {
 }
 
 .pd-0 {
-    padding: 0% !important;
+    padding: 1rem;
 }
 
 .pd-3 {
@@ -1017,4 +1019,38 @@ h4.text-link {
     font-size: x-large;
     align-self: center;
     align-content: center;
+}
+
+.set-redzone {
+    color: red;
+    font-weight: 500;
+}
+
+.set-greenzone {
+    color: green;
+    font-weight: 500;
+}
+
+.set-orangezone {
+    color: orange;
+    font-weight: 500;
+}
+
+.set-iconsize {
+    width: 1rem;
+    height: 1rem;
+}
+
+.set-staticiconsize {
+    width: 1rem;
+    height: 1rem;
+    margin-left: 1rem !important;
+}
+
+.set-statictitle {
+    margin-left: 0.3rem !important;
+}
+
+.matrics-padding {
+    padding-top: 2%;
 }
