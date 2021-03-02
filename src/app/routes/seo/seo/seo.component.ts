@@ -41,6 +41,7 @@ export class SeoComponent implements OnInit {
   FIRST_INPUT_DELAY_MS
   LARGEST_CONTENTFUL_PAINT_MS
   //for light house
+  //for mobile
   interactive
   first_cpu_idle
   first_contentful_paint
@@ -50,6 +51,17 @@ export class SeoComponent implements OnInit {
   largest_contentful_paint
   total_blocking_time
   cumulative_layout_shift
+  
+  //for deskto[]
+  interactive_Desktop
+  first_cpu_idle_Desktop
+  first_contentful_paint_Desktop
+  speed_index_Desktop
+  first_meaningful_paint_Desktop
+  Eestimated_input_latency_Desktop
+  largest_contentful_paint_Desktop
+  total_blocking_time_Desktop
+  cumulative_layout_shift_Desktop
   //for sitespeed table-showing icons-red,green,orange 
   showGreenZoneFCP: boolean;
   showOrangezoneFCP: boolean;
@@ -69,6 +81,24 @@ export class SeoComponent implements OnInit {
   showGreenZoneCLS: boolean;
   showOrangezoneCLS: boolean;
   showRedZoneCLS: boolean;
+  showGreenZoneFCP_Desktop: boolean;
+  showOrangezoneFCP_Desktop: boolean;
+  showRedZoneFCP_Desktop: boolean;
+  showGreenZoneS_DesktopI: boolean;
+  showOrangezoneSI_Desktop: boolean;
+  showRedZoneSI_Desktop: boolean
+  showGreenZoneLCP_Desktop: boolean;
+  showOrangezoneLCP_Desktop: boolean;
+  showRedZoneLCP_Desktop: boolean
+  showGreenZoneTOT_Desktop: boolean;
+  showOrangezoneTOT_Desktop: boolean;
+  showRedZoneTOT_Desktop: boolean
+  showGreenZoneTBT_Desktop: boolean;
+  showOrangezoneTBT_Desktop: boolean;
+  showRedZoneTBT_Desktop: boolean
+  showGreenZoneCLS_Desktop: boolean;
+  showOrangezoneCLS_Desktop: boolean;
+  showRedZoneCLS_Desktop: boolean;
   //############# Site Speed end############################
 
   //Ranking graph rubina
@@ -1969,7 +1999,7 @@ export class SeoComponent implements OnInit {
     };
     let urlcamp = this.selectedCampIdWebUrl.replace('/', '%2F');
 
-    const url = "https://pagespeedonline.googleapis.com/pagespeedonline/v5/runPagespeed?url=https%3A%2F%2F" + urlcamp + "?strategy=MOBILE&key=AIzaSyC1IsrCeeNXp9ksAmC8szBtYVjTLJC9UWQ";
+    const url = "https://pagespeedonline.googleapis.com/pagespeedonline/v5/runPagespeed?url=https%3A%2F%2F" + urlcamp + "&strategy=MOBILE&key=AIzaSyC1IsrCeeNXp9ksAmC8szBtYVjTLJC9UWQ";
     // const url = "https://pagespeedonline.googleapis.com/pagespeedonline/v5/runPagespeed?url=https%3A%2F%2Fpatwa.co.in&key=AIzaSyC1IsrCeeNXp9ksAmC8szBtYVjTLJC9UWQ"
     this.http.get(url, this.httpOptionJSON).subscribe(res => {
       if (res) {
@@ -2110,7 +2140,7 @@ export class SeoComponent implements OnInit {
     };
     let urlcamp = this.selectedCampIdWebUrl.replace('/', '%2F');
     //&strategy=DESKTOP
-    const url = "https://pagespeedonline.googleapis.com/pagespeedonline/v5/runPagespeed?url=https%3A%2F%2F" + urlcamp + "?strategy=DESKTOP&key=AIzaSyC1IsrCeeNXp9ksAmC8szBtYVjTLJC9UWQ";
+    const url = "https://pagespeedonline.googleapis.com/pagespeedonline/v5/runPagespeed?url=https%3A%2F%2F" + urlcamp + "&strategy=DESKTOP&key=AIzaSyC1IsrCeeNXp9ksAmC8szBtYVjTLJC9UWQ";
     // const url = "https://pagespeedonline.googleapis.com/pagespeedonline/v5/runPagespeed?url=https%3A%2F%2Fpatwa.co.in&key=AIzaSyC1IsrCeeNXp9ksAmC8szBtYVjTLJC9UWQ"
     this.http.get(url, this.httpOptionJSON).subscribe(res => {
       if (res) {
@@ -2133,18 +2163,18 @@ export class SeoComponent implements OnInit {
         //this.first_meaningful_paint = lighthouse.audits['first-meaningful-paint'].displayValue,
         //this.first_cpu_idle = lighthouse.audits['first-cpu-idle'].displayValue,
         //this.Eestimated_input_latency = lighthouse.audits['estimated-input-latency'].displayValue
-        this.first_contentful_paint = lighthouse.audits['first-contentful-paint'].displayValue;
-        this.speed_index = lighthouse.audits['speed-index'].displayValue;
-        this.largest_contentful_paint = lighthouse.audits['largest-contentful-paint'].displayValue;
-        this.interactive = lighthouse.audits['interactive'].displayValue;
-        this.total_blocking_time = lighthouse.audits['total-blocking-time'].displayValue;
-        this.cumulative_layout_shift = lighthouse.audits['cumulative-layout-shift'].displayValue
+        this.first_contentful_paint_Desktop = lighthouse.audits['first-contentful-paint'].displayValue;
+        this.speed_index_Desktop = lighthouse.audits['speed-index'].displayValue;
+        this.largest_contentful_paint_Desktop = lighthouse.audits['largest-contentful-paint'].displayValue;
+        this.interactive_Desktop = lighthouse.audits['interactive'].displayValue;
+        this.total_blocking_time_Desktop = lighthouse.audits['total-blocking-time'].displayValue;
+        this.cumulative_layout_shift_Desktop = lighthouse.audits['cumulative-layout-shift'].displayValue
 
-        var fcp: any = (parseFloat(this.first_contentful_paint) * 1000).toFixed(0).toString();
-        var si: any = (parseFloat(this.speed_index) * 1000).toFixed(0);
-        var lcp: any = (parseFloat(this.largest_contentful_paint) * 1000).toFixed(0);
-        var tot: any = (parseFloat(this.interactive) * 1000).toFixed(0);
-        var tbt: any = this.total_blocking_time.replace("ms", "");
+        var fcp: any = (parseFloat(this.first_contentful_paint_Desktop) * 1000).toFixed(0).toString();
+        var si: any = (parseFloat(this.speed_index_Desktop) * 1000).toFixed(0);
+        var lcp: any = (parseFloat(this.largest_contentful_paint_Desktop) * 1000).toFixed(0);
+        var tot: any = (parseFloat(this.interactive_Desktop) * 1000).toFixed(0);
+        var tbt: any = this.total_blocking_time_Desktop.replace("ms", "");
 
         if (fcp < 930) {
 

@@ -16,7 +16,6 @@ import { LocalDataSource } from 'ng2-smart-table';
   styleUrls: ['./socialmedia.component.scss']
 })
 export class SocialmediaComponent implements OnInit {
-
   pageid;
   pagename;
   accessToken;
@@ -61,7 +60,7 @@ export class SocialmediaComponent implements OnInit {
   constructor(private http: HttpClient, private snackbarService: SnackbarService, private fb: FacebookService, public router: Router,
     private campaignService: CampaignService, public openIdConnectService: OpenIdConnectService, public route: ActivatedRoute) {
     fb.init({
-      appId: '3574916862576976',//environment.facebook_appid,//3574916862576976
+      appId: '200487178533939',//environment.facebook_appid,//3574916862576976
       version: 'v9.0'
     });
     //let id = this.route.snapshot.paramMap.get('id');
@@ -145,7 +144,8 @@ export class SocialmediaComponent implements OnInit {
       return_scopes: true,
       // scope: 'public_profile,user_friends,email,pages_show_list'
       //scope: 'pages_show_list'
-      scope: 'pages_show_list,read_insights,pages_read_engagement,pages_manage_metadata'
+      scope: 'pages_show_list,read_insights'
+      //scope: 'pages_show_list,read_insights,pages_read_engagement,pages_manage_metadata'\
     };
   
     this.fb.login(loginOptions)
@@ -157,8 +157,8 @@ export class SocialmediaComponent implements OnInit {
         this.getUserId();
 
         this.getAllPagesList();
-        this.getPageLikes();
-        this.getPageNewLikes();
+      //  this.getPageLikes();
+        //this.getPageNewLikes();
       })
       .catch(this.handleError);
   }
@@ -179,7 +179,7 @@ export class SocialmediaComponent implements OnInit {
         this.userId = res['id'];
         this.userName = res['name'];
         this.getUserPermission();
-        this.generatePageToken();
+       // this.generatePageToken();
 
       }
     }, error => {
@@ -197,7 +197,7 @@ export class SocialmediaComponent implements OnInit {
     //        var pages = queries[1].fql_result_set;
     //    }}
     // )
-    const url = "https://graph.facebook.com/me/accounts?fields=name,access_token&access_token=" + this.accessToken;
+    const url = "https://graph.facebook.com/me/accounts?&access_token=" + this.accessToken;
 
   // const  url = "https://graph.facebook.com/" + this.userId + "/accounts?access_token=" + this.accessToken;
     this.http.get(url).subscribe(res => {
