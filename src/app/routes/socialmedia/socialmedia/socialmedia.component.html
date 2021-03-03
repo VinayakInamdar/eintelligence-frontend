@@ -9,56 +9,78 @@
 <app-submenu></app-submenu>
 <app-socialmedia-submenu></app-socialmedia-submenu>
 <!-- A grey horizontal navbar that becomes vertical on small screens -->
+<div class="card card-default shadow p-3 mb-5 bg-white rounded cursor-set">
+    <div class="row">
+        <div class="card-text setcampaign">
+            Campaign name: {{selectedCampaignName}}
+        </div>
+        <div class="col move-center">
+            <button class="mr-1 btn btn-primary btn-lg" type="button" (click)="loginWithOptions()">
+                <i class="fa fa-facebook mr-1"></i>
+                Login with Facebook
+            </button>
+        </div>
+        <div class="col-md-2">
 
+            <select class="form-control" [(ngModel)]="period" (change)="onSelect($event.target.value)">
+                <option value='0'>Select Date Range</option>
+                <option value='day'>Yesterday</option>
+                <option value='week'>Week</option>
+                <option value='days_28' selected>28 Days</option>
+            </select>
+        </div>
+    </div>
+</div>
 <div class="row  justify-content-center">
+
     <div class="col-md-4  justify-content-center">
-        <div class="card card-default shadow bg-white rounded height100pxfit-content cursor-set">
+    </div>
+</div>
+<div class="row overviewmaindiv">
+    <div class="col-lg-12">
+        <div class="card card-default shadow bg-white rounded height200pxfit-content cursor-set">
             <div class="card-header">
                 <div class="row borderBtm padding5">
-                    <h2 class="col-xs-12 col-12 col-md-10 fontsize15px colour-set move-center">Facebook EI Reports</h2>
-                    <div class="col-xs-12 col-12 col-md-1 fontsize15px">
+                    <h2 class="col-xs-12 col-12 col-md-10 fontsize15px colour-set">Facebook: Profile info</h2>
 
-                    </div>
                 </div>
 
             </div>
             <div class="widget-content">
-                <div class="overviewdivborder move-center">
-                    <div class="col-lg-12">
-                        <div class="col-lg-6">
-                            <button class="mr-1 btn btn-primary btn-lg" type="button" (click)="loginWithOptions()">
-                                <i class="fa fa-facebook mr-1"></i>
-                                Login with Facebook
-                            </button>
-                        </div>
-                        <div class="col-lg-6">
-
-                            <select class="form-control" [(ngModel)]="period" (change)="onSelect($event.target.value)">
-                                <option value='0'>Select Date Range</option>
-                                <option value='day'>Yesterday</option>
-                                <option value='week'>Week</option>
-                                <option value='days_28'>28 Days</option>
-                            </select>
-                        </div>
-                    </div>
-
-
+                <div class="overviewdivborder">
+                    <table class="table table-bordered font-weight-bold colour-light">
+                        <thead>
+                            <tr>
+                                <td>
+                                    User ID
+                                </td>
+                                <td>
+                                    Name
+                                </td>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr>
+                                <td class="text-blue">
+                                    {{userId}}
+                                </td>
+                                <td class="text-blue">
+                                    {{userName}}
+                                </td>
+                            </tr>
+                    </table>
                 </div>
             </div>
         </div>
     </div>
-</div>
-<div class="row overviewmaindiv">
+
     <div class="col-lg-12">
 
         <div class="card card-default shadow bg-white rounded height200pxfit-content cursor-set">
             <div class="card-header">
                 <div class="row borderBtm padding5">
                     <h2 class="col-xs-12 col-12 col-md-10 fontsize15px colour-set">Facebook: Performance Summary</h2>
-                    <div class="col-xs-12 col-12 col-md-1 fontsize15px">
-                        <i class="fa fa-info-circle paddingtop10px"
-                            matTooltip="Geographical data to show where most of the traffic comes from"></i>
-                    </div>
+
                 </div>
 
             </div>
@@ -91,7 +113,7 @@
                                 <tbody>
                                     <tr *ngFor="let h of externalReferrerList; let i = index;">
                                         <td class="text-blue">
-                                           {{h.url}}
+                                            {{h.url}}
                                         </td>
                                         <td class="text-blue">
                                             {{h.count}}
@@ -148,10 +170,7 @@
             <div class="card-header">
                 <div class="row borderBtm padding5">
                     <h2 class="col-xs-12 col-12 col-md-10 fontsize15px colour-set">Facebook: Audience Summary</h2>
-                    <div class="col-xs-12 col-12 col-md-1 fontsize15px">
-                        <i class="fa fa-info-circle paddingtop10px"
-                            matTooltip="Social media data to show where most of the traffic comes from"></i>
-                    </div>
+
                 </div>
 
             </div>
@@ -212,13 +231,9 @@
             <div class="card card-default shadow bg-white rounded height200pxfit-content cursor-set">
                 <div class="card-header">
                     <div class="row borderBtm padding5">
-                        <h2 class="col-xs-12 col-12 col-md-10 fontsize15px colour-set">Facebook: Page Views Via External
-                            Referrers
+                        <h2 class="col-xs-12 col-12 col-md-10 fontsize15px colour-set">Facebook: Page Views Via External Referrers
                         </h2>
-                        <div class="col-xs-12 col-12 col-md-1 fontsize15px">
-                            <i class="fa fa-info-circle paddingtop10px"
-                                matTooltip="Geographical data to show where most of the traffic comes from"></i>
-                        </div>
+
                     </div>
 
                 </div>
@@ -243,7 +258,7 @@
                                     <tbody>
                                         <tr *ngFor="let h of externalReferrerList; let i = index;">
                                             <td class="text-blue">
-                                               {{h.url}}
+                                                {{h.url}}
                                             </td>
                                             <td class="text-blue">
                                                 {{h.count}}
@@ -267,10 +282,7 @@
                     <div class="row borderBtm padding5">
                         <h2 class="col-xs-12 col-12 col-md-10 fontsize15px colour-set">Facebook: Page Unlikes by Source
                         </h2>
-                        <div class="col-xs-12 col-12 col-md-1 fontsize15px">
-                            <i class="fa fa-info-circle paddingtop10px"
-                                matTooltip="Geographical data to show where most of the traffic comes from"></i>
-                        </div>
+
                     </div>
 
                 </div>
@@ -314,17 +326,14 @@
             </div>
         </div>
     </div>
-  
- 
+
+
     <div class="col-lg-12">
         <div class="card card-default shadow bg-white rounded height200pxfit-content cursor-set">
             <div class="card-header">
                 <div class="row borderBtm padding5">
                     <h2 class="col-xs-12 col-12 col-md-10 fontsize15px colour-set">Facebook: Impression Summary</h2>
-                    <div class="col-xs-12 col-12 col-md-1 fontsize15px">
-                        <i class="fa fa-info-circle paddingtop10px"
-                            matTooltip="Social media data to show where most of the traffic comes from"></i>
-                    </div>
+
                 </div>
 
             </div>
@@ -414,5 +423,5 @@
 
             </div>
         </div>
-    </div> 
+    </div>
 </div>

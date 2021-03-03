@@ -964,7 +964,16 @@ h4.text-link {
     color: black;
     font-weight: 500;
 }
+
 .move-center {
     text-align: center;
     margin-left: auto;
+}
+
+.setcampaign {
+    font-size: large;
+    margin-left: 3rem;
+    padding-top: 0.5rem;
+    //align-self: center;
+    //align-content: center;
 }
