@@ -292,14 +292,18 @@ export class HomeComponent implements OnInit {
         this.total = this.campaignList.length;
 
         this.selectedCampIdWebUrl = this.campaignList[i].webUrl;
-        if (this.IsError == false) {
-          this.getData(i);
-          this.getAnalyticsProfileIds(i);
-          this.campaignList[i].ranking = g + "%";
-          this.addDataToPieChart(g, 1);
-        }
-        if (this.facebookAccessToken != null && this.facebookAccessToken != undefined && this.facebookAccessToken != '') {
-          this.getFacebookUserId(i);
+        debugger
+        if (this.selectedCampIdWebUrl == '' || this.selectedCampIdWebUrl == null || this.selectedCampIdWebUrl == undefined) {
+          if (this.facebookAccessToken != null && this.facebookAccessToken != undefined && this.facebookAccessToken != '') {
+            this.getFacebookUserId(i);
+          }
+        } else {
+          if (this.IsError == false) {
+            this.getData(i);
+            this.getAnalyticsProfileIds(i);
+            this.campaignList[i].ranking = g + "%";
+            this.addDataToPieChart(g, 1);
+          }
         }
       }
     }
@@ -384,7 +388,11 @@ export class HomeComponent implements OnInit {
   // using to view analytics report of selected campaign Id
   userRowSelect(campaign: any): void {
     localStorage.setItem('selectedCampId', campaign.data.id);
-    this.router.navigate([`../campaign/:id${campaign.data.id}/seo`]);
+    if (campaign.data.webUrl == '' || campaign.data.webUrl == null || campaign.data.webUrl == undefined) {
+      this.router.navigate([`/socialmedia`])
+    } else {
+      this.router.navigate([`../campaign/:id${campaign.data.id}/seo`]);
+    }
     // this.router.navigate(['/campaign', { id: campaign.data.id }], {
     //   queryParams: {
     //     view: 'showReport'

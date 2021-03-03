@@ -17,6 +17,7 @@ import { LocalDataSource } from 'ng2-smart-table';
 })
 export class SocialmediaComponent implements OnInit {
   selectedCampaignName: string;
+  str=[];
   pageid;
   pagename;
   accessToken;
@@ -49,7 +50,7 @@ export class SocialmediaComponent implements OnInit {
   topCountry;
   topReferrer;
   pageUnlikeList;
-  externalReferrerList;
+  externalReferrerList =[];
   avgProfileView;
   avgNewLikes;
   avgPageClicks;
@@ -221,8 +222,8 @@ export class SocialmediaComponent implements OnInit {
     const url = "https://graph.facebook.com/" + this.pageid + "/insights/page_impressions_unique,page_total_actions,page_positive_feedback_by_type,page_negative_feedback,page_views_total,page_impressions,page_views_external_referrals,page_fans_by_unlike_source_unique,page_impressions_organic,page_impressions_paid,page_fan_removes_unique?access_token=" + this.pageToken;
     this.http.get(url).subscribe(res => {
       if (res) {
-        debugger
         for (let i = 0; i < res['data'].length; i++) {
+          
           let p = res['data'][i];
           //Page Reach
           if (p.name == 'page_impressions_unique' && p.period == period) {
@@ -297,17 +298,32 @@ export class SocialmediaComponent implements OnInit {
           }
 
           //Page External Referrer
-          if (p.name == 'page_views_external_referrals' && p.period == period) {
+          
+          if (p.name == 'page_views_external_referrals') {
             let l = p['values'];
-            this.externalReferrerList = l;
+            let str= l[1].value;
+
+            this.externalReferrerList=[];
+            if(str!=undefined){
+            for(let i=0;i<Object.keys(str).length;i++){
+            this.externalReferrerList.push({ 'url':  Object.keys(str)[i] , 'count': Object.values(str)[i] , "percent": "0" });
+            }
+          }
             // for (let k = 0; k < l.length; k++) {
             //   this.profileViewTotal = parseInt(this.profileViewTotal) + parseInt(l[k].value)
             // }
           }
           //Page Unlike 
-          if (p.name == 'page_fans_by_unlike_source_unique' && p.period == period) {
+          if (p.name == 'page_fans_by_unlike_source_unique') {
             let l = p['values'];
-            this.pageUnlikeList = l;
+            debugger
+            let str= l[1].value;
+            this.pageUnlikeList=[];
+            if(str!=undefined){
+              for(let i=0;i<Object.keys(str).length;i++){
+                this.pageUnlikeList.push({ 'url':  Object.keys(str)[i] , 'count': Object.values(str)[i] , "percent": "0" });
+                }
+            }
             // for (let k = 0; k < l.length; k++) {
             //   this.pageImpressionsTotal = parseInt(this.pageImpressionsTotal) + parseInt(l[k].value)
             // }

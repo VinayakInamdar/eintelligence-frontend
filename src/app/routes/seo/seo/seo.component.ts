@@ -43,22 +43,22 @@ export class SeoComponent implements OnInit {
   //for light house
   //for mobile
   interactive
-  first_cpu_idle
+  //first_cpu_idle
   first_contentful_paint
   speed_index
-  first_meaningful_paint
-  Eestimated_input_latency
+  //first_meaningful_paint
+  //Eestimated_input_latency
   largest_contentful_paint
   total_blocking_time
   cumulative_layout_shift
   
   //for deskto[]
   interactive_Desktop
-  first_cpu_idle_Desktop
+  //first_cpu_idle_Desktop
   first_contentful_paint_Desktop
   speed_index_Desktop
-  first_meaningful_paint_Desktop
-  Eestimated_input_latency_Desktop
+  //first_meaningful_paint_Desktop
+  //Eestimated_input_latency_Desktop
   largest_contentful_paint_Desktop
   total_blocking_time_Desktop
   cumulative_layout_shift_Desktop
@@ -81,10 +81,11 @@ export class SeoComponent implements OnInit {
   showGreenZoneCLS: boolean;
   showOrangezoneCLS: boolean;
   showRedZoneCLS: boolean;
+  //variables for desktop
   showGreenZoneFCP_Desktop: boolean;
   showOrangezoneFCP_Desktop: boolean;
   showRedZoneFCP_Desktop: boolean;
-  showGreenZoneS_DesktopI: boolean;
+  showGreenZoneSI_Desktop: boolean;
   showOrangezoneSI_Desktop: boolean;
   showRedZoneSI_Desktop: boolean
   showGreenZoneLCP_Desktop: boolean;
@@ -1194,7 +1195,7 @@ export class SeoComponent implements OnInit {
       }
     }, error => {
 
-      alert('Analytics Data Fetch failed : ' + JSON.stringify(error.error));
+      //alert('Analytics Data Fetch failed : ' + JSON.stringify(error.error));
     });
   }
   getAnalyticsOrganicTraffic(profileid, startdate, endDate) {
@@ -1226,7 +1227,7 @@ export class SeoComponent implements OnInit {
       }
     }, error => {
 
-      alert('Analytics Data Fetch failed : ' + JSON.stringify(error.error));
+      //alert('Analytics Data Fetch failed : ' + JSON.stringify(error.error));
     });
   }
   getAnalyticsTrafficByChannel(profileid, startdate, endDate) {
@@ -1284,7 +1285,7 @@ export class SeoComponent implements OnInit {
         this.doughnutData1.datasets[0].data.push(tablet);//teblet
       }
     }, error => {
-      alert('Analytics Data Fetch failed : ' + JSON.stringify(error.error));
+      //alert('Analytics Data Fetch failed : ' + JSON.stringify(error.error));
     });
   }
   getAnalyticsTrafficByDevice(profileid, startdate, endDate) {
@@ -1326,7 +1327,7 @@ export class SeoComponent implements OnInit {
         this.doughnutData.datasets[0].data.push(social);//social
       }
     }, error => {
-      alert('Analytics Data Fetch failed : ' + JSON.stringify(error.error));
+      //alert('Analytics Data Fetch failed : ' + JSON.stringify(error.error));
     });
   }
   //using to get seleted campaign website audit report data
@@ -2179,90 +2180,90 @@ export class SeoComponent implements OnInit {
         if (fcp < 930) {
 
           //Icon
-          this.showGreenZoneFCP = true;
-          this.showOrangezoneFCP = false;
-          this.showRedZoneFCP = false;
+          this.showGreenZoneFCP_Desktop = true;
+          this.showOrangezoneFCP_Desktop = false;
+          this.showRedZoneFCP_Desktop = false;
 
         } else if ((fcp < 1590) && (fcp > 930)) {
-          this.showOrangezoneFCP = true;
-          this.showGreenZoneFCP = false;
-          this.showRedZoneFCP = false;
+          this.showOrangezoneFCP_Desktop = true;
+          this.showGreenZoneFCP_Desktop = false;
+          this.showRedZoneFCP_Desktop = false;
 
         } else {
-          this.showRedZoneFCP = true;
-          this.showOrangezoneFCP = false;
-          this.showGreenZoneFCP = false;
+          this.showRedZoneFCP_Desktop = true;
+          this.showOrangezoneFCP_Desktop = false;
+          this.showGreenZoneFCP_Desktop = false;
         }
 
         if ((si <= 1290)) {
 
-          this.showGreenZoneSI = true;
-          this.showOrangezoneSI = false;
-          this.showRedZoneSI = false;
+          this.showGreenZoneSI_Desktop = true;
+          this.showOrangezoneSI_Desktop = false;
+          this.showRedZoneSI_Desktop = false;
         } else if ((si > 1290) && (si < 2300)) {
-          this.showOrangezoneSI = true;
-          this.showGreenZoneSI = false;
-          this.showRedZoneSI = false;
+          this.showOrangezoneSI_Desktop = true;
+          this.showGreenZoneSI_Desktop = false;
+          this.showRedZoneSI_Desktop = false;
         } else {
-          this.showRedZoneSI = true;
-          this.showOrangezoneSI = false;
-          this.showGreenZoneSI = false;
+          this.showRedZoneSI_Desktop = true;
+          this.showOrangezoneSI_Desktop = false;
+          this.showGreenZoneSI_Desktop = false;
         }
         if ((lcp <= 1200)) {
 
-          this.showGreenZoneLCP = true;
-          this.showOrangezoneLCP = false;
-          this.showRedZoneLCP = false;
+          this.showGreenZoneLCP_Desktop = true;
+          this.showOrangezoneLCP_Desktop = false;
+          this.showRedZoneLCP_Desktop = false;
         } else if ((lcp > 1200) && (lcp < 2390)) {
-          this.showOrangezoneLCP = true;
-          this.showGreenZoneLCP = false;
-          this.showRedZoneLCP = false;
+          this.showOrangezoneLCP_Desktop = true;
+          this.showGreenZoneLCP_Desktop = false;
+          this.showRedZoneLCP_Desktop = false;
         } else {
-          this.showRedZoneLCP = true;
-          this.showOrangezoneLCP = false;
-          this.showGreenZoneLCP = false;
+          this.showRedZoneLCP_Desktop = true;
+          this.showOrangezoneLCP_Desktop = false;
+          this.showGreenZoneLCP_Desktop = false;
         }
         if ((tot <= 2470)) {
 
-          this.showGreenZoneTOT = true;
-          this.showOrangezoneTOT = false;
-          this.showRedZoneTOT = false;
+          this.showGreenZoneTOT_Desktop = true;
+          this.showOrangezoneTOT_Desktop = false;
+          this.showRedZoneTOT_Desktop = false;
         } else if ((tot > 2470) && (tot < 4510)) {
-          this.showOrangezoneTOT = true;
-          this.showGreenZoneTOT = false;
-          this.showRedZoneTOT = false;
+          this.showOrangezoneTOT_Desktop = true;
+          this.showGreenZoneTOT_Desktop = false;
+          this.showRedZoneTOT_Desktop = false;
         } else {
-          this.showRedZoneTOT = true;
-          this.showOrangezoneTOT = false;
-          this.showGreenZoneTOT = false;
+          this.showRedZoneTOT_Desktop = true;
+          this.showOrangezoneTOT_Desktop = false;
+          this.showGreenZoneTOT_Desktop = false;
         }
         if ((tbt <= 150)) {
 
-          this.showGreenZoneTBT = true;
-          this.showOrangezoneTBT = false;
-          this.showRedZoneTBT = false;
+          this.showGreenZoneTBT_Desktop = true;
+          this.showOrangezoneTBT_Desktop = false;
+          this.showRedZoneTBT_Desktop = false;
         } else if ((tbt > 150) && (tbt < 350)) {
-          this.showOrangezoneTBT = true;
-          this.showGreenZoneTBT = false;
-          this.showRedZoneTBT = false;
+          this.showOrangezoneTBT_Desktop = true;
+          this.showGreenZoneTBT_Desktop = false;
+          this.showRedZoneTBT_Desktop = false;
         } else {
-          this.showRedZoneTBT = true;
-          this.showOrangezoneTBT = false;
-          this.showGreenZoneTBT = false;
+          this.showRedZoneTBT_Desktop = true;
+          this.showOrangezoneTBT_Desktop = false;
+          this.showGreenZoneTBT_Desktop = false;
         }
-        if ((this.cumulative_layout_shift <= 0.10)) {
+        if ((this.cumulative_layout_shift_Desktop <= 0.10)) {
 
-          this.showGreenZoneCLS = true;
-          this.showOrangezoneCLS = false;
-          this.showRedZoneCLS = false;
-        } else if ((this.cumulative_layout_shift > 0.10) && (this.cumulative_layout_shift < 0.25)) {
-          this.showOrangezoneCLS = true;
-          this.showGreenZoneCLS = false;
-          this.showRedZoneCLS = false;
+          this.showGreenZoneCLS_Desktop = true;
+          this.showOrangezoneCLS_Desktop = false;
+          this.showRedZoneCLS_Desktop = false;
+        } else if ((this.cumulative_layout_shift_Desktop > 0.10) && (this.cumulative_layout_shift_Desktop < 0.25)) {
+          this.showOrangezoneCLS_Desktop = true;
+          this.showGreenZoneCLS_Desktop = false;
+          this.showRedZoneCLS_Desktop = false;
         } else {
-          this.showRedZoneCLS = true;
-          this.showOrangezoneCLS = false;
-          this.showGreenZoneCLS = false;
+          this.showRedZoneCLS_Desktop = true;
+          this.showOrangezoneCLS_Desktop = false;
+          this.showGreenZoneCLS_Desktop = false;
         }
         this.showSpinnerSiteAnalysisContent = false;
       }
@@ -2390,7 +2391,7 @@ export class SeoComponent implements OnInit {
       }
     }, error => {
 
-      alert('Data fetch failed for current year : ' + JSON.stringify(error.error));
+      //alert('Data fetch failed for current year : ' + JSON.stringify(error.error));
     });
 
   }
@@ -2450,7 +2451,7 @@ export class SeoComponent implements OnInit {
       }
     }, error => {
 
-      alert('Data fetch failed for previous year : ' + JSON.stringify(error.error));
+      //alert('Data fetch failed for previous year : ' + JSON.stringify(error.error));
     });
 
   }
@@ -2482,9 +2483,9 @@ export class SeoComponent implements OnInit {
   getData() {
 
     if (this.accessToken == '' || this.accessToken == undefined || this.accessToken == null) {
-      alert("Please, Login with Google to fetch data");
+      //alert("Please, Login with Google to fetch data");
     } else if (parseDate(this.endDate) < parseDate(this.startDate)) {
-      alert("Start Date can not be grater then End Date");
+      //alert("Start Date can not be grater then End Date");
     }
     else {
 

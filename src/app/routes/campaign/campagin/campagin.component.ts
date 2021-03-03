@@ -20,7 +20,7 @@ import { parseDate } from 'ngx-bootstrap/chronos';
 import { DatePipe } from '@angular/common';
 import { HttpClient, HttpHeaders } from '@angular/common/http';
 import { environment } from 'src/environments/environment';
-import { GoogleLoginProvider,SocialAuthService } from 'angularx-social-login';
+import { GoogleLoginProvider, SocialAuthService } from 'angularx-social-login';
 const success = require('sweetalert');
 
 @Component({
@@ -183,7 +183,7 @@ export class CampaginComponent implements OnInit, AfterViewInit {
   hasAuthorize: boolean;
   reportsData: any;
   settings = {
-    defaultStyle:false,
+    defaultStyle: false,
     attr: {
       class: 'table table-responsive',
 
@@ -474,7 +474,7 @@ export class CampaginComponent implements OnInit, AfterViewInit {
 
 
   constructor(private translate: TranslateService, fb: FormBuilder,
-    private campaignService: CampaignService,private authService: SocialAuthService,
+    private campaignService: CampaignService, private authService: SocialAuthService,
     public route: ActivatedRoute, public http: HttpClient, public datepipe: DatePipe, public router: Router, private openIdConnectService: OpenIdConnectService, private integrationsService: IntegrationsService
     , private overvieswService: OverviewService, location: PlatformLocation,
     public auditsService: AuditsService) {
@@ -488,12 +488,12 @@ export class CampaginComponent implements OnInit, AfterViewInit {
     if (this.route.snapshot.queryParams.view !== undefined) {
       this.checkqueryparams();
     }
-   
+
     this.getCampaignList();
     this.getSerpList();
     this.getRankingGraphData();
     location.onPopState(() => {
-   
+
 
     });
 
@@ -1088,15 +1088,15 @@ export class CampaginComponent implements OnInit, AfterViewInit {
           title: this.translate.instant('message.CANCLEMSG'),
           buttons: {
             confirm: {
-                text: this.translate.instant('sweetalert.OKBUTTON'),
-                value: true,
-                visible: true,
-                className: "bg-primary",
-                closeModal: true,
+              text: this.translate.instant('sweetalert.OKBUTTON'),
+              value: true,
+              visible: true,
+              className: "bg-primary",
+              closeModal: true,
             }
-        }
+          }
         }).then((isConfirm) => {
-           this.router.navigate(['/home']);
+          this.router.navigate(['/home']);
         })
       }
     });
@@ -1170,15 +1170,18 @@ export class CampaginComponent implements OnInit, AfterViewInit {
 
     this.selectedCampaignName = campaign.data.name
     this.selectedCampId = campaign.data.id
-    //this.router.navigate(['/campaign', { id: campaign.data.id }]);
+    //this.router.navigate(['/campaign', { id: campaign.data.id }])
     localStorage.setItem('selectedCampId', campaign.data.id);
-    this.router.navigate([`../campaign/:id${campaign.data.id}/seo`]);
-    this.settingActive = 3
-    this.selectedCampIdWebUrl = campaign.data.webUrl
-    this.getSelectedCampaignWebsiteAuditReportData()
-    this.getGaSetupByCampaignId();
-    this.getAnalyticsData();
-
+    if (campaign.data.webUrl == '' || campaign.data.webUrl == null || campaign.data.webUrl == undefined) {
+      this.router.navigate([`/socialmedia`])
+    } else {
+      this.router.navigate([`../campaign/:id${campaign.data.id}/seo`]);
+      this.settingActive = 3
+      this.selectedCampIdWebUrl = campaign.data.webUrl
+      this.getSelectedCampaignWebsiteAuditReportData()
+      this.getGaSetupByCampaignId();
+      this.getAnalyticsData();
+    }
   }
 
   // using to change properties with changing 1st dropdown value
@@ -1240,7 +1243,7 @@ export class CampaginComponent implements OnInit, AfterViewInit {
   public AddCampaign(): any {
     this.router.navigate(['/home/campaign']);
   }
-  
+
   //using to open div on mouseover event
   public showDiv(event, value, show) {
     this.showdiv = value == 'true' ? true : false;
@@ -1501,12 +1504,15 @@ export class CampaginComponent implements OnInit, AfterViewInit {
 
         if (g == 'NaN') { g = "0"; }
         this.total = this.campaignList.length;
+        debugger
         this.selectedCampIdWebUrl = this.campaignList[i].webUrl;
-        this.getData(i);
-        this.getAnalyticsProfileIds(i);
-        this.campaignList[i].ranking = g + "%";
-        if (this.facebookAccessToken != null && this.facebookAccessToken != undefined && this.facebookAccessToken != '') {
-          this.getFacebookUserId(i);
+        if (this.selectedCampIdWebUrl == '' || this.selectedCampIdWebUrl == null || this.selectedCampIdWebUrl == undefined) {
+          if (this.facebookAccessToken != null && this.facebookAccessToken != undefined && this.facebookAccessToken != '') {
+            this.getFacebookUserId(i);
+          }
+        } else {
+          this.getData(i);
+          this.getAnalyticsProfileIds(i);
         }
       }
     }
@@ -1552,7 +1558,7 @@ export class CampaginComponent implements OnInit, AfterViewInit {
 
       }
     }, error => {
-       alert('Data fetch failed by device : ' + JSON.stringify(error.error));
+      alert('Data fetch failed by device : ' + JSON.stringify(error.error));
     });
   }
   getDataCurrentYear(startDate, endDate, all, url) {
@@ -1562,7 +1568,7 @@ export class CampaginComponent implements OnInit, AfterViewInit {
         'Authorization': 'Bearer ' + this.accessToken,
       })
     };
-    
+
 
     //let urlcamp = this.selectedCampIdWebUrl.replace('/', '%2F');
     //const url = "https://www.googleapis.com/webmasters/v3/sites/https%3A%2F%2Feintelligence.azurewebsites.net%2F/searchAnalytics/query";
@@ -1682,7 +1688,7 @@ export class CampaginComponent implements OnInit, AfterViewInit {
     this.getData(0);
   }
   getData(i) {
-    
+
     this.accessToken = localStorage.getItem('googleGscAccessToken');
     this.getDateSettings();
     if (this.accessToken == '' || this.accessToken == undefined || this.accessToken == null) {
@@ -1728,7 +1734,7 @@ export class CampaginComponent implements OnInit, AfterViewInit {
     const url = "https://graph.facebook.com/" + environment.facebook_pageid + "/insights/page_impressions_unique,page_total_actions,page_positive_feedback_by_type,page_negative_feedback,page_views_total,page_impressions,page_views_external_referrals,page_fans_by_unlike_source_unique,page_impressions_organic,page_impressions_paid,page_fan_removes_unique?access_token=" + this.facebookPageToken;
     this.http.get(url).subscribe(res => {
       if (res) {
-        
+
         for (let i = 0; i < res['data'].length; i++) {
           let p = res['data'][i];
           //Page Reach
@@ -1774,7 +1780,7 @@ export class CampaginComponent implements OnInit, AfterViewInit {
       }
     }
       , error => {
-         alert('Fetch Facebook Data Failed : ' + JSON.stringify(error.error));
+        alert('Fetch Facebook Data Failed : ' + JSON.stringify(error.error));
       });
   }
   getFacebookUserId(i) {
@@ -1787,7 +1793,7 @@ export class CampaginComponent implements OnInit, AfterViewInit {
         this.generatePageToken(i);
       }
     }, error => {
-       alert('Fetch Facebook USerId Failed : ' + JSON.stringify(error.error));
+      alert('Fetch Facebook USerId Failed : ' + JSON.stringify(error.error));
     });
   }
   generatePageToken(i) {
@@ -1849,7 +1855,7 @@ export class CampaginComponent implements OnInit, AfterViewInit {
         this.generatePageToken2();
       }
     }, error => {
-       alert('Fetch New Likes Count Failed : ' + JSON.stringify(error.error));
+      alert('Fetch New Likes Count Failed : ' + JSON.stringify(error.error));
     });
   }
   generatePageToken2() {
@@ -1860,7 +1866,7 @@ export class CampaginComponent implements OnInit, AfterViewInit {
         this.facebookPageToken = res['data'][0].access_token;
       }
     }, error => {
-        alert('Fetch Page Token Failed : ' + JSON.stringify(error.error));
+      alert('Fetch Page Token Failed : ' + JSON.stringify(error.error));
     });
   }
 
@@ -1926,7 +1932,7 @@ export class CampaginComponent implements OnInit, AfterViewInit {
 
         this.thisMonthTraffic = rows[0]["0"];
         //this.lastMonthConversions = rows[0]["1"];
- 
+
       }
     }, error => {
 
@@ -1946,7 +1952,7 @@ export class CampaginComponent implements OnInit, AfterViewInit {
     const url = "https://www.googleapis.com/analytics/v3/data/ga?ids=ga:" + profileid + "&start-date=" + this.previousStartDate + "&end-date=" + this.previousEndDate + "&metrics=ga%3AorganicSearches%2Cga%3AgoalConversionRateAll";
     this.http.get(url, this.httpOptionJSON).subscribe(res => {
       if (res) {
-       
+
         let rows = res['rows'];
         //Traffic Calculation
         this.lastMonthTraffic = rows[0]["0"];
