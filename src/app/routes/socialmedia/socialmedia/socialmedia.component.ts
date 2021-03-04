@@ -135,16 +135,14 @@ export class SocialmediaComponent implements OnInit {
     console.error('Error processing action', error);
   }
   ngOnInit(): void {
-    this.pageUnlikeList = [{ "source": "1", "count": "2", "percent": "3" }, { "source": "4", "count": "5", "percent": "6" }];
-    this.externalReferrerList = [{ "url": "1", "count": "2", "percent": "3" }, { "url": "4", "count": "5", "percent": "6" }];
+    this.pageUnlikeList =[];// [{ "source": "1", "count": "2", "percent": "3" }, { "source": "4", "count": "5", "percent": "6" }];
+    this.externalReferrerList =[]// [{ "url": "1", "count": "2", "percent": "3" }, { "url": "4", "count": "5", "percent": "6" }];
   }
   getUserId() {
 
     const url = "https://graph.facebook.com/me?access_token=" + this.accessToken;
     this.http.get(url).subscribe(res => {
       if (res) {
-
-
         this.userId = res['id'];
         this.userName = res['name'];
         //this.getUserPermission();

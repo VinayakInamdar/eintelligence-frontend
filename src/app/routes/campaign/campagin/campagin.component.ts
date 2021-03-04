@@ -1002,7 +1002,7 @@ export class CampaginComponent implements OnInit, AfterViewInit {
 
   // using to  create new campaign in db
   submitForm(value: any) {
-
+debugger
     var result: Campaign = Object.assign({}, value);
     //  result.profilePicture = this.fileToUpload.name
 
@@ -1023,8 +1023,11 @@ export class CampaginComponent implements OnInit, AfterViewInit {
   // using to select nect tab
   goToNextTab(event, inputvalue, fieldName, tabid) {
     event.preventDefault()
+    debugger
     var value = this.validateForm(fieldName)
-
+    if(fieldName == 'webUrl'){
+      value = 'VALID';
+    }
     if (value == 'VALID') {
       this.staticTabs.tabs[tabid].disabled = false;
       this.staticTabs.tabs[tabid].active = true;
@@ -1033,6 +1036,7 @@ export class CampaginComponent implements OnInit, AfterViewInit {
   //using to go to next tab while edit
   goToNextTabForEdit(event, inputvalue, fieldName, tabid) {
     event.preventDefault()
+    debugger
     var value = this.validateForm(fieldName);
     this.staticTabs.tabs[tabid].disabled = false;
     this.staticTabs.tabs[tabid].active = true;
@@ -1104,6 +1108,7 @@ export class CampaginComponent implements OnInit, AfterViewInit {
 
   // using to validate from 
   validateForm(fieldName) {
+    debugger
     if (this.valForm.invalid) {
       this.valForm.get(fieldName).markAsTouched();
       var value1 = this.valForm.controls[fieldName].status
@@ -1558,7 +1563,7 @@ export class CampaginComponent implements OnInit, AfterViewInit {
 
       }
     }, error => {
-      alert('Data fetch failed by device : ' + JSON.stringify(error.error));
+      //alert('Data fetch failed by device : ' + JSON.stringify(error.error));
     });
   }
   getDataCurrentYear(startDate, endDate, all, url) {
@@ -1613,7 +1618,7 @@ export class CampaginComponent implements OnInit, AfterViewInit {
         }
       }
     }, error => {
-      alert('Data fetch failed for current year for URL : ' + this.selectedCampIdWebUrl + " --Error : - " + JSON.stringify(error.error));
+      //alert('Data fetch failed for current year for URL : ' + this.selectedCampIdWebUrl + " --Error : - " + JSON.stringify(error.error));
     });
 
   }
@@ -1666,7 +1671,7 @@ export class CampaginComponent implements OnInit, AfterViewInit {
       }
     }, error => {
       this.campaignList[i].gsc = "0%";
-      alert('Data fetch failed for previous year for URL : ' + this.selectedCampIdWebUrl + " --Error : - " + JSON.stringify(error.error));
+      //alert('Data fetch failed for previous year for URL : ' + this.selectedCampIdWebUrl + " --Error : - " + JSON.stringify(error.error));
     });
   }
 
@@ -1751,7 +1756,7 @@ export class CampaginComponent implements OnInit, AfterViewInit {
       }
     }
       , error => {
-        alert('Fetch Facebook Data Failed : ' + JSON.stringify(error.error));
+        //alert('Fetch Facebook Data Failed : ' + JSON.stringify(error.error));
       });
   }
   facebookDataLastMonth(index) {
@@ -1780,7 +1785,7 @@ export class CampaginComponent implements OnInit, AfterViewInit {
       }
     }
       , error => {
-        alert('Fetch Facebook Data Failed : ' + JSON.stringify(error.error));
+        //alert('Fetch Facebook Data Failed : ' + JSON.stringify(error.error));
       });
   }
   getFacebookUserId(i) {
@@ -1793,7 +1798,7 @@ export class CampaginComponent implements OnInit, AfterViewInit {
         this.generatePageToken(i);
       }
     }, error => {
-      alert('Fetch Facebook USerId Failed : ' + JSON.stringify(error.error));
+      //alert('Fetch Facebook USerId Failed : ' + JSON.stringify(error.error));
     });
   }
   generatePageToken(i) {
@@ -1808,7 +1813,7 @@ export class CampaginComponent implements OnInit, AfterViewInit {
         this.facebookDataLastMonth(i);
       }
     }, error => {
-      alert('Fetch Page Token Failed : ' + JSON.stringify(error.error));
+      //alert('Fetch Page Token Failed : ' + JSON.stringify(error.error));
     });
   }
   // signInWithGoogle(): void {
@@ -1855,7 +1860,7 @@ export class CampaginComponent implements OnInit, AfterViewInit {
         this.generatePageToken2();
       }
     }, error => {
-      alert('Fetch New Likes Count Failed : ' + JSON.stringify(error.error));
+      //alert('Fetch New Likes Count Failed : ' + JSON.stringify(error.error));
     });
   }
   generatePageToken2() {
@@ -1866,7 +1871,7 @@ export class CampaginComponent implements OnInit, AfterViewInit {
         this.facebookPageToken = res['data'][0].access_token;
       }
     }, error => {
-      alert('Fetch Page Token Failed : ' + JSON.stringify(error.error));
+      //alert('Fetch Page Token Failed : ' + JSON.stringify(error.error));
     });
   }
 
@@ -1910,7 +1915,7 @@ export class CampaginComponent implements OnInit, AfterViewInit {
       }
     }, error => {
 
-      alert('Analytics Data Fetch failed : ' + JSON.stringify(error.error));
+      //alert('Analytics Data Fetch failed : ' + JSON.stringify(error.error));
     });
 
   }
@@ -1936,7 +1941,7 @@ export class CampaginComponent implements OnInit, AfterViewInit {
       }
     }, error => {
 
-      alert('Analytics Data Fetch failed : ' + JSON.stringify(error.error));
+      //alert('Analytics Data Fetch failed : ' + JSON.stringify(error.error));
     });
   }
 
@@ -1980,7 +1985,7 @@ export class CampaginComponent implements OnInit, AfterViewInit {
       }
     }, error => {
 
-      alert('Analytics Data Fetch failed : ' + JSON.stringify(error.error));
+      //alert('Analytics Data Fetch failed : ' + JSON.stringify(error.error));
     });
   }
   signInWithGoogle(): void {

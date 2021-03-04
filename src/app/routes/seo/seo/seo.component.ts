@@ -1400,7 +1400,7 @@ export class SeoComponent implements OnInit {
 
   // using to  create new campaign in db
   submitForm(value: any) {
-
+debugger
     var result: Campaign = Object.assign({}, value);
     //  result.profilePicture = this.fileToUpload.name
 
