@@ -6,4 +6,5 @@ export class Campaign {
     sales:boolean;  
     leadGeneration:boolean;  
     companyID:string;
+    campaignType: string;
 }

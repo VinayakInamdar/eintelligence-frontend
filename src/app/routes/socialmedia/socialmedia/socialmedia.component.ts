@@ -17,7 +17,7 @@ import { LocalDataSource } from 'ng2-smart-table';
 })
 export class SocialmediaComponent implements OnInit {
   selectedCampaignName: string;
-  str=[];
+  str = [];
   pageid;
   pagename;
   accessToken;
@@ -50,11 +50,18 @@ export class SocialmediaComponent implements OnInit {
   topCountry;
   topReferrer;
   pageUnlikeList;
-  externalReferrerList =[];
+  externalReferrerList = [];
+  impressionByCountry = [];
+  totalimpressionByCountry;
+  totalimpressionByCountryPercent;
+  totalimpressionByCountryCount;
+  totalimpressionByCountryName;
   avgProfileView;
   avgNewLikes;
   avgPageClicks;
   avgLostLikes;
+  avgPageImpression;
+  avgPageReach;
   campaignList = [];
   selectedCampIdWebUrl: string;
   selectedCampId: string;
@@ -135,8 +142,8 @@ export class SocialmediaComponent implements OnInit {
     console.error('Error processing action', error);
   }
   ngOnInit(): void {
-    this.pageUnlikeList =[];// [{ "source": "1", "count": "2", "percent": "3" }, { "source": "4", "count": "5", "percent": "6" }];
-    this.externalReferrerList =[]// [{ "url": "1", "count": "2", "percent": "3" }, { "url": "4", "count": "5", "percent": "6" }];
+    this.pageUnlikeList = [];// [{ "source": "1", "count": "2", "percent": "3" }, { "source": "4", "count": "5", "percent": "6" }];
+    this.externalReferrerList = []// [{ "url": "1", "count": "2", "percent": "3" }, { "url": "4", "count": "5", "percent": "6" }];
   }
   getUserId() {
 
@@ -217,11 +224,15 @@ export class SocialmediaComponent implements OnInit {
   }
   getAllDataByPeriod(period) {
 
-    const url = "https://graph.facebook.com/" + this.pageid + "/insights/page_impressions_unique,page_total_actions,page_positive_feedback_by_type,page_negative_feedback,page_views_total,page_impressions,page_views_external_referrals,page_fans_by_unlike_source_unique,page_impressions_organic,page_impressions_paid,page_fan_removes_unique?access_token=" + this.pageToken;
+    const url = "https://graph.facebook.com/" + this.pageid + "/insights/page_impressions_unique,page_total_actions,page_positive_feedback_by_type,page_negative_feedback,page_views_total,page_impressions,page_views_external_referrals,page_fans_by_unlike_source_unique,page_impressions_organic,page_impressions_paid,page_fan_removes_unique,page_impressions_by_country_unique?access_token=" + this.pageToken;
     this.http.get(url).subscribe(res => {
+      let avgNum = 0;
+      if(period == 'days_28'){avgNum= 28;}
+      if(period == 'week'){avgNum= 7;}
+      if(period == 'day'){avgNum= 1;}
       if (res) {
         for (let i = 0; i < res['data'].length; i++) {
-          
+
           let p = res['data'][i];
           //Page Reach
           if (p.name == 'page_impressions_unique' && p.period == period) {
@@ -238,7 +249,9 @@ export class SocialmediaComponent implements OnInit {
             for (let k = 0; k < l.length; k++) {
               this.pageClicksTotal = parseInt(this.pageClicksTotal) + parseInt(l[k].value)
             }
-          }
+            this.avgPageClicks = this.getAverage(this.pageClicksTotal, avgNum);
+          } 
+          
           //positive feedback
           if (p.name == 'page_positive_feedback_by_type' && p.period == period) {
             let l = p['values'];
@@ -276,6 +289,7 @@ export class SocialmediaComponent implements OnInit {
             this.percentNegative = this.getPercentage(parseInt(this.negativeFeedback), parseInt(this.totalfeedback));
             if (this.percentNegative == 'NaN') { this.percentNegative = 0; }
 
+
           }
           //Profile view count
           if (p.name == 'page_views_total' && p.period == period) {
@@ -284,7 +298,7 @@ export class SocialmediaComponent implements OnInit {
             for (let k = 0; k < l.length; k++) {
               this.profileViewTotal = parseInt(this.profileViewTotal) + parseInt(l[k].value)
             }
-            this.avgProfileView = this.getAverage(this.profileViewTotal, 28);
+            this.avgProfileView = this.getAverage(this.profileViewTotal, avgNum);
           }
           //Page Impressions
           if (p.name == 'page_impressions' && p.period == period) {
@@ -293,20 +307,21 @@ export class SocialmediaComponent implements OnInit {
             for (let k = 0; k < l.length; k++) {
               this.pageImpressionsTotal = parseInt(this.pageImpressionsTotal) + parseInt(l[k].value)
             }
+            this.avgPageImpression = this.getAverage(this.pageImpressionsTotal, avgNum);
           }
 
           //Page External Referrer
-          
+
           if (p.name == 'page_views_external_referrals') {
             let l = p['values'];
-            let str= l[1].value;
+            let str = l[1].value;
 
-            this.externalReferrerList=[];
-            if(str!=undefined){
-            for(let i=0;i<Object.keys(str).length;i++){
-            this.externalReferrerList.push({ 'url':  Object.keys(str)[i] , 'count': Object.values(str)[i] , "percent": "0" });
+            this.externalReferrerList = [];
+            if (str != undefined) {
+              for (let i = 0; i < Object.keys(str).length; i++) {
+                this.externalReferrerList.push({ 'url': Object.keys(str)[i], 'count': Object.values(str)[i], "percent": "0" });
+              }
             }
-          }
             // for (let k = 0; k < l.length; k++) {
             //   this.profileViewTotal = parseInt(this.profileViewTotal) + parseInt(l[k].value)
             // }
@@ -315,12 +330,15 @@ export class SocialmediaComponent implements OnInit {
           if (p.name == 'page_fans_by_unlike_source_unique') {
             let l = p['values'];
             debugger
-            let str= l[1].value;
-            this.pageUnlikeList=[];
-            if(str!=undefined){
-              for(let i=0;i<Object.keys(str).length;i++){
-                this.pageUnlikeList.push({ 'url':  Object.keys(str)[i] , 'count': Object.values(str)[i] , "percent": "0" });
+            this.str = l[1].value;
+            if (this.str != undefined || this.str.length != undefined) {
+              let str = l[1].value;
+              this.pageUnlikeList = [];
+              if (str != undefined) {
+                for (let i = 0; i < Object.keys(str).length; i++) {
+                  this.pageUnlikeList.push({ 'url': Object.keys(str)[i], 'count': Object.values(str)[i], "percent": "0" });
                 }
+              }
             }
             // for (let k = 0; k < l.length; k++) {
             //   this.pageImpressionsTotal = parseInt(this.pageImpressionsTotal) + parseInt(l[k].value)
@@ -342,6 +360,7 @@ export class SocialmediaComponent implements OnInit {
               this.paidReach = parseInt(this.paidReach) + parseInt(l[k].value)
             }
             this.pageReachTotal = parseInt(this.paidReach) + parseInt(this.organicReach)
+            this.avgPageReach = this.getAverage(this.pageReachTotal, avgNum);
             this.percentOrganicReach = this.getPercentage(parseInt(this.organicReach), parseInt(this.pageReachTotal));
             this.percentPaidReach = this.getPercentage(parseInt(this.paidReach), parseInt(this.pageReachTotal));
           }
@@ -351,6 +370,29 @@ export class SocialmediaComponent implements OnInit {
             this.lostLikes = 0;
             for (let k = 0; k < l.length; k++) {
               this.lostLikes = parseInt(this.lostLikes) + parseInt(l[k].value)
+            }
+            this.avgLostLikes = this.getAverage(this.lostLikes, avgNum);
+          }
+          //page_impressions_by_country_unique
+          if (p.name == 'page_impressions_by_country_unique') {
+            let l = p['values'];
+            let str = l[0].value;
+            this.str = l[0].value;
+            if (Object.keys(str).length != undefined) {
+              this.impressionByCountry = [];
+              this.totalimpressionByCountry = "0";
+              debugger
+              if (str != undefined) {
+                for (let i = 0; i < Object.keys(str).length; i++) {
+                  this.impressionByCountry.push({ 'country': Object.keys(str)[i], 'count': Object.values(str)[i], "percent": "0" });
+                  this.totalimpressionByCountry = parseInt(this.totalimpressionByCountry) + parseInt(Object.values(str)[i].toString());
+                }
+                this.impressionByCountry.sort((a, b) => (a.count > b.count ? -1 : 1));
+                this.totalimpressionByCountryName = this.impressionByCountry[0].country;
+                this.totalimpressionByCountryCount = this.impressionByCountry[0].count;
+                this.totalimpressionByCountryPercent = this.getPercentage(this.impressionByCountry[0].count, this.totalimpressionByCountry)
+               // this.totalimpressionByCountryPercent = parseFloat(this.totalimpressionByCountryPercent.toString()).toFixed(2)
+              }
             }
           }
         }
@@ -363,7 +405,7 @@ export class SocialmediaComponent implements OnInit {
     });
   }
   getPageLikes() {
-    
+
     const url = "https://graph.facebook.com/" + environment.facebook_pageid + "?access_token=" + this.accessToken + "&fields=new_like_count";
     this.http.get(url).subscribe(res => {
       if (res) {
@@ -375,7 +417,7 @@ export class SocialmediaComponent implements OnInit {
     });
   }
   getPageNewLikes() {
-    
+
     const url = "https://graph.facebook.com/" + environment.facebook_pageid + "?access_token=" + this.accessToken + "&fields=country_page_likes";
     this.http.get(url).subscribe(res => {
       if (res) {
@@ -472,7 +514,9 @@ export class SocialmediaComponent implements OnInit {
         }
         this.pageReachTotal = parseInt(this.paidReach) + parseInt(this.organicReach)
         this.percentOrganicReach = this.getPercentage(parseInt(this.organicReach), parseInt(this.pageReachTotal));
+        this.percentOrganicReach = parseFloat(this.percentOrganicReach.toString()).toFixed(0);
         this.percentPaidReach = this.getPercentage(parseInt(this.paidReach), parseInt(this.pageReachTotal));
+        this.percentPaidReach = parseFloat(this.percentPaidReach.toString()).toFixed(0);
       }
     }, error => {
       this.snackbarService.show('Fetch Total Paid Page Reach Count Failed : ' + JSON.stringify(error.error));
@@ -611,14 +655,15 @@ export class SocialmediaComponent implements OnInit {
     });
   }
   getPercentage(num, total) {
-    return ((100 * num) / total)
+    let p = ((100 * num) / total);
+    return parseFloat(p.toString()).toFixed(0);
   }
   getAverage(count, totaldays) {
     let p = count / totaldays;
     if (p.toString().includes('0.')) {
       return '<1';
     } else {
-      return p;
+      return parseInt(p.toString()).toFixed(0);
     }
   }
   //this not in used but working for facebook authentication

@@ -42,7 +42,7 @@
         <div class="card card-default shadow bg-white rounded height200pxfit-content cursor-set">
             <div class="card-header">
                 <div class="row borderBtm padding5">
-                    <h2 class="col-xs-12 col-12 col-md-10 fontsize15px colour-set">Facebook: Performance Summary</h2>
+                    <h2 class="col-xs-12 col-12page col-md-10 fontsize15px colour-set">Facebook: Performance Summary</h2>
 
                 </div>
 
@@ -89,7 +89,7 @@
                         <div class="col-sm-3">
                             <h3 class="colour-light">PAGE CLICKS</h3>
                             <h3 class="fontxlrge">{{pageClicksTotal}}</h3>
-
+                            <h3 class="fontsizesmall">Avg. per day : {{avgProfileView}}</h3>
                         </div>
                         <div class="vl"></div>
                         <div class="col-sm-2">
@@ -307,12 +307,14 @@
                         <div class="col-sm-3">
                             <h3 class="colour-light">PAGE IMPRESSIONS</h3>
                             <h3 class="fontxlrge">{{pageImpressionsTotal}}</h3>
+                            <h3 class="fontsizesmall">Avg. per day : {{avgPageImpression}}</h3>
 
                         </div>
                         <div class="vl"></div>
                         <div class="col-sm-3">
                             <h3 class="colour-light">PAGE REACH</h3>
                             <h3 class="fontxlrge">{{pageReachTotal}}</h3>
+                            <h3 class="fontsizesmall">Avg. per day : {{avgLostLikes}}</h3>
                         </div>
                         <div class="vl"></div>
                         <div class="col-sm-3">
@@ -362,17 +364,14 @@
                                     </tr>
                                 </thead>
                                 <tbody>
-                                    <tr>
-                                        <td>India
-                                        </td>
-
+                                    <tr >
                                         <td class="text-blue">
-                                            921
+                                            {{totalimpressionByCountryName}}
                                         </td>
                                         <td class="text-blue">
-                                            64%
+                                            {{totalimpressionByCountryCount}}
                                         </td>
-
+                                        <td class="text-blue">{{totalimpressionByCountryPercent}}% </td>
                                     </tr>
                             </table>
                         </div>

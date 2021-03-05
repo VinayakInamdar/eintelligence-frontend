@@ -497,9 +497,10 @@ export class CampaginComponent implements OnInit, AfterViewInit {
 
     });
 
-
+debugger;
     this.valForm = fb.group({
       'name': [this.campaignModel.name, Validators.required],
+      'campaignType':[this.campaignModel.campaignType,Validators.required],
       'webUrl': [this.campaignModel.webUrl, [Validators.required, Validators.pattern(this.myreg)]],
       'moreTraffic': [this.campaignModel.moreTraffic, Validators.required],
       'sales': [this.campaignModel.sales, Validators.required],
@@ -1005,7 +1006,7 @@ export class CampaginComponent implements OnInit, AfterViewInit {
 debugger
     var result: Campaign = Object.assign({}, value);
     //  result.profilePicture = this.fileToUpload.name
-
+debugger;
     this.campaignService.createCampaign(result).subscribe((res: Campaign) => {
       this.campaignModel = res;
       //validation
