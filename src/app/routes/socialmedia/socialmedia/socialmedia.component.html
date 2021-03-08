@@ -129,7 +129,7 @@
 
 
 
-        <div class="card card-default shadow bg-white rounded height200pxfit-content cursor-set">
+        <!-- <div class="card card-default shadow bg-white rounded height200pxfit-content cursor-set">
             <div class="card-header">
                 <div class="row borderBtm padding5">
                     <h2 class="col-xs-12 col-12 col-md-10 fontsize15px colour-set">Facebook: Audience Summary</h2>
@@ -189,8 +189,8 @@
                 </div>
 
             </div>
-        </div>
-        <div class="col-lg-6">
+        </div> -->
+        <div class="col-lg-4">
             <div class="card card-default shadow bg-white rounded height200pxfit-content cursor-set">
                 <div class="card-header">
                     <div class="row borderBtm padding5">
@@ -239,7 +239,7 @@
                 </div>
             </div>
         </div>
-        <div class="col-lg-6">
+        <div class="col-lg-4">
             <div class="card card-default shadow bg-white rounded height200pxfit-content cursor-set">
                 <div class="card-header">
                     <div class="row borderBtm padding5">
@@ -287,6 +287,48 @@
 
                 </div>
             </div>
+        </div>
+        <div class="col-sm-2">
+            <div class="card card-default shadow bg-white rounded height200pxfit-content cursor-set">
+            <div class="widget-content">
+                <div class="overviewdivborder">
+            <h3 class="colour-light">LIKES LOST</h3>
+            <h3 class="fontxlrge">{{lostLikes}}</h3>
+            <h3 class="fontsizesmall">Avg. per day : {{avgLostLikes}}</h3></div>
+            </div>
+            </div>
+
+        </div>
+        <div class="vl"></div>
+        <div class="col-sm-2">
+            <div class="card card-default shadow bg-white rounded height200pxfit-content cursor-set">
+            <div class="overviewdivborder">
+            <h3 class="colour-light"> ORGANIC VS PAID LIKES</h3>
+            <table class="table table-bordered font-weight-bold colour-light">
+                <thead>
+                    <tr>
+
+                        <td>
+                            ORGANIC
+                        </td>
+                        <td>
+                            PAID
+                        </td>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr>
+                        <td class="text-blue">
+                            {{percentPositive}}%
+                        </td>
+                        <td style="color:red;">
+                            {{percentNegative}}%
+                        </td>
+                    </tr>
+            </table>
+            </div>
+</div>
+
         </div>
     </div>
 
