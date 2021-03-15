@@ -21,6 +21,7 @@ export class IntegrationsComponent implements OnInit {
   hasGaSetup: boolean = false;
   gaAccounts : any;
   profiles: any;
+
   userName: any = 'userName';
 
   selectedAccount: any ;

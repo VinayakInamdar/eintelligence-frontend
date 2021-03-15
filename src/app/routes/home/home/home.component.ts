@@ -24,6 +24,7 @@ import { FacebookService, LoginOptions, LoginResponse } from 'ngx-facebook';
   styleUrls: ['./home.component.scss']
 })
 export class HomeComponent implements OnInit {
+  hasGaSetup:boolean;
   //Traffic
   thisMonthTraffic = 0;
   lastMonthTraffic = 0;
@@ -181,7 +182,7 @@ export class HomeComponent implements OnInit {
     , fb: FormBuilder, private openIdConnectService: OpenIdConnectService, private accountService: AccountService) {
     //  this.facebookPageToken = localStorage.getItem('FacebookAccessToken');
     //Ranking
-
+    this.hasGaSetup =true;
     facebook.init({
       appId: environment.facebook_appid,
       version: 'v9.0'

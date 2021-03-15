@@ -878,7 +878,7 @@ export class SeoComponent implements OnInit {
   conversionsubmenu: boolean = false;
   settingActive: number = 3;
   isShowLoginButton = false;
-
+  isAuthorized = false;
   constructor(private translate: TranslateService, fb: FormBuilder,
     private campaignService: CampaignService, private openIdConnectService: OpenIdConnectService,
     public route: ActivatedRoute, public router: Router, private integrationsService: IntegrationsService
@@ -890,6 +890,7 @@ export class SeoComponent implements OnInit {
     // this.getGaSetupByCampaignId();
     let id = this.route.snapshot.paramMap.get('id');
     this.selectedCampId = `${id.substring(3)}`;
+
     this.getDateSettings();
     this.getGaSetupByCampaignId();
     //this.getAnalyticsData();
@@ -901,8 +902,6 @@ export class SeoComponent implements OnInit {
     this.showDefault = 'seo';
     this.showDiv(event, this.showdiv, this.show)
     location.onPopState(() => {
-
-
     });
 
 

@@ -25,7 +25,7 @@ export class CampaignService {
   }
   //Get Campaign
   getcampaign(id: string): Observable<any> {
-  return this.http.get<any>(this.Url + `campaigns/${id}`);
+    return this.http.get<any>(this.Url + `campaigns/${id}`);
   }
   //Update Campaign
   updatecampaign(id: string, selectedCampaign: Campaign): Observable<Campaign> {
@@ -40,11 +40,11 @@ export class CampaignService {
     return this.http.post<Campaign>(this.Url + 'campaigns', campaignSetupData);
   }
   //Delete Campaign
-   deleteCampaignById(id: string): Observable<Campaign> {
+  deleteCampaignById(id: string): Observable<Campaign> {
     return this.http.delete<Campaign>(this.Url + 'campaigns/' + id);
   }
   getFilteredRankingGraph(filter: FilterOptionModel): Observable<any> {
-    
+
     const params = `PageNumber=${filter.pageNumber}&PageSize=${filter.pageSize}&SearchQuery=${filter.searchQuery}&OrderBy=${filter.orderBy}&Fields=${filter.fields}`;
     return this.http.get<any>(`${this.Url}rankinggraphs?${params}`, { observe: 'response' });
   }
@@ -54,7 +54,7 @@ export class CampaignService {
   deleteRankingGraph(id: string): Observable<any> {
     return this.http.delete<any>(this.Url + `rankinggraphs/${id}`);
   }
-    // using to get list of campaign
+  // using to get list of campaign
   // getCampaign(): Observable<any[]> {
   //   if(localStorage.getItem('companyID') ){
   //     var companyID = localStorage.getItem('companyID'); 
@@ -72,14 +72,15 @@ export class CampaignService {
       params: new HttpParams().set('pageSize', '1000').set("searchParam", searchParam)
     })
   }
-  getSerpForKeyword(filter: FilterOptionModel,searchParam: string): Observable<any> {
+  getSerpForKeyword(filter: FilterOptionModel, searchParam: string): Observable<any> {
     const params = `PageNumber=${filter.pageNumber}&PageSize=${filter.pageSize}&SearchQuery=${filter.searchQuery}&OrderBy=${filter.orderBy}&Fields=${filter.fields}`;
-    return this.http.get<any>(`${this.Url}serps?${params}`, { 
-      params: new HttpParams().set('pageSize', '1000').set("searchParam", searchParam) });
-}
+    return this.http.get<any>(`${this.Url}serps?${params}`, {
+      params: new HttpParams().set('pageSize', '1000').set("searchParam", searchParam)
+    });
+  }
 
   // using to add new keyword in selected campaign Id
-  addNewKeyword(CampaignID: string, Keyword: any, Location: string, Tags: any, searchParam:string): Observable<SerpDto> {
+  addNewKeyword(CampaignID: string, Keyword: any, Location: string, Tags: any, searchParam: string): Observable<SerpDto> {
     return this.http.post<SerpDto>(`${this.Url}serps/GetSerpData`, {}, {
       params: new HttpParams().set('CampaignID', CampaignID).set('Keywords', Keyword.join(',')).set('Location', Location).set('Tags', Tags).set('searchParam', "&tbs=qdr:m")
     });
@@ -171,5 +172,11 @@ export class CampaignService {
       params: new HttpParams().set("startDate", startDate).set("endDate", endDate)
     });
 
+  }
+  createGoogleAnalytics(data): Observable<any> {
+    return this.http.post<any>(this.Url + 'googleaccountsetups', data);
+  }
+  createGA(data): Observable<any> {
+    return this.http.post<any>(this.Url + 'campaigngoogleanalyticss', data);
   }
 }

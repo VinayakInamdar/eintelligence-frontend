@@ -3,7 +3,7 @@ import * as _ from 'lodash';
 import { NgForm, FormGroup, FormBuilder, Validators, FormControl } from '@angular/forms';
 import { TranslateService } from '@ngx-translate/core';
 import { ActivatedRoute, Router, ParamMap } from '@angular/router';
-import { Subscription } from 'rxjs';
+import { Observable, Subscription } from 'rxjs';
 import { Campaign } from '../campaign.model';
 import { CampaignService } from '../campaign.service';
 import { TabsetComponent } from 'ngx-bootstrap/tabs';
@@ -21,6 +21,8 @@ import { DatePipe } from '@angular/common';
 import { HttpClient, HttpHeaders } from '@angular/common/http';
 import { environment } from 'src/environments/environment';
 import { GoogleLoginProvider, SocialAuthService } from 'angularx-social-login';
+import { SnackbarService } from '../../../shared/services/snackbar/snackbar.service';
+import { FacebookService, LoginOptions, LoginResponse } from 'ngx-facebook';
 const success = require('sweetalert');
 
 @Component({
@@ -31,6 +33,8 @@ const success = require('sweetalert');
 @Directive({ selector: '[ng2FileSelect]' })
 
 export class CampaginComponent implements OnInit, AfterViewInit {
+  profiles: any;
+  selectedProfile : any;
   //#############################################
   //Ranking
   serpList;
@@ -97,7 +101,7 @@ export class CampaginComponent implements OnInit, AfterViewInit {
   campaignList = [];
   selectedCampIdWebUrl: string;
   selectedCampaignName: string;
-
+  companyId;
   accessToken = localStorage.getItem('googleGscAccessToken');
   httpOptionJSON = {
     headers: new HttpHeaders({
@@ -172,8 +176,17 @@ export class CampaginComponent implements OnInit, AfterViewInit {
   public myreg = '(https?://)?([\\da-z.-]+)\\.([a-z.]{2,6})[/\\w .-]*/?';
   url: string;
   trafficsourcedate: { display: any[]; medium: any[]; referral: any[]; social: any[]; source: any[]; };
-  gaAccounts: any;
-  hasGaSetup: boolean;
+  gaAccounts=[];
+  gscAccounts=[];
+  facebookAccounts=[];
+  hasGaSetup: boolean = false;
+  hasFacebookSetup:boolean = false;
+  hasGscSetup:boolean = false;
+  gaSelectedName;
+  facebookSelectedName;
+  gscSelectedName;
+  gadsSelectedName;
+  masterCampaignId;
   showSpinnerBaseChart: boolean = true;
   showSpinnerSiteAnalysisContent: boolean = true;
   googleAnalyticsAccountSetupList: GoogleAnalyticsAccountSetups[];
@@ -473,12 +486,16 @@ export class CampaginComponent implements OnInit, AfterViewInit {
   settingActive: number = 2;
 
 
-  constructor(private translate: TranslateService, fb: FormBuilder,
+  constructor(private translate: TranslateService, fb: FormBuilder,private facebook: FacebookService,
     private campaignService: CampaignService, private authService: SocialAuthService,
     public route: ActivatedRoute, public http: HttpClient, public datepipe: DatePipe, public router: Router, private openIdConnectService: OpenIdConnectService, private integrationsService: IntegrationsService
-    , private overvieswService: OverviewService, location: PlatformLocation,
+    , private overvieswService: OverviewService, location: PlatformLocation, private snackbarService: SnackbarService,
     public auditsService: AuditsService) {
-
+      facebook.init({
+        appId: '200487178533939',//environment.facebook_appid,//3574916862576976
+        version: 'v9.0'
+      });
+      this.hasGaSetup = false;
     this.campaignModel = new Campaign();
     this.bsInlineRangeValue = [new Date(new Date().setDate(new Date().getDate() - 31)), new Date()];
     // this.getGaSetupByCampaignId();
@@ -488,6 +505,7 @@ export class CampaginComponent implements OnInit, AfterViewInit {
     if (this.route.snapshot.queryParams.view !== undefined) {
       this.checkqueryparams();
     }
+    this.getAnalyticsProfileIds2();
 
     this.getCampaignList();
     this.getSerpList();
@@ -497,14 +515,14 @@ export class CampaginComponent implements OnInit, AfterViewInit {
 
     });
 
-debugger;
+    debugger;
     this.valForm = fb.group({
       'name': [this.campaignModel.name, Validators.required],
-      'campaignType':[this.campaignModel.campaignType,Validators.required],
+      'campaignType': [''],
       'webUrl': [this.campaignModel.webUrl, [Validators.required, Validators.pattern(this.myreg)]],
-      'moreTraffic': [this.campaignModel.moreTraffic, Validators.required],
-      'sales': [this.campaignModel.sales, Validators.required],
-      'leadGeneration': [this.campaignModel.leadGeneration, Validators.required],
+      'moreTraffic': [true],
+      'sales': [true],
+      'leadGeneration': [true],
     })
   }
 
@@ -531,6 +549,12 @@ debugger;
 
 
   ngOnInit(): void {
+    debugger
+    this.masterCampaignId = localStorage.getItem('masterCampaignId');
+    if(this.masterCampaignId != null && this.masterCampaignId != undefined){
+      this.settingActive =1;
+    }
+    this.companyId = localStorage.getItem('companyID');
     this.sub = this.route.params.subscribe(params => {
       this.id = params['id'];
     });
@@ -568,50 +592,50 @@ debugger;
   // using to get analytics data of selected campaign Id
   getAnalyticsData(): void {
 
-    this.overvieswService.getGaAnalyticsReports(this.selectedCampId, this.startDate, this.endDate).subscribe(
-      res => {
-        this.campaignService.GetTrafficSourcesReports(this.selectedCampId, this.startDate, this.endDate).subscribe(
-          trafficsourcers => {
-            var array = [];
+    // this.overvieswService.getGaAnalyticsReports(this.selectedCampId, this.startDate, this.endDate).subscribe(
+    //   res => {
+    //     this.campaignService.GetTrafficSourcesReports(this.selectedCampId, this.startDate, this.endDate).subscribe(
+    //       trafficsourcers => {
+    //         var array = [];
 
 
 
-            if (trafficsourcers['display'] != null) {
-              array.push(trafficsourcers['display']);
-            }
-            if (trafficsourcers['medium']) {
-              array.push(trafficsourcers['medium']);
-            }
+    //         if (trafficsourcers['display'] != null) {
+    //           array.push(trafficsourcers['display']);
+    //         }
+    //         if (trafficsourcers['medium']) {
+    //           array.push(trafficsourcers['medium']);
+    //         }
 
-            if (trafficsourcers['referral']) {
-              array.push(trafficsourcers['referral']);
-            }
+    //         if (trafficsourcers['referral']) {
+    //           array.push(trafficsourcers['referral']);
+    //         }
 
-            if (trafficsourcers['social']) {
-              array.push(trafficsourcers['social']);
-            }
+    //         if (trafficsourcers['social']) {
+    //           array.push(trafficsourcers['social']);
+    //         }
 
-            if (trafficsourcers['source']) {
+    //         if (trafficsourcers['source']) {
 
-              array.push(trafficsourcers['source']);
-            }
+    //           array.push(trafficsourcers['source']);
+    //         }
 
-            if (trafficsourcers['display']) {
-              array.push(trafficsourcers['display']);
-            }
+    //         if (trafficsourcers['display']) {
+    //           array.push(trafficsourcers['display']);
+    //         }
 
 
-            this.convertToLineChartsLabels(array)
+    //         this.convertToLineChartsLabels(array)
 
-          })
-        this.reportsData = res;
-        this.dateLabels = this.reportsData.gaPreparedDataDto.date;
+    //       })
+    //     this.reportsData = res;
+    //     this.dateLabels = this.reportsData.gaPreparedDataDto.date;
 
         // this.convertToLineChartsLabels(this.reportsData.gaPreparedDataDto.date)
         // this.convertToLineChartsData(this.reportsData.gaPreparedDataDto.sessions)
         // this.showSpinnerBaseChart = false;
-      }
-    );
+    //   }
+    // );
 
 
   }
@@ -1003,12 +1027,14 @@ debugger;
 
   // using to  create new campaign in db
   submitForm(value: any) {
-debugger
+    debugger
     var result: Campaign = Object.assign({}, value);
     //  result.profilePicture = this.fileToUpload.name
-debugger;
+    debugger;
     this.campaignService.createCampaign(result).subscribe((res: Campaign) => {
       this.campaignModel = res;
+      debugger
+      localStorage.setItem('masterCampaignId',res['id']);  
       //validation
       event.preventDefault();
       for (let c in this.valForm.controls) {
@@ -1026,7 +1052,7 @@ debugger;
     event.preventDefault()
     debugger
     var value = this.validateForm(fieldName)
-    if(fieldName == 'webUrl'){
+    if (fieldName == 'webUrl') {
       value = 'VALID';
     }
     if (value == 'VALID') {
@@ -1270,10 +1296,6 @@ debugger;
     })
   }
 
-  // using to navigate to analytics overview page
-  public goToAnalyticsOverview(event) {
-    this.router.navigate([`/campaign/:id${this.selectedCampId}/analytics`])
-  }
   // using to navigate to  overview page
   public goToCampaignOverview(event) {
     this.router.navigate(['/campaign', { id: this.selectedCampId }], {
@@ -1282,80 +1304,7 @@ debugger;
       },
     });
   }
-  // using to navigate to analytics acquision page
-  public goToAcquisiton(event) {
-    this.router.navigate([`/campaign/:id${this.selectedCampId}/analytics/acquisition`])
-  }
 
-  //using to navigate to analytics acqusition traffic sources page
-  public goToAcquisitonTrafficSources(event) {
-    this.router.navigate([`/campaign/:id${this.selectedCampId}/analytics/acquisition/traffic-sources`])
-  }
-
-  // using to navigate to analytics acquisition sources mediums page
-  public goToAcquisitonSourcesMediums(event) {
-    this.router.navigate([`/campaign/:id${this.selectedCampId}/analytics/acquisition/sources-mediums`])
-  }
-
-  // using to navigate to analytics acqusition campaigns page
-  public goToAcquisitonCampaigns(event) {
-    this.router.navigate([`/campaign/:id${this.selectedCampId}/analytics/acquisition/campaigns`])
-  }
-
-  // using to navigate to analytics audience page
-  public goToAudience(event) {
-    this.router.navigate([`/campaign/:id${this.selectedCampId}/analytics/audience`])
-  }
-
-  // using to navigate to analytics audience device-category page
-  public goToAudienceDeviceCategory(event) {
-    this.router.navigate([`/campaign/:id${this.selectedCampId}/analytics/audience/device-category`])
-  }
-
-  // using to navigate to analytics audience geo-locations page
-  public goToAudienceGeoLocations(event) {
-    this.router.navigate([`/campaign/:id${this.selectedCampId}/analytics/audience/geolocation`])
-  }
-
-  // using to navigate to analytics audience languages page
-  public goToAudienceLanguages(event) {
-    this.router.navigate([`/campaign/:id${this.selectedCampId}/analytics/audience/languages`])
-  }
-
-  // using to navigate to analytics behavior page
-  public goToBehavior(event) {
-    this.router.navigate([`/campaign/:id${this.selectedCampId}/analytics/behavior`])
-  }
-
-  // using to navigate to analytics behavior landing-pages page
-  public goToBehaviorLandingPages(event) {
-    this.router.navigate([`/campaign/:id${this.selectedCampId}/analytics/behavior/landing-pages`])
-  }
-
-  // using to navigate to analytics behavior event page
-  public goToBehaviorEvent(event) {
-    this.router.navigate([`/campaign/:id${this.selectedCampId}/analytics/behavior/events`])
-  }
-
-  // using to navigate to analytics behavior site speed page
-  public goToBehaviorSiteSpeed(event) {
-    this.router.navigate([`/campaign/:id${this.selectedCampId}/analytics/behavior/site-speed`])
-  }
-
-  // using to navigate to analytics conversions page
-  public goToConversions(event) {
-    this.router.navigate([`/campaign/:id${this.selectedCampId}/analytics/conversions`])
-  }
-
-  // using to navigate to analytics conversion eCommerce page
-  public goToConversionseCommerce(event) {
-    this.router.navigate([`/campaign/:id${this.selectedCampId}/analytics/conversions/ecommerce`])
-  }
-
-  // using to navigate to analytics conversaion goals page
-  public goToConversionsGoals(event) {
-    this.router.navigate([`/campaign/:id${this.selectedCampId}/analytics/conversions/goals`])
-  }
 
 
   public goToSeoOverview(event) {
@@ -1830,26 +1779,7 @@ debugger;
   //       this.calculateRankings();
   //     })
   // }
-  // loginWithOptions(i) {
-  //   const loginOptions: LoginOptions = {
-  //     enable_profile_selector: true,
-  //     return_scopes: true,
-  //     // scope: 'public_profile,user_friends,email,pages_show_list'
-  //     //scope: 'pages_show_list'
-  //     scope: 'pages_show_list,read_insights,pages_read_engagement'
-  //   };
-
-  //   this.facebook.login(loginOptions)
-  //     .then((res: LoginResponse) => {
-  //       console.log('Logged in', res);
-  //       this.facebookAccessToken = res['authResponse'].accessToken;
-  //       localStorage.setItem('FacebookAccessToken',this.accessToken);
-  //       this.getFacebookUserId(i);
-
-
-  //     })
-  //     .catch(this.handleError);
-  // }
+ 
   private handleError(error) {
     console.error('Error processing action', error);
   }
@@ -1895,14 +1825,14 @@ debugger;
     //https://www.googleapis.com/analytics/v3/management/accounts/49139272/webproperties
     this.http.get(url, this.httpOptionJSON).subscribe(res => {
       if (res) {
-
+        debugger
         let rows = res['items'];
+
         //let accountSummaryIds=[];
         for (let i = 0; i < rows.length; i++) {
 
           let p = rows[i]
           let q = p['webProperties']['0'].websiteUrl.toString();
-
           let u = this.campaignList[campaignIndex].webUrl;
           if (q.includes(u)) {
             this.getAnalyticsOrganicTrafficThisMonth(rows[i].webProperties[0].profiles[0].id, campaignIndex);
@@ -2013,5 +1943,192 @@ debugger;
         localStorage.setItem('googleGscAccessToken', this.accessToken);
         this.calculateRankings();
       })
+  }
+  integrateGoogleAnalytics(): void {
+    const googleLoginOptions = {
+      connection: 'google-oauth2',
+      connection_scope: 'https://www.googleapis.com/auth/youtube.readonly,https://www.googleapis.com/auth/yt-analytics.readonly',
+     // scope: 'openid profile',
+      accessType: 'offline',
+      approvalPrompt: 'force',
+      scope: 'openid profile email https://www.googleapis.com/auth/webmasters.readonly https://www.googleapis.com/auth/webmasters https://www.googleapis.com/auth/analytics https://www.googleapis.com/auth/analytics.readonly https://www.googleapis.com/auth/analytics.edit'
+    };
+    this.authService.signIn(GoogleLoginProvider.PROVIDER_ID, googleLoginOptions)
+      .then((res) => {
+        debugger
+        this.gaAccounts=[];
+        this.hasGaSetup = true;
+        this.accessToken = res['authToken'];
+        this.getAnalyticsProfileIds2();
+
+        this.addToGoogleAnalytics();
+      })
+  }
+  addToGoogleAnalytics() {
+    let data = {
+      id: "00000000-0000-0000-0000-000000000000",
+      accessToken: this.accessToken,
+      refreshToken: '',
+      companyID: this.companyId,
+      accountType: 'ga',
+    }
+    this.campaignService.createGoogleAnalytics(data).subscribe(response => {
+      if (response) {
+        debugger
+      this.snackbarService.show('Google Analytics Account Integrated');
+      }
+    });
+  }
+  integrateGSC(): void {
+    debugger
+    const googleLoginOptions = {
+      scope: 'profile email https://www.googleapis.com/auth/webmasters.readonly https://www.googleapis.com/auth/webmasters https://www.googleapis.com/auth/analytics https://www.googleapis.com/auth/analytics.readonly https://www.googleapis.com/auth/analytics.edit'
+     // accessType: 'offline',
+     // approvalPrompt: 'force'
+    };
+    this.authService.signIn(GoogleLoginProvider.PROVIDER_ID, googleLoginOptions)
+      .then((res) => {
+        this.gscAccounts=[];
+        this.hasGscSetup = true;
+        this.accessToken = res['authToken'];
+        debugger
+        this.getGSCSiteList();
+      })
+  }
+ 
+  addToGoogleSearchConsole() {
+    debugger
+    let data = {
+      id: "00000000-0000-0000-0000-000000000000",
+      accessToken: this.accessToken,
+      refreshToken: '',
+      companyID: this.companyId,
+      accountType: 'gsc'
+    }
+    this.campaignService.createGoogleAnalytics(data).subscribe(response => {
+      if (response) {
+        debugger
+      this.snackbarService.show('Google Search Console Account Integrated');
+      }
+    });
+  }
+  onSelectGa(id) {
+    debugger
+    this.gaSelectedName = id;
+  }
+  saveGA(){
+  debugger
+  let data = {
+    id: "00000000-0000-0000-0000-000000000000",
+    urlorname: this.gadsSelectedName,
+    isactive: true,
+    campaignId: this.masterCampaignId,
+  }
+    this.campaignService.createGA(data).subscribe(
+      res => {
+        debugger
+       this.successAlert()
+      });
+    
+  }
+  getAnalyticsProfileIds2() {
+
+    let currDate = new Date();
+    let endDate1 = this.datepipe.transform(currDate, 'yyyy-MM-dd');
+    let startDate1 = this.datepipe.transform(currDate.setDate(currDate.getDate() - 28), 'yyyy-MM-dd');
+    this.httpOptionJSON = {
+      headers: new HttpHeaders({
+        'Accept': 'application/json',
+        'Authorization': 'Bearer ' + this.accessToken,
+      })
+    };
+    const url = "https://www.googleapis.com/analytics/v3/management/accountSummaries";
+    this.http.get(url, this.httpOptionJSON).subscribe(res => {
+      if (res) {
+        debugger
+        let rows = res['items'];
+        //let accountSummaryIds=[];
+        for (let i = 0; i < rows.length; i++) {
+
+          let p = rows[i]
+          let q = p['webProperties']['0'].websiteUrl.toString();
+          this.gaAccounts.push(q);
+          // accountSummaryIds.push(rows[i].webProperties[0].profiles[0].id);
+        }
+
+      }
+    }, error => {
+
+      //alert('Analytics Data Fetch failed : ' + JSON.stringify(error.error));
+    });
+  }
+  getGSCSiteList(){
+    debugger
+    this.httpOptionJSON = {
+      headers: new HttpHeaders({
+        'Accept': 'application/json',
+        'Authorization': 'Bearer ' + this.accessToken,
+      })
+    };
+    const url = "https://searchconsole.googleapis.com/webmasters/v3/sites?key=AIzaSyC1IsrCeeNXp9ksAmC8szBtYVjTLJC9UWQ";
+    let data = {};
+       this.http.get(url, this.httpOptionJSON).subscribe(res => {
+      if (res) {
+debugger
+        let rows = res['siteEntry'];
+            //let accountSummaryIds=[];
+            for (let i = 0; i < rows.length; i++) {
+              let p = rows[i]
+              let q = p.siteUrl.toString();
+              this.gscAccounts.push(q);
+            }
+      }
+    }, error => {
+      //alert('Data fetch failed for current year for URL : ' + this.selectedCampIdWebUrl + " --Error : - " + JSON.stringify(error.error));
+    });
+  }
+  signOut() {
+    this.authService.signOut();
+  }
+  refreshUserToken() {
+    this.authService.refreshAuthToken(GoogleLoginProvider.PROVIDER_ID).then((res) => {
+      this.getAnalyticsProfileIds2();
+    });
+  }
+  loginWithOptions() {
+    const loginOptions: LoginOptions = {
+      enable_profile_selector: true,
+      return_scopes: true,
+      // scope: 'public_profile,user_friends,email,pages_show_list'
+      //scope: 'pages_show_list'
+      scope: 'pages_show_list,read_insights,pages_read_engagement'
+    };
+
+    this.facebook.login(loginOptions)
+      .then((res: LoginResponse) => {
+        this.hasFacebookSetup = true;
+        this.facebookAccessToken = res['authResponse'].accessToken;
+        localStorage.setItem('FacebookAccessToken',this.accessToken);
+        this.facebookAccounts=[];
+        this.getFacebookPagesList();
+      })
+      .catch(this.handleError);
+  }
+  getFacebookPagesList() {
+    debugger
+    const url = "https://graph.facebook.com/me/accounts?&access_token=" + this.facebookAccessToken;
+    this.http.get(url).subscribe(res => {
+      if (res) {
+        debugger
+        let rows = res['data'];
+        for (let i = 0; i < rows.length; i++) {
+          let p = rows[i]
+          let q = p.name.toString();
+          this.facebookAccounts.push(q);
+        }
+      }
+    }, error => {
+      this.snackbarService.show('Fetch New Likes Count Failed : ' + JSON.stringify(error.error));
+    });
   }
 }
