@@ -97,7 +97,7 @@ export class CampaignlistComponent implements OnInit {
       this.campaignService.getFilteredGA(filterOptionModel).subscribe((response: any) => {
         if (response) {
           debugger
-          this.CampaignGAList = response;
+          this.CampaignGAList = response.body;
         }
       })
     }
