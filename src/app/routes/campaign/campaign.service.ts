@@ -179,4 +179,29 @@ export class CampaignService {
   createGA(data): Observable<any> {
     return this.http.post<any>(this.Url + 'campaigngoogleanalyticss', data);
   }
+  createGSC(data): Observable<any> {
+    return this.http.post<any>(this.Url + 'campaigngscs', data);
+  }
+  createGAds(data): Observable<any> {
+    return this.http.post<any>(this.Url + 'campaigngoogleadss', data);
+  }
+  createFacebook(data): Observable<any> {
+    return this.http.post<any>(this.Url + 'campaignfacebooks', data);
+  }
+  getFilteredGA(filter: FilterOptionModel): Observable<any> {
+    const params = `PageNumber=${filter.pageNumber}&PageSize=${filter.pageSize}&SearchQuery=${filter.searchQuery}&OrderBy=${filter.orderBy}&Fields=${filter.fields}`;
+    return this.http.get<any>(`${this.Url}campaigngoogleanalyticss?${params}`, { observe: 'response' });
+  }
+  getFilteredGSC(filter: FilterOptionModel): Observable<any> {
+    const params = `PageNumber=${filter.pageNumber}&PageSize=${filter.pageSize}&SearchQuery=${filter.searchQuery}&OrderBy=${filter.orderBy}&Fields=${filter.fields}`;
+    return this.http.get<any>(`${this.Url}campaigngscs?${params}`, { observe: 'response' });
+  }
+  getFilteredGAds(filter: FilterOptionModel): Observable<any> {
+    const params = `PageNumber=${filter.pageNumber}&PageSize=${filter.pageSize}&SearchQuery=${filter.searchQuery}&OrderBy=${filter.orderBy}&Fields=${filter.fields}`;
+    return this.http.get<any>(`${this.Url}campaigngoogleadss?${params}`, { observe: 'response' });
+  }
+  getFilteredFacebook(filter: FilterOptionModel): Observable<any> {
+    const params = `PageNumber=${filter.pageNumber}&PageSize=${filter.pageSize}&SearchQuery=${filter.searchQuery}&OrderBy=${filter.orderBy}&Fields=${filter.fields}`;
+    return this.http.get<any>(`${this.Url}campaignfacebooks?${params}`, { observe: 'response' });
+  }
 }

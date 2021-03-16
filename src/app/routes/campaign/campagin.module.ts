@@ -28,7 +28,7 @@ import { SeoComponent } from '../seo/seo/seo.component';
 import { SubmenuModule } from '../submenu/submenu.module';
 import { SocialLoginModule, SocialAuthServiceConfig } from 'angularx-social-login';
 import { GoogleLoginProvider } from 'angularx-social-login';
-
+import { CampaignlistComponent } from './campaignlist/campaignlist.component';
 
 const routes: Routes = [
 
@@ -52,7 +52,7 @@ const routes: Routes = [
     { path: ':id/analytics/conversions/ecommerce', component: EcommerceComponent },
     { path: ':id/analytics/conversions/goals', component: GoalsComponent },
     { path: ':id/seo', component: SeoComponent },
-
+    {path:'campaignlist',component:CampaignlistComponent},
 
 ];
 
@@ -86,7 +86,7 @@ const routes: Routes = [
         TrafficSourcesComponent,SourcesMediumsComponent,CampaignsComponent,
         AudienceComponent,DeviceCategoryComponent,GeoLocationsComponent,LanguagesComponent
     ,BehaviorComponent,LandingPagesComponent,EventsComponent,
-    SiteSpeedComponent,ConversionsComponent,SeoComponent,EcommerceComponent,GoalsComponent],
+    SiteSpeedComponent,ConversionsComponent,SeoComponent,EcommerceComponent,GoalsComponent, CampaignlistComponent],
     exports: [
         RouterModule
     ]

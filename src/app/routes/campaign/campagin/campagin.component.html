@@ -79,9 +79,16 @@
                                 </div>
                                 <div class="col-md-6"></div>
                                 <div class="col-md-3">
+                                    <p>
                                     <button class="mr-1 btn btn-primary btn-lg" type="submit"
-                                        (click)="goToNextTab($event,webUrl_field.value,'webUrl',2)">Next
+                                    (click)="successAlert()">Create
+                                    campaign</button>
+                                </p>
+                                 <p *ngIf="isCampaignExist">
+                                    <button class="mr-1 btn btn-primary btn-lg" type="submit"
+                                        (click)="goToNextTab($event,webUrl_field.value,'webUrl',2)">Integrations
                                         ></button>
+                                    </p>
                                 </div>
                             </div>
                         </div>
@@ -90,12 +97,11 @@
                 </tab>
                 <tab class="tabh">
                     <ng-template tabHeading>
-                        <p class="tabp">Goals</p>
+                        <p class="tabp">Integrations</p>
                     </ng-template>
                     <div class="row cursor-default">
                         <div class="col-md-12" class="goaldiv">
-                            <h1> What would you like to accomplish?</h1>
-                            <h3> Set the goal of your campaign by selecting one or all. (Optional)</h3>
+                            <h1> Integrations</h1>
                             <hr>
                             <div class="row">
 
@@ -120,7 +126,7 @@
                                                     </p>
                                                     <p class="goalfonsize" *ngIf="hasGaSetup">
                                                         <button type="button" class="btn btn-primary"
-                                                            (click)="saveProfile()">Save
+                                                            (click)="saveGaAccount()">Save
                                                             Changes</button>
                                                     </p>
 
@@ -142,7 +148,7 @@
                                                         (click)="integrateGSC()">Google Search Console</button>
                                                 </p>
                                                 <p class="goalfonsize" *ngIf="hasGscSetup">
-                                                    <select class="form-control">
+                                                    <select class="form-control"   (change)="onSelectGsc($event.target.value)">
                                                         <option value="0">--Select--</option>
                                                         <option *ngFor="let gscAccount of gscAccounts">
                                                             {{gscAccount}}</option>
@@ -150,7 +156,7 @@
                                                 </p>
                                                 <p class="goalfonsize" *ngIf="hasGscSetup">
                                                     <button type="button" class="btn btn-primary"
-                                                        (click)="saveProfile()">Save
+                                                        (click)="saveGscAccount()">Save
                                                         Changes</button>
                                                 </p>
                                             </div>
@@ -168,7 +174,7 @@
                                                         (click)="loginWithOptions()">Facebook</button>
                                                 </p>
                                                 <p class="goalfonsize" *ngIf="hasFacebookSetup">
-                                                    <select class="form-control">
+                                                    <select class="form-control"   (change)="onSelectFacebook($event.target.value)">
                                                         <option value="0">--Select--</option>
                                                         <option *ngFor="let facebookAccount of facebookAccounts">
                                                             {{facebookAccount}}</option>
@@ -176,7 +182,7 @@
                                                 </p>
                                                 <p class="goalfonsize" *ngIf="hasFacebookSetup">
                                                     <button type="button" class="btn btn-primary"
-                                                        (click)="saveProfile()">Save
+                                                        (click)="saveFacebookAccount()">Save
                                                         Changes</button>
                                                 </p>
                                             </div>
@@ -194,6 +200,18 @@
                                                     <button class="mr-1 btn btn-primary btn-lg" type="button"
                                                         (click)="signOut()">Google Ads</button>
                                                 </p>
+                                                <p class="goalfonsize" *ngIf="hasGadsSetup">
+                                                    <select class="form-control"   (change)="onSelectGads($event.target.value)">
+                                                        <option value="0">--Select--</option>
+                                                        <option *ngFor="let facebookAccount of facebookAccounts">
+                                                            {{facebookAccount}}</option>
+                                                    </select>
+                                                </p>
+                                                <p class="goalfonsize" *ngIf="hasGadsSetup">
+                                                    <button type="button" class="btn btn-primary"
+                                                        (click)="saveGadsAccount()">Save
+                                                        Changes</button>
+                                                </p>
                                             </div>
 
                                         </div>
@@ -207,13 +225,6 @@
                                         Go Back</button>
                                 </div>
                                 <div class="col-md-5"></div>
-                                <div class="col-md-4">
-                                    <!-- <a routerLink="./home"> -->
-                                    <button class="mr-1 btn btn-primary btn-lg" type="submit"
-                                        (click)="successAlert()">Create
-                                        campaign</button>
-                                    <!-- </a> -->
-                                </div>
                             </div>
                         </div>
 
@@ -458,43 +469,7 @@
             <div class="card-header">
                 <div class="row borderBtm padding5">
                     <h2 class="col-xs-12 col-12 col-md-5">Traffic Sources</h2>
-                    <!-- <div class="col-xs-12 col-12 col-md-3 form-group">
-                        <input type="input" placeholder="Select DateRange" class="form-control" bsDaterangepicker
-                            (bsValueChange)="onDateRangeSelect($event)"
-                            [bsConfig]="{ ranges: ranges, containerClass: 'theme-blue' }"
-                            [bsValue]="bsInlineRangeValue">
-                    </div> -->
-                    <!-- <div class="btn-group">
-                        <div class="btn-group" dropdown>
-                            <button id="button-basic" dropdownToggle type="input" class="btn campselectedname"
-                                aria-controls="dropdown-basic">
-                                {{selctedLabelName !== undefined ? selctedLabelName : 'select Label'}}
-                                <span class="caret"> </span>
-                            </button>
-                            <ul id="dropdown-basic" *dropdownMenu class="dropdown-menu camplisth" role="menu"
-                                aria-labelledby="button-basic">
-                                <li role="menuitem" *ngFor="let label of dropdownlabels"
-                                    [ngClass]="{'active': selectedLabel == label.id}"><a class="dropdown-item"
-                                        (click)="onLabelSelect($event,label)" href="javascript:void(0);">{{label.label}}</a></li>
-                            </ul>
-                        </div>
-                    </div> -->
-                    <!-- <p class="camph4">VS</p> -->
-                    <!-- <div class="btn-group">
-                        <div class="btn-group" dropdown>
-                            <button id="button-basic" dropdownToggle type="input" class="btn campselectedname"
-                                aria-controls="dropdown-basic">
-                                {{selctedLabelName1 !== undefined ? selctedLabelName1 : 'select Matrix'}}
-                                <span class="caret"> </span>
-                            </button>
-                            <ul id="dropdown-basic" *dropdownMenu class="dropdown-menu camplisth" role="menu"
-                                aria-labelledby="button-basic">
-                                <li role="menuitem" *ngFor="let label of dropdownlabels1"
-                                    [ngClass]="{'active': selectedLabel1 == label.id}"><a class="dropdown-item"
-                                        (click)="onLabelSelect1($event,label)" href="javascript:void(0);">{{label.label}}</a></li>
-                            </ul>
-                        </div>
-                    </div> -->
+
 
                 </div>
 
@@ -532,128 +507,4 @@
             </div>
         </div>
     </div>
-
-
-    <!-- <div class="col-lg-6">
-        <div class="card card-default shadow bg-white rounded height400px">
-            <div class="card-header">
-                <div class="row borderBtm padding5">
-                    <h2 class="col-xs-12 col-12 col-md-11 fontsize15px"> Site Analysis</h2>
-                    <div class="col-xs-12 col-12 col-md-1 fontsize15px">
-                        <i class="fa fa-info-circle paddingtop10px"
-                            matTooltip="Displays elements that are crucial to website performance"></i>
-                    </div>
-                </div>
-
-            </div>
-            <div class="widget-content">
-                <div *ngIf="showSpinnerSiteAnalysisContent" class="la-line-scale  linescaleloadercolortopleft">
-                    <div></div>
-                    <div></div>
-                    <div></div>
-                    <div></div>
-                    <div></div>
-                </div>
-                <div *ngIf="securitySection !== undefined && !showSpinnerSiteAnalysisContent"
-                    class="site-analysis-content">
-                    <div class="row">
-                        <div class="col-md-5">
-                            <span class="badge"
-                                [ngClass]="{'badge-success':securitySection.have_robots == true,'badge-critical':securitySection.have_robots == false}"><i
-                                    class="fa fa-check-circle"></i>{{securitySection.have_robots == true ? '  Looking Good' : '  Critical'}}
-                            </span>
-                        </div>
-                        <div class="col-md-1">&nbsp;</div>
-                        <div class="col-md-6">
-                            <h4 class="paddingleft100px">
-                                {{securitySection.have_robots == true ? ' Robots.txt found' : ' Robots.txt  not found'}}
-                            </h4>
-                        </div>
-                    </div>
-                    <div class="row">
-                        <div class="col-md-5">
-                            <span class="badge"
-                                [ngClass]="{'badge-success':securitySection.have_sitemap == true,'badge-critical':securitySection.have_sitemap == false}"><i
-                                    class="fa fa-check-circle"></i>
-                                {{securitySection.have_sitemap == true ? '  Looking Good' : '  Critical'}} </span>
-                        </div>
-                        <div class="col-md-1">&nbsp;</div>
-                        <div class="col-md-6">
-                            <h4 class="paddingleft100px">
-                                {{securitySection.have_sitemap == true ? ' Sitemap found' : ' Sitemap not found'}}</h4>
-                        </div>
-                    </div>
-                </div>
-            </div>
-        </div>
-    </div> -->
-    <!-- <div class="col-lg-4">
-
-
-
-        <div class="card card-default shadow bg-white rounded height400px">
-            <div class="card-header">
-                <div class="row borderBtm padding5">
-                    <h2 class="col-xs-12 col-12 col-md-6 fontsize15px">Backlinks Analysis</h2>
-                    <div class="col-xs-12 col-12 col-md-4 fontsize15px">
-                    <i class="fa fa-info-circle paddingtop8px paddingleft220px" 
-                    matTooltip="Displays elements that are crucial to website performance"></i>
-                </div>
-                </div>
-
-            </div>
-            <div class="widget-content">
-                <div class="backlinks-analysis-content">
-                    <div class="row">
-                        <div class="col-md-6">
-                            <h4 class="text-blue fontsize15px">Indexed Domains</h4>
-                        </div>
-                        <div class="col-md-6 text-right">
-                            <span class="badge badge-blue text-smaller text-bold">2</span>
-                        </div>
-                    </div>
-                    <div class="row">
-                        <div class="col-md-6">
-                            <h4 class="text-blue fontsize15px">Total Backlinks</h4>
-                        </div>
-                        <div class="col-md-6 text-right">
-                            <span class="badge badge-blue text-smaller text-bold">6</span>
-                        </div>
-                    </div>
-                    <div class="row">
-                        <div class="col-md-6">
-                            <h4 class="text-blue fontsize15px">Citation Flow</h4>
-                        </div>
-                        <div class="col-md-6 text-right">
-                            <span class="badge badge-blue text-smaller text-bold">11</span>
-                        </div>
-                    </div>
-                    <div class="row">
-                        <div class="col-md-6">
-                            <h4 class="text-blue fontsize15px">Referrring Domains</h4>
-                        </div>
-                        <div class="col-md-6 text-right">
-                            <span class="badge badge-blue text-smaller text-bold">4</span>
-                        </div>
-                    </div>
-                    <div class="row">
-                        <div class="col-md-6">
-                            <h4 class="text-blue fontsize15px">Referrring IP</h4>
-                        </div>
-                        <div class="col-md-6 text-right">
-                            <span class="badge badge-blue text-smaller text-bold">4</span>
-                        </div>
-                    </div>
-                    <div class="row">
-                        <div class="col-md-6">
-                            <h4 class="text-blue fontsize15px">Referring Subnet</h4>
-                        </div>
-                        <div class="col-md-6 text-right">
-                            <span class="badge badge-blue text-smaller text-bold">4</span>
-                        </div>
-                    </div>
-                </div>
-            </div>
-        </div>
-    </div> -->
 </div>

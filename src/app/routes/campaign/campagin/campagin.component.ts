@@ -83,7 +83,7 @@ export class CampaginComponent implements OnInit, AfterViewInit {
       display: false
     }
   };
-
+  isCampaignExist:boolean=false;
   startDate;
   endDate;
   clicksThisYear: string = "0";
@@ -182,6 +182,7 @@ export class CampaginComponent implements OnInit, AfterViewInit {
   hasGaSetup: boolean = false;
   hasFacebookSetup:boolean = false;
   hasGscSetup:boolean = false;
+  hasGadsSetup:boolean = false;
   gaSelectedName;
   facebookSelectedName;
   gscSelectedName;
@@ -813,10 +814,6 @@ export class CampaginComponent implements OnInit, AfterViewInit {
       this.selectedCampaignName = name !== "" ? name : undefined;
       //this.getSelectedCampaignWebsiteAuditReportData()
     });
-
-
-
-
   }
 
   //using to get seleted campaign website audit report data
@@ -1034,6 +1031,7 @@ export class CampaginComponent implements OnInit, AfterViewInit {
     this.campaignService.createCampaign(result).subscribe((res: Campaign) => {
       this.campaignModel = res;
       debugger
+      this.isCampaignExist = true;
       localStorage.setItem('masterCampaignId',res['id']);  
       //validation
       event.preventDefault();
@@ -1172,7 +1170,7 @@ export class CampaginComponent implements OnInit, AfterViewInit {
       }
     }).then((isConfirm: any) => {
       if (isConfirm) {
-        this.router.navigate(['/campaign']);
+        //this.router.navigate(['/campaign']);
       }
     });
   }
@@ -1945,6 +1943,7 @@ export class CampaginComponent implements OnInit, AfterViewInit {
       })
   }
   integrateGoogleAnalytics(): void {
+    
     const googleLoginOptions = {
       connection: 'google-oauth2',
       connection_scope: 'https://www.googleapis.com/auth/youtube.readonly,https://www.googleapis.com/auth/yt-analytics.readonly',
@@ -1982,9 +1981,9 @@ export class CampaginComponent implements OnInit, AfterViewInit {
   integrateGSC(): void {
     debugger
     const googleLoginOptions = {
-      scope: 'profile email https://www.googleapis.com/auth/webmasters.readonly https://www.googleapis.com/auth/webmasters https://www.googleapis.com/auth/analytics https://www.googleapis.com/auth/analytics.readonly https://www.googleapis.com/auth/analytics.edit'
-     // accessType: 'offline',
-     // approvalPrompt: 'force'
+      scope: 'profile email https://www.googleapis.com/auth/webmasters.readonly https://www.googleapis.com/auth/webmasters https://www.googleapis.com/auth/analytics https://www.googleapis.com/auth/analytics.readonly https://www.googleapis.com/auth/analytics.edit',
+     access_type: 'offline',
+     prompt: 'consent'
     };
     this.authService.signIn(GoogleLoginProvider.PROVIDER_ID, googleLoginOptions)
       .then((res) => {
@@ -2016,23 +2015,23 @@ export class CampaginComponent implements OnInit, AfterViewInit {
     debugger
     this.gaSelectedName = id;
   }
-  saveGA(){
+  saveGaAccount(){
   debugger
   let data = {
     id: "00000000-0000-0000-0000-000000000000",
-    urlorname: this.gadsSelectedName,
-    isactive: true,
-    campaignId: this.masterCampaignId,
+    urlOrName: this.gaSelectedName,
+    isActive: true,
+    CampaignID: this.masterCampaignId,
+    accessToken:this.accessToken,
+    refreshToken:'1111'
   }
     this.campaignService.createGA(data).subscribe(
       res => {
         debugger
        this.successAlert()
       });
-    
   }
   getAnalyticsProfileIds2() {
-
     let currDate = new Date();
     let endDate1 = this.datepipe.transform(currDate, 'yyyy-MM-dd');
     let startDate1 = this.datepipe.transform(currDate.setDate(currDate.getDate() - 28), 'yyyy-MM-dd');
@@ -2061,6 +2060,66 @@ export class CampaginComponent implements OnInit, AfterViewInit {
 
       //alert('Analytics Data Fetch failed : ' + JSON.stringify(error.error));
     });
+  }
+  onSelectGsc(id) {
+    debugger
+    this.gscSelectedName = id;
+  }
+  saveGscAccount(){
+  debugger
+  let data = {
+    id: "00000000-0000-0000-0000-000000000000",
+    urlOrName: this.gscSelectedName,
+    isActive: true,
+    CampaignID: this.masterCampaignId,
+    accessToken:this.accessToken,
+    refreshToken:'1111'
+  }
+    this.campaignService.createGSC(data).subscribe(
+      res => {
+        debugger
+       this.successAlert()
+      });
+  }
+  onSelectGads(id) {
+    debugger
+    this.gadsSelectedName = id;
+  }
+  saveGadsAccount(){
+  debugger
+  let data = {
+    id: "00000000-0000-0000-0000-000000000000",
+    urlOrName: this.gadsSelectedName,
+    isActive: true,
+    CampaignID: this.masterCampaignId,
+    accessToken:this.accessToken,
+    refreshToken:'1111'
+  }
+    this.campaignService.createGAds(data).subscribe(
+      res => {
+        debugger
+       this.successAlert()
+      });
+  }
+  onSelectFacebook(id) {
+    debugger
+    this.facebookSelectedName = id;
+  }
+  saveFacebookAccount(){
+  debugger
+  let data = {
+    id: "00000000-0000-0000-0000-000000000000",
+    urlOrName: this.facebookSelectedName,
+    isActive: true,
+    CampaignID: this.masterCampaignId,
+    accessToken:this.accessToken,
+    refreshToken:'1111'
+  }
+    this.campaignService.createFacebook(data).subscribe(
+      res => {
+        debugger
+       this.successAlert()
+      });
   }
   getGSCSiteList(){
     debugger
