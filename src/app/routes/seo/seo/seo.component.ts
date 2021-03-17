@@ -944,7 +944,6 @@ export class SeoComponent implements OnInit {
     delete params.view;
     this.router.navigate([], { queryParams: params });
     this.settingActive = 3;
-    this.getGaSetupByCampaignId();
     //this.getAnalyticsData();
   }
   ngAfterViewInit(): void {
@@ -1254,7 +1253,6 @@ export class SeoComponent implements OnInit {
     this.settingActive = 3
     this.selectedCampIdWebUrl = selectedCampaign.webUrl
     //this.getSelectedCampaignWebsiteAuditReportData()
-    this.getGaSetupByCampaignId();
     //this.getAnalyticsData();
   }
 
@@ -1363,7 +1361,7 @@ export class SeoComponent implements OnInit {
 
 
     // this.getSelectedCampaignWebsiteAuditReportData()
-    this.getGaSetupByCampaignId();
+    //this.getGaSetupByCampaignId();
     //this.getAnalyticsData();
 
   }
