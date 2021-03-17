@@ -31,9 +31,20 @@ const success = require('sweetalert');
 })
 export class SeoComponent implements OnInit {
 
+
   @ViewChild('staticTabs', { static: false }) staticTabs: TabsetComponent;
   @ViewChild(BaseChartDirective)
   period = "28Days";
+   //variable passed from campaign list
+   gaurl;
+   gaaccesstoken;
+   gadsurl;
+   gadsaccesstoken;
+   facebookurl;
+   facebookaccesstoken;
+   gscurl;
+   gscaccesstoken;
+  //variable passed from campaign list end
   //############# Site Speed start############################
   //for loding
   CUMULATIVE_LAYOUT_SHIFT_SCORE
@@ -884,6 +895,20 @@ export class SeoComponent implements OnInit {
     public route: ActivatedRoute, public router: Router, private integrationsService: IntegrationsService
     , private overvieswService: OverviewService, location: PlatformLocation,
     public auditsService: AuditsService, private http: HttpClient, public datepipe: DatePipe, private authService: SocialAuthService) {
+      
+      this.gaurl=localStorage.getItem('gaurl');
+      this.gaaccesstoken=localStorage.getItem('gaaccesstoken');
+      this.gadsurl=localStorage.getItem('gadsurl');
+      this.gadsaccesstoken=localStorage.getItem('gadsaccesstoken');
+      this.facebookurl=localStorage.getItem('facebookurl');
+      this.facebookaccesstoken=localStorage.getItem('facebookaccesstoken');
+      this.gscurl=localStorage.getItem('gscurl');
+      this.gscaccesstoken=localStorage.getItem('gscaccesstoken');
+      this.selectedCampaignName = localStorage.getItem('selectedCampName');
+      this.getDateSettings();
+      this.getData();
+
+
 
     this.campaignModel = new Campaign();
     this.bsInlineRangeValue = [new Date(new Date().setDate(new Date().getDate() - 31)), new Date()];
@@ -891,12 +916,11 @@ export class SeoComponent implements OnInit {
     let id = this.route.snapshot.paramMap.get('id');
     this.selectedCampId = `${id.substring(3)}`;
 
-    this.getDateSettings();
-    this.getGaSetupByCampaignId();
+   // this.getGaSetupByCampaignId();
     //this.getAnalyticsData();
-    this.getCampaignList();
-    this.getSerpList();
-    this.getRankingGraphDataDelete();
+   // this.getCampaignList();
+    //this.getSerpList();
+    //this.getRankingGraphDataDelete();
     this.showdiv = true;
     this.show = 'seo';
     this.showDefault = 'seo';
@@ -940,7 +964,11 @@ export class SeoComponent implements OnInit {
     this.sub = this.route.params.subscribe(params => {
       this.id = params['id'];
     });
-
+    
+    this.authService.authState.subscribe(user => {
+      
+      let user1 = user;
+    });
   }
 
   // using to check Integration Status of selected campaign Id
@@ -968,109 +996,6 @@ export class SeoComponent implements OnInit {
       }
     }
   }
-
-  // using to convert res date in valid chart's date format
-  convertToLineChartsLabels(reportDates) {
-    var LineChartsdate = []
-    var array1 = []
-    var array2 = []
-    var array3 = []
-    var array4 = []
-    var array5 = []
-    this.trafficsourcedate = { display: [], medium: [], referral: [], social: [], source: [] }
-
-    if (reportDates.length == 1 && reportDates[0]['date']) {
-      reportDates[0]['date'].map((s, i) => {
-        var date = this.changeDatesFormat(s, i)
-        array1.push({ date: date, sessions: reportDates[0]['sessions'][i] })
-      }, this.trafficsourcedate.display = array1)
-    }
-
-    if (reportDates.length == 2 && reportDates[1]['date']) {
-      reportDates[1]['date'].map((s, i) => {
-        var date = this.changeDatesFormat(s, i)
-        array2.push({ date: date, sessions: reportDates[1]['sessions'][i] })
-      }, this.trafficsourcedate.medium = array2)
-    }
-
-    if (reportDates.length == 3 && reportDates[2]['date']) {
-      reportDates[2]['date'].map((s, i) => {
-        var date = this.changeDatesFormat(s, i)
-        array3.push({ date: date, sessions: reportDates[2]['sessions'][i] })
-      }, this.trafficsourcedate.referral = array3)
-    }
-
-    if (reportDates.length == 4 && reportDates[3]['date']) {
-      reportDates[3]['date'].map((s, i) => {
-        var date = this.changeDatesFormat(s, i)
-        array4.push({ date: date, sessions: reportDates[3]['sessions'][i] })
-      }, this.trafficsourcedate.social = array4)
-    }
-
-    if (reportDates.length == 5 && reportDates[4]['date']) {
-      reportDates[4]['date'].map((s, i) => {
-        var date = this.changeDatesFormat(s, i)
-        array5.push({ date: date, sessions: reportDates[4]['sessions'][i] })
-      }, this.trafficsourcedate.source = array5)
-    }
-
-
-
-
-
-
-
-
-    var from = new Date(this.startDate);
-    var to = new Date(this.endDate);
-    var dates = []
-    // loop for every day
-    for (var day = from; day <= to; day.setDate(day.getDate() + 1)) {
-      var date2 = day.toLocaleDateString("en-US", { month: 'short', day: 'numeric' })
-      var arraydate = date2.split(' ')
-      var odate = arraydate[1];
-      var omon = arraydate[0];
-      var finaldate = odate + " " + omon
-      // your day is here
-      dates.push(finaldate)
-
-    }
-    LineChartsdate = dates;
-    console.log(dates)
-
-    var finalData1 = dates.map(s => {
-      var f = this.trafficsourcedate.display.find(x => x.date == s)
-      return f ? parseInt(f.sessions) : 0;
-    })
-    var finalData2 = dates.map(s => {
-      var f = this.trafficsourcedate.medium.find(x => x.date == s)
-      return f ? parseInt(f.sessions) : 0;
-    })
-    var finalData3 = dates.map(s => {
-      var f = this.trafficsourcedate.referral.find(x => x.date == s)
-      return f ? parseInt(f.sessions) : 0;
-    })
-
-    var finalData4 = dates.map(s => {
-      var f = this.trafficsourcedate.social.find(x => x.date == s)
-      return f ? parseInt(f.sessions) : 0;
-    })
-    var finalData5 = dates.map(s => {
-      var f = this.trafficsourcedate.source.find(x => x.date == s)
-      return f ? parseInt(f.sessions) : 0;
-    })
-
-    console.log(finalData1, finalData2, finalData3, finalData4, finalData5)
-    this.lineChartData1[0].data = finalData5
-    this.lineChartData1[1].data = finalData2
-    this.lineChartData[0].data = finalData2
-    this.lineChartData1[2].data = finalData3
-    this.lineChartData1[3].data = finalData4
-    this.lineChartData1[4].data = finalData1
-    this.lineChartLabels = LineChartsdate
-    this.lineChartLabels1 = LineChartsdate
-
-  }
   calculateObjectTotal(obj) {
 
     let total = 0;
@@ -1081,48 +1006,7 @@ export class SeoComponent implements OnInit {
     }
     return total;
   }
-  // using to get google analytics setup of selected campaign Id
-  public getGaSetupByCampaignId(): void {
-
-    this.integrationsService.getGaSetupByCampaignId('d22dc677-f8b7-42c7-6170-08d8a19f3593').subscribe(
-
-      res => {
-        this.googleAnalyticsAccountSetupList = res;
-        if (this.googleAnalyticsAccountSetupList && this.googleAnalyticsAccountSetupList.length > 0) {
-
-
-          this.gaAccounts = this.googleAnalyticsAccountSetupList.map(function (item) { return item.googleAccountSetups; });
-
-          this.authorizeGaAccounts = this.gaAccounts.filter(function (item) { return item.isAuthorize == true });
-
-          this.activeAccount = this.googleAnalyticsAccountSetupList.map(function (item) {
-            if (item.active == true) {
-              return item.googleAccountSetups;
-            }
-          })[0];
-
-          if (this.activeAccount) {
-            this.hasActiveAccount = true;
-          }
-
-          if (this.authorizeGaAccounts.length > 0) {
-            this.hasAuthorize = true
-          }
-
-        }
-        else {
-          this.hasActiveAccount = false;
-          this.hasAuthorize = false;
-          this.reportsData = undefined
-        }
-
-        //distinct google account
-
-
-      });
-  };
-
-  // using to get list of campaigns
+ // using to get list of campaigns
   public getCampaignList(): void {
 
     var userid = localStorage.getItem("userID");
@@ -1167,23 +1051,21 @@ export class SeoComponent implements OnInit {
     this.httpOptionJSON = {
       headers: new HttpHeaders({
         'Accept': 'application/json',
-        'Authorization': 'Bearer ' + this.accessToken,
+        'Authorization': 'Bearer ' + this.gaaccesstoken,
       })
     };
-    let urlcamp = this.selectedCampIdWebUrl.replace('/', '%2F');
+    let urlcamp = this.gaurl.replace('/', '%2F');
     const url = "https://www.googleapis.com/analytics/v3/management/accountSummaries";
-    //const url = "https://www.googleapis.com/analytics/v3/data/ga?ids=ga:83658108&dimensions=ga:date&start-date=2019-10-01&end-date=2021-02-15&metrics=ga:sessions";
-    //https://www.googleapis.com/analytics/v3/management/accounts/49139272/webproperties
     this.http.get(url, this.httpOptionJSON).subscribe(res => {
       if (res) {
-
+        debugger
         let rows = res['items'];
         //let accountSummaryIds=[];
         for (let i = 0; i < rows.length; i++) {
 
           let p = rows[i]
           let q = p['webProperties']['0'].websiteUrl.toString();
-          if (q.includes(this.selectedCampIdWebUrl)) {
+          if (q.includes(this.gaurl)) {
             this.getAnalyticsOrganicTraffic(rows[i].webProperties[0].profiles[0].id, this.startDate, this.endDate);
             this.getAnalyticsTrafficByChannel(rows[i].webProperties[0].profiles[0].id, this.startDate, this.endDate);
             break;
@@ -1198,17 +1080,17 @@ export class SeoComponent implements OnInit {
     });
   }
   getAnalyticsOrganicTraffic(profileid, startdate, endDate) {
-
+    debugger
     let currDate = new Date();
     let endDate1 = this.datepipe.transform(currDate, 'yyyy-MM-dd');
     let startDate1 = this.datepipe.transform(currDate.setDate(currDate.getDate() - 28), 'yyyy-MM-dd');
     this.httpOptionJSON = {
       headers: new HttpHeaders({
         'Accept': 'application/json',
-        'Authorization': 'Bearer ' + this.accessToken,
+        'Authorization': 'Bearer ' + this.gaaccesstoken,
       })
     };
-    let urlcamp = this.selectedCampIdWebUrl.replace('/', '%2F');
+    let urlcamp = this.gaurl.replace('/', '%2F');
     const url = "https://www.googleapis.com/analytics/v3/data/ga?ids=ga:" + profileid + "&dimensions=ga:date&start-date=" + startdate + "&end-date=" + endDate + "&metrics=ga:organicsearches";
     this.http.get(url, this.httpOptionJSON).subscribe(res => {
       if (res) {
@@ -1237,12 +1119,11 @@ export class SeoComponent implements OnInit {
     this.httpOptionJSON = {
       headers: new HttpHeaders({
         'Accept': 'application/json',
-        'Authorization': 'Bearer ' + this.accessToken,
+        'Authorization': 'Bearer ' + this.gaaccesstoken,
       })
     };
-    let urlcamp = this.selectedCampIdWebUrl.replace('/', '%2F');
+    let urlcamp = this.gaurl.replace('/', '%2F');
     const url = "https://www.googleapis.com/analytics/v3/data/ga?ids=ga:" + profileid + "&start-date=" + startdate + "&end-date=" + endDate + "&metrics=ga%3Asessions&dimensions=ga%3Asource%2Cga%3Amedium%2Cga%3AadContent%2Cga%3AsocialNetwork%2Cga%3AdeviceCategory"
-    //const url = "https://www.googleapis.com/analytics/v3/data/ga?ids=ga:"+profileid+"&dimensions=ga:date&start-date="+startdate+"&end-date="+endDate+"&metrics=ga:organicsearches";
 
     this.http.get(url, this.httpOptionJSON).subscribe(res => {
       if (res) {
@@ -1399,7 +1280,7 @@ export class SeoComponent implements OnInit {
 
   // using to  create new campaign in db
   submitForm(value: any) {
-debugger
+
     var result: Campaign = Object.assign({}, value);
     //  result.profilePicture = this.fileToUpload.name
 
@@ -2272,14 +2153,16 @@ debugger
     });
   }
   //------------------GSC data start---------------------------------------------
+  
   signInWithGoogle(): void {
     const googleLoginOptions = {
       scope: 'profile email https://www.googleapis.com/auth/webmasters.readonly https://www.googleapis.com/auth/webmasters'
     };
     this.authService.signIn(GoogleLoginProvider.PROVIDER_ID, googleLoginOptions)
       .then((res) => {
-
+        
         this.accessToken = res['authToken'];
+        this.gscaccesstoken = res['authToken'];
         localStorage.setItem('googleGscAccessToken', this.accessToken);
         this.isShowLoginButton = false;
         this.getData();
@@ -2293,13 +2176,10 @@ debugger
     this.httpOptionJSON = {
       headers: new HttpHeaders({
         'Accept': 'application/json',
-        'Authorization': 'Bearer ' + this.accessToken,
+        'Authorization': 'Bearer ' + this.gscaccesstoken,
       })
     };
-    // let urlcamp = this.selectedCampIdWebUrl.replace('/', '%2F');
-    // const url = "https://www.googleapis.com/webmasters/v3/sites/https:%2F%2F" + urlcamp + "%2F/searchAnalytics/query?key=AIzaSyC1IsrCeeNXp9ksAmC8szBtYVjTLJC9UWQ";
     let data = {};
-
     data = {
       "startRow": 0,
       "startDate": startDate,
@@ -2311,7 +2191,7 @@ debugger
     };
     this.http.post(url, data, this.httpOptionJSON).subscribe(res => {
       if (res) {
-
+        
         let rows = res['rows'];
         this.barDataImpressionsDevice.datasets[0].data = [];
         this.barChartLabelsDevice = [];
@@ -2332,14 +2212,9 @@ debugger
     this.httpOptionJSON = {
       headers: new HttpHeaders({
         'Accept': 'application/json',
-        'Authorization': 'Bearer ' + this.accessToken,
+        'Authorization': 'Bearer ' + this.gscaccesstoken,
       })
     };
-
-    // let urlcamp = this.selectedCampIdWebUrl.replace('/', '%2F');
-    // const url = "https://www.googleapis.com/webmasters/v3/sites/https:%2F%2F" + urlcamp + "%2F/searchAnalytics/query?key=AIzaSyC1IsrCeeNXp9ksAmC8szBtYVjTLJC9UWQ";
-    //const url = "https://www.googleapis.com/webmasters/v3/sites/https:%2F%2F" + urlcamp + "%2F/searchAnalytics/query?key=AIzaSyC1IsrCeeNXp9ksAmC8szBtYVjTLJC9UWQ";
-    //const url = "https://www.googleapis.com/webmasters/v3/sites/https%3A%2F%2Fwww.abhisi.com%2F/searchAnalytics/query?key=AIzaSyC1IsrCeeNXp9ksAmC8szBtYVjTLJC9UWQ";
     let data = {};
     if (all == 1) {
       data = {
@@ -2362,7 +2237,7 @@ debugger
     }
     this.http.post(url, data, this.httpOptionJSON).subscribe(res => {
       if (res) {
-
+        
         let rows = res['rows'];
         if (all == 0) {
           this.clicksThisYear = rows[0].clicks;
@@ -2399,7 +2274,7 @@ debugger
     this.httpOptionJSON = {
       headers: new HttpHeaders({
         'Accept': 'application/json',
-        'Authorization': 'Bearer ' + this.accessToken,
+        'Authorization': 'Bearer ' + this.gscaccesstoken,
       })
     };
 
@@ -2461,11 +2336,8 @@ debugger
     let getMonth = parseInt(this.datepipe.transform(this.fromDate.value, 'MM'));
     let prevMonth = getMonth - 1;
     this.previousStartDate = this.currYear.toString() + '-' + prevMonth + '-' + this.datepipe.transform(this.fromDate.value, 'dd');
-
-    // let prevYear = this.currYear - 1;
-    // this.previousStartDate = prevYear.toString() + '-' + this.datepipe.transform(this.fromDate.value, 'MM-dd');
     this.getData();
-    this.getAnalyticsProfileIds();
+    //this.getAnalyticsProfileIds();
   }
 
   onEndDateChange(event) {
@@ -2477,18 +2349,19 @@ debugger
     // let prevYear = this.currYear - 1;
     // this.previousEndDate = prevYear.toString() + '-' + this.datepipe.transform(this.toDate.value, 'MM-dd');
     this.getData();
-    this.getAnalyticsProfileIds();
+    //this.getAnalyticsProfileIds();
   }
   getData() {
-
-    if (this.accessToken == '' || this.accessToken == undefined || this.accessToken == null) {
+    
+    if (this.gscaccesstoken == '' || this.gscaccesstoken == undefined || this.gscaccesstoken == null) {
       //alert("Please, Login with Google to fetch data");
     } else if (parseDate(this.endDate) < parseDate(this.startDate)) {
       //alert("Start Date can not be grater then End Date");
     }
     else {
 
-      let urlcamp = this.selectedCampIdWebUrl.replace('/', '%2F');
+      let urlcamp = this.gscurl.replace('https://', '');
+      urlcamp = urlcamp.replace('/', '');
       const url = "https://www.googleapis.com/webmasters/v3/sites/https%3A%2F%2F" + urlcamp + "/searchAnalytics/query?key=AIzaSyC1IsrCeeNXp9ksAmC8szBtYVjTLJC9UWQ";
 
       //const url = "https://searchconsole.googleapis.com/webmasters/v3/sites/https%3A%2F%2Fpatwa.co.in/searchAnalytics/query?key=AIzaSyC1IsrCeeNXp9ksAmC8szBtYVjTLJC9UWQ"
@@ -2507,16 +2380,7 @@ debugger
     currDate = new Date();
     this.previousEndDate = this.datepipe.transform(currDate.setFullYear(currDate.getFullYear() - 1), 'yyyy-MM-dd');
     this.previousStartDate = this.datepipe.transform(currDate.setDate(currDate.getDate() - 28), 'yyyy-MM-dd');
-
-    // this.startDate = this.datepipe.transform(this.fromDate.value, 'yyyy-MM-dd');
-    // this.currYear = parseInt(this.datepipe.transform(this.fromDate.value, 'yyyy'));
-    // let prevYear = this.currYear - 1;
-    // this.previousStartDate = prevYear.toString() + '-' + this.datepipe.transform(this.fromDate.value, 'MM-dd');
-    // this.endDate = this.datepipe.transform(this.toDate.value, 'yyyy-MM-dd');
-    // this.currYear = parseInt(this.datepipe.transform(this.toDate.value, 'yyyy'));
-    // prevYear = this.currYear - 1;
-    // this.previousEndDate = prevYear.toString() + '-' + this.datepipe.transform(this.toDate.value, 'MM-dd');
-  }
+ }
 
   getYearwiseDifference(previous, current) {
 

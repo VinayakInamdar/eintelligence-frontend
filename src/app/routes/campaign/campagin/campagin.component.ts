@@ -1033,6 +1033,7 @@ export class CampaginComponent implements OnInit, AfterViewInit {
       debugger
       this.isCampaignExist = true;
       localStorage.setItem('masterCampaignId',res['id']);  
+      this.masterCampaignId = res['id'];
       //validation
       event.preventDefault();
       for (let c in this.valForm.controls) {
@@ -1981,9 +1982,12 @@ export class CampaginComponent implements OnInit, AfterViewInit {
   integrateGSC(): void {
     debugger
     const googleLoginOptions = {
+      connection: 'google-oauth2',
       scope: 'profile email https://www.googleapis.com/auth/webmasters.readonly https://www.googleapis.com/auth/webmasters https://www.googleapis.com/auth/analytics https://www.googleapis.com/auth/analytics.readonly https://www.googleapis.com/auth/analytics.edit',
-     access_type: 'offline',
-     prompt: 'consent'
+      accessType: 'offline',
+      //approvalPrompt: 'force',
+      //  access_type: 'offline',
+      prompt: 'consent'
     };
     this.authService.signIn(GoogleLoginProvider.PROVIDER_ID, googleLoginOptions)
       .then((res) => {
@@ -1995,22 +1999,6 @@ export class CampaginComponent implements OnInit, AfterViewInit {
       })
   }
  
-  addToGoogleSearchConsole() {
-    debugger
-    let data = {
-      id: "00000000-0000-0000-0000-000000000000",
-      accessToken: this.accessToken,
-      refreshToken: '',
-      companyID: this.companyId,
-      accountType: 'gsc'
-    }
-    this.campaignService.createGoogleAnalytics(data).subscribe(response => {
-      if (response) {
-        debugger
-      this.snackbarService.show('Google Search Console Account Integrated');
-      }
-    });
-  }
   onSelectGa(id) {
     debugger
     this.gaSelectedName = id;
