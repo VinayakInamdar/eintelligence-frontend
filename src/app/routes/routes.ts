@@ -66,6 +66,11 @@ export const routes: Routes = [
             },
 
             {
+                path: 'campaignlist',
+                component: LayoutComponent,
+                loadChildren: () => import('./campaign/campagin.module').then(m => m.CampaginModule )
+            },
+            {
                 path: 'campaign',
                 component: LayoutComponent,
                 loadChildren: () => import('./campaign/campagin.module').then(m => m.CampaginModule )

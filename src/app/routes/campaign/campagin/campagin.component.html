@@ -212,19 +212,10 @@
                                                 <div class="col-md-11">
                                                     <!-- <em class="fa-2x mr-2 fas fa-store"></em><br> -->
                                                     <p class="goalfonsize">
-                                                        <button class="mr-1 btn btn-primary btn-lg" type="button" (click)="signOut()">Add Keywords
+                                                        <button class="mr-1 btn btn-primary btn-lg" type="button" (click)="goToAddKeywords()">Add Keywords
                                                         </button>
-                                                    </p>
-                                                    <p class="goalfonsize" *ngIf="hasGadsSetup">
-                                                        <select class="form-control" (change)="onSelectGads($event.target.value)">
-                                                            <option value="0">--Select--</option>
-                                                            <option *ngFor="let facebookAccount of facebookAccounts">
-                                                                {{facebookAccount}}</option>
-                                                        </select>
-                                                    </p>
-                                                    <p class="goalfonsize" *ngIf="hasGadsSetup">
-                                                        <button type="button" class="btn btn-primary" (click)="saveGadsAccount()">Save
-                                                            Changes</button>
+                                                        <button class="mr-1 btn btn-primary btn-lg" type="button" (click)="goToKeywords()">Keywords
+                                                        </button>
                                                     </p>
                                                 </div>
                                             </div>

@@ -25,6 +25,12 @@ import { FacebookService, LoginOptions, LoginResponse } from 'ngx-facebook';
 })
 export class HomeComponent implements OnInit {
   hasGaSetup:boolean;
+  campaignList = [];
+  CampaignGAList=[];
+  CampaignGSCList=[];
+  CampaignGAdsList=[];
+  SelectedCampaignId;
+  CampaignFacebookList=[];
   //Traffic
   thisMonthTraffic = 0;
   lastMonthTraffic = 0;
@@ -87,7 +93,6 @@ export class HomeComponent implements OnInit {
   percentImpressions;
   percentCTR;
   percentPosition;
-  campaignList = [];
   selectedCampIdWebUrl: string;
   selectedCampaignName: string;
 
@@ -388,12 +393,30 @@ export class HomeComponent implements OnInit {
 
   // using to view analytics report of selected campaign Id
   userRowSelect(campaign: any): void {
-    localStorage.setItem('selectedCampId', campaign.data.id);
-    if (campaign.data.webUrl == '' || campaign.data.webUrl == null || campaign.data.webUrl == undefined) {
-      this.router.navigate([`/socialmedia`])
-    } else {
-      this.router.navigate([`../campaign/:id${campaign.data.id}/seo`]);
+    this.SelectedCampaignId = campaign.data.id;
+    let ga = this.CampaignGAList.filter(x => x.campaignID == this.SelectedCampaignId);
+    if(ga !=null && ga != undefined && ga.length > 0){
+     localStorage.setItem('gaurl', ga[0]['urlOrName']);
+     localStorage.setItem('gaaccesstoken', ga[0]['accessToken']);
     }
+    let gads = this.CampaignGAdsList.filter(x => x.campaignID == this.SelectedCampaignId);
+    if(gads !=null && gads != undefined && gads.length > 0){
+     localStorage.setItem('gadsurl', gads[0]['urlOrName']);
+     localStorage.setItem('gadsaccesstoken', gads[0]['accessToken']);
+    }
+    let facebook = this.CampaignFacebookList.filter(x => x.campaignID == this.SelectedCampaignId);
+    if(facebook !=null && facebook != undefined && facebook.length > 0){
+     localStorage.setItem('facebookpagename', facebook[0]['urlOrName']);
+     localStorage.setItem('facebookaccesstoken', facebook[0]['accessToken']);
+    }
+    let gsc = this.CampaignGSCList.filter(x => x.campaignID == this.SelectedCampaignId);
+    if(gsc !=null && gsc != undefined && gsc.length > 0){
+     localStorage.setItem('gscurl', gsc[0]['urlOrName']);
+     localStorage.setItem('gscaccesstoken', gsc[0]['accessToken']);
+    }
+     localStorage.setItem('selectedCampId', campaign.data.id);
+     localStorage.setItem('selectedCampName', campaign.data.name);
+     this.router.navigate([`../campaign/:id${campaign.data.id}/seo`]);
     // this.router.navigate(['/campaign', { id: campaign.data.id }], {
     //   queryParams: {
     //     view: 'showReport'
@@ -590,6 +613,11 @@ export class HomeComponent implements OnInit {
     this.ConversionsPve = 0;
     this.ConversionsNve = 0;
     this.ConversionsNut = 0;
+    this.getCampaignList();
+    this.getCampaignGA();
+    this.getCampaignGAds();
+    this.getCampaignFacebook();
+    this.getCampaignGSC();
   }
   onStartDateChange(event) {
     this.startDate = this.datepipe.transform(this.fromDate.value, 'yyyy-MM-dd');
@@ -1018,6 +1046,59 @@ export class HomeComponent implements OnInit {
           };
           return a.year - b.year || MONTH[a.month] - MONTH[b.month];
         });
+      }
+    })
+  }
+  ///Fr redirect to seo
+  
+  private getFilterOption() {
+    return {
+      pageNumber: 1,
+      pageSize: 1000,
+      fields: '',
+      searchQuery: '',
+      orderBy: ''
+    }
+
+  }
+  getCampaignGA() {
+    //  this.barData.datasets[0].data = [10,20,34,6,43,12,56,86,5,33,24,55]
+    const filterOptionModel = this.getFilterOption();
+    this.campaignService.getFilteredGA(filterOptionModel).subscribe((response: any) => {
+      if (response) {
+        
+        this.CampaignGAList = response.body;
+      
+      }
+    })
+  }
+  getCampaignGAds() {
+    //  this.barData.datasets[0].data = [10,20,34,6,43,12,56,86,5,33,24,55]
+    const filterOptionModel = this.getFilterOption();
+    this.campaignService.getFilteredGAds(filterOptionModel).subscribe((response: any) => {
+      if (response) {
+        
+        this.CampaignGAdsList = response.body;
+      }
+    })
+  }
+  getCampaignGSC() {
+    //  this.barData.datasets[0].data = [10,20,34,6,43,12,56,86,5,33,24,55]
+    const filterOptionModel = this.getFilterOption();
+    this.campaignService.getFilteredGSC(filterOptionModel).subscribe((response: any) => {
+      if (response) {
+        
+        this.CampaignGSCList = response.body;
+      }
+    })
+  }
+  getCampaignFacebook() {
+    //  this.barData.datasets[0].data = [10,20,34,6,43,12,56,86,5,33,24,55]
+    const filterOptionModel = this.getFilterOption();
+    this.campaignService.getFilteredFacebook(filterOptionModel).subscribe((response: any) => {
+      if (response) {
+        
+        this.CampaignFacebookList = response.body;
       }
     })
   }

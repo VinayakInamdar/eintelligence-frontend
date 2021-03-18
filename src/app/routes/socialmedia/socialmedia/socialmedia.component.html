@@ -16,13 +16,7 @@
             Campaign name: {{selectedCampaignName}}
         </div>
         <div class="col move-center">
-            <button class="mr-1 btn btn-primary btn-lg" type="button" (click)="loginWithOptions()">
-                <i class="fa fa-facebook mr-1"></i>
-                Login with Facebook
-            </button>
-        </div>
-        <div class="col-md-2">
-
+            <div class="col-md-3">
             <select class="form-control" [(ngModel)]="period" (change)="onSelect($event.target.value)">
                 <option value='0'>Select Date Range</option>
                 <option value='day'>Yesterday</option>
@@ -30,6 +24,20 @@
                 <option value='days_28' selected>28 Days</option>
             </select>
         </div>
+            <!-- <button class="mr-1 btn btn-primary btn-lg" type="button" (click)="loginWithOptions()">
+                <i class="fa fa-facebook mr-1"></i>
+                Login with Facebook
+            </button> -->
+        </div>
+        <!-- <div class="col-md-2">
+
+            <select class="form-control" [(ngModel)]="period" (change)="onSelect($event.target.value)">
+                <option value='0'>Select Date Range</option>
+                <option value='day'>Yesterday</option>
+                <option value='week'>Week</option>
+                <option value='days_28' selected>28 Days</option>
+            </select>
+        </div> -->
     </div>
 </div>
 <div class="row  justify-content-center">

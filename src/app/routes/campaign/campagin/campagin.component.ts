@@ -50,6 +50,8 @@ export class CampaginComponent implements OnInit, AfterViewInit {
   facebookPageToken;
   facebookUserId;
   facebookAccessToken;
+  gaAccaessToken;
+  gscAccessToken;
   //GSC data variables
   clicksData = [];
   dateListData = [];
@@ -1284,11 +1286,12 @@ export class CampaginComponent implements OnInit, AfterViewInit {
 
   //using to view keyword list and also add new keyword
   goToKeywords(): void {
-    this.router.navigate([`/campaign/:id${this.selectedCampId}/seo/keywords`])
+    this.router.navigate([`/campaign/:id${this.masterCampaignId}/seo/keywords`])
   }
 
   public goToAddKeywords(): void {
-    this.router.navigate([`/campaign/:id${this.selectedCampId}/seo/keywords`], {
+    debugger
+    this.router.navigate([`/campaign/:id${this.masterCampaignId}/seo/keywords`], {
       queryParams: {
         view: 'addKeyword'
       },
@@ -1946,11 +1949,12 @@ export class CampaginComponent implements OnInit, AfterViewInit {
   integrateGoogleAnalytics(): void {
     
     const googleLoginOptions = {
-      connection: 'google-oauth2',
+     connection: 'google-oauth2',
+     prompt: 'consent',
       connection_scope: 'https://www.googleapis.com/auth/youtube.readonly,https://www.googleapis.com/auth/yt-analytics.readonly',
      // scope: 'openid profile',
       accessType: 'offline',
-      approvalPrompt: 'force',
+      //approvalPrompt: 'force',
       scope: 'openid profile email https://www.googleapis.com/auth/webmasters.readonly https://www.googleapis.com/auth/webmasters https://www.googleapis.com/auth/analytics https://www.googleapis.com/auth/analytics.readonly https://www.googleapis.com/auth/analytics.edit'
     };
     this.authService.signIn(GoogleLoginProvider.PROVIDER_ID, googleLoginOptions)
@@ -1958,46 +1962,11 @@ export class CampaginComponent implements OnInit, AfterViewInit {
         debugger
         this.gaAccounts=[];
         this.hasGaSetup = true;
-        this.accessToken = res['authToken'];
+        this.gaAccaessToken = res['authToken'];
         this.getAnalyticsProfileIds2();
+      })
+  }
 
-        this.addToGoogleAnalytics();
-      })
-  }
-  addToGoogleAnalytics() {
-    let data = {
-      id: "00000000-0000-0000-0000-000000000000",
-      accessToken: this.accessToken,
-      refreshToken: '',
-      companyID: this.companyId,
-      accountType: 'ga',
-    }
-    this.campaignService.createGoogleAnalytics(data).subscribe(response => {
-      if (response) {
-        debugger
-      this.snackbarService.show('Google Analytics Account Integrated');
-      }
-    });
-  }
-  integrateGSC(): void {
-    debugger
-    const googleLoginOptions = {
-      connection: 'google-oauth2',
-      scope: 'profile email https://www.googleapis.com/auth/webmasters.readonly https://www.googleapis.com/auth/webmasters https://www.googleapis.com/auth/analytics https://www.googleapis.com/auth/analytics.readonly https://www.googleapis.com/auth/analytics.edit',
-      accessType: 'offline',
-      //approvalPrompt: 'force',
-      //  access_type: 'offline',
-      prompt: 'consent'
-    };
-    this.authService.signIn(GoogleLoginProvider.PROVIDER_ID, googleLoginOptions)
-      .then((res) => {
-        this.gscAccounts=[];
-        this.hasGscSetup = true;
-        this.accessToken = res['authToken'];
-        debugger
-        this.getGSCSiteList();
-      })
-  }
  
   onSelectGa(id) {
     debugger
@@ -2010,7 +1979,7 @@ export class CampaginComponent implements OnInit, AfterViewInit {
     urlOrName: this.gaSelectedName,
     isActive: true,
     CampaignID: this.masterCampaignId,
-    accessToken:this.accessToken,
+    accessToken:this.gaAccaessToken,
     refreshToken:'1111'
   }
     this.campaignService.createGA(data).subscribe(
@@ -2026,7 +1995,7 @@ export class CampaginComponent implements OnInit, AfterViewInit {
     this.httpOptionJSON = {
       headers: new HttpHeaders({
         'Accept': 'application/json',
-        'Authorization': 'Bearer ' + this.accessToken,
+        'Authorization': 'Bearer ' + this.gaAccaessToken,
       })
     };
     const url = "https://www.googleapis.com/analytics/v3/management/accountSummaries";
@@ -2049,10 +2018,31 @@ export class CampaginComponent implements OnInit, AfterViewInit {
       //alert('Analytics Data Fetch failed : ' + JSON.stringify(error.error));
     });
   }
+   
+  integrateGSC(): void {
+    debugger
+    const googleLoginOptions = {
+      connection: 'google-oauth2',
+      scope: 'profile email https://www.googleapis.com/auth/webmasters.readonly https://www.googleapis.com/auth/webmasters https://www.googleapis.com/auth/analytics https://www.googleapis.com/auth/analytics.readonly https://www.googleapis.com/auth/analytics.edit',
+      accessType: 'offline',
+      //approvalPrompt: 'force',
+      //  access_type: 'offline',
+      prompt: 'consent'
+    };
+    this.authService.signIn(GoogleLoginProvider.PROVIDER_ID, googleLoginOptions)
+      .then((res) => {
+        this.gscAccounts=[];
+        this.hasGscSetup = true;
+        this.gscAccessToken = res['authToken'];
+        debugger
+        this.getGSCSiteList();
+      })
+  }
   onSelectGsc(id) {
     debugger
     this.gscSelectedName = id;
   }
+
   saveGscAccount(){
   debugger
   let data = {
@@ -2060,7 +2050,7 @@ export class CampaginComponent implements OnInit, AfterViewInit {
     urlOrName: this.gscSelectedName,
     isActive: true,
     CampaignID: this.masterCampaignId,
-    accessToken:this.accessToken,
+    accessToken:this.gscAccessToken,
     refreshToken:'1111'
   }
     this.campaignService.createGSC(data).subscribe(
@@ -2100,7 +2090,7 @@ export class CampaginComponent implements OnInit, AfterViewInit {
     urlOrName: this.facebookSelectedName,
     isActive: true,
     CampaignID: this.masterCampaignId,
-    accessToken:this.accessToken,
+    accessToken:this.facebookAccessToken,
     refreshToken:'1111'
   }
     this.campaignService.createFacebook(data).subscribe(
@@ -2114,7 +2104,7 @@ export class CampaginComponent implements OnInit, AfterViewInit {
     this.httpOptionJSON = {
       headers: new HttpHeaders({
         'Accept': 'application/json',
-        'Authorization': 'Bearer ' + this.accessToken,
+        'Authorization': 'Bearer ' + this.gscAccessToken,
       })
     };
     const url = "https://searchconsole.googleapis.com/webmasters/v3/sites?key=AIzaSyC1IsrCeeNXp9ksAmC8szBtYVjTLJC9UWQ";
@@ -2178,4 +2168,6 @@ debugger
       this.snackbarService.show('Fetch New Likes Count Failed : ' + JSON.stringify(error.error));
     });
   }
+  
+
 }

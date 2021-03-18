@@ -71,10 +71,16 @@ export class SocialmediaComponent implements OnInit {
       appId: '200487178533939',//environment.facebook_appid,//3574916862576976
       version: 'v9.0'
     });
+    debugger
     //let id = this.route.snapshot.paramMap.get('id');
     let id = localStorage.getItem("selectedCampId");
+    this.pagename = localStorage.getItem("facebookpagename");
+    this.accessToken = localStorage.getItem("facebookaccesstoken");
+    this.getUserId();
+    this.getAllPagesList();
+    this.selectedCampaignName = this.pagename  !== "" ? this.pagename  : undefined;
     this.selectedCampId = `${id}`;
-    this.getCampaignList();
+    //this.getCampaignList();
   }
   // using to get list of campaigns
   public getCampaignList(): void {
@@ -146,10 +152,11 @@ export class SocialmediaComponent implements OnInit {
     this.externalReferrerList = []// [{ "url": "1", "count": "2", "percent": "3" }, { "url": "4", "count": "5", "percent": "6" }];
   }
   getUserId() {
-
+    debugger
     const url = "https://graph.facebook.com/me?access_token=" + this.accessToken;
     this.http.get(url).subscribe(res => {
       if (res) {
+        debugger
         this.userId = res['id'];
         this.userName = res['name'];
         //this.getUserPermission();
@@ -161,11 +168,12 @@ export class SocialmediaComponent implements OnInit {
     });
   }
   getAllPagesList() {
+    debugger
     const url = "https://graph.facebook.com/me/accounts?&access_token=" + this.accessToken;
     // const  url = "https://graph.facebook.com/" + this.userId + "/accounts?access_token=" + this.accessToken;
     this.http.get(url).subscribe(res => {
       if (res) {
-
+        debugger
         let pagelist = res['data'];
 
         let currPage = pagelist.filter(x => x.name.toLowerCase() === this.selectedCampaignName.toLowerCase());

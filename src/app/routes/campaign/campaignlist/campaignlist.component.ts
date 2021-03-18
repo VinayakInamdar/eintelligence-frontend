@@ -94,7 +94,7 @@ export class CampaignlistComponent implements OnInit {
      }
      let facebook = this.CampaignFacebookList.filter(x => x.campaignID == this.SelectedCampaignId);
      if(facebook !=null && facebook != undefined && facebook.length > 0){
-      localStorage.setItem('facebookurl', facebook[0]['urlOrName']);
+      localStorage.setItem('facebookpagename', facebook[0]['urlOrName']);
       localStorage.setItem('facebookaccesstoken', facebook[0]['accessToken']);
      }
      let gsc = this.CampaignGSCList.filter(x => x.campaignID == this.SelectedCampaignId);
@@ -104,6 +104,7 @@ export class CampaignlistComponent implements OnInit {
      }
       localStorage.setItem('selectedCampId', campaign.data.id);
       localStorage.setItem('selectedCampName', campaign.data.name);
+      localStorage.setItem('selectedCampUrl', campaign.data.webUrl);
       this.router.navigate([`../campaign/:id${campaign.data.id}/seo`]);
   }
     private getFilterOption() {
@@ -157,5 +158,9 @@ export class CampaignlistComponent implements OnInit {
         }
       })
     }
+  public AddCampaign(): any {
+    this.router.navigate(['/home/campaign']);
+  }
+
 }
 

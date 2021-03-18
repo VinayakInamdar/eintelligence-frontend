@@ -239,7 +239,7 @@ export class KeywordsComponent implements OnInit {
 
 
   ngOnInit(): void {
-
+    debugger
     let id = this.route.snapshot.paramMap.get('id');
     this.selectedCampId = `${id.substring(3)}`;
     if (this.route.snapshot.queryParams.view !== undefined) {
@@ -333,7 +333,7 @@ export class KeywordsComponent implements OnInit {
       Location: '',
       Tags: []
     }
-
+    debugger
     var result: SerpDto = Object.assign({}, value);
     keywordDto.CampaignID = this.selectedCampId
     keywordDto.Keyword = result['keyword'].split('\n')

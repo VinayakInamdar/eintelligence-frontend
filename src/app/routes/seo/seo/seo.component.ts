@@ -35,6 +35,7 @@ export class SeoComponent implements OnInit {
   @ViewChild('staticTabs', { static: false }) staticTabs: TabsetComponent;
   @ViewChild(BaseChartDirective)
   period = "28Days";
+  
    //variable passed from campaign list
    gaurl;
    gaaccesstoken;
@@ -378,6 +379,7 @@ export class SeoComponent implements OnInit {
   hasGaSetup: boolean;
   showSpinnerBaseChart: boolean = true;
   showSpinnerSiteAnalysisContent: boolean = true;
+  showSpinnerSiteSpeedContent = true;
   googleAnalyticsAccountSetupList: GoogleAnalyticsAccountSetups[];
   activeAccount: any;
   hasActiveAccount: boolean = false;
@@ -896,18 +898,6 @@ export class SeoComponent implements OnInit {
     , private overvieswService: OverviewService, location: PlatformLocation,
     public auditsService: AuditsService, private http: HttpClient, public datepipe: DatePipe, private authService: SocialAuthService) {
       
-      this.gaurl=localStorage.getItem('gaurl');
-      this.gaaccesstoken=localStorage.getItem('gaaccesstoken');
-      this.gadsurl=localStorage.getItem('gadsurl');
-      this.gadsaccesstoken=localStorage.getItem('gadsaccesstoken');
-      this.facebookurl=localStorage.getItem('facebookurl');
-      this.facebookaccesstoken=localStorage.getItem('facebookaccesstoken');
-      this.gscurl=localStorage.getItem('gscurl');
-      this.gscaccesstoken=localStorage.getItem('gscaccesstoken');
-      this.selectedCampaignName = localStorage.getItem('selectedCampName');
-      this.getDateSettings();
-      this.getData();
-
 
 
     this.campaignModel = new Campaign();
@@ -960,6 +950,24 @@ export class SeoComponent implements OnInit {
 
 
   ngOnInit(): void {
+    debugger
+    this.gaurl=localStorage.getItem('gaurl');
+    this.gaaccesstoken=localStorage.getItem('gaaccesstoken');
+    this.gadsurl=localStorage.getItem('gadsurl');
+    this.gadsaccesstoken=localStorage.getItem('gadsaccesstoken');
+    this.facebookurl=localStorage.getItem('facebookurl');
+    this.facebookaccesstoken=localStorage.getItem('facebookaccesstoken');
+    this.gscurl=localStorage.getItem('gscurl');
+    this.gscaccesstoken=localStorage.getItem('gscaccesstoken');
+    this.selectedCampaignName = localStorage.getItem('selectedCampName');
+    this.selectedCampIdWebUrl = localStorage.getItem('selectedCampUrl');
+    this.getDateSettings();
+    this.getData();
+    this.getAnalyticsProfileIds();
+    this.getSiteSpeedDataMobile();
+    this.getSiteSpeedDataDesktop();
+
+
     this.sub = this.route.params.subscribe(params => {
       this.id = params['id'];
     });
@@ -1043,7 +1051,7 @@ export class SeoComponent implements OnInit {
 
   }
   getAnalyticsProfileIds() {
-
+    
     let currDate = new Date();
     let endDate1 = this.datepipe.transform(currDate, 'yyyy-MM-dd');
     let startDate1 = this.datepipe.transform(currDate.setDate(currDate.getDate() - 28), 'yyyy-MM-dd');
@@ -1057,7 +1065,7 @@ export class SeoComponent implements OnInit {
     const url = "https://www.googleapis.com/analytics/v3/management/accountSummaries";
     this.http.get(url, this.httpOptionJSON).subscribe(res => {
       if (res) {
-        debugger
+        
         let rows = res['items'];
         //let accountSummaryIds=[];
         for (let i = 0; i < rows.length; i++) {
@@ -1079,7 +1087,7 @@ export class SeoComponent implements OnInit {
     });
   }
   getAnalyticsOrganicTraffic(profileid, startdate, endDate) {
-    debugger
+    
     let currDate = new Date();
     let endDate1 = this.datepipe.transform(currDate, 'yyyy-MM-dd');
     let startDate1 = this.datepipe.transform(currDate.setDate(currDate.getDate() - 28), 'yyyy-MM-dd');
@@ -1709,18 +1717,20 @@ export class SeoComponent implements OnInit {
     }
   }
   getRankingGraphDataDelete() {
+
     const d = new Date();
     let currYear = d.getFullYear();
     //  this.barData.datasets[0].data = [10,20,34,6,43,12,56,86,5,33,24,55]
     const filterOptionModel = this.getFilterOptionPlans();
     this.campaignService.getFilteredRankingGraph(filterOptionModel).subscribe((response: any) => {
       if (response) {
-
+        debugger
         this.barDataArray = [];
         this.rankingGraphData = response.body;
         this.rankingGraphData = this.rankingGraphData.filter(x => x.campaignId.toString() === this.selectedCampId.toLowerCase() && x.year == currYear);
         this.tempRankingGraphData = this.rankingGraphData;
-        this.DeleteRankingGraphData();
+    this.DeleteRankingGraphData();
+
       }
     });
   }
@@ -1830,32 +1840,6 @@ export class SeoComponent implements OnInit {
     this.campaignService.getSerp("&tbs=qdr:m").subscribe(res => {
 
       this.serpList = res;
-      //this.source = new LocalDataSource(this.serpList) 
-      // var serpData = res.map((s, i) => {
-      //   if (s.position > 0 && s.position <= 3) {
-      //     var positions = []
-      //     for (var x = 0; x < 12; x++) {
-      //       this.barData.datasets[0].data.push(s.position)
-      //     }
-      //   }
-      //   else if (s.position > 3 && s.position <= 10) {
-      //     this.barData.datasets[1].data = s.position
-      //   }
-      //   else if (s.position > 10 && s.position <= 20) {
-      //     this.barData.datasets[2].data = s.position
-      //   }
-      //   else if (s.position > 20 && s.position <= 50) {
-      //     this.barData.datasets[3].data = s.position
-      //   }
-      //   else if (s.position > 50 && s.position <= 100) {
-      //     this.barData.datasets[4].data = s.position
-      //   }
-      //   else if (s.position > 100) {
-      //     this.barData.datasets[5].data = s.position
-      //   }
-
-      // })
-      // this.chart.chart.update();
     });
   }
   private getFilterOptionPlans() {
@@ -1873,18 +1857,19 @@ export class SeoComponent implements OnInit {
     this.httpOptionJSON = {
       headers: new HttpHeaders({
         'Accept': 'application/json',
-        'Authorization': 'Bearer ' + this.accessToken,
+        'Authorization': 'Bearer ' + this.gaaccesstoken,
       })
     };
-    let urlcamp = this.selectedCampIdWebUrl.replace('/', '%2F');
+    let urlcamp = this.selectedCampIdWebUrl.replace('https://', '');
+    urlcamp = urlcamp.replace('http://', '');
+    urlcamp = urlcamp.replace('/', '');
 
     const url = "https://pagespeedonline.googleapis.com/pagespeedonline/v5/runPagespeed?url=https%3A%2F%2F" + urlcamp + "&strategy=MOBILE&key=AIzaSyC1IsrCeeNXp9ksAmC8szBtYVjTLJC9UWQ";
-    // const url = "https://pagespeedonline.googleapis.com/pagespeedonline/v5/runPagespeed?url=https%3A%2F%2Fpatwa.co.in&key=AIzaSyC1IsrCeeNXp9ksAmC8szBtYVjTLJC9UWQ"
     this.http.get(url, this.httpOptionJSON).subscribe(res => {
       if (res) {
-
+        debugger
         //FCP 2320 green
-        this.showSpinnerSiteAnalysisContent = true;
+        this.showSpinnerSiteSpeedContent = false;
         let rows = res['loadingExperience'].metrics;
         let lighthouse = res['lighthouseResult'];
         //load expeience
@@ -2014,18 +1999,20 @@ export class SeoComponent implements OnInit {
     this.httpOptionJSON = {
       headers: new HttpHeaders({
         'Accept': 'application/json',
-        'Authorization': 'Bearer ' + this.accessToken,
+        'Authorization': 'Bearer ' + this.gaaccesstoken,
       })
     };
-    let urlcamp = this.selectedCampIdWebUrl.replace('/', '%2F');
+    let urlcamp = this.selectedCampIdWebUrl.replace('https://', '');
+    urlcamp = urlcamp.replace('http://', '');
+    urlcamp = urlcamp.replace('/', '');
     //&strategy=DESKTOP
     const url = "https://pagespeedonline.googleapis.com/pagespeedonline/v5/runPagespeed?url=https%3A%2F%2F" + urlcamp + "&strategy=DESKTOP&key=AIzaSyC1IsrCeeNXp9ksAmC8szBtYVjTLJC9UWQ";
     // const url = "https://pagespeedonline.googleapis.com/pagespeedonline/v5/runPagespeed?url=https%3A%2F%2Fpatwa.co.in&key=AIzaSyC1IsrCeeNXp9ksAmC8szBtYVjTLJC9UWQ"
     this.http.get(url, this.httpOptionJSON).subscribe(res => {
       if (res) {
-
+        debugger
         //FCP 2320 green
-        this.showSpinnerSiteAnalysisContent = true;
+        this.showSpinnerSiteSpeedContent = false;
         let rows = res['loadingExperience'].metrics;
         let lighthouse = res['lighthouseResult'];
         //load expeience
@@ -2389,5 +2376,6 @@ export class SeoComponent implements OnInit {
   getPercentage(num, total) {
     return ((100 * num) / total)
   }
+  
   //#################  GSC data end ###########################################
 }
