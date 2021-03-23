@@ -240,6 +240,7 @@ export class KeywordsComponent implements OnInit {
 
   ngOnInit(): void {
     debugger
+    this.getSerpLocations();
     let id = this.route.snapshot.paramMap.get('id');
     this.selectedCampId = `${id.substring(3)}`;
     if (this.route.snapshot.queryParams.view !== undefined) {
@@ -349,6 +350,12 @@ export class KeywordsComponent implements OnInit {
     });
   }
 
+  getSerpLocations(){
+    this.campaignService.getSerpLocations('IN').subscribe((res) => { 
+      debugger
+      let result = res;
+    });
+  }
   // using to go to next tab
 
   goToNextTab(event, inputvalue, fieldName, tabid) {

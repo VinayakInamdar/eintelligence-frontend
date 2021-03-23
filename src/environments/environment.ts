@@ -2,6 +2,10 @@
 // `ng build --prod` replaces `environment.ts` with `environment.prod.ts`.
 // The list of file replacements can be found in `angular.json`.
 export const environment = {
+  //client id secret for abhisihelpdesk@gmail.com
+  googleClientId:'959505317275-v8294ho5b3prni9rqi4l6nnb8463uiig.apps.googleusercontent.com',
+  googleClientSecret : 'JNCBlNi2j-o5sob6qL6Q8Ead',
+
   production: false,
   apiUrl: 'https://localhost:44357/api/',
   //my stripe key
@@ -15,12 +19,10 @@ export const environment = {
   // stripe_secreTkey: 'sk_test_K75p6KZMy95Lm1Ojt9ZW3Nsu00wxom9G1z',
   // Facebook Techovarya keys
   facebook_clientToken: '8297e1f6d032164c4d94a205387bf171',
-  facebook_appSecret: 'c487f4d66242b62431eb4bb26d785b84',
-  facebook_appid: '448186179555932',//my
-  //facebook_appid: '469648937364794', //abhisi,//
+  facebook_appSecret: 'e2b6565db23b735aff9f7c5536dbb217',//rpatelchati@gmail.com
+  facebook_appid: '200487178533939',//rpatelchati@gmail.com
   facebook_appToken: '448186179555932|GnYxyy4pqi6B_f49gfVUkVwrMfM',
   facebook_userToken: 'EAAGXn3oGklwBAEDY2dpA11KLDG0hhHYWi9pts9qmPJxXs6Ywb4UOq6SRhvr5kFpNDeUrHkG1rIZCxHJMxQS3U7UurncvEnjuuaD4aLmKDAT5uIoSb3QWSE92GkLWOS0Oqub7ZAIcxwtMBAaLOSQWqEiwsMuqaugO5XwiXJx97ekfXeuB8cnQhISZAtINl8ZD',
-  //facebook_pageid : '492281704520919',//abhisi',
   facebook_pageid : '102988865108273',//my
 
   //user id= 105114094889635
@@ -48,6 +50,9 @@ export const environment = {
 
 
 // export const environment = {
+    //client id secret for abhisihelpdesk@gmail.com
+   // googleClientId:'959505317275-v8294ho5b3prni9rqi4l6nnb8463uiig.apps.googleusercontent.com',
+  //  googleClientSecret : 'JNCBlNi2j-o5sob6qL6Q8Ead',
 //   production: true,
 //   stripe_key: 'pk_test_L4apfqRUqsnf9DlZceFAy4Wx',
 //   stripe_secreTkey: 'sk_test_K75p6KZMy95Lm1Ojt9ZW3Nsu00wxom9G1z',

@@ -148,8 +148,22 @@ export class SocialmediaComponent implements OnInit {
     console.error('Error processing action', error);
   }
   ngOnInit(): void {
+    this.pagename = localStorage.getItem('facebookpagename');
+    this.accessToken = localStorage.getItem('facebookaccesstoken');
+    this.refreshToken();
     this.pageUnlikeList = [];// [{ "source": "1", "count": "2", "percent": "3" }, { "source": "4", "count": "5", "percent": "6" }];
     this.externalReferrerList = []// [{ "url": "1", "count": "2", "percent": "3" }, { "url": "4", "count": "5", "percent": "6" }];
+  }
+  refreshToken(){
+    debugger
+    const url = "https://graph.facebook.com/oauth/access_token?grant_type=fb_exchange_token&client_id=200487178533939&client_secret=e2b6565db23b735aff9f7c5536dbb217&fb_exchange_token="+this.accessToken+"";
+    this.http.get(url).subscribe(res => {
+      if (res) {
+        this.accessToken = res['access_token'];
+      }
+    }, error => {
+      alert('Fetch Refresh Token Failed : ' + JSON.stringify(error.error));
+    });
   }
   getUserId() {
     debugger

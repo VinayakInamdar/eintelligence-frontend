@@ -21,7 +21,7 @@ import { SerpDto } from '../serp.model';
 import { OpenIdConnectService } from '../../../shared/services/open-id-connect.service';
 import { HttpClient, HttpHeaders } from '@angular/common/http';
 import { parseDate } from 'ngx-bootstrap/chronos';
-
+import { environment } from '../../../../environments/environment';
 
 const success = require('sweetalert');
 @Component({
@@ -35,16 +35,18 @@ export class SeoComponent implements OnInit {
   @ViewChild('staticTabs', { static: false }) staticTabs: TabsetComponent;
   @ViewChild(BaseChartDirective)
   period = "28Days";
-  
-   //variable passed from campaign list
-   gaurl;
-   gaaccesstoken;
-   gadsurl;
-   gadsaccesstoken;
-   facebookurl;
-   facebookaccesstoken;
-   gscurl;
-   gscaccesstoken;
+
+  //variable passed from campaign list
+  gaurl;
+  gaaccesstoken;
+  gadsurl;
+  gadsaccesstoken;
+  facebookurl;
+  facebookaccesstoken;
+  gscurl;
+  gscaccesstoken;
+  garefreshtoken;
+  gscrefreshtoken;
   //variable passed from campaign list end
   //############# Site Speed start############################
   //for loding
@@ -63,7 +65,7 @@ export class SeoComponent implements OnInit {
   largest_contentful_paint
   total_blocking_time
   cumulative_layout_shift
-  
+
   //for deskto[]
   interactive_Desktop
   //first_cpu_idle_Desktop
@@ -130,7 +132,7 @@ export class SeoComponent implements OnInit {
   previousStartDate;
   previousEndDate;
   toDate = new FormControl(new Date())
-  fromDate = new FormControl(new Date(Date.now() - 7 * 24 * 60 * 60 * 1000))
+  fromDate = new FormControl(new Date(Date.now() - 28 * 24 * 60 * 60 * 1000))
   currYear: number;
   myForm = new FormGroup({
     fromDate: this.fromDate,
@@ -164,9 +166,9 @@ export class SeoComponent implements OnInit {
     },
     datasets: [
       {
-        data: [], label: 'This Year', legend: false, fill: false
+        data: [], label: 'This Slab', legend: false, fill: false
       }, {
-        data: [], label: 'Previous Year', legend: false, fill: false,
+        data: [], label: 'Previous Slab', legend: false, fill: false,
       }]
   };
   barDataImpressions = {
@@ -178,9 +180,9 @@ export class SeoComponent implements OnInit {
     },
     datasets: [
       {
-        data: [], label: 'This Year', legend: false, fill: false
+        data: [], label: 'This Slab', legend: false, fill: false
       }, {
-        data: [], label: 'Previous Year', legend: false, fill: false,
+        data: [], label: 'Previous Slab', legend: false, fill: false,
       }]
   };
   barDataCTR = {
@@ -192,9 +194,9 @@ export class SeoComponent implements OnInit {
     },
     datasets: [
       {
-        data: [], label: 'This Year', legend: false, fill: false
+        data: [], label: 'This Slab', legend: false, fill: false
       }, {
-        data: [], label: 'Previous Year', legend: false, fill: false,
+        data: [], label: 'Previous Slab', legend: false, fill: false,
       }]
   };
   barDataPositions = {
@@ -206,9 +208,9 @@ export class SeoComponent implements OnInit {
     },
     datasets: [
       {
-        data: [], label: 'This Year', legend: false, fill: false
+        data: [], label: 'This Slab', legend: false, fill: false
       }, {
-        data: [], label: 'Previous Year', legend: false, fill: false,
+        data: [], label: 'Previous Slab', legend: false, fill: false,
       }]
     // datasets: [
     //   {
@@ -897,7 +899,7 @@ export class SeoComponent implements OnInit {
     public route: ActivatedRoute, public router: Router, private integrationsService: IntegrationsService
     , private overvieswService: OverviewService, location: PlatformLocation,
     public auditsService: AuditsService, private http: HttpClient, public datepipe: DatePipe, private authService: SocialAuthService) {
-      
+
 
 
     this.campaignModel = new Campaign();
@@ -906,11 +908,11 @@ export class SeoComponent implements OnInit {
     let id = this.route.snapshot.paramMap.get('id');
     this.selectedCampId = `${id.substring(3)}`;
 
-   // this.getGaSetupByCampaignId();
+    // this.getGaSetupByCampaignId();
     //this.getAnalyticsData();
-   // this.getCampaignList();
-    //this.getSerpList();
-    //this.getRankingGraphDataDelete();
+    // this.getCampaignList();
+    this.getSerpList();
+    this.getRankingGraphDataDelete();
     this.showdiv = true;
     this.show = 'seo';
     this.showDefault = 'seo';
@@ -947,33 +949,82 @@ export class SeoComponent implements OnInit {
     // using to disable tab , user have to go step by step 
     // this.disableTab()
   }
-
-
-  ngOnInit(): void {
+  refreshGSCAccount() {
     debugger
-    this.gaurl=localStorage.getItem('gaurl');
-    this.gaaccesstoken=localStorage.getItem('gaaccesstoken');
-    this.gadsurl=localStorage.getItem('gadsurl');
-    this.gadsaccesstoken=localStorage.getItem('gadsaccesstoken');
-    this.facebookurl=localStorage.getItem('facebookurl');
-    this.facebookaccesstoken=localStorage.getItem('facebookaccesstoken');
-    this.gscurl=localStorage.getItem('gscurl');
-    this.gscaccesstoken=localStorage.getItem('gscaccesstoken');
+    const url = "https://www.googleapis.com/oauth2/v4/token";
+    let data = {};
+    data = {
+      client_id:environment.googleClientId,
+      client_secret: environment.googleClientSecret,
+      refresh_token: this.gscrefreshtoken,//'ya29.a0AfH6SMCszj8kAk7Q4lV43Q0vsJWDKmmmYkSYnwPclmY1La7BesHF7-5KuwdX1s4MlllQafsCGCjmQ9oO3K4jtFB6wMvDiuWjRsYpGQxkKzpwoUvph8e5OWG_Fy0bCUYAe_NiJ0x8gUkhM98seOhBPvNE1znZ',
+      grant_type: 'refresh_token',
+      access_type:'offline'
+    };
+    this.http.post(url, data).subscribe(res => {
+      if (res) {
+        debugger
+        this.gscaccesstoken = res['access_token'];
+        this.getData();
+      }
+    }, error => {
+      alert('eeee : ' + JSON.stringify(error.error));
+    });
+  }
+  refreshGoogleAnalyticsAccount() {
+    debugger
+    const url = "https://www.googleapis.com/oauth2/v4/token";
+    let data = {};
+    data = {
+      client_id:environment.googleClientId,
+      client_secret: environment.googleClientSecret,
+      refresh_token:this.garefreshtoken,// 'ya29.a0AfH6SMCszj8kAk7Q4lV43Q0vsJWDKmmmYkSYnwPclmY1La7BesHF7-5KuwdX1s4MlllQafsCGCjmQ9oO3K4jtFB6wMvDiuWjRsYpGQxkKzpwoUvph8e5OWG_Fy0bCUYAe_NiJ0x8gUkhM98seOhBPvNE1znZ',
+      grant_type: 'refresh_token',
+      access_type:'offline'
+    };
+    this.http.post(url, data).subscribe(res => {
+      if (res) {
+        debugger
+        this.gaaccesstoken = res['access_token'];
+        this.getAnalyticsProfileIds();
+        this.getSiteSpeedDataMobile();
+        this.getSiteSpeedDataDesktop();
+      }
+    }, error => {
+      alert('eeee : ' + JSON.stringify(error.error));
+    });
+
+  }
+  refreshToken(){
+    debugger
+    this.integrationsService.refreshGoogleAccount(this.gaaccesstoken,this.garefreshtoken).subscribe(
+      res => {
+        debugger
+          let p = res;
+
+     });  
+  }
+  ngOnInit(): void {
+
+    this.gaurl = localStorage.getItem('gaurl');
+    this.gaaccesstoken = localStorage.getItem('gaaccesstoken');
+    this.garefreshtoken = localStorage.getItem('garefreshtoken');
+    this.gadsurl = localStorage.getItem('gadsurl');
+    this.gadsaccesstoken = localStorage.getItem('gadsaccesstoken');
+    this.gscurl = localStorage.getItem('gscurl');
+    this.gscaccesstoken = localStorage.getItem('gscaccesstoken');
+    this.gscrefreshtoken = localStorage.getItem('gscrefreshtoken');
     this.selectedCampaignName = localStorage.getItem('selectedCampName');
     this.selectedCampIdWebUrl = localStorage.getItem('selectedCampUrl');
     this.getDateSettings();
-    this.getData();
-    this.getAnalyticsProfileIds();
-    this.getSiteSpeedDataMobile();
-    this.getSiteSpeedDataDesktop();
-
-
+this.refreshToken();
+    this.refreshGoogleAnalyticsAccount();
+    this.refreshGSCAccount();
     this.sub = this.route.params.subscribe(params => {
       this.id = params['id'];
     });
-    
+
     this.authService.authState.subscribe(user => {
-      
+
       let user1 = user;
     });
   }
@@ -1013,7 +1064,7 @@ export class SeoComponent implements OnInit {
     }
     return total;
   }
- // using to get list of campaigns
+  // using to get list of campaigns
   public getCampaignList(): void {
 
     var userid = localStorage.getItem("userID");
@@ -1051,7 +1102,7 @@ export class SeoComponent implements OnInit {
 
   }
   getAnalyticsProfileIds() {
-    
+
     let currDate = new Date();
     let endDate1 = this.datepipe.transform(currDate, 'yyyy-MM-dd');
     let startDate1 = this.datepipe.transform(currDate.setDate(currDate.getDate() - 28), 'yyyy-MM-dd');
@@ -1065,7 +1116,7 @@ export class SeoComponent implements OnInit {
     const url = "https://www.googleapis.com/analytics/v3/management/accountSummaries";
     this.http.get(url, this.httpOptionJSON).subscribe(res => {
       if (res) {
-        
+
         let rows = res['items'];
         //let accountSummaryIds=[];
         for (let i = 0; i < rows.length; i++) {
@@ -1087,7 +1138,7 @@ export class SeoComponent implements OnInit {
     });
   }
   getAnalyticsOrganicTraffic(profileid, startdate, endDate) {
-    
+
     let currDate = new Date();
     let endDate1 = this.datepipe.transform(currDate, 'yyyy-MM-dd');
     let startDate1 = this.datepipe.transform(currDate.setDate(currDate.getDate() - 28), 'yyyy-MM-dd');
@@ -1724,12 +1775,12 @@ export class SeoComponent implements OnInit {
     const filterOptionModel = this.getFilterOptionPlans();
     this.campaignService.getFilteredRankingGraph(filterOptionModel).subscribe((response: any) => {
       if (response) {
-        debugger
+
         this.barDataArray = [];
         this.rankingGraphData = response.body;
         this.rankingGraphData = this.rankingGraphData.filter(x => x.campaignId.toString() === this.selectedCampId.toLowerCase() && x.year == currYear);
         this.tempRankingGraphData = this.rankingGraphData;
-    this.DeleteRankingGraphData();
+        this.DeleteRankingGraphData();
 
       }
     });
@@ -1867,7 +1918,7 @@ export class SeoComponent implements OnInit {
     const url = "https://pagespeedonline.googleapis.com/pagespeedonline/v5/runPagespeed?url=https%3A%2F%2F" + urlcamp + "&strategy=MOBILE&key=AIzaSyC1IsrCeeNXp9ksAmC8szBtYVjTLJC9UWQ";
     this.http.get(url, this.httpOptionJSON).subscribe(res => {
       if (res) {
-        debugger
+
         //FCP 2320 green
         this.showSpinnerSiteSpeedContent = false;
         let rows = res['loadingExperience'].metrics;
@@ -1991,7 +2042,7 @@ export class SeoComponent implements OnInit {
       }
     }, error => {
 
-      console.log('Data fetch failed by device : ' + JSON.stringify(error.error));
+      //console.log('Data fetch failed by device : ' + JSON.stringify(error.error));
     });
   }
   getSiteSpeedDataDesktop() {
@@ -2010,7 +2061,7 @@ export class SeoComponent implements OnInit {
     // const url = "https://pagespeedonline.googleapis.com/pagespeedonline/v5/runPagespeed?url=https%3A%2F%2Fpatwa.co.in&key=AIzaSyC1IsrCeeNXp9ksAmC8szBtYVjTLJC9UWQ"
     this.http.get(url, this.httpOptionJSON).subscribe(res => {
       if (res) {
-        debugger
+
         //FCP 2320 green
         this.showSpinnerSiteSpeedContent = false;
         let rows = res['loadingExperience'].metrics;
@@ -2138,14 +2189,14 @@ export class SeoComponent implements OnInit {
     });
   }
   //------------------GSC data start---------------------------------------------
-  
+
   signInWithGoogle(): void {
     const googleLoginOptions = {
       scope: 'profile email https://www.googleapis.com/auth/webmasters.readonly https://www.googleapis.com/auth/webmasters'
     };
     this.authService.signIn(GoogleLoginProvider.PROVIDER_ID, googleLoginOptions)
       .then((res) => {
-        
+
         this.accessToken = res['authToken'];
         this.gscaccesstoken = res['authToken'];
         localStorage.setItem('googleGscAccessToken', this.accessToken);
@@ -2176,7 +2227,7 @@ export class SeoComponent implements OnInit {
     };
     this.http.post(url, data, this.httpOptionJSON).subscribe(res => {
       if (res) {
-        
+
         let rows = res['rows'];
         this.barDataImpressionsDevice.datasets[0].data = [];
         this.barChartLabelsDevice = [];
@@ -2189,7 +2240,10 @@ export class SeoComponent implements OnInit {
         }
       }
     }, error => {
-      alert('Data fetch failed by device : ' + JSON.stringify(error.error));
+
+      if (error.code == '401') {
+        alert('Session Expired, Please Login again to access system : ' + JSON.stringify(error.error));
+      }
     });
   }
   getDataCurrentYear(startDate, endDate, all, url) {
@@ -2222,7 +2276,7 @@ export class SeoComponent implements OnInit {
     }
     this.http.post(url, data, this.httpOptionJSON).subscribe(res => {
       if (res) {
-        
+
         let rows = res['rows'];
         if (all == 0) {
           this.clicksThisYear = rows[0].clicks;
@@ -2250,7 +2304,7 @@ export class SeoComponent implements OnInit {
       }
     }, error => {
 
-      //alert('Data fetch failed for current year : ' + JSON.stringify(error.error));
+      alert('Data fetch failed for current year : ' + JSON.stringify(error.error));
     });
 
   }
@@ -2316,16 +2370,18 @@ export class SeoComponent implements OnInit {
   }
 
   onStartDateChange(event) {
+
     this.startDate = this.datepipe.transform(this.fromDate.value, 'yyyy-MM-dd');
     this.currYear = parseInt(this.datepipe.transform(this.fromDate.value, 'yyyy'));
     let getMonth = parseInt(this.datepipe.transform(this.fromDate.value, 'MM'));
     let prevMonth = getMonth - 1;
     this.previousStartDate = this.currYear.toString() + '-' + prevMonth + '-' + this.datepipe.transform(this.fromDate.value, 'dd');
     this.getData();
-    //this.getAnalyticsProfileIds();
+    this.getAnalyticsProfileIds();
   }
 
   onEndDateChange(event) {
+
     this.endDate = this.datepipe.transform(this.toDate.value, 'yyyy-MM-dd');
     this.currYear = parseInt(this.datepipe.transform(this.toDate.value, 'yyyy'));
     let getMonth = parseInt(this.datepipe.transform(this.toDate.value, 'MM'));
@@ -2334,10 +2390,11 @@ export class SeoComponent implements OnInit {
     // let prevYear = this.currYear - 1;
     // this.previousEndDate = prevYear.toString() + '-' + this.datepipe.transform(this.toDate.value, 'MM-dd');
     this.getData();
-    //this.getAnalyticsProfileIds();
+    this.getAnalyticsProfileIds();
   }
+
   getData() {
-    
+
     if (this.gscaccesstoken == '' || this.gscaccesstoken == undefined || this.gscaccesstoken == null) {
       //alert("Please, Login with Google to fetch data");
     } else if (parseDate(this.endDate) < parseDate(this.startDate)) {
@@ -2362,10 +2419,12 @@ export class SeoComponent implements OnInit {
     let currDate = new Date();
     this.endDate = this.datepipe.transform(currDate, 'yyyy-MM-dd');
     this.startDate = this.datepipe.transform(currDate.setDate(currDate.getDate() - 28), 'yyyy-MM-dd');
+    // this.fromDate.patchValue(this.startDate);
+    //this.toDate.patchValue(this.endDate);
     currDate = new Date();
     this.previousEndDate = this.datepipe.transform(currDate.setFullYear(currDate.getFullYear() - 1), 'yyyy-MM-dd');
     this.previousStartDate = this.datepipe.transform(currDate.setDate(currDate.getDate() - 28), 'yyyy-MM-dd');
- }
+  }
 
   getYearwiseDifference(previous, current) {
 
@@ -2376,6 +2435,6 @@ export class SeoComponent implements OnInit {
   getPercentage(num, total) {
     return ((100 * num) / total)
   }
-  
+
   //#################  GSC data end ###########################################
 }

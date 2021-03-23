@@ -7,7 +7,7 @@
     <div class="col-md-2"> </div>
 </div>
 <app-submenu></app-submenu>
-<div *ngIf="settingActive == 1;" class="row w3-container w3-center w3-animate-right paddingtopdiv">
+<div *ngIf="settingActive == 1;" class="row w3-container w3-center w3-animate-right paddingtopdiv" style="height: 500px;">
     <div class="col-md-2"> </div>
     <div class="col-md-8">
         <form [formGroup]="valForm" class="form-horizontal card formh cursor-default" (keydown.enter)="$event.preventDefault()" (submit)="submitForm(valForm.value)" novalidate="">
@@ -56,7 +56,7 @@
                             <hr>
                             <label>WEBSITE URL</label>
                             <div class="form-group row">
-                                <input #webUrl_field class="form-control campinputh" type="url" formControlName="webUrl" [formControl]="valForm.controls['webUrl']" />
+                                <input #webUrl_field class="form-control campinputh" type="url" formControlName="webUrl" placeholder="Ex. example.com (Without http:// and https:// ) " [formControl]="valForm.controls['webUrl']" />
                                 <!-- <span class="text-danger"
                                     *ngIf="valForm.controls['webUrl'].hasError('required') && (valForm.controls['webUrl'].dirty || valForm.controls['webUrl'].touched)">
                                     {{'validation.URLREQUIRED' | translate}}</span>
@@ -72,13 +72,17 @@
                                 </div>
                                 <div class="col-md-6"></div>
                                 <div class="col-md-3">
-                                    <p>
+                                    <p *ngIf="!isEditMode">
                                         <button class="mr-1 btn btn-primary btn-lg" type="submit" (click)="successAlert()">Create
                                             campaign</button>
                                     </p>
-                                    <p *ngIf="isCampaignExist">
-                                        <button class="mr-1 btn btn-primary btn-lg" type="submit" (click)="goToNextTab($event,webUrl_field.value,'webUrl',2)">Integrations
-                                            ></button>
+                                    <p *ngIf="isEditMode">
+                                        <button class="mr-1 btn btn-primary btn-lg" type="submit" (click)="successAlert()">Update
+                                            campaign</button>
+                                    </p>
+                                    <p *ngIf="isEditMode">
+                                        <button class="mr-1 btn btn-primary btn-lg" type="submit" (click)="goToNextTab($event,name_field.value,'webUrl',2)">Integrations
+                                        </button>
                                     </p>
                                 </div>
                             </div>
@@ -92,13 +96,11 @@
                     </ng-template>
                     <div class="row-md-12 cursor-default">
                         <div class="col-md-12" class="goaldiv">
-                            <h1> Integrations</h1>
-                            <hr>
                             <div class="row-md-12">
 
 
                                 <div class="col-md-4">
-                                    <div class="card card-default shadow bg-white rounded cursor-default">
+                                    <div class="card card-default shadow bg-white rounded cursor-default integration-box-hight">
                                         <div class="card-body form-check-inline text-center">
                                             <div class="row-md-3">
                                                 <div class="col-md-11 setmargininlinestart">
@@ -107,13 +109,11 @@
                                                         <button class="mr-1 btn btn-primary btn-lg" type="button" (click)="integrateGoogleAnalytics()">Google
                                                             Analytics</button>
                                                     </p>
-                                                    <p class="goalfonsize" *ngIf="hasGaSetup">
-                                                        <select class="form-control" (change)="onSelectGa($event.target.value)">
-                                                            <option value="0">--Select--</option>
-                                                            <option *ngFor="let gaAccount of gaAccounts">
-                                                                {{gaAccount}}</option>
-                                                        </select>
-                                                    </p>
+                                                        <form [formGroup]="gaSelectForm" class="goalfonsize" *ngIf="hasGaSetup">
+                                                            <select id="gaSelect" style="width: 150px;" class="form-control" formControlName="gaSelect" (change)="onSelectGa($event.target.value)">
+                                                                <option *ngFor="let gaAccount of gaAccounts" >{{ gaAccount }}</option>
+                                                            </select>
+                                                        </form>
                                                     <p class="goalfonsize" *ngIf="hasGaSetup">
                                                         <button type="button" class="btn btn-primary" (click)="saveGaAccount()">Save
                                                             Changes</button>
@@ -126,7 +126,7 @@
                                     </div>
                                 </div>
                                 <div class="col-md-4">
-                                    <div class="card card-default shadow bg-white rounded cursor-default">
+                                    <div class="card card-default shadow bg-white rounded cursor-default integration-box-hight">
                                         <div class="card-body form-check-inline text-center">
                                             <div class="row-md-3">
                                                 <div class="col-md-11 setdivpadding">
@@ -135,13 +135,11 @@
                                                     <p class="goalfonsize">
                                                         <button class="mr-1 btn btn-primary btn-lg" type="button" (click)="integrateGSC()">Google Search Console</button>
                                                     </p>
-                                                    <p class="goalfonsize" *ngIf="hasGscSetup">
-                                                        <select class="form-control" (change)="onSelectGsc($event.target.value)">
-                                                            <option value="0">--Select--</option>
-                                                            <option *ngFor="let gscAccount of gscAccounts">
-                                                                {{gscAccount}}</option>
-                                                        </select>
-                                                    </p>
+                                                        <form [formGroup]="gaSelectForm" class="goalfonsize" *ngIf="hasGscSetup">
+                                                            <select id="gscSelect" class="form-control" formControlName="gscSelect" (change)="onSelectGsc($event.target.value)">
+                                                                <option *ngFor="let gscAccount of gscAccounts" >{{ gscAccount }}</option>
+                                                            </select>
+                                                        </form>
                                                     <p class="goalfonsize" *ngIf="hasGscSetup">
                                                         <button type="button" class="btn btn-primary" (click)="saveGscAccount()">Save
                                                             Changes</button>
@@ -152,7 +150,7 @@
                                     </div>
                                 </div>
                                 <div class="col-md-4">
-                                    <div class="card card-default shadow bg-white rounded cursor-default">
+                                    <div class="card card-default shadow bg-white rounded cursor-default integration-box-hight">
                                         <div class="card-body form-check-inline text-center">
                                             <div class="row-md-3">
                                                 <div class="col-md-11 setdivpadding setmargininlinestart">
@@ -160,13 +158,11 @@
                                                     <p class="goalfonsize">
                                                         <button class="mr-1 btn btn-primary btn-lg" type="button" (click)="loginWithOptions()">Facebook</button>
                                                     </p>
-                                                    <p class="goalfonsize" *ngIf="hasFacebookSetup">
-                                                        <select class="form-control" (change)="onSelectFacebook($event.target.value)">
-                                                            <option value="0">--Select--</option>
-                                                            <option *ngFor="let facebookAccount of facebookAccounts">
-                                                                {{facebookAccount}}</option>
+                                                    <form [formGroup]="gaSelectForm" class="goalfonsize" *ngIf="hasFacebookSetup">
+                                                        <select id="facebookSelect" class="form-control" formControlName="facebookSelect" (change)="onSelectFacebook($event.target.value)">
+                                                            <option *ngFor="let facebookAccount of facebookAccounts" >{{ facebookAccount }}</option>
                                                         </select>
-                                                    </p>
+                                                    </form>
                                                     <p class="goalfonsize" *ngIf="hasFacebookSetup">
                                                         <button type="button" class="btn btn-primary" (click)="saveFacebookAccount()">Save
                                                             Changes</button>
@@ -180,7 +176,7 @@
                             </div>
                             <div class="row-md-12">
                                 <div class="col-md-3">
-                                    <div class="card card-default shadow bg-white rounded cursor-default">
+                                    <div class="card card-default shadow bg-white rounded cursor-default integration-box-hight">
                                         <div class="card-body form-check-inline text-center">
                                             <div class="row-md-3">
                                                 <div class="col-md-11 setdivpadding">
@@ -189,6 +185,7 @@
                                                         <button class="mr-1 btn btn-primary btn-lg" type="button" (click)="signOut()">Google
                                                             Ads</button>
                                                     </p>
+                                                    
                                                     <p class="goalfonsize" *ngIf="hasGadsSetup">
                                                         <select class="form-control" (change)="onSelectGads($event.target.value)">
                                                             <option value="0">--Select--</option>
@@ -196,8 +193,8 @@
                                                                 {{facebookAccount}}</option>
                                                         </select>
                                                     </p>
-                                                    <p class="goalfonsize" *ngIf="hasGadsSetup">
-                                                        <button type="button" class="btn btn-primary" (click)="saveGadsAccount()">Save
+                                                    <p class="goalfonsize" >
+                                                        <button type="button" class="btn btn-primary" (click)="refreshGSCAccount()">Save
                                                             Changes</button>
                                                     </p>
                                                 </div>
@@ -206,7 +203,7 @@
                                     </div>
                                 </div>
                                 <div class="col-md-3">
-                                    <div class="card card-default shadow bg-white rounded cursor-default">
+                                    <div class="card card-default shadow bg-white rounded cursor-default integration-box-hight">
                                         <div class="card-body form-check-inline text-center">
                                             <div class="row-md-3">
                                                 <div class="col-md-11">
@@ -214,6 +211,9 @@
                                                     <p class="goalfonsize">
                                                         <button class="mr-1 btn btn-primary btn-lg" type="button" (click)="goToAddKeywords()">Add Keywords
                                                         </button>
+                                                    </p>
+                                                    <p class="goalfonsize">
+                                                      
                                                         <button class="mr-1 btn btn-primary btn-lg" type="button" (click)="goToKeywords()">Keywords
                                                         </button>
                                                     </p>
@@ -258,7 +258,7 @@
     </div>
 
 </div>
-<hr>
+<hr *ngIf="settingActive == 2;">
 <br>
 <div class="row" *ngIf="settingActive == 2;">
     <div class="col-md-1"></div>

@@ -63,6 +63,12 @@ export class CampaignService {
   //     params: new HttpParams().set('pageSize', '1000')
   //   })
   // }
+  getSerpLocations(location: string): Observable<SerpDto> {
+    return this.http.post<SerpDto>(`${this.Url}serps/GetSerpLocationData`, {}, {
+      params: new HttpParams().set('location', location)
+    });
+  }
+
   getCampaign(userid): Observable<any[]> {
     return this.http.get<any[]>(`${this.Url}campaigns/GetCampaignByUserId?userId=` + userid)
   }
@@ -72,6 +78,7 @@ export class CampaignService {
       params: new HttpParams().set('pageSize', '1000').set("searchParam", searchParam)
     })
   }
+
   getSerpForKeyword(filter: FilterOptionModel, searchParam: string): Observable<any> {
     const params = `PageNumber=${filter.pageNumber}&PageSize=${filter.pageSize}&SearchQuery=${filter.searchQuery}&OrderBy=${filter.orderBy}&Fields=${filter.fields}`;
     return this.http.get<any>(`${this.Url}serps?${params}`, {
@@ -204,4 +211,5 @@ export class CampaignService {
     const params = `PageNumber=${filter.pageNumber}&PageSize=${filter.pageSize}&SearchQuery=${filter.searchQuery}&OrderBy=${filter.orderBy}&Fields=${filter.fields}`;
     return this.http.get<any>(`${this.Url}campaignfacebooks?${params}`, { observe: 'response' });
   }
+ 
 }

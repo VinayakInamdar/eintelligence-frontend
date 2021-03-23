@@ -11,7 +11,7 @@
 <div class="col-md-10">
     <div class="card card-default shadow p-3 mb-5 bg-white rounded cursor-default">
         <div class="table-responsive cursor-pointer">
-            <ng2-smart-table [settings]="settings" [source]="source" (userRowSelect)="userRowSelect($event)">
+            <ng2-smart-table [settings]="settings" [source]="source" (userRowSelect)="userRowSelect($event)"  (custom)="onCustomAction($event)">
             </ng2-smart-table>
         </div>
     </div>
