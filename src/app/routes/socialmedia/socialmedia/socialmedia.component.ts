@@ -76,8 +76,6 @@ export class SocialmediaComponent implements OnInit {
     let id = localStorage.getItem("selectedCampId");
     this.pagename = localStorage.getItem("facebookpagename");
     this.accessToken = localStorage.getItem("facebookaccesstoken");
-    this.getUserId();
-    this.getAllPagesList();
     this.selectedCampaignName = this.pagename  !== "" ? this.pagename  : undefined;
     this.selectedCampId = `${id}`;
     //this.getCampaignList();
@@ -159,7 +157,23 @@ export class SocialmediaComponent implements OnInit {
     const url = "https://graph.facebook.com/oauth/access_token?grant_type=fb_exchange_token&client_id=200487178533939&client_secret=e2b6565db23b735aff9f7c5536dbb217&fb_exchange_token="+this.accessToken+"";
     this.http.get(url).subscribe(res => {
       if (res) {
+        debugger
         this.accessToken = res['access_token'];
+        let facebookid =localStorage.getItem('facebookid');
+        let masterid = localStorage.getItem('masterCampaignId');
+        let data = {
+          id: facebookid,
+          urlOrName: this.pagename,
+          isActive: true,
+          CampaignID: masterid,
+          accessToken: this.accessToken,
+          refreshToken:  '1111'
+        }
+        this.campaignService.updateFacebook(facebookid, data).subscribe(response => {
+          debugger
+        });
+        this.getUserId();
+        this.getAllPagesList();
       }
     }, error => {
       alert('Fetch Refresh Token Failed : ' + JSON.stringify(error.error));

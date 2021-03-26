@@ -111,7 +111,7 @@
                                                     </p>
                                                         <form [formGroup]="gaSelectForm" class="goalfonsize" *ngIf="hasGaSetup">
                                                             <select id="gaSelect" style="width: 150px;" class="form-control" formControlName="gaSelect" (change)="onSelectGa($event.target.value)">
-                                                                <option *ngFor="let gaAccount of gaAccounts" >{{ gaAccount }}</option>
+                                                                <option *ngFor="let gaAccount of gaAccounts"  [value]="gaAccount" >{{ gaAccount }}</option>
                                                             </select>
                                                         </form>
                                                     <p class="goalfonsize" *ngIf="hasGaSetup">
@@ -137,7 +137,7 @@
                                                     </p>
                                                         <form [formGroup]="gaSelectForm" class="goalfonsize" *ngIf="hasGscSetup">
                                                             <select id="gscSelect" class="form-control" formControlName="gscSelect" (change)="onSelectGsc($event.target.value)">
-                                                                <option *ngFor="let gscAccount of gscAccounts" >{{ gscAccount }}</option>
+                                                                <option *ngFor="let gscAccount of gscAccounts"   [value]="gscAccount" >{{ gscAccount }}</option>
                                                             </select>
                                                         </form>
                                                     <p class="goalfonsize" *ngIf="hasGscSetup">

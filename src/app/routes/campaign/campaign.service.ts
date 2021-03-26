@@ -68,7 +68,10 @@ export class CampaignService {
       params: new HttpParams().set('location', location)
     });
   }
+  GetUpdateKeywordsStatus(): Observable<any[]> {
+    return this.http.get<any[]>(`${this.Url}serps/GetUpdateKeywordsStatus`)
 
+  }
   getCampaign(userid): Observable<any[]> {
     return this.http.get<any[]>(`${this.Url}campaigns/GetCampaignByUserId?userId=` + userid)
   }
@@ -87,9 +90,9 @@ export class CampaignService {
   }
 
   // using to add new keyword in selected campaign Id
-  addNewKeyword(CampaignID: string, Keyword: any, Location: string, Tags: any, searchParam: string): Observable<SerpDto> {
+  addNewKeyword(CampaignID: string, Keyword: any, Location: string, searchParam: string): Observable<SerpDto> {
     return this.http.post<SerpDto>(`${this.Url}serps/GetSerpData`, {}, {
-      params: new HttpParams().set('CampaignID', CampaignID).set('Keywords', Keyword.join(',')).set('Location', Location).set('Tags', Tags).set('searchParam', "&tbs=qdr:m")
+      params: new HttpParams().set('CampaignID', CampaignID).set('Keywords', Keyword.join(',')).set('Location', Location).set('searchParam', "&tbs=qdr:m")
     });
 
   }
@@ -186,15 +189,24 @@ export class CampaignService {
   createGA(data): Observable<any> {
     return this.http.post<any>(this.Url + 'campaigngoogleanalyticss', data);
   }
+  updateGA(id: string, data: any): Observable<any> {
+    return this.http.put<any>(this.Url + `campaigngoogleanalyticss/${id}`, data);
+}
   createGSC(data): Observable<any> {
     return this.http.post<any>(this.Url + 'campaigngscs', data);
   }
+  updateGSC(id: string, data: any): Observable<any> {
+    return this.http.put<any>(this.Url + `campaigngscs/${id}`, data);
+}
   createGAds(data): Observable<any> {
     return this.http.post<any>(this.Url + 'campaigngoogleadss', data);
   }
   createFacebook(data): Observable<any> {
     return this.http.post<any>(this.Url + 'campaignfacebooks', data);
   }
+  updateFacebook(id: string, data: any): Observable<any> {
+    return this.http.put<any>(this.Url + `campaignfacebooks/${id}`, data);
+}
   getFilteredGA(filter: FilterOptionModel): Observable<any> {
     const params = `PageNumber=${filter.pageNumber}&PageSize=${filter.pageSize}&SearchQuery=${filter.searchQuery}&OrderBy=${filter.orderBy}&Fields=${filter.fields}`;
     return this.http.get<any>(`${this.Url}campaigngoogleanalyticss?${params}`, { observe: 'response' });
@@ -211,5 +223,5 @@ export class CampaignService {
     const params = `PageNumber=${filter.pageNumber}&PageSize=${filter.pageSize}&SearchQuery=${filter.searchQuery}&OrderBy=${filter.orderBy}&Fields=${filter.fields}`;
     return this.http.get<any>(`${this.Url}campaignfacebooks?${params}`, { observe: 'response' });
   }
- 
+
 }

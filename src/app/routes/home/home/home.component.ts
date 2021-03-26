@@ -1050,7 +1050,12 @@ export class HomeComponent implements OnInit {
     })
   }
   ///Fr redirect to seo
-  
+  getSerpLocations(){
+    this.campaignService.GetUpdateKeywordsStatus().subscribe((res) => { 
+      debugger
+      let result = res;
+    });
+  }
   private getFilterOption() {
     return {
       pageNumber: 1,

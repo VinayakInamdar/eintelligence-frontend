@@ -9,11 +9,13 @@ import { OverviewService } from '../../overview/overview.service';
 import { PlatformLocation } from '@angular/common';
 import { Campaign } from '../../campaign/campaign.model';
 import { ChartDataSets, ChartOptions, ChartScales } from 'chart.js';
-import { Label, Color, BaseChartDirective } from 'ng2-charts';
+import { Label, Color, BaseChartDirective, ThemeService } from 'ng2-charts';
 import { TabsetComponent } from 'ngx-bootstrap/tabs';
 import { SerpDto } from '../serp.model';
-import { find, pull } from 'lodash';
+import { find, pull, result } from 'lodash';
+import { forkJoin, from } from 'rxjs';
 const success = require('sweetalert');
+import { country } from '../countrydata';
 @Component({
   selector: 'app-keywords',
   templateUrl: './keywords.component.html',
@@ -22,6 +24,12 @@ const success = require('sweetalert');
 export class KeywordsComponent implements OnInit {
   @ViewChild('staticTabs', { static: false }) staticTabs: TabsetComponent;
   @ViewChild('tagInput') tagInputRef: ElementRef;
+
+  countriesList: any = country;
+
+  isoCode: any;
+  cities = [];
+  state = [];
   tags: string[] = [];
   showSpinner: boolean = false;
   selectedCampaignName: string;
@@ -35,9 +43,9 @@ export class KeywordsComponent implements OnInit {
     actions: {
       columnTitle: '',
       custom: [
-      { name: 'deleteKeyword', title: '<span class="text-danger col" style="padding-left:1rem"><i class="fas fa-trash-alt"></i></span>' }],
+        { name: 'deleteKeyword', title: '<span class="text-danger col" style="padding-left:1rem"><i class="fas fa-trash-alt"></i></span>' }],
       add: false, edit: false, delete: false, position: 'right'
-    }, 
+    },
     columns: {
       keywords: {
         title: 'KEYWORD PHRASE',
@@ -167,44 +175,6 @@ export class KeywordsComponent implements OnInit {
   show: string = 'undefine';
   bsInlineRangeValue: Date[];
   settingActive: number = 0;
-  //For Company Information Country selection dropdown
-  country: Array<string> = ['Afghanistan', 'Albania', 'Algeria', 'Andorra', 'American Samoa', 'Angola', 'Anguilla', 'Anguilla',
-    'Antigua and Barbuda', 'Argentina', 'Armenia', 'Aruba', 'Australia', 'Austria', 'Azerbaijan', 'Bahamas',
-    'Bahrain', 'Bangladesh', 'Barbados', 'Belarus', 'Belgium', 'Belize', 'Benin', 'Bermuda', 'Bhutan',
-    'Bolivia', 'Bosnia and Herzegovina', 'Botswana', 'Bouvet Island', 'Brazil', 'British Indian Ocean Territory',
-    'Brunei Darussalarm', 'Bulgaria', 'Burkina Faso', 'Burundi', 'Cambodia', 'Cameroon', 'Canada',
-    'Cape Verde', 'Cayman Island', 'Central African Republic', 'Chad', 'Chile', 'China', 'Christmas Island',
-    'Cocos (Keeling) Island', 'Colombia', 'Comoros', 'Congo', 'Cook Islands', 'Costa Rica', 'Cote DIvoire',
-    'Croatia', 'Cuba', 'Cyprus', 'Czech Republic', 'Denmark', 'Djibouti', 'Dominica', 'Dominican Republic',
-    'East Timor', 'Ecuador', 'Egypt', 'El Salvador', 'Equatorial Guinea', 'Eritrea', 'Estonia', 'Ethiopia', 'Falkland Islands (Malvinas)',
-    'Faroe Islands', 'Fiji', 'Finland', 'France', 'France, Metropolitan', 'French Guiana', 'French Polynesia',
-    'French Southern Territories', 'Gabon', 'Gambia', 'Georgia', 'Germany', 'Ghana', 'Gibraltar', 'Greece',
-    'Greenland', 'Grenada', 'Guadeloupe', 'Guam', 'Guatemala', 'Guinea', 'Guinea-bissau', 'Guyana',
-    'Haiti', 'Heard and Mc Donald Islands', 'Honduras', 'Hong Kong', 'Hungary', 'Iceland', 'India',
-    'Indonesia', 'Iran (Islamic Republic of)', 'Iraq', 'Ireland', 'Israel', 'Italy', 'Jamaica', 'Japan',
-    'Jordan', 'Kazakhstan', 'Kenya', 'Kiribati', 'Korea, Democratic Peoples Republic of', 'Korea, Republic of',
-    'Kuwait', 'Kyrgyzstan', 'Lao Peoples Democratic Republic', 'Latvia', 'Lebanon', 'Lesotho', 'Liberia',
-    'Libyan Arab Jamahiriya', 'Liechtenstein', 'Lithuania', 'Luxembourg', 'Macau', 'Macedonia, The Former Yugoslav Republic of',
-    'Madagascar', 'Malawi', 'Malaysia', 'Maldives', 'Mali', 'Malta', 'Marshall Islands', 'Martinique',
-    'Mauritania', 'Mauritius', 'Mayotte', 'Mexico', 'Micronesia, Federated States of', 'Moldova, Republic of',
-    'Monaco', 'Mongolia', 'Montserrat', 'Morocco', 'Mozambique', 'Myanmar', 'Namibia', 'Nauru', 'Nepal',
-    'Netherlands', 'Netherlands Antilles', 'New Caledonia', 'New Zealand', 'Nicaragua', 'Niger', 'Nigeria',
-    'Niue', 'Norfolk Island', 'Northern Mariana Islands', 'Norway', 'Oman', 'Pakistan', 'Palau', 'Panama',
-    'Papua New Guinea', 'Paraguay', 'Peru', 'Philippines', 'Pitcairn', 'Poland', 'Portugal', 'Puerto Rico',
-    'Qatar', 'Reunion', 'Romania', 'Russian Federation', 'Rwanda', 'Saint Kitts and Nevis', 'Saint Lucia',
-    'Saint Vincent and the Grenadines', 'Samoa', 'San Marino', 'Sao Tome and Principe', 'Saudi Arabia',
-    'Senegal', 'Seychelles', 'Sierra Leone', 'Singapore', 'Slovakia (Slovak Republic)', 'Slovenia', 'Solomon Islands',
-    'Somalia', 'South Africa', 'South Georgia and the South Sandwich Islands', 'Spain', 'Sri Lanka', 'St. Helena',
-    'St. Pierre and Miquelon', 'Sudan', 'Suriname', 'Svalbard and Jan Mayen Islands', 'Swaziland',
-    'Sweden', 'Switzerland', 'Syrian Arab Republic', 'Taiwan', 'Tajikistan', 'Tanzania, United Republic of',
-    'Thailand', 'Togo', 'Tokelau', 'Tonga', 'Trinidad and Tobago', 'Tunisia', 'Turkey', 'Turkmenistan',
-    'Turks and Caicos Islands', 'Tuvalu', 'Uganda', 'Ukraine', 'United Arab Emirates', 'United Kingdom',
-    'United States', 'United States Minor Outlying Islands', 'Uruguay', 'Uzbekistan', 'Vanuatu',
-    'Vatican City State (Holy See)', 'Venezuela', 'Viet Nam', 'Virgin Islands (British)', 'Virgin Islands (U.S.)',
-    'Wallis and Futuna Islands', 'Western Sahara', 'Yemen', 'Yugoslavia', 'Zaire', 'Zambia', 'Zimbabwe',
-    'Global', 'Timor Leste', 'Jersey', 'Isle of Man', 'Catalan Linguistic', 'Serbia', 'Guernsey', 'Palestine',
-    'Montenegro', 'Congo Democratic'];
-
 
   constructor(private translate: TranslateService, fb: FormBuilder,
     private campaignService: CampaignService,
@@ -240,7 +210,7 @@ export class KeywordsComponent implements OnInit {
 
   ngOnInit(): void {
     debugger
-    this.getSerpLocations();
+    // this.getSerpLocations();
     let id = this.route.snapshot.paramMap.get('id');
     this.selectedCampId = `${id.substring(3)}`;
     if (this.route.snapshot.queryParams.view !== undefined) {
@@ -258,7 +228,7 @@ export class KeywordsComponent implements OnInit {
   }
   // using to get campaignList
   public getCampaignList(): void {
-    var userid =  localStorage.getItem("userID");
+    var userid = localStorage.getItem("userID");
     this.campaignService.getCampaign(userid).subscribe(res => {
 
       this.campaignList = res;
@@ -289,11 +259,11 @@ export class KeywordsComponent implements OnInit {
     const filterOptionModel = this.getFilterOptionPlans();
     let id = this.route.snapshot.paramMap.get('id');
     this.selectedCampId = `${id.substring(3)}`;
-    filterOptionModel.searchQuery= 'CampaignID=="'+this.selectedCampId+'"'
-    this.campaignService.getSerpForKeyword(filterOptionModel,"&tbs=qdr:m").subscribe(res => {
-         this.serpList = res;
-         this.source = new LocalDataSource(this.serpList)
-      });
+    filterOptionModel.searchQuery = 'CampaignID=="' + this.selectedCampId + '"'
+    this.campaignService.getSerpForKeyword(filterOptionModel, "&tbs=qdr:m").subscribe(res => {
+      this.serpList = res;
+      this.source = new LocalDataSource(this.serpList)
+    });
   }
 
   // using to change serp list with changing campaign from dropdown
@@ -328,21 +298,23 @@ export class KeywordsComponent implements OnInit {
   // using to add new keyword in db
 
   submitForm(value: any) {
+    value.location=this.current_loc_code;
     var keywordDto = {
       CampaignID: '',
       Keyword: '',
       Location: '',
-      Tags: []
+      //Tags: []
     }
     debugger
     var result: SerpDto = Object.assign({}, value);
     keywordDto.CampaignID = this.selectedCampId
     keywordDto.Keyword = result['keyword'].split('\n')
     keywordDto.Location = result['location']
-    keywordDto.Tags = this.tags
+   // keywordDto.Tags = this.tags
     this.showSpinner = true
 
-    this.campaignService.addNewKeyword(keywordDto.CampaignID, keywordDto.Keyword, keywordDto.Location, keywordDto.Tags,'').subscribe((res) => {      event.preventDefault();
+    this.campaignService.addNewKeyword(keywordDto.CampaignID, keywordDto.Keyword, keywordDto.Location, '').subscribe((res) => {
+      event.preventDefault();
       this.showSpinner = false
       this.successAlert()
 
@@ -350,12 +322,6 @@ export class KeywordsComponent implements OnInit {
     });
   }
 
-  getSerpLocations(){
-    this.campaignService.getSerpLocations('IN').subscribe((res) => { 
-      debugger
-      let result = res;
-    });
-  }
   // using to go to next tab
 
   goToNextTab(event, inputvalue, fieldName, tabid) {
@@ -412,9 +378,23 @@ export class KeywordsComponent implements OnInit {
       }
     });
   }
-
+  showSpinnerLocationContent:boolean;
+  current_loc_code:any;
   public setSelectedLocation(event) {
-    event.preventDefault()
+    debugger;
+    event.preventDefault();
+    let clc = country.filter((clc) => clc.country_iso_code === this.valForm.value.location);
+    this.current_loc_code=clc[0].location_code+"";
+    if (this.valForm.value.location !== null) {
+
+      this.isoCode = this.valForm.value.location;
+      this.getSerpLocations();
+      this.showSpinnerLocationContent=true;
+      this.showLocationStates=false;
+      this.showLocationCities = false;
+     
+     
+    }
   }
 
 
@@ -585,34 +565,53 @@ export class KeywordsComponent implements OnInit {
         this.deleteKeyword(event.data);
     }
   }
- 
- //Delete campaign
- deleteKeyword(event) {
-  success({
-    icon: this.translate.instant('sweetalert.WARNINGICON'),
-    title: this.translate.instant('message.DELETEMSG'),
-    buttons: {
-      cancel: {
-        text: this.translate.instant('sweetalert.CANCELBUTTON'),
-        value: null,
-        visible: true,
-        className: "",
-        closeModal: false
-      },
-      confirm: {
-        text: this.translate.instant('sweetalert.CONFIRMBUTTON'),
-        value: true,
-        visible: true,
-        className: "bg-danger",
-        closeModal: false
+
+  //Delete campaign
+  deleteKeyword(event) {
+    success({
+      icon: this.translate.instant('sweetalert.WARNINGICON'),
+      title: this.translate.instant('message.DELETEMSG'),
+      buttons: {
+        cancel: {
+          text: this.translate.instant('sweetalert.CANCELBUTTON'),
+          value: null,
+          visible: true,
+          className: "",
+          closeModal: false
+        },
+        confirm: {
+          text: this.translate.instant('sweetalert.CONFIRMBUTTON'),
+          value: true,
+          visible: true,
+          className: "bg-danger",
+          closeModal: false
+        }
       }
-    }
-  }).then((isConfirm: any) => {
-    if (isConfirm) {
-      this.campaignService.deleteKeywordById(event.id).subscribe(res => {
+    }).then((isConfirm: any) => {
+      if (isConfirm) {
+        this.campaignService.deleteKeywordById(event.id).subscribe(res => {
+          success({
+            icon: this.translate.instant('sweetalert.WARNINGICON'),
+            title: this.translate.instant('message.DELETEMSG'),
+            buttons: {
+              confirm: {
+                text: this.translate.instant('sweetalert.OKBUTTON'),
+                value: true,
+                visible: true,
+                className: "bg-primary",
+                closeModal: true,
+              }
+            }
+          }).then((isConfirm) => {
+            if (isConfirm) {
+              this.router.navigate([`/campaign/:id${this.selectedCampId}/seo`])
+            }
+          })
+        });
+      } else {
         success({
           icon: this.translate.instant('sweetalert.WARNINGICON'),
-          title: this.translate.instant('message.DELETEMSG'),
+          title: this.translate.instant('message.CANCLEMSG'),
           buttons: {
             confirm: {
               text: this.translate.instant('sweetalert.OKBUTTON'),
@@ -623,28 +622,65 @@ export class KeywordsComponent implements OnInit {
             }
           }
         }).then((isConfirm) => {
-          if (isConfirm) {
-            this.router.navigate([`/campaign/:id${this.selectedCampId}/seo`])
-          }
+          this.router.navigate([`/campaign/:id${this.selectedCampId}/seo`])
         })
-      });
-    } else {
-      success({
-        icon: this.translate.instant('sweetalert.WARNINGICON'),
-        title: this.translate.instant('message.CANCLEMSG'),
-        buttons: {
-          confirm: {
-              text: this.translate.instant('sweetalert.OKBUTTON'),
-              value: true,
-              visible: true,
-              className: "bg-primary",
-              closeModal: true,
-          }
       }
-      }).then((isConfirm) => {
-        this.router.navigate([`/campaign/:id${this.selectedCampId}/seo`])
-      })
-    }
-  });
-}
+    });
+  }
+  selectedState: any;
+  changedIsoCode:any;
+  showLocationCities:boolean=false;
+  showLocationStates:boolean=false;
+  setSelectedLocationState(event) {
+    debugger;
+    event.preventDefault;
+    this.changedIsoCode=this.valForm.value.location
+    this.selectedState = event;
+    this.current_loc_code=event;
+    this.getSerpLocations();
+    this.showSpinnerLocationContent = true;
+  }
+  setSelectedLocationCity(event){
+    debugger;
+    event.preventDefault;
+    this.current_loc_code=event;
+  }
+  getSerpLocations() {
+
+    this.campaignService.getSerpLocations(this.isoCode).subscribe((res) => { 
+      debugger
+      let result;
+      result = res;
+
+      let x = result.map((h) => {
+        var z = h.location_name.split(",");
+        h.location_name = z[0];
+        return h;
+      });
+
+      if (this.selectedState == null||(this.changedIsoCode!==this.isoCode)) {
+       
+        let a = x.filter((a) => a.location_type == "Union Territory");
+        let b = x.filter((b) => b.location_type == "State");
+        let c = x.filter((b) => b.location_type == "Province");
+        let d = (a.concat(b)).concat(c);
+        this.showSpinnerLocationContent = false;
+        this.state = d;
+        this.showLocationStates=true;
+      }
+     
+      if (this.selectedState!== null || (this.changedIsoCode !== this.isoCode)) {
+       
+        let j = x.filter((j) => j.location_code == this.selectedState)
+        let m = j[0].location_code;
+        let e = result.filter((e) => e.location_type == "City");
+        let f = result.filter((f) => f.location_type == "District");
+        let g = e.concat(f);
+        let n = g.filter((n) => n.location_code_parent == m);
+        this.showSpinnerLocationContent = false;
+        this.cities = n;
+        this.showLocationCities = true;
+      }
+    });
+  }
 }

@@ -5,9 +5,11 @@
 .btn {
     font-size: larger;
 }
+
 .closebtn {
     text-align: end;
 }
+
 h1 {
     text-align: center;
     font-size: x-large;
@@ -314,11 +316,11 @@ li:hover span.only-show-on-hover {
 }
 
 .keywordformheight {
-    height: 410px;
+    height: 450px;
 }
 
 .keywordtabheight {
-    height: 335px;
+    height: 375px;
 }
 
 .keywordpfontl {
@@ -579,10 +581,12 @@ li:hover span.only-show-on-hover {
 .text-center {
     text-align: center;
 }
-.cursor-default{
+
+.cursor-default {
     cursor: default;
 }
-.countrydropdown{
+
+.countrydropdown {
     display: block;
     width: 100%;
     padding: .375rem .75rem;
@@ -593,5 +597,23 @@ li:hover span.only-show-on-hover {
     background-clip: padding-box;
     border: 1px solid #ced4da;
     border-radius: .25rem;
-    transition: border-color .15s ease-in-out,box-shadow .15s ease-in-out;
+    transition: border-color .15s ease-in-out, box-shadow .15s ease-in-out;
+}
+
+//vinayak
+.setelementright {
+    position: absolute;
+    right: 0;
+}
+
+.setheightrow {
+    height: 54.8px;
+}
+
+.setpaddinginlinestart {
+    padding-inline-start: 1px;
+}
+
+.setpaddinginlineend {
+    padding-inline-end: 1px;
 }

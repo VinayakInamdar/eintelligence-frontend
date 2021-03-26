@@ -101,22 +101,29 @@ export class CampaignlistComponent implements OnInit {
       localStorage.setItem('gaurl', ga[0]['urlOrName']);
       localStorage.setItem('gaaccesstoken', ga[0]['accessToken']);
       localStorage.setItem('garefreshtoken', ga[0]['refreshToken']);
+      localStorage.setItem('gaid', ga[0]['id']);
      }
      let gads = this.CampaignGAdsList.filter(x => x.campaignID == this.SelectedCampaignId);
      if(gads !=null && gads != undefined && gads.length > 0){
       localStorage.setItem('gadsurl', gads[0]['urlOrName']);
       localStorage.setItem('gadsaccesstoken', gads[0]['accessToken']);
+      localStorage.setItem('gadsid', gads[0]['id']);
+
      }
      let facebook = this.CampaignFacebookList.filter(x => x.campaignID == this.SelectedCampaignId);
      if(facebook !=null && facebook != undefined && facebook.length > 0){
       localStorage.setItem('facebookpagename', facebook[0]['urlOrName']);
       localStorage.setItem('facebookaccesstoken', facebook[0]['accessToken']);
+      localStorage.setItem('facebookid', facebook[0]['id']);
+
      }
      let gsc = this.CampaignGSCList.filter(x => x.campaignID == this.SelectedCampaignId);
      if(gsc !=null && gsc != undefined && gsc.length > 0){
       localStorage.setItem('gscurl', gsc[0]['urlOrName']);
       localStorage.setItem('gscaccesstoken', gsc[0]['accessToken']);
-      localStorage.setItem('gscrefreshtoken', ga[0]['refreshToken']);
+      localStorage.setItem('gscrefreshtoken', gsc[0]['refreshToken']);
+      localStorage.setItem('gscid', gsc[0]['id']);
+
      }
       localStorage.setItem('selectedCampId', campaign.data.id);
       localStorage.setItem('selectedCampName', campaign.data.name);
@@ -260,22 +267,29 @@ export class CampaignlistComponent implements OnInit {
       localStorage.setItem('gaurl', ga[0]['urlOrName']);
       localStorage.setItem('gaaccesstoken', ga[0]['accessToken']);
       localStorage.setItem('garefreshtoken', ga[0]['refreshToken']);
+      localStorage.setItem('gaid', ga[0]['id']);
      }
      let gads = this.CampaignGAdsList.filter(x => x.campaignID == this.SelectedCampaignId);
      if(gads !=null && gads != undefined && gads.length > 0){
       localStorage.setItem('gadsurl', gads[0]['urlOrName']);
       localStorage.setItem('gadsaccesstoken', gads[0]['accessToken']);
+      localStorage.setItem('gadsid', gads[0]['id']);
+
      }
      let facebook = this.CampaignFacebookList.filter(x => x.campaignID == this.SelectedCampaignId);
      if(facebook !=null && facebook != undefined && facebook.length > 0){
       localStorage.setItem('facebookpagename', facebook[0]['urlOrName']);
       localStorage.setItem('facebookaccesstoken', facebook[0]['accessToken']);
+      localStorage.setItem('facebookid', facebook[0]['id']);
+
      }
      let gsc = this.CampaignGSCList.filter(x => x.campaignID == this.SelectedCampaignId);
      if(gsc !=null && gsc != undefined && gsc.length > 0){
       localStorage.setItem('gscurl', gsc[0]['urlOrName']);
       localStorage.setItem('gscaccesstoken', gsc[0]['accessToken']);
-      localStorage.setItem('gscrefreshtoken', ga[0]['refreshToken']);
+      localStorage.setItem('gscrefreshtoken', gsc[0]['refreshToken']);
+      localStorage.setItem('gscid', gsc[0]['id']);
+
      }
     localStorage.setItem('editMasterId', campaign.id);
     localStorage.setItem('selectedCampName', campaign.name);
