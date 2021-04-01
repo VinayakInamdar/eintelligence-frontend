@@ -39,15 +39,30 @@
     <div class="col-sm-1"></div>
 </div> -->
 
-<div class="row homemaindiv"  *ngIf="hasGaSetup" >
+<div class="row homemaindiv" *ngIf="hasGaSetup">
     <div class="col-sm-1">
 
-    
+
     </div>
- 
+
     <div class="col-lg-10">
 
-<!-- <div class="card card-default shadow p-3 mb-5 bg-white rounded  cursor-default">
+        <div class="card card-default shadow p-3 bg-white rounded  cursor-default">
+            <div class="col-lg-12">
+                <h2 class="healthscorecard">Agency Health Score: 100</h2>
+            </div>
+        </div>
+        <div class="row setbuttonpadding">
+            <div class="col-md-3"></div>
+            <div class="col-md-2" style="margin-left: 62.5rem;">
+                <div class="col-md-2">
+                    <button class="mr-1 btn btn-primary btn-lg" type="button" (click)="onClick()">Add Project</button>
+
+                    <div class="col-md-1"></div>
+                </div>
+            </div>
+        </div>
+        <!-- <div class="card card-default shadow p-3 mb-5 bg-white rounded  cursor-default">
             <div class="col-lg-12" >
     
                 <div class="col-lg-3">
@@ -65,9 +80,9 @@
                 </div>
             </div>
         </div>   -->
-        
-    
-   
+
+
+
         <div class="card card-default shadow p-3 mb-5 bg-white rounded  cursor-default">
             <!-- <div class="card-header">
                 <div class="row">
@@ -76,7 +91,7 @@
                     <div class="col-md-2"><a href="#" (click)="goToAudits($event)">View all Audits</a></div>
                 </div>
             </div> -->
-            <div class="card-body homedivborder" >
+            <div class="card-body homedivborder">
                 <div class="row">
                     <div class="col-lg-4">
                         <div style="display: block">
@@ -133,16 +148,31 @@
 </div>
 <div class="row cursor-default">
     <div class="col-md-1"></div>
-    <div class="col-md-3 fontsizelarger fontweightnormal fontcolorblack paddingtop25px">Your Campagins</div>
-    <div class="col-md-2"></div>
-    <div class="col-md-3 search-container paddingtop13px">
-        <input #search class="form-control ng-valid ng-dirty ng-valid-parse ng-touched ng-empty homeinputwidth " type="text" placeholder="Search for campaigns" (keyup)="onSearch(search.value)">
+    <div class="col-md-2 fontsizelarger fontweightnormal fontcolorblack paddingtop25px">Your Projects</div>
+
+    <div class="col-md-3 search-container paddingtop13px setsearchpadding">
+        <input #search class="form-control ng-valid ng-dirty ng-valid-parse ng-touched ng-empty homeinputwidth " type="text" placeholder="Search for Projects" (keyup)="onSearch(search.value)">
         <div class="col-md-1"></div>
     </div>
-    <div class="col-md-2">
-        <button class="mr-1 btn btn-primary btn-lg" type="button" (click)="onClick()">Add a Campagin</button>
 
-        <div class="col-md-1"></div>
+    <div class="col">
+
+        <mat-form-field appearance="fill" class="pr-sm-4" fxFlex="20">
+            <mat-label>Start date</mat-label>
+            <input matInput [matDatepicker]="startDatePicker" name="start" formControlName="fromDate" (dateChange)="onStartDateChange($event)">
+            <mat-datepicker-toggle matSuffix [for]="startDatePicker"></mat-datepicker-toggle>
+            <mat-datepicker #startDatePicker></mat-datepicker>
+            <mat-error>Please select start date!</mat-error>
+        </mat-form-field>
+
+
+        <mat-form-field appearance="fill" class="pr-sm-4" fxFlex="0">
+            <mat-label>End date</mat-label>
+            <input matInput [matDatepicker]="endDatePicker" name="end" [formControl]="toDate" (dateChange)="onEndDateChange($event)">
+            <mat-datepicker-toggle matSuffix [for]="endDatePicker"></mat-datepicker-toggle>
+            <mat-datepicker #endDatePicker></mat-datepicker>
+            <mat-error>Please select End date!</mat-error>
+        </mat-form-field>
     </div>
 
 </div>

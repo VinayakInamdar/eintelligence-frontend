@@ -220,32 +220,36 @@ export class HomeComponent implements OnInit {
   settings = {
     actions: { add: false, edit: false, delete: false },
     columns: {
+      SrNo:{
+        title:'Sr No.',
+        filter:false
+      },
       name: {
-        title: 'NAME',
+        title: 'Project',
         filter: false
       },
       webUrl: {
-        title: 'WEBURL',
+        title: 'Website',
         filter: false
       },
       ranking: {
-        title: 'RANKING',
+        title: 'SE Avg. Position',
         filter: false
       },
       traffic: {
-        title: 'TRAFFIC',
+        title: 'Organic Traffic',
         filter: false
       },
       gsc: {
-        title: 'GSC',
+        title: 'SE Impressions',
         filter: false
       },
       socialMedia: {
-        title: 'SOCIAL MEDIA',
+        title: 'SM Engagement',
         filter: false
       },
       googleLeads: {
-        title: 'GOOGLE ADS',
+        title: 'Google Ads Conversions',
         filter: false
       }
     }
