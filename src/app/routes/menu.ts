@@ -47,7 +47,7 @@ const Fulfillment = {
 // };
 
 const Campaign = {
-    text: 'Campaigns',
+    text: 'Projects',
     link: '/campaign',
     icon: "fa fa-bullhorn"
 };
@@ -75,11 +75,11 @@ const Campaign = {
 //     icon: "fas fa-list-alt"
 // };
 
-// const Reports = {
-//     text: 'Reports',
-//     link: '/reports',
-//     icon: "fas fa-list-alt"
-// };
+const Reports = {
+    text: 'Reports',
+    link: '/reports',
+    icon: "fas fa-list-alt"
+};
 
 
 
@@ -116,7 +116,7 @@ export const menu = [
   //  Products,
     Campaign,
     Fulfillment, 
-   // Reports,
+    Reports,
    // MyPayments,
     //User,
    // Account,

@@ -183,15 +183,19 @@ export class CampaignlistComponent implements OnInit {
     }
   public AddCampaign(): any {
     localStorage.setItem('gaurl','');
-    localStorage.setItem('gaaccesstoken','');
-    localStorage.setItem('gadsaccesstoken','');
-    localStorage.setItem('facebookurl','');
-    localStorage.setItem('facebookaccesstoken','');
-    localStorage.setItem('gscurl','');
-    localStorage.setItem('gscaccesstoken','');
-    localStorage.setItem('selectedCampName','');
-    localStorage.setItem('selectedCampUrl','');
-    localStorage.setItem('editMasterId', '');
+     localStorage.setItem('gaaccesstoken','');
+     localStorage.setItem('gadsaccesstoken','');
+     localStorage.setItem('facebookurl','');
+     localStorage.setItem('facebookaccesstoken','');
+     localStorage.setItem('gscurl','');
+     localStorage.setItem('gscaccesstoken','');
+     localStorage.setItem('selectedCampName','');
+     localStorage.setItem('selectedCampUrl','');
+     localStorage.setItem('editMasterId', ''); localStorage.setItem('editMasterId', '');
+     localStorage.setItem('gaid','');
+     localStorage.setItem('gadsid','');
+     localStorage.setItem('facebookid', '');
+     localStorage.setItem('gscid', '');
     this.router.navigate(['/home/campaign']);
   }
 
@@ -260,8 +264,13 @@ export class CampaignlistComponent implements OnInit {
      localStorage.setItem('gscaccesstoken','');
      localStorage.setItem('selectedCampName','');
      localStorage.setItem('selectedCampUrl','');
-     localStorage.setItem('editMasterId', '');
+     localStorage.setItem('editMasterId', ''); localStorage.setItem('editMasterId', '');
+     localStorage.setItem('gaid','');
+     localStorage.setItem('gadsid','');
+     localStorage.setItem('facebookid', '');
+     localStorage.setItem('gscid', '');
      this.SelectedCampaignId = campaign.id;
+     debugger
      let ga = this.CampaignGAList.filter(x => x.campaignID == this.SelectedCampaignId);
      if(ga !=null && ga != undefined && ga.length > 0){
       localStorage.setItem('gaurl', ga[0]['urlOrName']);

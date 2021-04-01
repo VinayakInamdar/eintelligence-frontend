@@ -801,7 +801,7 @@ export class SeoComponent implements OnInit {
         label: function (tooltipItems, data) {
           //var idx = tooltipItems.index;
           //return data.labels[idx] + ' €';
-          return tooltipItems.yLabel + '  Keywords'
+          return tooltipItems.yLabel + ' Position'
         }
       }
     },
@@ -954,11 +954,11 @@ export class SeoComponent implements OnInit {
     const url = "https://www.googleapis.com/oauth2/v4/token";
     let data = {};
     data = {
-      client_id:environment.googleClientId,
+      client_id: environment.googleClientId,
       client_secret: environment.googleClientSecret,
       refresh_token: this.gscrefreshtoken,//'ya29.a0AfH6SMCszj8kAk7Q4lV43Q0vsJWDKmmmYkSYnwPclmY1La7BesHF7-5KuwdX1s4MlllQafsCGCjmQ9oO3K4jtFB6wMvDiuWjRsYpGQxkKzpwoUvph8e5OWG_Fy0bCUYAe_NiJ0x8gUkhM98seOhBPvNE1znZ',
       grant_type: 'refresh_token',
-      access_type:'offline'
+      access_type: 'offline'
     };
     this.http.post(url, data).subscribe(res => {
       if (res) {
@@ -975,11 +975,11 @@ export class SeoComponent implements OnInit {
     const url = "https://www.googleapis.com/oauth2/v4/token";
     let data = {};
     data = {
-      client_id:environment.googleClientId,
+      client_id: environment.googleClientId,
       client_secret: environment.googleClientSecret,
-      refresh_token:this.garefreshtoken,// 'ya29.a0AfH6SMCszj8kAk7Q4lV43Q0vsJWDKmmmYkSYnwPclmY1La7BesHF7-5KuwdX1s4MlllQafsCGCjmQ9oO3K4jtFB6wMvDiuWjRsYpGQxkKzpwoUvph8e5OWG_Fy0bCUYAe_NiJ0x8gUkhM98seOhBPvNE1znZ',
+      refresh_token: this.garefreshtoken,// 'ya29.a0AfH6SMCszj8kAk7Q4lV43Q0vsJWDKmmmYkSYnwPclmY1La7BesHF7-5KuwdX1s4MlllQafsCGCjmQ9oO3K4jtFB6wMvDiuWjRsYpGQxkKzpwoUvph8e5OWG_Fy0bCUYAe_NiJ0x8gUkhM98seOhBPvNE1znZ',
       grant_type: 'refresh_token',
-      access_type:'offline'
+      access_type: 'offline'
     };
     this.http.post(url, data).subscribe(res => {
       if (res) {
@@ -994,17 +994,10 @@ export class SeoComponent implements OnInit {
     });
 
   }
-  refreshToken(){
-    debugger
-    this.integrationsService.refreshGoogleAccount(this.gaaccesstoken,this.garefreshtoken).subscribe(
-      res => {
-        debugger
-          let p = res;
 
-     });  
-  }
   ngOnInit(): void {
-
+    // this.lineChartData1=[];
+    // this.lineChartLabels1 = [];
     this.gaurl = localStorage.getItem('gaurl');
     this.gaaccesstoken = localStorage.getItem('gaaccesstoken');
     this.garefreshtoken = localStorage.getItem('garefreshtoken');
@@ -1015,17 +1008,20 @@ export class SeoComponent implements OnInit {
     this.gscrefreshtoken = localStorage.getItem('gscrefreshtoken');
     this.selectedCampaignName = localStorage.getItem('selectedCampName');
     this.selectedCampIdWebUrl = localStorage.getItem('selectedCampUrl');
-    this.getDateSettings();
-this.refreshToken();
-    this.refreshGoogleAnalyticsAccount();
-    this.refreshGSCAccount();
+    debugger
+    if (this.gaurl != 'null' && this.gaurl != null && this.gaurl != undefined && this.gaurl != '') {
+      this.refreshGoogleAnalyticsAccount();
+      //this.getAnalyticsProfileIds();
+      //this.getSiteSpeedDataMobile();
+      //this.getSiteSpeedDataDesktop();
+    }
+    if (this.gscurl != 'null' && this.gscurl != null && this.gscurl != undefined && this.gscurl != '') {
+      this.getDateSettings();
+     // this.getData();
+      this.refreshGSCAccount();
+    }
     this.sub = this.route.params.subscribe(params => {
       this.id = params['id'];
-    });
-
-    this.authService.authState.subscribe(user => {
-
-      let user1 = user;
     });
   }
 

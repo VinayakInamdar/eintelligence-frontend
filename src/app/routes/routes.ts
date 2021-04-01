@@ -16,6 +16,8 @@ export const routes: Routes = [
                 canActivate: [RequireAuthenticatedUserRouteGuardService],
                 loadChildren: () => import('./home/home.module').then(m => m.HomeModule)
             },
+            
+            
             {
                 path: 'dashboard',
                 component: LayoutComponent,
@@ -73,6 +75,12 @@ export const routes: Routes = [
             {
                 path: 'campaign',
                 component: LayoutComponent,
+                loadChildren: () => import('./campaign/campagin.module').then(m => m.CampaginModule )
+            },
+            {
+                path: 'campaign/:code/:scope/:authuser/:prompt',
+                component: LayoutComponent,
+                canActivate: [RequireAuthenticatedUserRouteGuardService],
                 loadChildren: () => import('./campaign/campagin.module').then(m => m.CampaginModule )
             },
             {

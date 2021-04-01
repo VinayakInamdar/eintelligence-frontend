@@ -185,7 +185,7 @@ export class CampaginComponent implements OnInit, AfterViewInit {
   sub: Subscription;
   id: number;
   public demo1TabIndex = 0;
-  public myreg = '(https?://)?([\\da-z.-]+)\\.([a-z.]{2,6})[/\\w .-]*/?';
+  //public myreg = '(https?://)?([\\da-z.-]+)\\.([a-z.]{2,6})[/\\w .-]*/?';
   url: string;
   trafficsourcedate: { display: any[]; medium: any[]; referral: any[]; social: any[]; source: any[]; };
   gaAccounts = [];
@@ -289,7 +289,11 @@ export class CampaginComponent implements OnInit, AfterViewInit {
   selectedLabel1: number;
   selctedLabelName1: string = 'Select Matrix';
   selectedLabelValue1: string;
- 
+  httpOptionJSON1 = {
+		headers: new HttpHeaders({
+			'Content-Type': 'application/x-www-form-urlencoded',
+		})
+	};
 
   showdiv: boolean = false;
   show: string = 'undefine';
@@ -305,11 +309,15 @@ export class CampaginComponent implements OnInit, AfterViewInit {
   gaid;
   gscid;
   facebookid;
+  gacode;
+  gsccode;
+  webUrlReg:string='([^https://www.]|[^www.]|[^http://www.])[a-zA-Z]{4,}(([\.][a-z]{3})|([\.][a-z]{2}[\.][a-z]{2}))';
   constructor(private translate: TranslateService, fb: FormBuilder, private facebook: FacebookService,
     private campaignService: CampaignService, private authService: SocialAuthService,
     public route: ActivatedRoute, public http: HttpClient, public datepipe: DatePipe, public router: Router, private openIdConnectService: OpenIdConnectService, private integrationsService: IntegrationsService
     , private overvieswService: OverviewService, location: PlatformLocation, private snackbarService: SnackbarService,
     public auditsService: AuditsService) {
+     
     facebook.init({
       appId: '200487178533939',//environment.facebook_appid,//3574916862576976
       version: 'v9.0'
@@ -331,17 +339,66 @@ export class CampaginComponent implements OnInit, AfterViewInit {
 
     });
 
-    ;
+    
     this.valForm = fb.group({
       'name': [this.campaignModel.name, Validators.required],
       'campaignType': [''],
-      'webUrl': [this.campaignModel.webUrl, [Validators.required, Validators.pattern(this.myreg)]],
+      //'webUrl': [this.campaignModel.webUrl, [Validators.required, Validators.pattern('[a-zA-Z]{4,}[\.][a-z]{2,4}')]],
+      'webUrl': [this.campaignModel.webUrl, [Validators.required, Validators.pattern(this.webUrlReg)]],
+
       'moreTraffic': [true],
       'sales': [true],
       'leadGeneration': [true],
     })
+    this.gacode = localStorage.getItem("gacode");
+    if(this.gacode != 'null' && this.gacode != null && this.gacode != undefined && this.gacode != ''){
+      this.getToken(this.gacode);
+    }
+    this.gsccode = localStorage.getItem("gsccode");
+    if(this.gsccode != 'null' && this.gsccode != null && this.gsccode != undefined && this.gsccode != ''){
+      this.getToken(this.gsccode);
+    }
+   
   }
-
+ 	getToken(code) {
+     debugger
+		const url = "https://oauth2.googleapis.com/token";
+     
+		//const url = "https://www.googleapis.com/oauth2/v4/token";
+		const body = new URLSearchParams();
+		body.set('client_id', environment.googleClientId);
+		body.set('client_secret', environment.googleClientSecret);
+		body.set('code', code);
+		body.set('grant_type', 'authorization_code');
+		body.set('redirect_uri', environment.googleRedirectUrl);
+		this.http.post(url, body.toString(), this.httpOptionJSON1).subscribe(res => {
+			if (res) {
+        debugger
+        if(this.gacode != 'null' && this.gacode != null && this.gacode != undefined && this.gacode != ''){
+        this.staticTabs.tabs[2].disabled = false;
+        this.staticTabs.tabs[2].active = true;
+         this.gaAccaessToken = res['access_token'];
+         this.gaRefreshToken = res['refresh_token'];
+         this.getAnalyticsProfileIds2();
+        localStorage.setItem("gacode",'');
+        this.gacode ='';
+        }
+        if(this.gsccode != 'null' && this.gsccode != null && this.gsccode != undefined && this.gsccode != ''){
+          this.staticTabs.tabs[2].disabled = false;
+          this.staticTabs.tabs[2].active = true;
+          this.gscAccounts = [];
+          this.hasGscSetup = true;
+          this.gscAccessToken = res['access_token'];
+          this.gscRefreshToken = res['refresh_token'];
+          this.getGSCSiteList();
+          localStorage.setItem("gsccode",'');
+          this.gsccode ='';
+          }
+			}
+		}, error => {
+			console.log(error.message, 'Error');
+		});
+	}
   checkqueryparams() {
     var params = { ...this.route.snapshot.queryParams };
     this.queryParams = params.view
@@ -363,6 +420,7 @@ export class CampaginComponent implements OnInit, AfterViewInit {
 
 
   ngOnInit(): void {
+  debugger
     this.masterCampaignId = localStorage.getItem('masterCampaignId');
     if (this.masterCampaignId != null && this.masterCampaignId != undefined) {
       this.settingActive = 1;
@@ -377,20 +435,24 @@ export class CampaginComponent implements OnInit, AfterViewInit {
       this.gscAccessToken = localStorage.getItem('gscaccesstoken');
       this.gaAccaessToken = localStorage.getItem('gaaccesstoken')
       this.gaRefreshToken = localStorage.getItem('garefreshtoken')
+      this.gscRefreshToken = localStorage.getItem('gscrefreshtoken')
       this.gaid =  localStorage.getItem('gaid')
       this.gaurl = localStorage.getItem('gaurl');
       this.gscid =  localStorage.getItem('gscid')
       this.facebookid =  localStorage.getItem('facebookid')
       this.facebookpagename = localStorage.getItem('facebookpagename');
       this.gscurl = localStorage.getItem('gscurl');
-      if(this.gaAccaessToken != 'null' && this.gaAccaessToken != null && this.gaAccaessToken != undefined && this.gaAccaessToken != ''){
+      if (this.gaurl != 'null' && this.gaurl != null && this.gaurl != undefined && this.gaurl != '') {
+        this.refreshGoogleAnalyticsAccount();
+      //if(this.gaAccaessToken != 'null' && this.gaAccaessToken != null && this.gaAccaessToken != undefined && this.gaAccaessToken != ''){
         this.hasGaSetup = true;
-        this.getAnalyticsProfileIds2();
+       // this.getAnalyticsProfileIds2();
       }
-      if(this.gscAccessToken != 'null' && this.gscAccessToken != null && this.gscAccessToken != undefined && this.gscAccessToken != ''){
-        
+      if (this.gscurl != 'null' && this.gscurl != null && this.gscurl != undefined && this.gscurl != '') {
+     // if(this.gscAccessToken != 'null' && this.gscAccessToken != null && this.gscAccessToken != undefined && this.gscAccessToken != ''){
+      this.refreshGSCAccount();
         this.hasGscSetup=true;
-        this.getGSCSiteList();
+        //this.getGSCSiteList();
       }
       if(this.facebookAccessToken != 'null' && this.facebookAccessToken != null && this.facebookAccessToken != undefined && this.facebookAccessToken != ''){
         this.hasFacebookSetup = true;
@@ -409,6 +471,49 @@ export class CampaginComponent implements OnInit, AfterViewInit {
     this.trafficPve = 0;
     this.trafficNve = 0;
     this.trafficNut = 0;
+  }
+  refreshGSCAccount() {
+    debugger
+    const url = "https://www.googleapis.com/oauth2/v4/token";
+    let data = {};
+    data = {
+      client_id: environment.googleClientId,
+      client_secret: environment.googleClientSecret,
+      refresh_token: this.gscRefreshToken,//'ya29.a0AfH6SMCszj8kAk7Q4lV43Q0vsJWDKmmmYkSYnwPclmY1La7BesHF7-5KuwdX1s4MlllQafsCGCjmQ9oO3K4jtFB6wMvDiuWjRsYpGQxkKzpwoUvph8e5OWG_Fy0bCUYAe_NiJ0x8gUkhM98seOhBPvNE1znZ',
+      grant_type: 'refresh_token',
+      access_type: 'offline'
+    };
+    this.http.post(url, data).subscribe(res => {
+      if (res) {
+        debugger
+        this.gscAccessToken = res['access_token'];
+        this.getGSCSiteList();
+      }
+    }, error => {
+      alert('eeee : ' + JSON.stringify(error.error));
+    });
+  }
+  refreshGoogleAnalyticsAccount() {
+    debugger
+    const url = "https://www.googleapis.com/oauth2/v4/token";
+    let data = {};
+    data = {
+      client_id: environment.googleClientId,
+      client_secret: environment.googleClientSecret,
+      refresh_token: this.gaRefreshToken,// 'ya29.a0AfH6SMCszj8kAk7Q4lV43Q0vsJWDKmmmYkSYnwPclmY1La7BesHF7-5KuwdX1s4MlllQafsCGCjmQ9oO3K4jtFB6wMvDiuWjRsYpGQxkKzpwoUvph8e5OWG_Fy0bCUYAe_NiJ0x8gUkhM98seOhBPvNE1znZ',
+      grant_type: 'refresh_token',
+      access_type: 'offline'
+    };
+    this.http.post(url, data).subscribe(res => {
+      if (res) {
+        debugger
+        this.gaAccaessToken = res['access_token'];
+        this.getAnalyticsProfileIds2();
+      }
+    }, error => {
+      alert('eeee : ' + JSON.stringify(error.error));
+    });
+
   }
   editCampaign(campaign: any) {
     this.selectedCampId = campaign.id
@@ -845,15 +950,29 @@ export class CampaginComponent implements OnInit, AfterViewInit {
   }
 
   integrateGoogleAnalytics(): void {
-    
-    this.integrationsService.googleAuth(this.masterCampaignId).subscribe(
-      res => {
-        
-          let p = res;
-         this.gaAccaessToken = res['accessToken'];
-         this.gaRefreshToken = res['refreshToken'];
-         this.getAnalyticsProfileIds2();
-     });  
+    localStorage.setItem("isga","1");
+    //let connectYouTubeUrl = 'https://accounts.google.com/o/oauth2/v2/auth?scope=https://www.googleapis.com/auth/analytics https://www.googleapis.com/auth/analytics.readonly&access_type=offline&include_granted_scopes=true&redirect_uri='+environment.googleRedirectUrl+'&response_type=code&client_id=' + environment.googleClientId;
+    let connectYouTubeUrl = 'https://accounts.google.com/o/oauth2/v2/auth?scope=https://www.googleapis.com/auth/analytics.readonly https://www.googleapis.com/auth/analytics&access_type=offline&prompt=consent&include_granted_scopes=true&redirect_uri='+environment.googleRedirectUrl+'&response_type=code&client_id=' + environment.googleClientId;
+
+		  //let connectYouTubeUrl = 'https://accounts.google.com/o/oauth2/v2/auth?scope=https://www.googleapis.com/auth/userinfo.profile&access_type=offline&include_granted_scopes=true&redirect_uri='+environment.googleRedirectUrl+'&response_type=code&client_id=' + environment.googleClientId;
+
+    //let connectYouTubeUrl = 'https://accounts.google.com/o/oauth2/v2/auth?scope=https://www.googleapis.com/auth/youtube.force-ssl https://www.googleapis.com/auth/userinfo.profile&access_type=offline&include_granted_scopes=true&redirect_uri=https://localhost:4200/home/campaign&response_type=code&client_id=' + environment.googleClientId;
+    window.location.href = connectYouTubeUrl;
+    // debugger
+    // this.campaignService.authGoogleRestSharp("fdgdfg").subscribe(
+    //   res => {
+    //     debugger
+    //       let p = res;
+    //  }); 
+   // this.refreshGSCAccount1();
+  //  this.integrationsService.googleAuth(this.masterCampaignId).subscribe(
+  //     res => {
+  //       debugger
+  //         let p = res;
+  //        this.gaAccaessToken = res['accessToken'];
+  //        this.gaRefreshToken = res['refreshToken'];
+  //        this.getAnalyticsProfileIds2();
+  //    });  
     // const googleLoginOptions = {
     //   connection: 'google-oauth2',
     //   prompt: 'consent',
@@ -865,7 +984,7 @@ export class CampaginComponent implements OnInit, AfterViewInit {
     // };
     // this.authService.signIn(GoogleLoginProvider.PROVIDER_ID, googleLoginOptions)
     //   .then((res) => {
-        
+    //     debugger
     
     //     this.gaAccaessToken = res['authToken'];
     //     this.getAnalyticsProfileIds2();
@@ -878,7 +997,7 @@ export class CampaginComponent implements OnInit, AfterViewInit {
     this.gaSelectedName = id;
   }
   saveGaAccount() {
-  
+  debugger
     if(!this.isEditMode){
     let data = {
       id: "00000000-0000-0000-0000-000000000000",
@@ -961,16 +1080,29 @@ export class CampaginComponent implements OnInit, AfterViewInit {
   }
 
   integrateGSC(): void {
-    this.integrationsService.googleAuth(this.masterCampaignId).subscribe(
-      res => {
-        
-          let p = res;
-          this.gscAccounts = [];
-         this.hasGscSetup = true;
-         this.gscAccessToken = res['accessToken'];
-         this.gscRefreshToken = res['refreshToken'];
-         this.getGSCSiteList();
-     });  
+    localStorage.setItem("isgsc","1");
+    let connectYouTubeUrl = 'https://accounts.google.com/o/oauth2/v2/auth?scope=https://www.googleapis.com/auth/webmasters.readonly https://www.googleapis.com/auth/webmasters&access_type=offline&prompt=consent&include_granted_scopes=true&redirect_uri='+environment.googleRedirectUrl+'&response_type=code&client_id=' + environment.googleClientId;
+    window.location.href = connectYouTubeUrl;
+    //  this.integrationsService.refreshGoogleAccount("ewwerwerwe",this.gaAccaessToken).subscribe(
+    //   res => {
+    //     debugger
+    //       let p = res;
+    //       this.gscAccounts = [];
+    //      this.hasGscSetup = true;
+    //      this.gscAccessToken = res['accessToken'];
+    //      this.gscRefreshToken = res['refreshToken'];
+    //      this.getGSCSiteList();
+    //  });  
+    //this.integrationsService.googleAuth(this.masterCampaignId).subscribe(
+    //   res => {
+    //     debugger
+    //       let p = res;
+    //       this.gscAccounts = [];
+    //      this.hasGscSetup = true;
+    //      this.gscAccessToken = res['accessToken'];
+    //      this.gscRefreshToken = res['refreshToken'];
+    //      this.getGSCSiteList();
+    //  });  
     // const googleLoginOptions = {
     //   connection: 'google-oauth2',
     //   scope: 'profile email https://www.googleapis.com/auth/webmasters.readonly https://www.googleapis.com/auth/webmasters https://www.googleapis.com/auth/analytics https://www.googleapis.com/auth/analytics.readonly https://www.googleapis.com/auth/analytics.edit',
@@ -981,7 +1113,7 @@ export class CampaginComponent implements OnInit, AfterViewInit {
     // };
     // this.authService.signIn(GoogleLoginProvider.PROVIDER_ID, googleLoginOptions)
     //   .then((res) => {
-    //     
+        
     //     this.gscAccounts = [];
     //     this.hasGscSetup = true;
     //     this.gscAccessToken = res['authToken'];
@@ -995,6 +1127,7 @@ export class CampaginComponent implements OnInit, AfterViewInit {
   }
 
   saveGscAccount() {
+    debugger
     if(!this.isEditMode){
     let data = {
       id: "00000000-0000-0000-0000-000000000000",
@@ -1065,19 +1198,7 @@ export class CampaginComponent implements OnInit, AfterViewInit {
     
     this.facebookSelectedName = id;
   }
-  refreshGSCAccount() {
-    
-    const url = "https://accounts.google.com/o/oauth2/auth?response_type=code&client_id="+environment.googleClientId+"&scope=profile+email&access_type=offline&prompt=select_account";
-    //var Parameters = "code=" + code + "&client_id=" + googleplus_client_id + "&client_secret=" + googleplus_client_secret + "&redirect_uri=" + googleplus_redirect_url + "&grant_type=authorization_code";
-    this.http.get(url).subscribe(res => {
-      if (res) {
-        
 
-      }
-    }, error => {
-      alert('eeee : ' + JSON.stringify(error.error));
-    });
-  }
   saveFacebookAccount() {
     if(!this.isEditMode){
     let data = {

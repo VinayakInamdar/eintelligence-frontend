@@ -57,12 +57,10 @@
                             <label>WEBSITE URL</label>
                             <div class="form-group row">
                                 <input #webUrl_field class="form-control campinputh" type="url" formControlName="webUrl" placeholder="Ex. example.com (Without http:// and https:// ) " [formControl]="valForm.controls['webUrl']" />
-                                <!-- <span class="text-danger"
-                                    *ngIf="valForm.controls['webUrl'].hasError('required') && (valForm.controls['webUrl'].dirty || valForm.controls['webUrl'].touched)">
+                                <span class="text-danger" *ngIf="valForm.controls['webUrl'].hasError('required') && (valForm.controls['webUrl'].dirty || valForm.controls['webUrl'].touched)">
                                     {{'validation.URLREQUIRED' | translate}}</span>
-                                <span class="text-danger"
-                                    *ngIf="valForm.controls['webUrl'].hasError('pattern') && (valForm.controls['webUrl'].dirty || valForm.controls['webUrl'].touched)">
-                                    {{'validation.URLVALIDATION' | translate}}</span> -->
+                                <span class="text-danger" *ngIf="valForm.controls['webUrl'].hasError('pattern') && (valForm.controls['webUrl'].dirty || valForm.controls['webUrl'].touched)">
+                                    {{'validation.URLVALIDATION' | translate}}</span>
                             </div>
 
                             <div class="row">
@@ -73,7 +71,7 @@
                                 <div class="col-md-6"></div>
                                 <div class="col-md-3">
                                     <p *ngIf="!isEditMode">
-                                        <button class="mr-1 btn btn-primary btn-lg" type="submit" (click)="successAlert()">Create
+                                        <button class="mr-1 btn btn-primary btn-lg" type="submit" (click)="successAlert()" [disabled]="!webUrl_field.value || (valForm.controls['webUrl'].hasError('pattern'))">Create
                                             campaign</button>
                                     </p>
                                     <p *ngIf="isEditMode">
@@ -111,11 +109,13 @@
                                                     </p>
                                                         <form [formGroup]="gaSelectForm" class="goalfonsize" *ngIf="hasGaSetup">
                                                             <select id="gaSelect" style="width: 150px;" class="form-control" formControlName="gaSelect" (change)="onSelectGa($event.target.value)">
+                                                                <option [ngValue]="undefined" [disabled]="true">Please Select
+                                                                </option>
                                                                 <option *ngFor="let gaAccount of gaAccounts"  [value]="gaAccount" >{{ gaAccount }}</option>
                                                             </select>
                                                         </form>
                                                     <p class="goalfonsize" *ngIf="hasGaSetup">
-                                                        <button type="button" class="btn btn-primary" (click)="saveGaAccount()">Save
+                                                        <button type="button" class="btn btn-primary" (click)="saveGaAccount()" [disabled]="!gaSelectedName">Save
                                                             Changes</button>
                                                     </p>
 
@@ -137,11 +137,13 @@
                                                     </p>
                                                         <form [formGroup]="gaSelectForm" class="goalfonsize" *ngIf="hasGscSetup">
                                                             <select id="gscSelect" class="form-control" formControlName="gscSelect" (change)="onSelectGsc($event.target.value)">
+                                                                <option [ngValue]="undefined" [disabled]="true">Please Select
+                                                                </option>
                                                                 <option *ngFor="let gscAccount of gscAccounts"   [value]="gscAccount" >{{ gscAccount }}</option>
                                                             </select>
                                                         </form>
                                                     <p class="goalfonsize" *ngIf="hasGscSetup">
-                                                        <button type="button" class="btn btn-primary" (click)="saveGscAccount()">Save
+                                                        <button type="button" class="btn btn-primary" (click)="saveGscAccount()" [disabled]="!gscSelectedName">Save
                                                             Changes</button>
                                                     </p>
                                                 </div>
@@ -160,11 +162,13 @@
                                                     </p>
                                                     <form [formGroup]="gaSelectForm" class="goalfonsize" *ngIf="hasFacebookSetup">
                                                         <select id="facebookSelect" class="form-control" formControlName="facebookSelect" (change)="onSelectFacebook($event.target.value)">
+                                                            <option [ngValue]="undefined" [disabled]="true">Please Select
+                                                            </option>
                                                             <option *ngFor="let facebookAccount of facebookAccounts" >{{ facebookAccount }}</option>
                                                         </select>
                                                     </form>
                                                     <p class="goalfonsize" *ngIf="hasFacebookSetup">
-                                                        <button type="button" class="btn btn-primary" (click)="saveFacebookAccount()">Save
+                                                        <button type="button" class="btn btn-primary" (click)="saveFacebookAccount()" [disabled]="!facebookSelectedName">Save
                                                             Changes</button>
                                                     </p>
                                                 </div>

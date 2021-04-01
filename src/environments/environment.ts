@@ -5,7 +5,7 @@ export const environment = {
   //client id secret for abhisihelpdesk@gmail.com
   googleClientId:'959505317275-v8294ho5b3prni9rqi4l6nnb8463uiig.apps.googleusercontent.com',
   googleClientSecret : 'JNCBlNi2j-o5sob6qL6Q8Ead',
-
+  googleRedirectUrl : 'https://localhost:4200/home/campaign',
   production: false,
   apiUrl: 'https://localhost:44357/api/',
   //my stripe key
@@ -50,9 +50,10 @@ export const environment = {
 
 
 // export const environment = {
-    //client id secret for abhisihelpdesk@gmail.com
-   // googleClientId:'959505317275-v8294ho5b3prni9rqi4l6nnb8463uiig.apps.googleusercontent.com',
-  //  googleClientSecret : 'JNCBlNi2j-o5sob6qL6Q8Ead',
+//     //client id secret for abhisihelpdesk@gmail.com
+//    googleClientId:'959505317275-v8294ho5b3prni9rqi4l6nnb8463uiig.apps.googleusercontent.com',
+//    googleClientSecret : 'JNCBlNi2j-o5sob6qL6Q8Ead',
+// googleRedirectUrl : 'https://eintelligence.azurewebsites.net/home/campaign',
 //   production: true,
 //   stripe_key: 'pk_test_L4apfqRUqsnf9DlZceFAy4Wx',
 //   stripe_secreTkey: 'sk_test_K75p6KZMy95Lm1Ojt9ZW3Nsu00wxom9G1z',
@@ -77,6 +78,7 @@ export const environment = {
  
 
 /*
+
  * For easier debugging in development mode, you can import the following file
  * to ignore zone related error stack frames such as `zone.run`, `zoneDelegate.invokeTask`.
  *

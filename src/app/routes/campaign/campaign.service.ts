@@ -72,6 +72,23 @@ export class CampaignService {
     return this.http.get<any[]>(`${this.Url}serps/GetUpdateKeywordsStatus`)
 
   }
+  googleAuth(id: string): Observable<any> {
+    debugger
+    let companyid= localStorage.getItem('companyID');
+   var res =this.http.post<any>(`${this.Url}googleanalyticsaccounts/AuthGoogleAnalyticsAccount?id=` + id+`&CompanyId=` + companyid, {});
+   
+   return res;
+  }
+  authGoogleRestSharp(code): Observable<any> {
+    debugger
+   var res =this.http.post<any>(`${this.Url}googleanalyticsaccounts/AuthGoogleRestSharp?code=` + code, {});
+   return res;
+  }
+  authRefreshGoogleAccount(code): Observable<any> {
+    debugger
+   var res =this.http.post<any>(`${this.Url}googleanalyticsaccounts/AuthRefreshGoogleAccount?code=` + code, {});
+   return res;
+  }
   getCampaign(userid): Observable<any[]> {
     return this.http.get<any[]>(`${this.Url}campaigns/GetCampaignByUserId?userId=` + userid)
   }

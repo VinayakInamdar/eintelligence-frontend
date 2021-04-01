@@ -1,5 +1,5 @@
 import { Component, OnInit } from '@angular/core';
-import { Router } from '@angular/router';
+import { ActivatedRoute, Router } from '@angular/router';
 import { Campaign } from '../../campaign/campaign.model';
 import { CampaignService } from '../../campaign/campaign.service';
 import { HttpClient, HttpHeaders } from '@angular/common/http';
@@ -17,7 +17,7 @@ import { parseDate } from 'ngx-bootstrap/chronos';
 import { environment } from 'src/environments/environment';
 import { GoogleLoginProvider, SocialAuthService } from 'angularx-social-login';
 import { FacebookService, LoginOptions, LoginResponse } from 'ngx-facebook';
-
+declare var gapi : any;
 @Component({
   selector: 'app-home',
   templateUrl: './home.component.html',
@@ -180,13 +180,19 @@ export class HomeComponent implements OnInit {
       display: false
     }
   };
-
-
+  yCode
+  code
+  httpOptionJSON1 = {
+		headers: new HttpHeaders({
+			'Content-Type': 'application/x-www-form-urlencoded',
+		})
+	};
   constructor(private authService: SocialAuthService, private facebook: FacebookService, public datepipe: DatePipe, private homeGscService: HomeGscService, public http: HttpClient, public campaignService: CampaignService, private router: Router,
     public auditsService: AuditsService, public toasterService: ToasterService, public toastr: ToastrService
-    , fb: FormBuilder, private openIdConnectService: OpenIdConnectService, private accountService: AccountService) {
+    , fb: FormBuilder,private route: ActivatedRoute, private openIdConnectService: OpenIdConnectService, private accountService: AccountService) {
     //  this.facebookPageToken = localStorage.getItem('FacebookAccessToken');
     //Ranking
+    debugger
     this.hasGaSetup =true;
     facebook.init({
       appId: environment.facebook_appid,
@@ -194,21 +200,23 @@ export class HomeComponent implements OnInit {
     });
     this.getSerpList();
     this.getCampaignList();
-    this.getRankingGraphDataAll();
+    //this.getRankingGraphDataAll();
     this.getCompany();
-
-
     this.toaster = {
       type: 'success',
       title: 'Audit report',
       text: 'Your report is ready..'
     };
-
-    this.valForm = fb.group({
-      'webUrl': [undefined, [Validators.required, Validators.pattern(this.myreg)]],
-    })
+      
+    let ycode = localStorage.getItem("gacode");
+    if(ycode != 'null' && ycode != null && ycode != undefined && ycode != ''){
+      this.router.navigate(['/home/campaign']);
+    }
+    let gsccode = localStorage.getItem("gsccode");
+    if(gsccode != 'null' && gsccode != null && gsccode != undefined && gsccode != ''){
+      this.router.navigate(['/home/campaign']);
+    }
   }
-
   settings = {
     actions: { add: false, edit: false, delete: false },
     columns: {
@@ -265,15 +273,15 @@ export class HomeComponent implements OnInit {
     var userid = this.openIdConnectService.user.profile.sub;
     this.campaignService.getCampaign(userid).subscribe(res => {
       this.campaignList = res;
-      debugger
+      
       for (let i = 0; i < res.length; i++) {
-        this.getRankingGraphDataDelete(res[i].id);
+       // this.getRankingGraphDataDelete(res[i].id);
       }
     });
   }
   calculateRankings() {
     this.accessToken = localStorage.getItem('googleGscAccessToken');
-    debugger
+    
     if (this.accessToken != null && this.accessToken != undefined && this.accessToken != '') {
       const d = new Date();
       let currYear = d.getFullYear();
@@ -298,7 +306,7 @@ export class HomeComponent implements OnInit {
         this.total = this.campaignList.length;
 
         this.selectedCampIdWebUrl = this.campaignList[i].webUrl;
-        debugger
+        
         if (this.selectedCampIdWebUrl == '' || this.selectedCampIdWebUrl == null || this.selectedCampIdWebUrl == undefined) {
           if (this.facebookAccessToken != null && this.facebookAccessToken != undefined && this.facebookAccessToken != '') {
             this.getFacebookUserId(i);
@@ -388,6 +396,20 @@ export class HomeComponent implements OnInit {
 
   //using to open create campaign view to create new campaign in db
   public onClick(): any {
+    localStorage.setItem('gaurl','');
+    localStorage.setItem('gaaccesstoken','');
+    localStorage.setItem('gadsaccesstoken','');
+    localStorage.setItem('facebookurl','');
+    localStorage.setItem('facebookaccesstoken','');
+    localStorage.setItem('gscurl','');
+    localStorage.setItem('gscaccesstoken','');
+    localStorage.setItem('selectedCampName','');
+    localStorage.setItem('selectedCampUrl','');
+    localStorage.setItem('editMasterId', ''); localStorage.setItem('editMasterId', '');
+    localStorage.setItem('gaid','');
+    localStorage.setItem('gadsid','');
+    localStorage.setItem('facebookid', '');
+    localStorage.setItem('gscid', '');
     this.router.navigate(['/home/campaign']);
   }
 
@@ -895,7 +917,7 @@ export class HomeComponent implements OnInit {
 
         this.thisMonthTraffic = rows[0]["0"];
         this.lastMonthConversions = rows[0]["1"];
-        debugger
+        
       }
     }, error => {
 
@@ -914,7 +936,7 @@ export class HomeComponent implements OnInit {
     const url = "https://www.googleapis.com/analytics/v3/data/ga?ids=ga:" + profileid + "&start-date=" + this.previousStartDate + "&end-date=" + this.previousEndDate + "&metrics=ga%3AorganicSearches%2Cga%3AgoalConversionRateAll";
     this.http.get(url, this.httpOptionJSON).subscribe(res => {
       if (res) {
-        debugger
+        
         let rows = res['rows'];
         //Traffic Calculation
         this.lastMonthTraffic = rows[0]["0"];
@@ -947,7 +969,7 @@ export class HomeComponent implements OnInit {
   }
   //For ranking graph rubina
   RefreshRankingGraphData(selectedCampId) {
-    debugger
+    
     const d = new Date();
     let currYear = d.getFullYear();
     let p;
@@ -973,13 +995,13 @@ export class HomeComponent implements OnInit {
     }
     this.campaignService.createRankingGraph(data).subscribe(response => {
       if (response) {
-        debugger
+        
         this.getRankingGraphData(selectedCampId);
       }
     });
   }
   DeleteRankingGraphData(selectedCampId) {
-    debugger
+    
     const monthNames = ["January", "February", "March", "April", "May", "June", "July", "August", "September", "October", "November", "December"
     ];
     const d = new Date();
@@ -989,7 +1011,7 @@ export class HomeComponent implements OnInit {
     if (p != null && p != undefined && p.length > 0) {
       tempId = p[0].id;
       this.campaignService.deleteRankingGraph(tempId).subscribe(response => {
-        debugger
+        
         this.RefreshRankingGraphData(selectedCampId);
       });
     } else {
@@ -1003,7 +1025,7 @@ export class HomeComponent implements OnInit {
     const filterOptionModel = this.getFilterOptionPlans();
     this.campaignService.getFilteredRankingGraph(filterOptionModel).subscribe((response: any) => {
       if (response) {
-        debugger
+        
         this.RankingGraphData = response.body;
         this.RankingGraphData = this.RankingGraphData.filter(x => x.campaignId.toString() === selectedCampId.toLowerCase() && x.year == currYear);
         this.tempRankingGraphData = this.RankingGraphData;
@@ -1018,7 +1040,7 @@ export class HomeComponent implements OnInit {
     const filterOptionModel = this.getFilterOptionPlans();
     this.campaignService.getFilteredRankingGraph(filterOptionModel).subscribe((response: any) => {
       if (response) {
-        debugger
+        
         this.RankingGraphData = response.body;
         this.RankingGraphData = this.RankingGraphData.filter(x => x.year == currYear);
         this.tempRankingGraphData = this.RankingGraphData;
@@ -1027,7 +1049,7 @@ export class HomeComponent implements OnInit {
     });
   }
   getRankingGraphData(selectedCampId) {
-    debugger
+    
     const d = new Date();
 
     let currYear = d.getFullYear();
@@ -1035,7 +1057,7 @@ export class HomeComponent implements OnInit {
     const filterOptionModel = this.getFilterOptionPlans();
     this.campaignService.getFilteredRankingGraph(filterOptionModel).subscribe((response: any) => {
       if (response) {
-        debugger
+        
         this.RankingGraphData = response.body;
         this.RankingGraphData = this.RankingGraphData.filter(x => x.campaignId.toString() === selectedCampId.toLowerCase() && x.year == currYear);
         this.tempRankingGraphData = this.RankingGraphData;
@@ -1049,13 +1071,85 @@ export class HomeComponent implements OnInit {
       }
     })
   }
+
+  async initGoogleAuth(): Promise<void> {
+    //    this.campaignService.authGoogleRestSharp("fdgdfg").subscribe(
+    //   res => {
+    //     debugger
+    //       let p = res;
+    //  }); 
+     let connectYouTubeUrl = 'https://accounts.google.com/o/oauth2/v2/auth?scope=https://www.googleapis.com/auth/youtube.force-ssl https://www.googleapis.com/auth/userinfo.profile&access_type=offline&include_granted_scopes=true&redirect_uri=https://localhost:4200/home&response_type=code&client_id=' + environment.googleClientId;
+     window.location.href = connectYouTubeUrl;
+//     const apiKey =environment.googleClientId;
+// gapi.load('auth2', () => {
+//   gapi.auth2.getAuthInstance({
+//     access_type: 'offline',
+//     authuser: -1,
+//     prompt:      'select_account',
+//     client_id: apiKey, // note "client_id", not "apiKey"
+//     hosted_domain: 'https://localhost:4200/home'
+//   }).then(auth2 => { 
+//     console.log(auth2 + "befor sign");
+//     // if (!auth2.isSignedIn.get()) { // check if already signed in
+//       auth2.signIn().then(auth => {
+//                console.log(auth);
+//              });
+//     // }
+//   })
+//})
+
+    // //  Create a new Promise where the resolve 
+    // // function is the callback passed to gapi.load
+    // const pload = new Promise((resolve) => {
+    //   gapi.load('auth2', resolve);
+    // });
+
+    // // When the first promise resolves, it means we have gapi
+    // // loaded and that we can call gapi.init
+    // return pload.then(async () => {
+    //   await gapi.auth2
+    //     .init({ client_id: environment.googleClientId })
+    //     .then(auth => {
+    //       
+    //     });
+    // });
+  }
+ 
   ///Fr redirect to seo
   getSerpLocations(){
-    this.campaignService.GetUpdateKeywordsStatus().subscribe((res) => { 
-      debugger
-      let result = res;
-    });
+    
+    // this.campaignService.GetUpdateKeywordsStatus().subscribe((res) => { 
+    //   
+    //   let result = res;
+    // });
+
+      // 
+      // const url = "https://accounts.google.com/o/oauth2/v2/auth?"+
+      // "scope=https%3A//www.googleapis.com/auth/yt-analytics&"+
+      // "access_type=offline&"+
+      // "include_granted_scopes=true&"+
+      // "response_type=code&"+
+      // // "state=state_parameter_passthrough_value&"+
+      // "redirect_uri=https%3A//localhost/4200&"+
+      // "client_id="+environment.googleClientId+"";
+      // let data = {};
+      // data = {
+      //   // client_id: environment.googleClientId,
+      //   // client_secret: environment.googleClientSecret,
+      //   // refresh_token: this.gscrefreshtoken,//'ya29.a0AfH6SMCszj8kAk7Q4lV43Q0vsJWDKmmmYkSYnwPclmY1La7BesHF7-5KuwdX1s4MlllQafsCGCjmQ9oO3K4jtFB6wMvDiuWjRsYpGQxkKzpwoUvph8e5OWG_Fy0bCUYAe_NiJ0x8gUkhM98seOhBPvNE1znZ',
+      //   // grant_type: 'refresh_token',
+      //   // access_type: 'offline'
+      // };
+      // this.http.post(url, data).subscribe(res => {
+      //   if (res) {
+      //     
+      //   }
+      // }, error => {
+      //   alert('eeee : ' + JSON.stringify(error.error));
+      // });
+    
   }
+
   private getFilterOption() {
     return {
       pageNumber: 1,

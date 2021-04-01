@@ -31,7 +31,7 @@ import { GoogleLoginProvider } from 'angularx-social-login';
 import { CampaignlistComponent } from './campaignlist/campaignlist.component';
 
 const routes: Routes = [
-  { path: 'home/campaign', component: CampaginComponent },
+  { path: 'home/campaign:/code', component: CampaginComponent },
   // { path: '', component: CampaginComponent },
   { path: '', component: CampaignlistComponent },
   { path: 'overview', component: OverviewComponent },
