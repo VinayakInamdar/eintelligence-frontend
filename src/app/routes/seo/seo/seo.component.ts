@@ -35,8 +35,10 @@ export class SeoComponent implements OnInit {
   @ViewChild('staticTabs', { static: false }) staticTabs: TabsetComponent;
   @ViewChild(BaseChartDirective)
   period = "28Days";
-
+  //for keyword listing
+  source: LocalDataSource;
   //variable passed from campaign list
+  tempDate = new Date();
   gaurl;
   gaaccesstoken;
   gadsurl;
@@ -121,6 +123,7 @@ export class SeoComponent implements OnInit {
   tempRankingGraphData = [];
   averageRanking;
   serpList;
+  tempSerpList = [];
   barDataArray: any[] = [];
   //-------------
   //-------------GSC data variable start-------------------
@@ -282,6 +285,7 @@ export class SeoComponent implements OnInit {
       'Authorization': 'Bearer ' + this.accessToken,
     })
   };
+  
   //-------------GSC data variable end -------------------
   public chart: BaseChartDirective;
   @ViewChild('dougnutChart')
@@ -320,6 +324,8 @@ export class SeoComponent implements OnInit {
     ],
     datasets: [{
       data: [130, 65, 40, 15]
+    },{
+      data: [130, 65, 40, 15]
     },]
   };
 
@@ -350,8 +356,10 @@ export class SeoComponent implements OnInit {
       'Tablet',
     ],
     datasets: [{
-      data: [130, 65, 40]
-    },]
+      data: [130, 65, 40],label: 'This Slab'
+    },{
+      data: [12, 45, 450],label: 'Previuos Slab'
+    }],
   };
 
   doughnutColors1 = [{
@@ -389,22 +397,28 @@ export class SeoComponent implements OnInit {
   hasAuthorize: boolean;
   reportsData: any;
   settings = {
-    actions: { add: false, edit: false, delete: false },
+    actions: {
+      add: false, edit: false, delete: false, position: 'right'
+    },
     columns: {
       keywords: {
-        title: 'KEYWORD PHRASE',
+        title: 'Keyword Phrase',
         filter: false
       },
       tags: {
-        title: 'TAGS',
+        title: 'Tags',
         filter: false
       },
       position: {
-        title: 'POSITION',
+        title: 'Cur. Position',
+        filter: false
+      },
+      prevposition: {
+        title: 'Pre. Position',
         filter: false
       },
       searches: {
-        title: 'SEARCHES',
+        title: 'Searches',
         valuePrepareFunction: (searches) => {
 
           return this.convertToShortNumber(searches)
@@ -412,12 +426,11 @@ export class SeoComponent implements OnInit {
         filter: false
       },
       location: {
-        title: 'LOCATIONS',
+        title: 'Locations',
         filter: false
       }
     }
   };
-  source: LocalDataSource;
   bsValue = new Date();
   date = new Date();
   startDate = new Date(new Date().setDate(new Date().getDate() - 31)).toISOString().split("T")[0]; queryParams: any;
@@ -556,8 +569,8 @@ export class SeoComponent implements OnInit {
   lineChartPlugins = [];
   lineChartType = 'line';
   lineChartData1: ChartDataSets[] = [
-    // { data: [], label: 'Direct', borderCapStyle: 'square', lineTension: 0, pointRadius: 0, },
-    { data: [], label: 'Organic', borderCapStyle: 'square', lineTension: 0, pointRadius: 0, },
+    { data: [], label: 'This Slab', borderCapStyle: 'square', lineTension: 0, pointRadius: 0, },
+    { data: [], label: 'Previous Slab', borderCapStyle: 'square', lineTension: 0, pointRadius: 0, },
     // { data: [], label: 'Referral', borderCapStyle: 'square', lineTension: 0, pointRadius: 0, },
     // { data: [], label: 'Paid', borderCapStyle: 'square', lineTension: 0, pointRadius: 0, },
     // { data: [], label: 'Others', borderCapStyle: 'square', lineTension: 0, pointRadius: 0, },
@@ -929,7 +942,34 @@ export class SeoComponent implements OnInit {
       'leadGeneration': [this.campaignModel.leadGeneration, Validators.required],
     })
   }
-
+  GetRankingPosition(selectedCampId) {
+    this.tempSerpList = this.serpList;
+    let p;
+    //Previous slab
+    this.tempSerpList = this.serpList;
+    p = this.tempSerpList.filter(x => x.campaignID.toString() === selectedCampId.toLowerCase());
+    if (p.length > 0) {
+      p = p.filter(x => (new Date(x.createdOn) <= new Date(this.previousEndDate.value) && new Date(x.createdOn) >= new Date(this.previousStartDate.value)));
+      p = this.sortData(p);
+      if (p.length > 0) {
+        let maxDate = p[0].createdOn;
+        p = p.filter(x => this.datepipe.transform(x.createdOn, 'yyyy-MM-dd') == this.datepipe.transform(maxDate, 'yyyy-MM-dd'));
+        if (p != null && p != undefined && p.length > 0) {
+          for (let i = 0; i < p.length; i++) {
+            this.serpList[i].prevposition = p[i].position;
+          }
+        }
+      } else {
+      }
+    }
+    else {
+    }
+  }
+  sortData(p) {
+    return p.sort((a, b) => {
+      return <any>new Date(b.createdOn) - <any>new Date(a.createdOn);
+    });
+  }
   checkqueryparams() {
     var params = { ...this.route.snapshot.queryParams };
     this.queryParams = params.view
@@ -950,7 +990,7 @@ export class SeoComponent implements OnInit {
     // this.disableTab()
   }
   refreshGSCAccount() {
-    debugger
+    
     const url = "https://www.googleapis.com/oauth2/v4/token";
     let data = {};
     data = {
@@ -962,7 +1002,7 @@ export class SeoComponent implements OnInit {
     };
     this.http.post(url, data).subscribe(res => {
       if (res) {
-        debugger
+        
         this.gscaccesstoken = res['access_token'];
         this.getData();
       }
@@ -971,7 +1011,7 @@ export class SeoComponent implements OnInit {
     });
   }
   refreshGoogleAnalyticsAccount() {
-    debugger
+    
     const url = "https://www.googleapis.com/oauth2/v4/token";
     let data = {};
     data = {
@@ -983,7 +1023,7 @@ export class SeoComponent implements OnInit {
     };
     this.http.post(url, data).subscribe(res => {
       if (res) {
-        debugger
+        
         this.gaaccesstoken = res['access_token'];
         this.getAnalyticsProfileIds();
         this.getSiteSpeedDataMobile();
@@ -1008,7 +1048,7 @@ export class SeoComponent implements OnInit {
     this.gscrefreshtoken = localStorage.getItem('gscrefreshtoken');
     this.selectedCampaignName = localStorage.getItem('selectedCampName');
     this.selectedCampIdWebUrl = localStorage.getItem('selectedCampUrl');
-    debugger
+    
     if (this.gaurl != 'null' && this.gaurl != null && this.gaurl != undefined && this.gaurl != '') {
       this.refreshGoogleAnalyticsAccount();
       //this.getAnalyticsProfileIds();
@@ -1121,7 +1161,9 @@ export class SeoComponent implements OnInit {
           let q = p['webProperties']['0'].websiteUrl.toString();
           if (q.includes(this.gaurl)) {
             this.getAnalyticsOrganicTraffic(rows[i].webProperties[0].profiles[0].id, this.startDate, this.endDate);
+            this.getAnalyticsOrganicTrafficPrevious(rows[i].webProperties[0].profiles[0].id, this.previousStartDate, this.previousEndDate);
             this.getAnalyticsTrafficByChannel(rows[i].webProperties[0].profiles[0].id, this.startDate, this.endDate);
+            this.getAnalyticsTrafficByChannelPrevious(rows[i].webProperties[0].profiles[0].id, this.previousStartDate, this.previousEndDate);
             break;
           }
           // accountSummaryIds.push(rows[i].webProperties[0].profiles[0].id);
@@ -1133,6 +1175,95 @@ export class SeoComponent implements OnInit {
       //alert('Analytics Data Fetch failed : ' + JSON.stringify(error.error));
     });
   }
+  getAnalyticsOrganicTrafficPrevious(profileid, startdate, endDate) {
+    debugger
+        let currDate = new Date();
+        let endDate1 = this.datepipe.transform(currDate, 'yyyy-MM-dd');
+        let startDate1 = this.datepipe.transform(currDate.setDate(currDate.getDate() - 28), 'yyyy-MM-dd');
+        this.httpOptionJSON = {
+          headers: new HttpHeaders({
+            'Accept': 'application/json',
+            'Authorization': 'Bearer ' + this.gaaccesstoken,
+          })
+        };
+        let urlcamp = this.gaurl.replace('/', '%2F');
+        const url = "https://www.googleapis.com/analytics/v3/data/ga?ids=ga:" + profileid + "&dimensions=ga:date&start-date=" + startdate + "&end-date=" + endDate + "&metrics=ga:organicsearches";
+        this.http.get(url, this.httpOptionJSON).subscribe(res => {
+          if (res) {
+            debugger
+            let rows = res['rows'];
+            this.showSpinnerBaseChart = false;
+            this.lineChartData1[1].data = [];
+           // this.lineChartLabels1 = [];
+            for (let i = 0; i < rows.length; i++) {
+              this.lineChartData1[1].data.push(rows[i]["1"]);
+              let dt = rows[i]["0"].toString().substring(4, 6) + '-' + rows[i]["0"].toString().substring(6, 8);
+             // this.lineChartLabels1.push(dt);
+            }
+    
+          }
+        }, error => {
+    
+          //alert('Analytics Data Fetch failed : ' + JSON.stringify(error.error));
+        });
+      }
+      getAnalyticsTrafficByChannelPrevious(profileid, startdate, endDate) {
+    
+        let currDate = new Date();
+        let endDate1 = this.datepipe.transform(currDate, 'yyyy-MM-dd');
+        let startDate1 = this.datepipe.transform(currDate.setDate(currDate.getDate() - 28), 'yyyy-MM-dd');
+        this.httpOptionJSON = {
+          headers: new HttpHeaders({
+            'Accept': 'application/json',
+            'Authorization': 'Bearer ' + this.gaaccesstoken,
+          })
+        };
+        let urlcamp = this.gaurl.replace('/', '%2F');
+        const url = "https://www.googleapis.com/analytics/v3/data/ga?ids=ga:" + profileid + "&start-date=" + startdate + "&end-date=" + endDate + "&metrics=ga%3Asessions&dimensions=ga%3Asource%2Cga%3Amedium%2Cga%3AadContent%2Cga%3AsocialNetwork%2Cga%3AdeviceCategory"
+    
+        this.http.get(url, this.httpOptionJSON).subscribe(res => {
+          if (res) {
+    
+            let rows = res['rows'];
+            let organic = 0, referral = 0, social = 0, desktop = 0, mobile = 0, tablet = 0;
+            this.showSpinnerSiteAnalysisContent = false;
+            for (let i = 0; i < rows.length; i++) {
+              if (rows[i]["1"] == 'organic') {
+                organic = organic + parseInt(rows[0]["5"]);//Organic Search
+              }
+              if (rows[i]["1"] == 'referral') {
+                referral = referral + parseInt(rows[0]["5"]);//referral
+              }
+              if (rows[i]["3"] != '(not set)') {
+                social = social + parseInt(rows[0]["5"]);//social
+              }
+              if (rows[i]["4"] == 'mobile') {
+                mobile = mobile + parseInt(rows[0]["5"]);//mobile
+              }
+              if (rows[i]["4"] == 'desktop') {
+                desktop = desktop + parseInt(rows[0]["5"]);//desktop
+              }
+              if (rows[i]["4"] == 'tablet') {
+                tablet = tablet + parseInt(rows[0]["5"]);//desktop
+              }
+            }
+            //Web traffic by channel
+            this.doughnutData.datasets[1].data = [];
+            let direct = parseInt(rows[1]["5"]) + parseInt(rows[0]["5"]) + parseInt(rows[0]["5"]);
+            this.doughnutData.datasets[1].data.push(direct);//direct
+            this.doughnutData.datasets[1].data.push(organic);//rganic Search
+            this.doughnutData.datasets[1].data.push(referral);//referral
+            this.doughnutData.datasets[1].data.push(social);//social
+            //Web traffic by device
+            this.doughnutData1.datasets[1].data = [];
+            this.doughnutData1.datasets[1].data.push(desktop);//desktop
+            this.doughnutData1.datasets[1].data.push(desktop);//mobile
+            this.doughnutData1.datasets[1].data.push(desktop);//teblet
+          }
+        }, error => {
+          //alert('Analytics Data Fetch failed : ' + JSON.stringify(error.error));
+        });
+      }
   getAnalyticsOrganicTraffic(profileid, startdate, endDate) {
 
     let currDate = new Date();
@@ -1311,16 +1442,15 @@ export class SeoComponent implements OnInit {
     //this.getAnalyticsData();
   }
 
-  // using to search campaign locally
   onSearch(query: string = '') {
     if (query == "") {
-      this.source = new LocalDataSource(this.campaignList)
+      this.source = new LocalDataSource(this.serpList)
     }
     else {
       this.source.setFilter([
         // fields we want to include in the search
         {
-          field: 'name',
+          field: 'keywords',
           search: query
         },
       ], false);
@@ -1882,13 +2012,27 @@ export class SeoComponent implements OnInit {
       }
     })
   }
+  // public getSerpList(): void {
+
+  //   this.campaignService.getSerp("&tbs=qdr:m").subscribe(res => {
+
+  //     this.serpList = res;
+  //   });
+  // }
   public getSerpList(): void {
-
-    this.campaignService.getSerp("&tbs=qdr:m").subscribe(res => {
-
+    const filterOptionModel = this.getFilterOptionPlans();
+    let id = this.route.snapshot.paramMap.get('id');
+    this.selectedCampId = `${id.substring(3)}`;
+    filterOptionModel.searchQuery = 'CampaignID=="' + this.selectedCampId + '"'
+    this.campaignService.getSerpForKeyword(filterOptionModel, "&tbs=qdr:m").subscribe(res => {
+      debugger
       this.serpList = res;
+      this.tempSerpList = this.serpList;
+      this.GetRankingPosition(this.selectedCampId);
+      this.source = new LocalDataSource(this.serpList)
     });
   }
+
   private getFilterOptionPlans() {
     return {
       pageNumber: 1,
@@ -2365,30 +2509,38 @@ export class SeoComponent implements OnInit {
 
   }
 
+ 
   onStartDateChange(event) {
-
-    this.startDate = this.datepipe.transform(this.fromDate.value, 'yyyy-MM-dd');
-    this.currYear = parseInt(this.datepipe.transform(this.fromDate.value, 'yyyy'));
-    let getMonth = parseInt(this.datepipe.transform(this.fromDate.value, 'MM'));
-    let prevMonth = getMonth - 1;
-    this.previousStartDate = this.currYear.toString() + '-' + prevMonth + '-' + this.datepipe.transform(this.fromDate.value, 'dd');
+    this.getDateDiff();
     this.getData();
     this.getAnalyticsProfileIds();
   }
-
   onEndDateChange(event) {
-
-    this.endDate = this.datepipe.transform(this.toDate.value, 'yyyy-MM-dd');
-    this.currYear = parseInt(this.datepipe.transform(this.toDate.value, 'yyyy'));
-    let getMonth = parseInt(this.datepipe.transform(this.toDate.value, 'MM'));
-    let prevMonth = getMonth - 1;
-    this.previousEndDate = this.currYear.toString() + '-' + prevMonth + '-' + this.datepipe.transform(this.toDate.value, 'dd');
-    // let prevYear = this.currYear - 1;
-    // this.previousEndDate = prevYear.toString() + '-' + this.datepipe.transform(this.toDate.value, 'MM-dd');
+    this.getDateDiff();
     this.getData();
     this.getAnalyticsProfileIds();
   }
+  calculateDateSlabDiff(start, end) {
+    end = new Date(end);
+    start = new Date(start);
+    return Math.floor((Date.UTC(start.getFullYear(), start.getMonth(), start.getDate()) - Date.UTC(end.getFullYear(), end.getMonth(), end.getDate())) / (1000 * 60 * 60 * 24));
+  }
+  getDateDiff() {
+    debugger
+    this.startDate = this.datepipe.transform(this.fromDate.value, 'yyyy-MM-dd');
+    this.endDate = this.datepipe.transform(this.toDate.value, 'yyyy-MM-dd');
+    let diff = this.calculateDateSlabDiff(this.toDate.value, this.fromDate.value);
+    this.tempDate = new Date(this.startDate);
+    this.previousEndDate = this.datepipe.transform(this.tempDate.setDate(this.tempDate.getDate() - 1), 'yyyy-MM-dd');
+    this.tempDate = new Date(this.previousEndDate);
+    this.previousStartDate = this.datepipe.transform(this.tempDate.setDate(this.tempDate.getDate() - diff), 'yyyy-MM-dd');
+  }
+  getYearwiseDifference(previous, current) {
 
+    let diff = ((parseFloat(previous) - parseFloat(current)) * 100) / parseFloat(previous)
+    return parseFloat(diff.toString()).toFixed(2)
+
+  }
   getData() {
 
     if (this.gscaccesstoken == '' || this.gscaccesstoken == undefined || this.gscaccesstoken == null) {
@@ -2411,23 +2563,9 @@ export class SeoComponent implements OnInit {
     }
   }
   getDateSettings() {
-
-    let currDate = new Date();
-    this.endDate = this.datepipe.transform(currDate, 'yyyy-MM-dd');
-    this.startDate = this.datepipe.transform(currDate.setDate(currDate.getDate() - 28), 'yyyy-MM-dd');
-    // this.fromDate.patchValue(this.startDate);
-    //this.toDate.patchValue(this.endDate);
-    currDate = new Date();
-    this.previousEndDate = this.datepipe.transform(currDate.setFullYear(currDate.getFullYear() - 1), 'yyyy-MM-dd');
-    this.previousStartDate = this.datepipe.transform(currDate.setDate(currDate.getDate() - 28), 'yyyy-MM-dd');
+    this.getDateDiff();
   }
 
-  getYearwiseDifference(previous, current) {
-
-    let diff = ((parseFloat(previous) - parseFloat(current)) * 100) / parseFloat(previous)
-    return parseFloat(diff.toString()).toFixed(2)
-
-  }
   getPercentage(num, total) {
     return ((100 * num) / total)
   }

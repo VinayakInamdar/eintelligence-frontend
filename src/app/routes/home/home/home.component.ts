@@ -17,20 +17,25 @@ import { parseDate } from 'ngx-bootstrap/chronos';
 import { environment } from 'src/environments/environment';
 import { GoogleLoginProvider, SocialAuthService } from 'angularx-social-login';
 import { FacebookService, LoginOptions, LoginResponse } from 'ngx-facebook';
-declare var gapi : any;
+declare var gapi: any;
 @Component({
   selector: 'app-home',
   templateUrl: './home.component.html',
   styleUrls: ['./home.component.scss']
 })
 export class HomeComponent implements OnInit {
-  hasGaSetup:boolean;
+  hasGaSetup: boolean;
   campaignList = [];
-  CampaignGAList=[];
-  CampaignGSCList=[];
-  CampaignGAdsList=[];
+  CampaignGAList = [];
+  CampaignGSCList = [];
+  CampaignGAdsList = [];
   SelectedCampaignId;
-  CampaignFacebookList=[];
+  CampaignFacebookList = [];
+
+  //Ranking
+  rankingThis = 0;
+  rankingPrev = 0;
+  tempSerpList = [];
   //Traffic
   thisMonthTraffic = 0;
   lastMonthTraffic = 0;
@@ -72,7 +77,7 @@ export class HomeComponent implements OnInit {
   previousStartDate;
   previousEndDate;
   toDate = new FormControl(new Date())
-  fromDate = new FormControl(new Date(Date.now() - 7 * 24 * 60 * 60 * 1000))
+  fromDate = new FormControl(new Date(Date.now() - 28 * 24 * 60 * 60 * 1000))
   currYear: number;
   myForm = new FormGroup({
     fromDate: this.fromDate,
@@ -81,6 +86,8 @@ export class HomeComponent implements OnInit {
 
   startDate;
   endDate;
+
+  tempDate = new Date();
   clicksThisYear: string = "0";
   clicksPreviousYear: string = "0";
   impressionsThisYear: string = "0";
@@ -183,46 +190,16 @@ export class HomeComponent implements OnInit {
   yCode
   code
   httpOptionJSON1 = {
-		headers: new HttpHeaders({
-			'Content-Type': 'application/x-www-form-urlencoded',
-		})
-	};
-  constructor(private authService: SocialAuthService, private facebook: FacebookService, public datepipe: DatePipe, private homeGscService: HomeGscService, public http: HttpClient, public campaignService: CampaignService, private router: Router,
-    public auditsService: AuditsService, public toasterService: ToasterService, public toastr: ToastrService
-    , fb: FormBuilder,private route: ActivatedRoute, private openIdConnectService: OpenIdConnectService, private accountService: AccountService) {
-    //  this.facebookPageToken = localStorage.getItem('FacebookAccessToken');
-    //Ranking
-    debugger
-    this.hasGaSetup =true;
-    facebook.init({
-      appId: environment.facebook_appid,
-      version: 'v9.0'
-    });
-    this.getSerpList();
-    this.getCampaignList();
-    //this.getRankingGraphDataAll();
-    this.getCompany();
-    this.toaster = {
-      type: 'success',
-      title: 'Audit report',
-      text: 'Your report is ready..'
-    };
-      
-    let ycode = localStorage.getItem("gacode");
-    if(ycode != 'null' && ycode != null && ycode != undefined && ycode != ''){
-      this.router.navigate(['/home/campaign']);
-    }
-    let gsccode = localStorage.getItem("gsccode");
-    if(gsccode != 'null' && gsccode != null && gsccode != undefined && gsccode != ''){
-      this.router.navigate(['/home/campaign']);
-    }
-  }
+    headers: new HttpHeaders({
+      'Content-Type': 'application/x-www-form-urlencoded',
+    })
+  };
   settings = {
     actions: { add: false, edit: false, delete: false },
     columns: {
-      SrNo:{
-        title:'Sr No.',
-        filter:false
+      SrNo: {
+        title: 'Sr No.',
+        filter: false
       },
       name: {
         title: 'Project',
@@ -256,6 +233,150 @@ export class HomeComponent implements OnInit {
   };
   source: LocalDataSource;
 
+  constructor(private authService: SocialAuthService, private facebook: FacebookService, public datepipe: DatePipe, private homeGscService: HomeGscService, public http: HttpClient, public campaignService: CampaignService, private router: Router,
+    public auditsService: AuditsService, public toasterService: ToasterService, public toastr: ToastrService
+    , fb: FormBuilder, private route: ActivatedRoute, private openIdConnectService: OpenIdConnectService, private accountService: AccountService) {
+    //  this.facebookPageToken = localStorage.getItem('FacebookAccessToken');
+    //Ranking
+
+    this.hasGaSetup = true;
+    facebook.init({
+      appId: environment.facebook_appid,
+      version: 'v9.0'
+    });
+    this.getSerpList();
+    this.getCampaignList();
+    //this.getRankingGraphDataAll();
+    this.getCompany();
+    this.toaster = {
+      type: 'success',
+      title: 'Audit report',
+      text: 'Your report is ready..'
+    };
+    this.getDateDiff();
+    let ycode = localStorage.getItem("gacode");
+    if (ycode != 'null' && ycode != null && ycode != undefined && ycode != '') {
+      this.router.navigate(['/home/campaign']);
+    }
+    let gsccode = localStorage.getItem("gsccode");
+    if (gsccode != 'null' && gsccode != null && gsccode != undefined && gsccode != '') {
+      this.router.navigate(['/home/campaign']);
+    }
+  }
+  //  using to get campaignList
+  public getCampaignList(): void {
+    this.resetChartVariables();
+    var userid = this.openIdConnectService.user.profile.sub;
+    this.campaignService.getCampaign(userid).subscribe(res => {
+      this.campaignList = res;
+
+      for (let i = 0; i < res.length; i++) {
+        debugger
+        this.GetRankingPosition(res[i].id);
+        this.campaignList[i].ranking = this.rankingPrev + "--" + this.rankingThis;
+      }
+      this.source = new LocalDataSource(this.campaignList);
+    });
+  }
+  pieChartDataAdd() {
+    this.pieChartData1 = [this.perpve, this.pernve, this.pernut];
+  }
+  //For ranking graph rubina
+  GetRankingPosition(selectedCampId) {
+    this.tempSerpList = this.serpList;
+    let p;
+    let totalPosition = 0;
+    //this slab
+    p = this.tempSerpList.filter(x => x.campaignID.toString() === selectedCampId.toLowerCase());
+    if (p.length > 0) {
+      p = p.filter(x => (new Date(x.createdOn) <= new Date(this.toDate.value) && new Date(x.createdOn) >= new Date(this.fromDate.value)));
+      p = this.sortData(p);
+      if (p.length > 0) {
+        let maxDate = p[0].createdOn;
+        p = p.filter(x => this.datepipe.transform(x.createdOn, 'yyyy-MM-dd') == this.datepipe.transform(maxDate, 'yyyy-MM-dd'));
+        if (p != null && p != undefined && p.length > 0) {
+          for (let i = 0; i < p.length; i++) {
+            totalPosition = totalPosition + p[i].position;
+          }
+        }
+        this.averageRanking = totalPosition / parseInt(p.length)
+        this.rankingThis = Math.round(this.averageRanking);
+      } else {
+        this.rankingThis = 0;
+      }
+    }
+    else {
+      this.rankingThis = 0;
+    }
+    //Previous slab
+    this.tempSerpList = this.serpList;
+    totalPosition = 0;
+    p = this.tempSerpList.filter(x => x.campaignID.toString() === selectedCampId.toLowerCase());
+    if (p.length > 0) {
+      p = p.filter(x => (new Date(x.createdOn) <= new Date(this.previousEndDate.value) && new Date(x.createdOn) >= new Date(this.previousStartDate.value)));
+      p = this.sortData(p);
+      if (p.length > 0) {
+        let maxDate = p[0].createdOn;
+        p = p.filter(x => this.datepipe.transform(x.createdOn, 'yyyy-MM-dd') == this.datepipe.transform(maxDate, 'yyyy-MM-dd'));
+        if (p != null && p != undefined && p.length > 0) {
+          for (let i = 0; i < p.length; i++) {
+            totalPosition = totalPosition + p[i].position;
+          }
+        }
+        this.averageRanking = totalPosition / parseInt(p.length)
+        this.rankingThis = Math.round(this.averageRanking);
+      } else {
+        this.rankingPrev = 0;
+      }
+    }
+    else {
+      this.rankingPrev = 0;
+    }
+    debugger
+    let g = this.rankingThis - this.rankingPrev;
+    if (g > 0) { this.pve = this.pve + 1; }
+    if (g < 0) { this.nve = this.nve + 1; }
+    if (g == 0) { this.nut = this.nut + 1; }
+    this.pieChartData1 = [this.pve, this.nve, this.nut];
+  }
+  sortData(p) {
+    return p.sort((a, b) => {
+      return <any>new Date(b.createdOn) - <any>new Date(a.createdOn);
+    });
+  }
+  onStartDateChange(event) {
+    debugger
+    this.getDateDiff();
+    this.getCampaignList();
+    //this.getData();
+    //this.getAnalyticsProfileIds();
+  }
+  onEndDateChange(event) {
+    this.getDateDiff();
+    this.getCampaignList();
+    // this.getData();
+    // this.getAnalyticsProfileIds();
+  }
+  calculateDateSlabDiff(start, end) {
+    end = new Date(end);
+    start = new Date(start);
+    return Math.floor((Date.UTC(start.getFullYear(), start.getMonth(), start.getDate()) - Date.UTC(end.getFullYear(), end.getMonth(), end.getDate())) / (1000 * 60 * 60 * 24));
+  }
+  getDateDiff() {
+    this.startDate = this.datepipe.transform(this.fromDate.value, 'yyyy-MM-dd');
+    this.endDate = this.datepipe.transform(this.toDate.value, 'yyyy-MM-dd');
+    let diff = this.calculateDateSlabDiff(this.toDate.value, this.fromDate.value);
+    this.tempDate = new Date(this.startDate);
+    this.previousEndDate = this.datepipe.transform(this.tempDate.setDate(this.tempDate.getDate() - 1), 'yyyy-MM-dd');
+    this.tempDate = new Date(this.previousEndDate);
+    this.previousStartDate = this.datepipe.transform(this.tempDate.setDate(this.tempDate.getDate() - diff), 'yyyy-MM-dd');
+  }
+  getYearwiseDifference(previous, current) {
+
+    let diff = ((parseFloat(previous) - parseFloat(current)) * 100) / parseFloat(previous)
+    return parseFloat(diff.toString()).toFixed(2)
+
+  }
 
   getCompany() {
 
@@ -271,21 +392,9 @@ export class HomeComponent implements OnInit {
       }
     )
   }
-  //  using to get campaignList
-  public getCampaignList(): void {
 
-    var userid = this.openIdConnectService.user.profile.sub;
-    this.campaignService.getCampaign(userid).subscribe(res => {
-      this.campaignList = res;
-      
-      for (let i = 0; i < res.length; i++) {
-       // this.getRankingGraphDataDelete(res[i].id);
-      }
-    });
-  }
   calculateRankings() {
     this.accessToken = localStorage.getItem('googleGscAccessToken');
-    
     if (this.accessToken != null && this.accessToken != undefined && this.accessToken != '') {
       const d = new Date();
       let currYear = d.getFullYear();
@@ -310,7 +419,7 @@ export class HomeComponent implements OnInit {
         this.total = this.campaignList.length;
 
         this.selectedCampIdWebUrl = this.campaignList[i].webUrl;
-        
+
         if (this.selectedCampIdWebUrl == '' || this.selectedCampIdWebUrl == null || this.selectedCampIdWebUrl == undefined) {
           if (this.facebookAccessToken != null && this.facebookAccessToken != undefined && this.facebookAccessToken != '') {
             this.getFacebookUserId(i);
@@ -400,18 +509,18 @@ export class HomeComponent implements OnInit {
 
   //using to open create campaign view to create new campaign in db
   public onClick(): any {
-    localStorage.setItem('gaurl','');
-    localStorage.setItem('gaaccesstoken','');
-    localStorage.setItem('gadsaccesstoken','');
-    localStorage.setItem('facebookurl','');
-    localStorage.setItem('facebookaccesstoken','');
-    localStorage.setItem('gscurl','');
-    localStorage.setItem('gscaccesstoken','');
-    localStorage.setItem('selectedCampName','');
-    localStorage.setItem('selectedCampUrl','');
+    localStorage.setItem('gaurl', '');
+    localStorage.setItem('gaaccesstoken', '');
+    localStorage.setItem('gadsaccesstoken', '');
+    localStorage.setItem('facebookurl', '');
+    localStorage.setItem('facebookaccesstoken', '');
+    localStorage.setItem('gscurl', '');
+    localStorage.setItem('gscaccesstoken', '');
+    localStorage.setItem('selectedCampName', '');
+    localStorage.setItem('selectedCampUrl', '');
     localStorage.setItem('editMasterId', ''); localStorage.setItem('editMasterId', '');
-    localStorage.setItem('gaid','');
-    localStorage.setItem('gadsid','');
+    localStorage.setItem('gaid', '');
+    localStorage.setItem('gadsid', '');
     localStorage.setItem('facebookid', '');
     localStorage.setItem('gscid', '');
     this.router.navigate(['/home/campaign']);
@@ -421,28 +530,28 @@ export class HomeComponent implements OnInit {
   userRowSelect(campaign: any): void {
     this.SelectedCampaignId = campaign.data.id;
     let ga = this.CampaignGAList.filter(x => x.campaignID == this.SelectedCampaignId);
-    if(ga !=null && ga != undefined && ga.length > 0){
-     localStorage.setItem('gaurl', ga[0]['urlOrName']);
-     localStorage.setItem('gaaccesstoken', ga[0]['accessToken']);
+    if (ga != null && ga != undefined && ga.length > 0) {
+      localStorage.setItem('gaurl', ga[0]['urlOrName']);
+      localStorage.setItem('gaaccesstoken', ga[0]['accessToken']);
     }
     let gads = this.CampaignGAdsList.filter(x => x.campaignID == this.SelectedCampaignId);
-    if(gads !=null && gads != undefined && gads.length > 0){
-     localStorage.setItem('gadsurl', gads[0]['urlOrName']);
-     localStorage.setItem('gadsaccesstoken', gads[0]['accessToken']);
+    if (gads != null && gads != undefined && gads.length > 0) {
+      localStorage.setItem('gadsurl', gads[0]['urlOrName']);
+      localStorage.setItem('gadsaccesstoken', gads[0]['accessToken']);
     }
     let facebook = this.CampaignFacebookList.filter(x => x.campaignID == this.SelectedCampaignId);
-    if(facebook !=null && facebook != undefined && facebook.length > 0){
-     localStorage.setItem('facebookpagename', facebook[0]['urlOrName']);
-     localStorage.setItem('facebookaccesstoken', facebook[0]['accessToken']);
+    if (facebook != null && facebook != undefined && facebook.length > 0) {
+      localStorage.setItem('facebookpagename', facebook[0]['urlOrName']);
+      localStorage.setItem('facebookaccesstoken', facebook[0]['accessToken']);
     }
     let gsc = this.CampaignGSCList.filter(x => x.campaignID == this.SelectedCampaignId);
-    if(gsc !=null && gsc != undefined && gsc.length > 0){
-     localStorage.setItem('gscurl', gsc[0]['urlOrName']);
-     localStorage.setItem('gscaccesstoken', gsc[0]['accessToken']);
+    if (gsc != null && gsc != undefined && gsc.length > 0) {
+      localStorage.setItem('gscurl', gsc[0]['urlOrName']);
+      localStorage.setItem('gscaccesstoken', gsc[0]['accessToken']);
     }
-     localStorage.setItem('selectedCampId', campaign.data.id);
-     localStorage.setItem('selectedCampName', campaign.data.name);
-     this.router.navigate([`../campaign/:id${campaign.data.id}/seo`]);
+    localStorage.setItem('selectedCampId', campaign.data.id);
+    localStorage.setItem('selectedCampName', campaign.data.name);
+    this.router.navigate([`../campaign/:id${campaign.data.id}/seo`]);
     // this.router.navigate(['/campaign', { id: campaign.data.id }], {
     //   queryParams: {
     //     view: 'showReport'
@@ -455,7 +564,7 @@ export class HomeComponent implements OnInit {
   public getSerpList(): void {
     this.campaignService.getSerp("&tbs=qdr:m").subscribe(res => {
       this.serpList = res;
-
+      this.tempSerpList = this.serpList;
     });
   }
 
@@ -639,33 +748,16 @@ export class HomeComponent implements OnInit {
     this.ConversionsPve = 0;
     this.ConversionsNve = 0;
     this.ConversionsNut = 0;
-    this.getCampaignList();
+    //this.getCampaignList();
     this.getCampaignGA();
     this.getCampaignGAds();
     this.getCampaignFacebook();
     this.getCampaignGSC();
   }
-  onStartDateChange(event) {
-    this.startDate = this.datepipe.transform(this.fromDate.value, 'yyyy-MM-dd');
-    this.currYear = parseInt(this.datepipe.transform(this.fromDate.value, 'yyyy'));
-    let prevYear = this.currYear - 1;
-    this.previousStartDate = prevYear.toString() + '-' + this.datepipe.transform(this.fromDate.value, 'MM-dd');
 
-    this.getData(0);
-  }
-
-  onEndDateChange(event) {
-    this.endDate = this.datepipe.transform(this.toDate.value, 'yyyy-MM-dd');
-    this.currYear = parseInt(this.datepipe.transform(this.toDate.value, 'yyyy'));
-    let prevYear = this.currYear - 1;
-    this.previousEndDate = prevYear.toString() + '-' + this.datepipe.transform(this.toDate.value, 'MM-dd');
-
-    this.getData(0);
-  }
   getData(i) {
 
     this.accessToken = localStorage.getItem('googleGscAccessToken');
-    this.getDateSettings();
     if (this.accessToken == '' || this.accessToken == undefined || this.accessToken == null) {
       console.log("Please, Login with Google to fetch data");
     } else if (parseDate(this.endDate) < parseDate(this.startDate)) {
@@ -686,22 +778,8 @@ export class HomeComponent implements OnInit {
 
     }
   }
-  getDateSettings() {
-    let currDate = new Date();
-    this.endDate = this.datepipe.transform(currDate, 'yyyy-MM-dd');
-    this.startDate = this.datepipe.transform(currDate.setMonth(currDate.getMonth() - 1), 'yyyy-MM-dd');
-    this.previousEndDate = this.datepipe.transform(currDate, 'yyyy-MM-dd');
-    this.previousStartDate = this.datepipe.transform(currDate.setMonth(currDate.getMonth() - 1), 'yyyy-MM-dd');
-  }
 
-  getYearwiseDifference(previous, current) {
-    let diff = (parseFloat(previous) - parseFloat(current));
-    let per = (diff / parseFloat(current)) * 100
-    return parseFloat(per.toString()).toFixed(2);
-    // let diff = ((parseFloat(previous) - parseFloat(current)) * 100) / parseFloat(previous)
-    // return parseFloat(diff.toString()).toFixed(2)
 
-  }
   getPercentage(num, total) {
     return ((100 * num) / total)
   }
@@ -921,7 +999,7 @@ export class HomeComponent implements OnInit {
 
         this.thisMonthTraffic = rows[0]["0"];
         this.lastMonthConversions = rows[0]["1"];
-        
+
       }
     }, error => {
 
@@ -940,7 +1018,7 @@ export class HomeComponent implements OnInit {
     const url = "https://www.googleapis.com/analytics/v3/data/ga?ids=ga:" + profileid + "&start-date=" + this.previousStartDate + "&end-date=" + this.previousEndDate + "&metrics=ga%3AorganicSearches%2Cga%3AgoalConversionRateAll";
     this.http.get(url, this.httpOptionJSON).subscribe(res => {
       if (res) {
-        
+
         let rows = res['rows'];
         //Traffic Calculation
         this.lastMonthTraffic = rows[0]["0"];
@@ -971,187 +1049,13 @@ export class HomeComponent implements OnInit {
       alert('Analytics Data Fetch failed : ' + JSON.stringify(error.error));
     });
   }
-  //For ranking graph rubina
-  RefreshRankingGraphData(selectedCampId) {
-    
-    const d = new Date();
-    let currYear = d.getFullYear();
-    let p;
-    let totalPosition = 0;
-    p = this.serpList.filter(x => x.campaignID.toString() === selectedCampId.toLowerCase());
-    if (p != null && p != undefined && p.length > 0) {
-      for (let i = 0; i < p.length; i++) {
-        totalPosition = totalPosition + p[i].position;
-      }
-    }
-    this.averageRanking = totalPosition / parseInt(this.serpList.length)
-    this.averageRanking = Math.round(this.averageRanking);
-    const monthNames = ["January", "February", "March", "April", "May", "June", "July", "August", "September", "October", "November", "December"
-    ];
 
-    let currMonth = monthNames[d.getMonth()];
-    let data = {
-      id: "00000000-0000-0000-0000-000000000000",
-      avragePosition: this.averageRanking,
-      month: currMonth,
-      campaignId: selectedCampId,
-      year: currYear,
-    }
-    this.campaignService.createRankingGraph(data).subscribe(response => {
-      if (response) {
-        
-        this.getRankingGraphData(selectedCampId);
-      }
-    });
-  }
-  DeleteRankingGraphData(selectedCampId) {
-    
-    const monthNames = ["January", "February", "March", "April", "May", "June", "July", "August", "September", "October", "November", "December"
-    ];
-    const d = new Date();
-    let currMonth = monthNames[d.getMonth()];
-    let tempId;
-    let p = this.tempRankingGraphData.filter(x => x.month == currMonth)
-    if (p != null && p != undefined && p.length > 0) {
-      tempId = p[0].id;
-      this.campaignService.deleteRankingGraph(tempId).subscribe(response => {
-        
-        this.RefreshRankingGraphData(selectedCampId);
-      });
-    } else {
-      this.RefreshRankingGraphData(selectedCampId);
-    }
-  }
-  getRankingGraphDataDelete(selectedCampId) {
-    const d = new Date();
-    let currYear = d.getFullYear();
-    //  this.barData.datasets[0].data = [10,20,34,6,43,12,56,86,5,33,24,55]
-    const filterOptionModel = this.getFilterOptionPlans();
-    this.campaignService.getFilteredRankingGraph(filterOptionModel).subscribe((response: any) => {
-      if (response) {
-        
-        this.RankingGraphData = response.body;
-        this.RankingGraphData = this.RankingGraphData.filter(x => x.campaignId.toString() === selectedCampId.toLowerCase() && x.year == currYear);
-        this.tempRankingGraphData = this.RankingGraphData;
-        this.DeleteRankingGraphData(selectedCampId);
-      }
-    });
-  }
-  getRankingGraphDataAll() {
-    const d = new Date();
-    let currYear = d.getFullYear();
-    //  this.barData.datasets[0].data = [10,20,34,6,43,12,56,86,5,33,24,55]
-    const filterOptionModel = this.getFilterOptionPlans();
-    this.campaignService.getFilteredRankingGraph(filterOptionModel).subscribe((response: any) => {
-      if (response) {
-        
-        this.RankingGraphData = response.body;
-        this.RankingGraphData = this.RankingGraphData.filter(x => x.year == currYear);
-        this.tempRankingGraphData = this.RankingGraphData;
-        this.calculateRankings();
-      }
-    });
-  }
-  getRankingGraphData(selectedCampId) {
-    
-    const d = new Date();
 
-    let currYear = d.getFullYear();
-    //  this.barData.datasets[0].data = [10,20,34,6,43,12,56,86,5,33,24,55]
-    const filterOptionModel = this.getFilterOptionPlans();
-    this.campaignService.getFilteredRankingGraph(filterOptionModel).subscribe((response: any) => {
-      if (response) {
-        
-        this.RankingGraphData = response.body;
-        this.RankingGraphData = this.RankingGraphData.filter(x => x.campaignId.toString() === selectedCampId.toLowerCase() && x.year == currYear);
-        this.tempRankingGraphData = this.RankingGraphData;
-        this.RankingGraphData.sort(function (a, b) {
-          var MONTH = {
-            January: 1, February: 2, March: 3, April: 4, May: 5, June: 6,
-            July: 7, August: 8, September: 9, October: 10, November: 11, December: 12
-          };
-          return a.year - b.year || MONTH[a.month] - MONTH[b.month];
-        });
-      }
-    })
-  }
+
 
   async initGoogleAuth(): Promise<void> {
-    //    this.campaignService.authGoogleRestSharp("fdgdfg").subscribe(
-    //   res => {
-    //     debugger
-    //       let p = res;
-    //  }); 
-     let connectYouTubeUrl = 'https://accounts.google.com/o/oauth2/v2/auth?scope=https://www.googleapis.com/auth/youtube.force-ssl https://www.googleapis.com/auth/userinfo.profile&access_type=offline&include_granted_scopes=true&redirect_uri=https://localhost:4200/home&response_type=code&client_id=' + environment.googleClientId;
-     window.location.href = connectYouTubeUrl;
-//     const apiKey =environment.googleClientId;
-// gapi.load('auth2', () => {
-//   gapi.auth2.getAuthInstance({
-//     access_type: 'offline',
-//     authuser: -1,
-//     prompt:      'select_account',
-//     client_id: apiKey, // note "client_id", not "apiKey"
-//     hosted_domain: 'https://localhost:4200/home'
-//   }).then(auth2 => { 
-//     console.log(auth2 + "befor sign");
-//     // if (!auth2.isSignedIn.get()) { // check if already signed in
-//       auth2.signIn().then(auth => {
-//                console.log(auth);
-//              });
-//     // }
-//   })
-//})
-
-    // //  Create a new Promise where the resolve 
-    // // function is the callback passed to gapi.load
-    // const pload = new Promise((resolve) => {
-    //   gapi.load('auth2', resolve);
-    // });
-
-    // // When the first promise resolves, it means we have gapi
-    // // loaded and that we can call gapi.init
-    // return pload.then(async () => {
-    //   await gapi.auth2
-    //     .init({ client_id: environment.googleClientId })
-    //     .then(auth => {
-    //       
-    //     });
-    // });
-  }
- 
-  ///Fr redirect to seo
-  getSerpLocations(){
-    
-    // this.campaignService.GetUpdateKeywordsStatus().subscribe((res) => { 
-    //   
-    //   let result = res;
-    // });
-
-      // 
-      // const url = "https://accounts.google.com/o/oauth2/v2/auth?"+
-      // "scope=https%3A//www.googleapis.com/auth/yt-analytics&"+
-      // "access_type=offline&"+
-      // "include_granted_scopes=true&"+
-      // "response_type=code&"+
-      // // "state=state_parameter_passthrough_value&"+
-      // "redirect_uri=https%3A//localhost/4200&"+
-      // "client_id="+environment.googleClientId+"";
-      // let data = {};
-      // data = {
-      //   // client_id: environment.googleClientId,
-      //   // client_secret: environment.googleClientSecret,
-      //   // refresh_token: this.gscrefreshtoken,//'ya29.a0AfH6SMCszj8kAk7Q4lV43Q0vsJWDKmmmYkSYnwPclmY1La7BesHF7-5KuwdX1s4MlllQafsCGCjmQ9oO3K4jtFB6wMvDiuWjRsYpGQxkKzpwoUvph8e5OWG_Fy0bCUYAe_NiJ0x8gUkhM98seOhBPvNE1znZ',
-      //   // grant_type: 'refresh_token',
-      //   // access_type: 'offline'
-      // };
-      // this.http.post(url, data).subscribe(res => {
-      //   if (res) {
-      //     
-      //   }
-      // }, error => {
-      //   alert('eeee : ' + JSON.stringify(error.error));
-      // });
-    
+    let connectYouTubeUrl = 'https://accounts.google.com/o/oauth2/v2/auth?scope=https://www.googleapis.com/auth/youtube.force-ssl https://www.googleapis.com/auth/userinfo.profile&access_type=offline&include_granted_scopes=true&redirect_uri=https://localhost:4200/home&response_type=code&client_id=' + environment.googleClientId;
+    window.location.href = connectYouTubeUrl;
   }
 
   private getFilterOption() {
@@ -1169,9 +1073,9 @@ export class HomeComponent implements OnInit {
     const filterOptionModel = this.getFilterOption();
     this.campaignService.getFilteredGA(filterOptionModel).subscribe((response: any) => {
       if (response) {
-        
+
         this.CampaignGAList = response.body;
-      
+
       }
     })
   }
@@ -1180,7 +1084,7 @@ export class HomeComponent implements OnInit {
     const filterOptionModel = this.getFilterOption();
     this.campaignService.getFilteredGAds(filterOptionModel).subscribe((response: any) => {
       if (response) {
-        
+
         this.CampaignGAdsList = response.body;
       }
     })
@@ -1190,7 +1094,7 @@ export class HomeComponent implements OnInit {
     const filterOptionModel = this.getFilterOption();
     this.campaignService.getFilteredGSC(filterOptionModel).subscribe((response: any) => {
       if (response) {
-        
+
         this.CampaignGSCList = response.body;
       }
     })
@@ -1200,9 +1104,15 @@ export class HomeComponent implements OnInit {
     const filterOptionModel = this.getFilterOption();
     this.campaignService.getFilteredFacebook(filterOptionModel).subscribe((response: any) => {
       if (response) {
-        
+
         this.CampaignFacebookList = response.body;
       }
     })
+  }
+  resetChartVariables() {
+    //Ranking
+    this.pve = 0;
+    this.nve = 0;
+    this.nut = 0;
   }
 }
