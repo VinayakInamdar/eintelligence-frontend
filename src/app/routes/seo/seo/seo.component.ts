@@ -124,6 +124,7 @@ export class SeoComponent implements OnInit {
   averageRanking;
   serpList;
   tempSerpList = [];
+  keywordTableList=[];
   barDataArray: any[] = [];
   //-------------
   //-------------GSC data variable start-------------------
@@ -405,10 +406,6 @@ export class SeoComponent implements OnInit {
         title: 'Keyword Phrase',
         filter: false
       },
-      tags: {
-        title: 'Tags',
-        filter: false
-      },
       position: {
         title: 'Cur. Position',
         filter: false
@@ -420,7 +417,6 @@ export class SeoComponent implements OnInit {
       searches: {
         title: 'Searches',
         valuePrepareFunction: (searches) => {
-
           return this.convertToShortNumber(searches)
         },
         filter: false
@@ -945,18 +941,44 @@ export class SeoComponent implements OnInit {
   GetRankingPosition(selectedCampId) {
     this.tempSerpList = this.serpList;
     let p;
+    //this slab
+    p = this.tempSerpList.filter(x => x.campaignID.toString() === selectedCampId.toLowerCase());
+    if (p.length > 0) {
+      p = p.filter(x => (new Date(x.createdOn) <= new Date(this.toDate.value) && new Date(x.createdOn) >= new Date(this.fromDate.value)));
+      p = this.sortData(p);
+      if (p.length > 0) {
+        let maxDate = p[0].createdOn;
+        p = p.filter(x => this.datepipe.transform(x.createdOn, 'yyyy-MM-dd') == this.datepipe.transform(maxDate, 'yyyy-MM-dd'));
+
+        if (p != null && p != undefined && p.length > 0) {
+          this.keywordTableList = p;
+          debugger
+          for (let i = 0; i < p.length; i++) {
+          //  keywords,position,prevposition,searches,location
+             // this.keywordTableList[i].keywords
+            // this.keywordTableList.push("keywords",p[i].keywords);
+            // this.keywordTableList.push("position",p[i].position);
+            // this.keywordTableList.push("searches",p[i].searches);
+            // this.keywordTableList.push("location",p[i].location);
+          }
+        }
+      } else {
+      }
+    }
+    else {
+    }
     //Previous slab
     this.tempSerpList = this.serpList;
     p = this.tempSerpList.filter(x => x.campaignID.toString() === selectedCampId.toLowerCase());
     if (p.length > 0) {
-      p = p.filter(x => (new Date(x.createdOn) <= new Date(this.previousEndDate.value) && new Date(x.createdOn) >= new Date(this.previousStartDate.value)));
+      p = p.filter(x => (new Date(x.createdOn) <= new Date(this.previousEndDate) && new Date(x.createdOn) >= new Date(this.previousStartDate)));
       p = this.sortData(p);
       if (p.length > 0) {
         let maxDate = p[0].createdOn;
         p = p.filter(x => this.datepipe.transform(x.createdOn, 'yyyy-MM-dd') == this.datepipe.transform(maxDate, 'yyyy-MM-dd'));
         if (p != null && p != undefined && p.length > 0) {
           for (let i = 0; i < p.length; i++) {
-            this.serpList[i].prevposition = p[i].position;
+            this.keywordTableList[i].prevposition = p[i].position
           }
         }
       } else {
@@ -2029,7 +2051,7 @@ export class SeoComponent implements OnInit {
       this.serpList = res;
       this.tempSerpList = this.serpList;
       this.GetRankingPosition(this.selectedCampId);
-      this.source = new LocalDataSource(this.serpList)
+      this.source = new LocalDataSource(this.keywordTableList)
     });
   }
 
@@ -2514,17 +2536,20 @@ export class SeoComponent implements OnInit {
     this.getDateDiff();
     this.getData();
     this.getAnalyticsProfileIds();
+    this.getSerpList();
   }
   onEndDateChange(event) {
     this.getDateDiff();
     this.getData();
     this.getAnalyticsProfileIds();
+    this.getSerpList();
   }
   calculateDateSlabDiff(start, end) {
     end = new Date(end);
     start = new Date(start);
     return Math.floor((Date.UTC(start.getFullYear(), start.getMonth(), start.getDate()) - Date.UTC(end.getFullYear(), end.getMonth(), end.getDate())) / (1000 * 60 * 60 * 24));
   }
+
   getDateDiff() {
     debugger
     this.startDate = this.datepipe.transform(this.fromDate.value, 'yyyy-MM-dd');
