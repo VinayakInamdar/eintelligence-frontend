@@ -124,7 +124,7 @@ export class SeoComponent implements OnInit {
   averageRanking;
   serpList;
   tempSerpList = [];
-  keywordTableList=[];
+  keywordTableList = [];
   barDataArray: any[] = [];
   //-------------
   //-------------GSC data variable start-------------------
@@ -286,7 +286,7 @@ export class SeoComponent implements OnInit {
       'Authorization': 'Bearer ' + this.accessToken,
     })
   };
-  
+
   //-------------GSC data variable end -------------------
   public chart: BaseChartDirective;
   @ViewChild('dougnutChart')
@@ -325,7 +325,7 @@ export class SeoComponent implements OnInit {
     ],
     datasets: [{
       data: [130, 65, 40, 15]
-    },{
+    }, {
       data: [130, 65, 40, 15]
     },]
   };
@@ -357,9 +357,9 @@ export class SeoComponent implements OnInit {
       'Tablet',
     ],
     datasets: [{
-      data: [130, 65, 40],label: 'This Slab'
-    },{
-      data: [12, 45, 450],label: 'Previuos Slab'
+      data: [130, 65, 40], label: 'This Slab'
+    }, {
+      data: [12, 45, 450], label: 'Previuos Slab'
     }],
   };
 
@@ -954,8 +954,8 @@ export class SeoComponent implements OnInit {
           this.keywordTableList = p;
           debugger
           for (let i = 0; i < p.length; i++) {
-          //  keywords,position,prevposition,searches,location
-             // this.keywordTableList[i].keywords
+            //  keywords,position,prevposition,searches,location
+            // this.keywordTableList[i].keywords
             // this.keywordTableList.push("keywords",p[i].keywords);
             // this.keywordTableList.push("position",p[i].position);
             // this.keywordTableList.push("searches",p[i].searches);
@@ -1012,7 +1012,7 @@ export class SeoComponent implements OnInit {
     // this.disableTab()
   }
   refreshGSCAccount() {
-    
+
     const url = "https://www.googleapis.com/oauth2/v4/token";
     let data = {};
     data = {
@@ -1024,7 +1024,7 @@ export class SeoComponent implements OnInit {
     };
     this.http.post(url, data).subscribe(res => {
       if (res) {
-        
+
         this.gscaccesstoken = res['access_token'];
         this.getData();
       }
@@ -1033,7 +1033,7 @@ export class SeoComponent implements OnInit {
     });
   }
   refreshGoogleAnalyticsAccount() {
-    
+
     const url = "https://www.googleapis.com/oauth2/v4/token";
     let data = {};
     data = {
@@ -1045,7 +1045,7 @@ export class SeoComponent implements OnInit {
     };
     this.http.post(url, data).subscribe(res => {
       if (res) {
-        
+
         this.gaaccesstoken = res['access_token'];
         this.getAnalyticsProfileIds();
         this.getSiteSpeedDataMobile();
@@ -1070,7 +1070,6 @@ export class SeoComponent implements OnInit {
     this.gscrefreshtoken = localStorage.getItem('gscrefreshtoken');
     this.selectedCampaignName = localStorage.getItem('selectedCampName');
     this.selectedCampIdWebUrl = localStorage.getItem('selectedCampUrl');
-    
     if (this.gaurl != 'null' && this.gaurl != null && this.gaurl != undefined && this.gaurl != '') {
       this.refreshGoogleAnalyticsAccount();
       //this.getAnalyticsProfileIds();
@@ -1079,7 +1078,7 @@ export class SeoComponent implements OnInit {
     }
     if (this.gscurl != 'null' && this.gscurl != null && this.gscurl != undefined && this.gscurl != '') {
       this.getDateSettings();
-     // this.getData();
+      // this.getData();
       this.refreshGSCAccount();
     }
     this.sub = this.route.params.subscribe(params => {
@@ -1199,93 +1198,93 @@ export class SeoComponent implements OnInit {
   }
   getAnalyticsOrganicTrafficPrevious(profileid, startdate, endDate) {
     debugger
-        let currDate = new Date();
-        let endDate1 = this.datepipe.transform(currDate, 'yyyy-MM-dd');
-        let startDate1 = this.datepipe.transform(currDate.setDate(currDate.getDate() - 28), 'yyyy-MM-dd');
-        this.httpOptionJSON = {
-          headers: new HttpHeaders({
-            'Accept': 'application/json',
-            'Authorization': 'Bearer ' + this.gaaccesstoken,
-          })
-        };
-        let urlcamp = this.gaurl.replace('/', '%2F');
-        const url = "https://www.googleapis.com/analytics/v3/data/ga?ids=ga:" + profileid + "&dimensions=ga:date&start-date=" + startdate + "&end-date=" + endDate + "&metrics=ga:organicsearches";
-        this.http.get(url, this.httpOptionJSON).subscribe(res => {
-          if (res) {
-            debugger
-            let rows = res['rows'];
-            this.showSpinnerBaseChart = false;
-            this.lineChartData1[1].data = [];
-           // this.lineChartLabels1 = [];
-            for (let i = 0; i < rows.length; i++) {
-              this.lineChartData1[1].data.push(rows[i]["1"]);
-              let dt = rows[i]["0"].toString().substring(4, 6) + '-' + rows[i]["0"].toString().substring(6, 8);
-             // this.lineChartLabels1.push(dt);
-            }
-    
-          }
-        }, error => {
-    
-          //alert('Analytics Data Fetch failed : ' + JSON.stringify(error.error));
-        });
+    let currDate = new Date();
+    let endDate1 = this.datepipe.transform(currDate, 'yyyy-MM-dd');
+    let startDate1 = this.datepipe.transform(currDate.setDate(currDate.getDate() - 28), 'yyyy-MM-dd');
+    this.httpOptionJSON = {
+      headers: new HttpHeaders({
+        'Accept': 'application/json',
+        'Authorization': 'Bearer ' + this.gaaccesstoken,
+      })
+    };
+    let urlcamp = this.gaurl.replace('/', '%2F');
+    const url = "https://www.googleapis.com/analytics/v3/data/ga?ids=ga:" + profileid + "&dimensions=ga:date&start-date=" + startdate + "&end-date=" + endDate + "&metrics=ga:organicsearches";
+    this.http.get(url, this.httpOptionJSON).subscribe(res => {
+      if (res) {
+        debugger
+        let rows = res['rows'];
+        this.showSpinnerBaseChart = false;
+        this.lineChartData1[1].data = [];
+        // this.lineChartLabels1 = [];
+        for (let i = 0; i < rows.length; i++) {
+          this.lineChartData1[1].data.push(rows[i]["1"]);
+          let dt = rows[i]["0"].toString().substring(4, 6) + '-' + rows[i]["0"].toString().substring(6, 8);
+          // this.lineChartLabels1.push(dt);
+        }
+
       }
-      getAnalyticsTrafficByChannelPrevious(profileid, startdate, endDate) {
-    
-        let currDate = new Date();
-        let endDate1 = this.datepipe.transform(currDate, 'yyyy-MM-dd');
-        let startDate1 = this.datepipe.transform(currDate.setDate(currDate.getDate() - 28), 'yyyy-MM-dd');
-        this.httpOptionJSON = {
-          headers: new HttpHeaders({
-            'Accept': 'application/json',
-            'Authorization': 'Bearer ' + this.gaaccesstoken,
-          })
-        };
-        let urlcamp = this.gaurl.replace('/', '%2F');
-        const url = "https://www.googleapis.com/analytics/v3/data/ga?ids=ga:" + profileid + "&start-date=" + startdate + "&end-date=" + endDate + "&metrics=ga%3Asessions&dimensions=ga%3Asource%2Cga%3Amedium%2Cga%3AadContent%2Cga%3AsocialNetwork%2Cga%3AdeviceCategory"
-    
-        this.http.get(url, this.httpOptionJSON).subscribe(res => {
-          if (res) {
-    
-            let rows = res['rows'];
-            let organic = 0, referral = 0, social = 0, desktop = 0, mobile = 0, tablet = 0;
-            this.showSpinnerSiteAnalysisContent = false;
-            for (let i = 0; i < rows.length; i++) {
-              if (rows[i]["1"] == 'organic') {
-                organic = organic + parseInt(rows[0]["5"]);//Organic Search
-              }
-              if (rows[i]["1"] == 'referral') {
-                referral = referral + parseInt(rows[0]["5"]);//referral
-              }
-              if (rows[i]["3"] != '(not set)') {
-                social = social + parseInt(rows[0]["5"]);//social
-              }
-              if (rows[i]["4"] == 'mobile') {
-                mobile = mobile + parseInt(rows[0]["5"]);//mobile
-              }
-              if (rows[i]["4"] == 'desktop') {
-                desktop = desktop + parseInt(rows[0]["5"]);//desktop
-              }
-              if (rows[i]["4"] == 'tablet') {
-                tablet = tablet + parseInt(rows[0]["5"]);//desktop
-              }
-            }
-            //Web traffic by channel
-            this.doughnutData.datasets[1].data = [];
-            let direct = parseInt(rows[1]["5"]) + parseInt(rows[0]["5"]) + parseInt(rows[0]["5"]);
-            this.doughnutData.datasets[1].data.push(direct);//direct
-            this.doughnutData.datasets[1].data.push(organic);//rganic Search
-            this.doughnutData.datasets[1].data.push(referral);//referral
-            this.doughnutData.datasets[1].data.push(social);//social
-            //Web traffic by device
-            this.doughnutData1.datasets[1].data = [];
-            this.doughnutData1.datasets[1].data.push(desktop);//desktop
-            this.doughnutData1.datasets[1].data.push(desktop);//mobile
-            this.doughnutData1.datasets[1].data.push(desktop);//teblet
+    }, error => {
+
+      //alert('Analytics Data Fetch failed : ' + JSON.stringify(error.error));
+    });
+  }
+  getAnalyticsTrafficByChannelPrevious(profileid, startdate, endDate) {
+
+    let currDate = new Date();
+    let endDate1 = this.datepipe.transform(currDate, 'yyyy-MM-dd');
+    let startDate1 = this.datepipe.transform(currDate.setDate(currDate.getDate() - 28), 'yyyy-MM-dd');
+    this.httpOptionJSON = {
+      headers: new HttpHeaders({
+        'Accept': 'application/json',
+        'Authorization': 'Bearer ' + this.gaaccesstoken,
+      })
+    };
+    let urlcamp = this.gaurl.replace('/', '%2F');
+    const url = "https://www.googleapis.com/analytics/v3/data/ga?ids=ga:" + profileid + "&start-date=" + startdate + "&end-date=" + endDate + "&metrics=ga%3Asessions&dimensions=ga%3Asource%2Cga%3Amedium%2Cga%3AadContent%2Cga%3AsocialNetwork%2Cga%3AdeviceCategory"
+
+    this.http.get(url, this.httpOptionJSON).subscribe(res => {
+      if (res) {
+
+        let rows = res['rows'];
+        let organic = 0, referral = 0, social = 0, desktop = 0, mobile = 0, tablet = 0;
+        this.showSpinnerSiteAnalysisContent = false;
+        for (let i = 0; i < rows.length; i++) {
+          if (rows[i]["1"] == 'organic') {
+            organic = organic + parseInt(rows[0]["5"]);//Organic Search
           }
-        }, error => {
-          //alert('Analytics Data Fetch failed : ' + JSON.stringify(error.error));
-        });
+          if (rows[i]["1"] == 'referral') {
+            referral = referral + parseInt(rows[0]["5"]);//referral
+          }
+          if (rows[i]["3"] != '(not set)') {
+            social = social + parseInt(rows[0]["5"]);//social
+          }
+          if (rows[i]["4"] == 'mobile') {
+            mobile = mobile + parseInt(rows[0]["5"]);//mobile
+          }
+          if (rows[i]["4"] == 'desktop') {
+            desktop = desktop + parseInt(rows[0]["5"]);//desktop
+          }
+          if (rows[i]["4"] == 'tablet') {
+            tablet = tablet + parseInt(rows[0]["5"]);//desktop
+          }
+        }
+        //Web traffic by channel
+        this.doughnutData.datasets[1].data = [];
+        let direct = parseInt(rows[1]["5"]) + parseInt(rows[0]["5"]) + parseInt(rows[0]["5"]);
+        this.doughnutData.datasets[1].data.push(direct);//direct
+        this.doughnutData.datasets[1].data.push(organic);//rganic Search
+        this.doughnutData.datasets[1].data.push(referral);//referral
+        this.doughnutData.datasets[1].data.push(social);//social
+        //Web traffic by device
+        this.doughnutData1.datasets[1].data = [];
+        this.doughnutData1.datasets[1].data.push(desktop);//desktop
+        this.doughnutData1.datasets[1].data.push(desktop);//mobile
+        this.doughnutData1.datasets[1].data.push(desktop);//teblet
       }
+    }, error => {
+      //alert('Analytics Data Fetch failed : ' + JSON.stringify(error.error));
+    });
+  }
   getAnalyticsOrganicTraffic(profileid, startdate, endDate) {
 
     let currDate = new Date();
@@ -2404,12 +2403,11 @@ export class SeoComponent implements OnInit {
     }, error => {
 
       if (error.code == '401') {
-        alert('Session Expired, Please Login again to access system : ' + JSON.stringify(error.error));
+        //alert('Session Expired, Please Login again to access system : ' + JSON.stringify(error.error));
       }
     });
   }
   getDataCurrentYear(startDate, endDate, all, url) {
-
     this.httpOptionJSON = {
       headers: new HttpHeaders({
         'Accept': 'application/json',
@@ -2441,6 +2439,7 @@ export class SeoComponent implements OnInit {
 
         let rows = res['rows'];
         if (all == 0) {
+          debugger
           this.clicksThisYear = rows[0].clicks;
           this.impressionsThisYear = rows[0].impressions;
           this.cTRThisYear = parseFloat(rows[0].ctr).toFixed(2).toString();
@@ -2466,21 +2465,17 @@ export class SeoComponent implements OnInit {
       }
     }, error => {
 
-      alert('Data fetch failed for current year : ' + JSON.stringify(error.error));
+      // alert('Data fetch failed for current year : ' + JSON.stringify(error.error));
     });
 
   }
   getDataPreviousYear(startDate, endDate, all, url) {
-
     this.httpOptionJSON = {
       headers: new HttpHeaders({
         'Accept': 'application/json',
         'Authorization': 'Bearer ' + this.gscaccesstoken,
       })
     };
-
-    //let urlcamp = this.selectedCampIdWebUrl.replace('/', '%2F');
-    //const url = "https://www.googleapis.com/webmasters/v3/sites/https:%2F%2F" + urlcamp + "%2F/searchAnalytics/query?key=AIzaSyC1IsrCeeNXp9ksAmC8szBtYVjTLJC9UWQ";
     let data = {
       "startRow": 0,
       "startDate": startDate,
@@ -2501,7 +2496,7 @@ export class SeoComponent implements OnInit {
           this.positionPreviousYear = parseFloat(rows[0].position).toFixed(2).toString();
 
           //pecentgage calculate
-
+          debugger
           this.percentClicks = this.getYearwiseDifference(this.clicksPreviousYear, this.clicksThisYear);
           this.percentImpressions = this.getYearwiseDifference(this.impressionsPreviousYear, this.impressionsThisYear);
           this.percentPosition = this.getYearwiseDifference(this.positionPreviousYear, this.positionThisYear);
@@ -2531,7 +2526,7 @@ export class SeoComponent implements OnInit {
 
   }
 
- 
+
   onStartDateChange(event) {
     this.getDateDiff();
     this.getData();
@@ -2561,11 +2556,21 @@ export class SeoComponent implements OnInit {
     this.previousStartDate = this.datepipe.transform(this.tempDate.setDate(this.tempDate.getDate() - diff), 'yyyy-MM-dd');
   }
   getYearwiseDifference(previous, current) {
-
-    let diff = ((parseFloat(previous) - parseFloat(current)) * 100) / parseFloat(previous)
-    return parseFloat(diff.toString()).toFixed(2)
-
+    debugger
+    let res;
+    if (previous == 0 && current != 0) {
+      res = 100.00;
+    } else if (previous != 0 && current == 0) {
+      res = -100.00;
+    } else if (current == 0 && previous == 0) {
+      res = 0;
+    } else {
+      var diff = (current - previous) / previous * 100.0;
+      res = diff;
+    }
+    return parseFloat(res.toString()).toFixed(2)
   }
+
   getData() {
 
     if (this.gscaccesstoken == '' || this.gscaccesstoken == undefined || this.gscaccesstoken == null) {

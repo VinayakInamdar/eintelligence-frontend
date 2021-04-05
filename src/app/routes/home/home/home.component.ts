@@ -31,6 +31,8 @@ export class HomeComponent implements OnInit {
   CampaignGAdsList = [];
   SelectedCampaignId;
   CampaignFacebookList = [];
+  gscaccesstoken;
+  gaaccesstoken;
 
   //Ranking
   rankingThis = 0;
@@ -86,12 +88,16 @@ export class HomeComponent implements OnInit {
 
   startDate;
   endDate;
-
+tempStr:string="";
+tempRes:string="";
   tempDate = new Date();
   clicksThisYear: string = "0";
   clicksPreviousYear: string = "0";
-  impressionsThisYear: string = "0";
-  impressionsPreviousYear: string = "0";
+  impressionsThisYear: number = 0;
+  impressionsPreviousYear: number = 0;
+  impressionPve = 0;
+  impressionNve = 0;
+  impressionNute = 0;
   cTRThisYear: string = "0";
   cTRPreviousYear: string = "0";
   positionThisYear: string = "0";
@@ -211,24 +217,132 @@ export class HomeComponent implements OnInit {
       },
       ranking: {
         title: 'SE Avg. Position',
-        filter: false
+        filter: false,
+        type: 'html',
+        valuePrepareFunction: (value) => {
+          this.tempStr = value;
+          
+          let st=  this.tempStr.split("--");
+          if(this.tempStr != '' && this.tempStr != undefined && this.tempStr != null){
+          if(this.tempStr.toString().includes("--")){
+            if(parseInt(st[0]) > parseInt(st[1])){
+              this.tempRes =  st[0] +  ` <i class='fas fa-arrow-alt-circle-down' style='font-size:48px;color:red'></i> ` + st[1]
+            }
+            if(parseInt(st[0]) < parseInt(st[1])){
+              this.tempRes =    st[0] +  ` <i class='fas fa-arrow-alt-circle-up' style='font-size:48px;color:green'></i> ` + st[1]
+            }
+            if(parseInt(st[0]) == parseInt(st[1])){
+              this.tempRes =    st[0] +  " - " + st[1];
+            }
+          }
+        }else{
+          this.tempRes =    st[0] +  " - " + st[1];
+        }
+        if(this.tempRes.includes('undefined')){
+          this.tempRes ='';
+        }
+        return this.tempRes;
+      }
+     
       },
       traffic: {
         title: 'Organic Traffic',
-        filter: false
+        filter: false,
+        type: 'html',
+        valuePrepareFunction: (value) => {
+          this.tempStr = value;
+          
+          let st=  this.tempStr.split("--");
+          if(this.tempStr != '' && this.tempStr != undefined && this.tempStr != null){
+          if(this.tempStr.toString().includes("--")){
+            if(parseInt(st[0]) > parseInt(st[1])){
+              this.tempRes =  st[0] +  ` <i class='fas fa-arrow-alt-circle-down' style='font-size:48px;color:red'></i> ` + st[1]
+            }
+            if(parseInt(st[0]) < parseInt(st[1])){
+              this.tempRes =    st[0] +  ` <i class='fas fa-arrow-alt-circle-up' style='font-size:48px;color:green'></i> ` + st[1]
+            }
+            if(parseInt(st[0]) == parseInt(st[1])){
+              this.tempRes =    st[0] +  " - " + st[1];
+            }
+          }
+        }else{
+          this.tempRes =    st[0] +  " - " + st[1];
+        }
+        if(this.tempRes.includes('undefined')){
+          this.tempRes ='';
+        }
+        return this.tempRes;
+      }
+
       },
       gsc: {
         title: 'SE Impressions',
-        filter: false
+        filter: false,
+        type: 'html',
+        valuePrepareFunction: (value) => {
+          this.tempStr = value;
+          
+          let st=  this.tempStr.split("--");
+          if(this.tempStr != '' && this.tempStr != undefined && this.tempStr != null){
+          if(this.tempStr.toString().includes("--")){
+            if(parseInt(st[0]) > parseInt(st[1])){
+              this.tempRes =  st[0] +  ` <i class='fas fa-arrow-alt-circle-down' style='font-size:48px;color:red'></i> ` + st[1]
+            }
+            if(parseInt(st[0]) < parseInt(st[1])){
+              this.tempRes =    st[0] +  ` <i class='fas fa-arrow-alt-circle-up' style='font-size:48px;color:green'></i> ` + st[1]
+            }
+            if(parseInt(st[0]) == parseInt(st[1])){
+              this.tempRes =    st[0] +  " - " + st[1];
+            }
+          }
+        }else{
+          this.tempRes =    st[0] +  " - " + st[1];
+        }
+        if(this.tempRes.includes('undefined')){
+          this.tempRes ='';
+        }
+        return this.tempRes;
+      }
+      
+      
+
       },
       socialMedia: {
         title: 'SM Engagement',
-        filter: false
+        filter: false,
+        type: 'html',
+        valuePrepareFunction: (value) => {
+          this.tempStr = value;
+          
+          let st=  this.tempStr.split("--");
+          if(this.tempStr != '' && this.tempStr != undefined && this.tempStr != null){
+          if(this.tempStr.toString().includes("--")){
+            if(parseInt(st[0]) > parseInt(st[1])){
+              this.tempRes =  st[0] +  ` <i class='fas fa-arrow-alt-circle-down' style='font-size:48px;color:red'></i> ` + st[1]
+            }
+            if(parseInt(st[0]) < parseInt(st[1])){
+              this.tempRes =    st[0] +  ` <i class='fas fa-arrow-alt-circle-up' style='font-size:48px;color:green'></i> ` + st[1]
+            }
+            if(parseInt(st[0]) == parseInt(st[1])){
+              this.tempRes =    st[0] +  " - " + st[1];
+            }
+          }
+        }else{
+          this.tempRes =    st[0] +  " - " + st[1];
+        }
+        if(this.tempRes.includes('undefined')){
+          this.tempRes ='';
+        }
+        return this.tempRes;
+      }
+      
+      
+
       },
       googleLeads: {
         title: 'Google Ads Conversions',
         filter: false
-      }
+      },
     }
   };
   source: LocalDataSource;
@@ -245,14 +359,6 @@ export class HomeComponent implements OnInit {
       version: 'v9.0'
     });
     this.getSerpList();
-    this.getCampaignList();
-    //this.getRankingGraphDataAll();
-    this.getCompany();
-    this.toaster = {
-      type: 'success',
-      title: 'Audit report',
-      text: 'Your report is ready..'
-    };
     this.getDateDiff();
     let ycode = localStorage.getItem("gacode");
     if (ycode != 'null' && ycode != null && ycode != undefined && ycode != '') {
@@ -263,25 +369,18 @@ export class HomeComponent implements OnInit {
       this.router.navigate(['/home/campaign']);
     }
   }
-  //  using to get campaignList
-  public getCampaignList(): void {
+  ngOnInit() {
     this.resetChartVariables();
-    var userid = this.openIdConnectService.user.profile.sub;
-    this.campaignService.getCampaign(userid).subscribe(res => {
-      this.campaignList = res;
+     this.getCampaignGA();
+     this.getCampaignGAds();
+     this.getCampaignFacebook();
+     this.getCampaignGSC();
+     this.getCampaignList();
+ 
+   }
 
-      for (let i = 0; i < res.length; i++) {
-        debugger
-        this.GetRankingPosition(res[i].id);
-        this.campaignList[i].ranking = this.rankingPrev + "--" + this.rankingThis;
-      }
-      this.source = new LocalDataSource(this.campaignList);
-    });
-  }
-  pieChartDataAdd() {
-    this.pieChartData1 = [this.perpve, this.pernve, this.pernut];
-  }
-  //For ranking graph rubina
+
+ //###############################################For ranking graph rubina
   GetRankingPosition(selectedCampId) {
     this.tempSerpList = this.serpList;
     let p;
@@ -332,67 +431,14 @@ export class HomeComponent implements OnInit {
     else {
       this.rankingPrev = 0;
     }
-    debugger
+
     let g = this.rankingThis - this.rankingPrev;
     if (g > 0) { this.pve = this.pve + 1; }
     if (g < 0) { this.nve = this.nve + 1; }
     if (g == 0) { this.nut = this.nut + 1; }
     this.pieChartData1 = [this.pve, this.nve, this.nut];
   }
-  sortData(p) {
-    return p.sort((a, b) => {
-      return <any>new Date(b.createdOn) - <any>new Date(a.createdOn);
-    });
-  }
-  onStartDateChange(event) {
-    debugger
-    this.getDateDiff();
-    this.getCampaignList();
-    //this.getData();
-    //this.getAnalyticsProfileIds();
-  }
-  onEndDateChange(event) {
-    this.getDateDiff();
-    this.getCampaignList();
-    // this.getData();
-    // this.getAnalyticsProfileIds();
-  }
-  calculateDateSlabDiff(start, end) {
-    end = new Date(end);
-    start = new Date(start);
-    return Math.floor((Date.UTC(start.getFullYear(), start.getMonth(), start.getDate()) - Date.UTC(end.getFullYear(), end.getMonth(), end.getDate())) / (1000 * 60 * 60 * 24));
-  }
-  getDateDiff() {
-    this.startDate = this.datepipe.transform(this.fromDate.value, 'yyyy-MM-dd');
-    this.endDate = this.datepipe.transform(this.toDate.value, 'yyyy-MM-dd');
-    let diff = this.calculateDateSlabDiff(this.toDate.value, this.fromDate.value);
-    this.tempDate = new Date(this.startDate);
-    this.previousEndDate = this.datepipe.transform(this.tempDate.setDate(this.tempDate.getDate() - 1), 'yyyy-MM-dd');
-    this.tempDate = new Date(this.previousEndDate);
-    this.previousStartDate = this.datepipe.transform(this.tempDate.setDate(this.tempDate.getDate() - diff), 'yyyy-MM-dd');
-  }
-  getYearwiseDifference(previous, current) {
-
-    let diff = ((parseFloat(previous) - parseFloat(current)) * 100) / parseFloat(previous)
-    return parseFloat(diff.toString()).toFixed(2)
-
-  }
-
-  getCompany() {
-
-    var userId = this.openIdConnectService.user.profile.sub;
-    this.accountService.getCompany(userId).subscribe(
-      res => {
-        if (res) {
-          this.companyinformation = res
-          this.CompanyID = this.companyinformation.companyID;
-          localStorage.setItem('companyID', this.CompanyID);
-          localStorage.setItem('userID', userId);
-        }
-      }
-    )
-  }
-
+ 
   calculateRankings() {
     this.accessToken = localStorage.getItem('googleGscAccessToken');
     if (this.accessToken != null && this.accessToken != undefined && this.accessToken != '') {
@@ -426,52 +472,14 @@ export class HomeComponent implements OnInit {
           }
         } else {
           if (this.IsError == false) {
-            this.getData(i);
-            this.getAnalyticsProfileIds(i);
+            //this.getAnalyticsProfileIds(i);
             this.campaignList[i].ranking = g + "%";
-            this.addDataToPieChart(g, 1);
           }
         }
       }
     }
     this.tableData = this.campaignList;
     this.source = new LocalDataSource(this.campaignList)
-  }
-  addDataToPieChart(g, chartNo) {
-
-    this.pve = 0;
-    this.nve = 0;
-    this.nut = 0;
-    if (parseFloat(g) > 0) { this.pve = this.pve + 1; }
-    if (parseFloat(g) < 0) { this.nve = this.nve + 1; }
-    if (parseInt(g) == 0) { this.nut = this.nut + 1; }
-    this.perpve = this.getPercentage(this.pve, this.total);
-    this.pernve = this.getPercentage(this.nve, this.total);
-    this.pernut = this.getPercentage(this.nut, this.total);
-    if (this.perpve == "undefined" || this.perpve == "NaN") {
-      this.perpve = 0;
-    }
-    if (this.pernve == "undefined" || this.pernve == "NaN") {
-      this.pernve = 0;
-    }
-    if (this.pernut == "undefined" || this.pernut == "NaN") {
-      this.pernut = 0;
-    }
-    if (chartNo == 1) {
-      this.pieChartData1 = [this.perpve, this.pernve, this.pernut];
-    }
-    if (chartNo == 4) {
-      this.pieChartData4 = [this.perpve, this.pernve, this.pernut];
-    }
-    if (chartNo == 5) {
-      this.pieChartData5 = [this.perpve, this.pernve, this.pernut];
-    }
-  }
-
-  // using to view list of audits
-  public goToAudits(event) {
-    event.preventDefault()
-    this.router.navigate(['/home/audits']);
   }
 
   // using to search campaign locally
@@ -493,20 +501,7 @@ export class HomeComponent implements OnInit {
     }
 
   }
-  // using to run audit of entered url 
-  public runAudit(event, value) {
-    if (this.valForm.invalid) {
-      this.valForm.get('webUrl').markAsTouched();
-    }
-    else {
-      this.toastr.info('Your Report is under progress...you can see your report when it is completed', 'Audit Report')
-      this.auditsService.settingsTaskWebsite(this.siteurl).subscribe(res => {
-
-      })
-    }
-
-  }
-
+ 
   //using to open create campaign view to create new campaign in db
   public onClick(): any {
     localStorage.setItem('gaurl', '');
@@ -525,6 +520,7 @@ export class HomeComponent implements OnInit {
     localStorage.setItem('gscid', '');
     this.router.navigate(['/home/campaign']);
   }
+
 
   // using to view analytics report of selected campaign Id
   userRowSelect(campaign: any): void {
@@ -560,47 +556,16 @@ export class HomeComponent implements OnInit {
 
 
   }
-  //Ranking Data
-  public getSerpList(): void {
-    this.campaignService.getSerp("&tbs=qdr:m").subscribe(res => {
-      this.serpList = res;
-      this.tempSerpList = this.serpList;
-    });
-  }
-
-  private getFilterOptionPlans() {
-    return {
-      pageNumber: 1,
-      pageSize: 1000,
-      fields: '',
-      searchQuery: '',
-      orderBy: ''
-    }
-  }
-
-  getDifference(previous, current) {
-    // Decrease = Original Number - New Number
-    // % Decrease = Decrease ÷ Original Number × 100
-    // let diff = ((parseFloat(previous) - parseFloat(current)) * 100) / parseFloat(previous)
-    // return parseFloat(diff.toString()).toFixed(2);
-    let diff = (parseFloat(previous) - parseFloat(current));
-    let per = (diff / parseFloat(current)) * 100
-    return parseFloat(per.toString()).toFixed(2);
-  }
+  
 
   //############################################### GSC data
-  getDataByDevice(startDate, endDate) {
-
+    getDataCurrentYear(startDate, endDate, url, campaignIndex) {
     this.httpOptionJSON = {
       headers: new HttpHeaders({
         'Accept': 'application/json',
-        'Authorization': 'Bearer ' + this.accessToken,
+        'Authorization': 'Bearer ' + this.gscaccesstoken,
       })
     };
-    let urlcamp = this.selectedCampIdWebUrl.replace('/', '%2F');
-
-
-    const url = "https://www.googleapis.com/webmasters/v3/sites/https%3A%2F%2F" + urlcamp + "%2F/searchAnalytics/query?key=AIzaSyC1IsrCeeNXp9ksAmC8szBtYVjTLJC9UWQ";
     let data = {};
 
     data = {
@@ -608,88 +573,29 @@ export class HomeComponent implements OnInit {
       "startDate": startDate,
       "endDate": endDate,
       "dataState": "ALL",
-      "dimensions": [
-        "DEVICE"
-      ]
-    };
-    this.http.post(url, data, this.httpOptionJSON).subscribe(res => {
-      if (res) {
-
-        let rows = res['rows'];
-
-      }
-    }, error => {
-      console.log('Data fetch failed by device : ' + JSON.stringify(error.error));
-    });
-  }
-  getDataCurrentYear(startDate, endDate, all, url, i) {
-    this.httpOptionJSON = {
-      headers: new HttpHeaders({
-        'Accept': 'application/json',
-        'Authorization': 'Bearer ' + this.accessToken,
-      })
     };
 
-
-    //let urlcamp = this.selectedCampIdWebUrl.replace('/', '%2F');
-    //const url = "https://www.googleapis.com/webmasters/v3/sites/https%3A%2F%2Feintelligence.azurewebsites.net%2F/searchAnalytics/query";
-    //const url = "https://www.googleapis.com/webmasters/v3/sites/http:%2F%2F" + urlcamp + "%2F/searchAnalytics/query";
-    //const url = "https://www.googleapis.com/webmasters/v3/sites/https%3A%2F%2Fwww.abhisi.com%2F/searchAnalytics/query?key=AIzaSyC1IsrCeeNXp9ksAmC8szBtYVjTLJC9UWQ";
-    let data = {};
-    if (all == 1) {
-      data = {
-        "startRow": 0,
-        "startDate": startDate,
-        "endDate": endDate,
-        "dataState": "ALL",
-        "dimensions": [
-          "DATE"
-        ]
-      };
-    }
-    if (all == 0) {
-      data = {
-        "startRow": 0,
-        "startDate": startDate,
-        "endDate": endDate,
-        "dataState": "ALL",
-      };
-    }
     this.http.post(url, data, this.httpOptionJSON).subscribe(res => {
       if (res) {
-
         let rows = res['rows'];
-        if (all == 0) {
-          this.clicksThisYear = rows[0].clicks;
-          this.impressionsThisYear = rows[0].impressions;
-          this.cTRThisYear = parseFloat(rows[0].ctr).toFixed(2).toString();
-          this.positionThisYear = parseFloat(rows[0].position).toFixed(2).toString();
-        }
-        else {
-          this.dateListData = [];
-          for (let i = 0; i < rows.length; i++) {
-            this.currDate = rows[i].keys[0]
-            this.currDate = this.currDate.substring(5, 10);
-          }
-        }
-        this.getDataPreviousYear(this.previousStartDate, this.previousEndDate, 0, i, url);
-        this.getDataCurrentYear(this.startDate, this.endDate, 1, url, i);
-        this.getDataPreviousYear(this.previousStartDate, this.previousEndDate, 1, i, url);
+        this.clicksThisYear = rows[0].clicks;
+        this.impressionsThisYear = rows[0].impressions;
+        this.cTRThisYear = parseFloat(rows[0].ctr).toFixed(2).toString();
+        this.positionThisYear = parseFloat(rows[0].position).toFixed(2).toString()
       }
     }, error => {
-
       this.IsError = true;
       console.log("Please Login with your google account");
       // console.log('Data fetch failed for current year for URL : ' + this.selectedCampIdWebUrl + " --Error : - " + JSON.stringify(error.error));
     });
 
   }
-  getDataPreviousYear(startDate, endDate, all, i, url) {
+  getDataPreviousYear(startDate, endDate, campaignIndex, url) {
 
     this.httpOptionJSON = {
       headers: new HttpHeaders({
         'Accept': 'application/json',
-        'Authorization': 'Bearer ' + this.accessToken,
+        'Authorization': 'Bearer ' + this.gscaccesstoken,
       })
     };
     //let urlcamp = this.selectedCampIdWebUrl.replace('/', '%2F');
@@ -706,84 +612,63 @@ export class HomeComponent implements OnInit {
     this.http.post(url, data, this.httpOptionJSON).subscribe(res => {
       if (res) {
         let rows = res['rows'];
-        if (all == 0) {
+          
           this.clicksPreviousYear = rows[0].clicks;
           this.impressionsPreviousYear = rows[0].impressions;
           this.cTRPreviousYear = parseFloat(rows[0].ctr).toFixed(2).toString();
           this.positionPreviousYear = parseFloat(rows[0].position).toFixed(2).toString();
-          //pecentgage calculate
-          this.percentClicks = this.getYearwiseDifference(this.clicksPreviousYear, this.clicksThisYear);
-          this.campaignList[i].gsc = this.percentClicks + "%";
-          this.addDataToPieChart(this.percentClicks, 4);
+          let diff1 = this.impressionsThisYear - this.impressionsPreviousYear
+          if (diff1 > 0) { this.impressionPve= this.impressionPve + 1; }
+          if (diff1 < 0) { this.impressionNve= this.impressionNve + 1; }
+          if (diff1 == 0) { this.impressionNute= this.impressionNute + 1; }
+          this.pieChartData4 = [this.impressionPve.toString(), this.impressionNve.toString(), this.impressionNute.toString()];
+          this.campaignList[campaignIndex].gsc = this.impressionsPreviousYear + "--" + this.impressionsThisYear;
           this.tableData = this.campaignList;
           this.source = new LocalDataSource(this.campaignList)
-          this.percentImpressions = this.getYearwiseDifference(this.impressionsPreviousYear, this.impressionsThisYear);
-          this.percentPosition = this.getYearwiseDifference(this.positionPreviousYear, this.positionThisYear);
-          this.percentCTR = this.getYearwiseDifference(this.cTRPreviousYear, this.cTRThisYear);
-        }
-        else {
-          this.dateListData = [];
-          for (let i = 0; i < rows.length; i++) {
-            this.currDate = rows[i].keys[0]
-            this.currDate = this.currDate.substring(5, 10);
-          }
-        }
+        
       }
     }, error => {
-      this.campaignList[i].gsc = "0%";
-      this.addDataToPieChart("", 4);
+      //this.campaignList[campaignIndex].gsc = "0%";
       console.log('Data fetch failed for previous year for URL : ' + this.selectedCampIdWebUrl + " --Error : - " + JSON.stringify(error.error));
     });
   }
-  ngOnInit() {
-    this.trafficPvePer = 0;
-    this.trafficNvePer = 0;
-    this.trafficNutPer = 0;
-    this.trafficPve = 0;
-    this.trafficNve = 0;
-    this.trafficNut = 0;
-    this.ConversionsPvePer = 0;
-    this.ConversionsNvePer = 0;
-    this.ConversionsNutPer = 0;
-    this.ConversionsPve = 0;
-    this.ConversionsNve = 0;
-    this.ConversionsNut = 0;
-    //this.getCampaignList();
-    this.getCampaignGA();
-    this.getCampaignGAds();
-    this.getCampaignFacebook();
-    this.getCampaignGSC();
-  }
 
-  getData(i) {
-
-    this.accessToken = localStorage.getItem('googleGscAccessToken');
-    if (this.accessToken == '' || this.accessToken == undefined || this.accessToken == null) {
+  getData(campaignIndex, gscurl) {
+    if (this.gaaccesstoken == '' || this.gaaccesstoken == undefined || this.gaaccesstoken == null) {
       console.log("Please, Login with Google to fetch data");
     } else if (parseDate(this.endDate) < parseDate(this.startDate)) {
       console.log("Start Date can not be grater then End Date");
     }
     else {
-
-      let urlcamp = this.selectedCampIdWebUrl.replace('/', '%2F');
+      let urlcamp = gscurl.replace('https://', '');
+      urlcamp = urlcamp.replace('/', '');
       const url = "https://www.googleapis.com/webmasters/v3/sites/https%3A%2F%2F" + urlcamp + "/searchAnalytics/query?key=AIzaSyC1IsrCeeNXp9ksAmC8szBtYVjTLJC9UWQ";
-      //const url = "https://searchconsole.googleapis.com/webmasters/v3/sites/https%3A%2F%2Fpatwa.co.in/searchAnalytics/query?key=AIzaSyC1IsrCeeNXp9ksAmC8szBtYVjTLJC9UWQ"
-      // const url = "https://www.googleapis.com/webmasters/v3/sites/https%3A%2F%2F" + urlcamp + "%2F/searchAnalytics/query?key=AIzaSyC1IsrCeeNXp9ksAmC8szBtYVjTLJC9UWQ";
-      //const url = "https://www.googleapis.com/webmasters/v3/sites/https%3A%2F%2Fwww.abhisi.com%2F/searchAnalytics/query?key=AIzaSyC1IsrCeeNXp9ksAmC8szBtYVjTLJC9UWQ";
-      this.getDataCurrentYear(this.startDate, this.endDate, 0, url, i);
-      if (this.IsError == false) {
-
-      }
-      // this.getDataByDevice(this.startDate, this.endDate)
-
+     this.getDataCurrentYear(this.startDate, this.endDate, url, campaignIndex);
+     this.getDataPreviousYear(this.previousStartDate, this.previousEndDate,campaignIndex, url);
     }
   }
+  refreshGSCAccount(campaignIndex, refreshToken, gscurl) {
 
-
-  getPercentage(num, total) {
-    return ((100 * num) / total)
+    const url = "https://www.googleapis.com/oauth2/v4/token";
+    let data = {};
+    data = {
+      client_id: environment.googleClientId,
+      client_secret: environment.googleClientSecret,
+      refresh_token: refreshToken,
+      grant_type: 'refresh_token',
+      access_type: 'offline'
+    };
+    this.http.post(url, data).subscribe(res => {
+      if (res) {
+        
+        this.gscaccesstoken = res['access_token'];
+        this.getData(campaignIndex,gscurl);
+      }
+    }, error => {
+      alert('eeee : ' + JSON.stringify(error.error));
+    });
   }
-  //Facebook data
+  //###############################################Facebook data
   facebookDataThisMonth(index) {
 
     const url = "https://graph.facebook.com/" + environment.facebook_pageid + "/insights/page_impressions_unique,page_total_actions,page_positive_feedback_by_type,page_negative_feedback,page_views_total,page_impressions,page_views_external_referrals,page_fans_by_unlike_source_unique,page_impressions_organic,page_impressions_paid,page_fan_removes_unique?access_token=" + this.facebookPageToken;
@@ -830,7 +715,6 @@ export class HomeComponent implements OnInit {
             this.campaignList[index].socialMedia = this.percentFacebook;
             this.tableData = this.campaignList;
             this.source = new LocalDataSource(this.campaignList)
-            this.addDataToPieChart(this.percentFacebook, 5);
           }
         }
       }
@@ -867,31 +751,7 @@ export class HomeComponent implements OnInit {
       console.log('Fetch Page Token Failed : ' + JSON.stringify(error.error));
     });
   }
-  signInWithGoogle(): void {
 
-    const googleLoginOptions = {
-      scope: 'profile email https://www.googleapis.com/auth/webmasters.readonly https://www.googleapis.com/auth/webmasters https://www.googleapis.com/auth/analytics https://www.googleapis.com/auth/analytics.readonly https://www.googleapis.com/auth/analytics.edit'
-    };
-    this.authService.signIn(GoogleLoginProvider.PROVIDER_ID, googleLoginOptions)
-      .then((res) => {
-        this.trafficPvePer = 0;
-        this.trafficNvePer = 0;
-        this.trafficNutPer = 0;
-        this.trafficPve = 0;
-        this.trafficNve = 0;
-        this.trafficNut = 0;
-        this.ConversionsPvePer = 0;
-        this.ConversionsNvePer = 0;
-        this.ConversionsNutPer = 0;
-        this.ConversionsPve = 0;
-        this.ConversionsNve = 0;
-        this.ConversionsNut = 0;
-        this.IsError = false;
-        this.accessToken = res['authToken'];
-        localStorage.setItem('googleGscAccessToken', this.accessToken);
-        this.calculateRankings();
-      })
-  }
   loginWithOptions(i) {
     const loginOptions: LoginOptions = {
       enable_profile_selector: true,
@@ -912,9 +772,7 @@ export class HomeComponent implements OnInit {
       })
       .catch(this.handleError);
   }
-  private handleError(error) {
-    console.error('Error processing action', error);
-  }
+
   getUserId() {
     const url = "https://graph.facebook.com/me?access_token=" + this.facebookAccessToken + "&fields=id,name";
     this.http.get(url).subscribe(res => {
@@ -937,9 +795,30 @@ export class HomeComponent implements OnInit {
       console.log('Fetch Page Token Failed : ' + JSON.stringify(error.error));
     });
   }
-  //Google Analytics
+ //###############################################Google Analytics
 
-  getAnalyticsProfileIds(campaignIndex) {
+  refreshGoogleAnalyticsAccount(campaignIndex, refreshToken, gaUrl) {
+    const url = "https://www.googleapis.com/oauth2/v4/token";
+    let data = {};
+    data = {
+      client_id: environment.googleClientId,
+      client_secret: environment.googleClientSecret,
+      refresh_token: refreshToken,// 'ya29.a0AfH6SMCszj8kAk7Q4lV43Q0vsJWDKmmmYkSYnwPclmY1La7BesHF7-5KuwdX1s4MlllQafsCGCjmQ9oO3K4jtFB6wMvDiuWjRsYpGQxkKzpwoUvph8e5OWG_Fy0bCUYAe_NiJ0x8gUkhM98seOhBPvNE1znZ',
+      grant_type: 'refresh_token',
+      access_type: 'offline'
+    };
+    this.http.post(url, data).subscribe(res => {
+      if (res) {
+
+        this.gaaccesstoken = res['access_token'];
+        this.getAnalyticsProfileIds(campaignIndex, gaUrl);
+      }
+    }, error => {
+      alert('eeee : ' + JSON.stringify(error.error));
+    });
+
+  }
+  getAnalyticsProfileIds(campaignIndex, url) {
 
 
     let currDate = new Date();
@@ -948,14 +827,11 @@ export class HomeComponent implements OnInit {
     this.httpOptionJSON = {
       headers: new HttpHeaders({
         'Accept': 'application/json',
-        'Authorization': 'Bearer ' + this.accessToken,
+        'Authorization': 'Bearer ' + this.gaaccesstoken,
       })
     };
-    let urlcamp = this.selectedCampIdWebUrl.replace('/', '%2F');
-    const url = "https://www.googleapis.com/analytics/v3/management/accountSummaries";
-    //const url = "https://www.googleapis.com/analytics/v3/data/ga?ids=ga:83658108&dimensions=ga:date&start-date=2019-10-01&end-date=2021-02-15&metrics=ga:sessions";
-    //https://www.googleapis.com/analytics/v3/management/accounts/49139272/webproperties
-    this.http.get(url, this.httpOptionJSON).subscribe(res => {
+    const url1 = "https://www.googleapis.com/analytics/v3/management/accountSummaries";
+    this.http.get(url1, this.httpOptionJSON).subscribe(res => {
       if (res) {
 
         let rows = res['items'];
@@ -965,11 +841,9 @@ export class HomeComponent implements OnInit {
           let p = rows[i]
           let q = p['webProperties']['0'].websiteUrl.toString();
 
-          let u = this.campaignList[campaignIndex].webUrl;
-          if (q.includes(u)) {
+          if (q.includes(url)) {
             this.getAnalyticsOrganicTrafficThisMonth(rows[i].webProperties[0].profiles[0].id, campaignIndex);
             this.getAnalyticsOrganicTrafficLastMonth(rows[i].webProperties[0].profiles[0].id, campaignIndex);
-
             break;
           }
           // accountSummaryIds.push(rows[i].webProperties[0].profiles[0].id);
@@ -987,23 +861,19 @@ export class HomeComponent implements OnInit {
     this.httpOptionJSON = {
       headers: new HttpHeaders({
         'Accept': 'application/json',
-        'Authorization': 'Bearer ' + this.accessToken,
+        'Authorization': 'Bearer ' + this.gaaccesstoken,
       })
     };
-    let urlcamp = this.selectedCampIdWebUrl.replace('/', '%2F');
     const url = "https://www.googleapis.com/analytics/v3/data/ga?ids=ga:" + profileid + "&start-date=" + this.startDate + "&end-date=" + this.endDate + "&metrics=ga%3AorganicSearches%2Cga%3AgoalConversionRateAll";
     this.http.get(url, this.httpOptionJSON).subscribe(res => {
       if (res) {
 
         let rows = res['rows'];
-
         this.thisMonthTraffic = rows[0]["0"];
-        this.lastMonthConversions = rows[0]["1"];
-
+        this.thisMonthConversions = rows[0]["1"];
       }
     }, error => {
-
-      alert('Analytics Data Fetch failed : ' + JSON.stringify(error.error));
+      //alert('Analytics Data Fetch failed : ' + JSON.stringify(error.error));
     });
   }
   getAnalyticsOrganicTrafficLastMonth(profileid, campaignIndex) {
@@ -1011,36 +881,44 @@ export class HomeComponent implements OnInit {
     this.httpOptionJSON = {
       headers: new HttpHeaders({
         'Accept': 'application/json',
-        'Authorization': 'Bearer ' + this.accessToken,
+        'Authorization': 'Bearer ' + this.gaaccesstoken,
       })
     };
-    let urlcamp = this.selectedCampIdWebUrl.replace('/', '%2F');
     const url = "https://www.googleapis.com/analytics/v3/data/ga?ids=ga:" + profileid + "&start-date=" + this.previousStartDate + "&end-date=" + this.previousEndDate + "&metrics=ga%3AorganicSearches%2Cga%3AgoalConversionRateAll";
     this.http.get(url, this.httpOptionJSON).subscribe(res => {
       if (res) {
-
         let rows = res['rows'];
         //Traffic Calculation
         this.lastMonthTraffic = rows[0]["0"];
-        let perTraffic = this.getDifference(this.lastMonthTraffic, this.thisMonthTraffic);
-        if (parseFloat(perTraffic) > 0) { this.trafficPve = this.trafficPve + 1; }
-        if (parseFloat(perTraffic) < 0) { this.trafficNve = this.trafficNve + 1; }
-        if (parseInt(perTraffic) == 0) { this.trafficNut = this.trafficNut + 1; }
-        this.trafficPvePer = this.getPercentage(this.trafficPve, this.total);
-        this.trafficNvePer = this.getPercentage(this.trafficNve, this.total);
-        this.trafficNutPer = this.getPercentage(this.trafficNut, this.total);
-        this.pieChartData2 = [this.trafficPvePer.toString(), this.trafficNvePer.toString(), this.trafficNutPer.toString()];
+        // let perTraffic = this.getDifference(this.lastMonthTraffic, this.thisMonthTraffic);
+        // if (parseFloat(perTraffic) > 0) { this.trafficPve = this.trafficPve + 1; }
+        // if (parseFloat(perTraffic) < 0) { this.trafficNve = this.trafficNve + 1; }
+        // if (parseInt(perTraffic) == 0) { this.trafficNut = this.trafficNut + 1; }
+        // this.trafficPvePer = this.getPercentage(this.trafficPve, this.total);
+        // this.trafficNvePer = this.getPercentage(this.trafficNve, this.total);
+        // this.trafficNutPer = this.getPercentage(this.trafficNut, this.total);
+        let diff = this.thisMonthTraffic - this.lastMonthTraffic
+        if (diff > 0) { this.trafficPve = this.trafficPve + 1; }
+        if (diff < 0) { this.trafficNve = this.trafficNve + 1; }
+        if (diff == 0) { this.trafficNut = this.trafficNut + 1; }
+        debugger
+        this.pieChartData2 = [this.trafficPve.toString(), this.trafficNve.toString(), this.trafficNut.toString()];
         //Converssions calculation for chart
-        this.thisMonthConversions = rows[0]["1"];
-        let perConversions = this.getDifference(this.lastMonthConversions, this.thisMonthConversions);
-        if (parseFloat(perConversions) > 0) { this.ConversionsPve = this.ConversionsPve + 1; }
-        if (parseFloat(perConversions) < 0) { this.ConversionsNve = this.ConversionsNve + 1; }
-        if (parseInt(perConversions) == 0) { this.ConversionsNut = this.ConversionsNut + 1; }
-        this.ConversionsPvePer = this.getPercentage(this.ConversionsPve, this.total);
-        this.ConversionsNvePer = this.getPercentage(this.ConversionsNve, this.total);
-        this.ConversionsNutPer = this.getPercentage(this.ConversionsNut, this.total);
-        this.pieChartData3 = [this.ConversionsPvePer.toString(), this.ConversionsNvePer.toString(), this.ConversionsNutPer.toString()];
-        this.campaignList[campaignIndex].traffic = perTraffic;
+        this.lastMonthConversions = rows[0]["1"];
+        // let perConversions = this.getDifference(this.lastMonthConversions, this.thisMonthConversions);
+        // if (parseFloat(perConversions) > 0) { this.ConversionsPve = this.ConversionsPve + 1; }
+        // if (parseFloat(perConversions) < 0) { this.ConversionsNve = this.ConversionsNve + 1; }
+        // if (parseInt(perConversions) == 0) { this.ConversionsNut = this.ConversionsNut + 1; }
+        // this.ConversionsPvePer = this.getPercentage(this.ConversionsPve, this.total);
+        // this.ConversionsNvePer = this.getPercentage(this.ConversionsNve, this.total);
+        // this.ConversionsNutPer = this.getPercentage(this.ConversionsNut, this.total);
+        let diff1 = this.thisMonthConversions - this.lastMonthConversions
+        if (diff1 > 0) { this.ConversionsPve = this.ConversionsPve + 1; }
+        if (diff1 < 0) { this.ConversionsNve = this.ConversionsNve + 1; }
+        if (diff1 == 0) { this.ConversionsNut = this.ConversionsNut + 1; }
+        this.pieChartData3 = [this.ConversionsPve.toString(), this.ConversionsNve.toString(), this.ConversionsNut.toString()];
+        
+        this.campaignList[campaignIndex].traffic = this.lastMonthTraffic + "--" + this.thisMonthTraffic;
         this.tableData = this.campaignList;
         this.source = new LocalDataSource(this.campaignList)
       }
@@ -1050,14 +928,7 @@ export class HomeComponent implements OnInit {
     });
   }
 
-
-
-
-  async initGoogleAuth(): Promise<void> {
-    let connectYouTubeUrl = 'https://accounts.google.com/o/oauth2/v2/auth?scope=https://www.googleapis.com/auth/youtube.force-ssl https://www.googleapis.com/auth/userinfo.profile&access_type=offline&include_granted_scopes=true&redirect_uri=https://localhost:4200/home&response_type=code&client_id=' + environment.googleClientId;
-    window.location.href = connectYouTubeUrl;
-  }
-
+//###############################################/general functions
   private getFilterOption() {
     return {
       pageNumber: 1,
@@ -1114,5 +985,110 @@ export class HomeComponent implements OnInit {
     this.pve = 0;
     this.nve = 0;
     this.nut = 0;
+    //impressin
+    this.impressionNve = 0;
+    this.impressionPve = 0;
+    this.impressionNute = 0;
+    //conversion
+    this.ConversionsNve = 0;
+    this.ConversionsPve = 0;
+    this.ConversionsNut = 0;
+    //traffic
+    this.trafficNut = 0;
+    this.trafficNve = 0;
+    this.trafficPve = 0;
   }
+  private handleError(error) {
+    console.error('Error processing action', error);
+  }
+  getPercentage(num, total) {
+    return ((100 * num) / total)
+  }
+  public getCampaignList(): void {
+    this.resetChartVariables();
+    var userid = this.openIdConnectService.user.profile.sub;
+    this.campaignService.getCampaign(userid).subscribe(res => {
+      this.campaignList = res;
+
+      for (let i = 0; i < res.length; i++) {
+        let ga = this.CampaignGAList.filter(x => x.campaignID == res[i].id);
+        if (ga != null && ga != undefined && ga.length > 0) {
+          this.refreshGoogleAnalyticsAccount(i, ga[0]['refreshToken'], ga[0]['urlOrName']);
+        }
+        let gsc = this.CampaignGSCList.filter(x => x.campaignID == res[i].id);
+        if (gsc != null && gsc != undefined && gsc.length > 0) {
+          this.refreshGSCAccount(i, gsc[0]['refreshToken'], gsc[0]['urlOrName']);
+        }
+        let facebook = this.CampaignFacebookList.filter(x => x.campaignID == res[i].id);
+        if (facebook != null && facebook != undefined && facebook.length > 0) {
+
+        }
+        this.GetRankingPosition(res[i].id);
+        
+        this.campaignList[i].ranking = this.rankingPrev  +  "--"  + this.rankingThis;
+      }
+      this.source = new LocalDataSource(this.campaignList);
+    });
+  }
+  sortData(p) {
+    return p.sort((a, b) => {
+      return <any>new Date(b.createdOn) - <any>new Date(a.createdOn);
+    });
+  }
+  onStartDateChange(event) {
+
+    this.getDateDiff();
+    this.getCampaignList();
+  }
+  onEndDateChange(event) {
+    this.getDateDiff();
+    this.getCampaignList();
+  }
+  calculateDateSlabDiff(start, end) {
+    end = new Date(end);
+    start = new Date(start);
+    return Math.floor((Date.UTC(start.getFullYear(), start.getMonth(), start.getDate()) - Date.UTC(end.getFullYear(), end.getMonth(), end.getDate())) / (1000 * 60 * 60 * 24));
+  }
+  getDateDiff() {
+    this.startDate = this.datepipe.transform(this.fromDate.value, 'yyyy-MM-dd');
+    this.endDate = this.datepipe.transform(this.toDate.value, 'yyyy-MM-dd');
+    let diff = this.calculateDateSlabDiff(this.toDate.value, this.fromDate.value);
+    this.tempDate = new Date(this.startDate);
+    this.previousEndDate = this.datepipe.transform(this.tempDate.setDate(this.tempDate.getDate() - 1), 'yyyy-MM-dd');
+    this.tempDate = new Date(this.previousEndDate);
+    this.previousStartDate = this.datepipe.transform(this.tempDate.setDate(this.tempDate.getDate() - diff), 'yyyy-MM-dd');
+  }
+  getYearwiseDifference(previous, current) {
+
+    let diff = ((parseFloat(previous) - parseFloat(current)) * 100) / parseFloat(previous)
+    return parseFloat(diff.toString()).toFixed(2)
+
+  }
+//Ranking Data
+public getSerpList(): void {
+  this.campaignService.getSerp("&tbs=qdr:m").subscribe(res => {
+    this.serpList = res;
+    this.tempSerpList = this.serpList;
+  });
+}
+
+private getFilterOptionPlans() {
+  return {
+    pageNumber: 1,
+    pageSize: 1000,
+    fields: '',
+    searchQuery: '',
+    orderBy: ''
+  }
+}
+
+getDifference(previous, current) {
+  // Decrease = Original Number - New Number
+  // % Decrease = Decrease ÷ Original Number × 100
+  // let diff = ((parseFloat(previous) - parseFloat(current)) * 100) / parseFloat(previous)
+  // return parseFloat(diff.toString()).toFixed(2);
+  let diff = (parseFloat(previous) - parseFloat(current));
+  let per = (diff / parseFloat(current)) * 100
+  return parseFloat(per.toString()).toFixed(2);
+}
 }
