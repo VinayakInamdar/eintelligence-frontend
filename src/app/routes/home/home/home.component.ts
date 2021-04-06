@@ -205,7 +205,12 @@ tempRes:string="";
     columns: {
       SrNo: {
         title: 'Sr No.',
-        filter: false
+        filter: false,
+        type: 'text',
+        valuePrepareFunction: (value, row, cell) => {
+
+          return cell.row.index + 1;
+        }
       },
       name: {
         title: 'Project',
@@ -213,7 +218,15 @@ tempRes:string="";
       },
       webUrl: {
         title: 'Website',
-        filter: false
+        filter: false,
+        type: 'html',
+        valuePrepareFunction: (value) => {
+          debugger;
+          let a = value;
+          let b = "https://www.";
+          let c = b.concat(a);
+          return `<a href=` + c + `>` + a + `</a>`;
+        }
       },
       ranking: {
         title: 'SE Avg. Position',
@@ -352,7 +365,7 @@ tempRes:string="";
     , fb: FormBuilder, private route: ActivatedRoute, private openIdConnectService: OpenIdConnectService, private accountService: AccountService) {
     //  this.facebookPageToken = localStorage.getItem('FacebookAccessToken');
     //Ranking
-
+    this.getCompany();
     this.hasGaSetup = true;
     facebook.init({
       appId: environment.facebook_appid,
@@ -379,7 +392,26 @@ tempRes:string="";
  
    }
 
+   getCompany() {
+      debugger
+    var userId = this.openIdConnectService.user.profile.sub;
+    this.accountService.getCompany(userId).subscribe(
+      res=>{
+        
+        if(res){
+          
+          this.companyinformation = res
+          this.CompanyID = this.companyinformation.companyID;
+          debugger
+          localStorage.setItem('companyID', this.CompanyID);
+          localStorage.setItem('userID',userId);
 
+         
+        }
+       
+      }
+    )
+  }
  //###############################################For ranking graph rubina
   GetRankingPosition(selectedCampId) {
     this.tempSerpList = this.serpList;

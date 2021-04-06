@@ -298,11 +298,13 @@ export class KeywordsComponent implements OnInit {
   // using to add new keyword in db
 
   submitForm(value: any) {
+    value.location_name=this.current_loc_name;
     value.location=this.current_loc_code;
     var keywordDto = {
       CampaignID: '',
       Keyword: '',
       Location: '',
+      LocationName:''
       //Tags: []
     }
     debugger
@@ -310,10 +312,11 @@ export class KeywordsComponent implements OnInit {
     keywordDto.CampaignID = this.selectedCampId
     keywordDto.Keyword = result['keyword'].split('\n')
     keywordDto.Location = result['location']
+    keywordDto.LocationName=result['location_name']
    // keywordDto.Tags = this.tags
     this.showSpinner = true
 
-    this.campaignService.addNewKeyword(keywordDto.CampaignID, keywordDto.Keyword, keywordDto.Location, '').subscribe((res) => {
+    this.campaignService.addNewKeyword(keywordDto.CampaignID, keywordDto.Keyword, keywordDto.Location, keywordDto.LocationName,'').subscribe((res) => {
       event.preventDefault();
       this.showSpinner = false
       this.successAlert()
@@ -380,11 +383,13 @@ export class KeywordsComponent implements OnInit {
   }
   showSpinnerLocationContent:boolean;
   current_loc_code:any;
+  current_loc_name:any;
   public setSelectedLocation(event) {
     debugger;
     event.preventDefault();
     let clc = country.filter((clc) => clc.country_iso_code === this.valForm.value.location);
     this.current_loc_code=clc[0].location_code+"";
+    this.current_loc_name=clc[0].location_name;
     if (this.valForm.value.location !== null) {
 
       this.isoCode = this.valForm.value.location;
@@ -629,6 +634,7 @@ export class KeywordsComponent implements OnInit {
   }
   selectedState: any;
   changedIsoCode:any;
+  temp_loc_code:any;
   showLocationCities:boolean=false;
   showLocationStates:boolean=false;
   setSelectedLocationState(event) {
@@ -643,7 +649,9 @@ export class KeywordsComponent implements OnInit {
   setSelectedLocationCity(event){
     debugger;
     event.preventDefault;
-    this.current_loc_code=event;
+    this.temp_loc_code=event.split(",")
+    this.current_loc_code=this.temp_loc_code[0];
+    this.current_loc_name = this.temp_loc_code[1] + "," + this.current_loc_name;
   }
   getSerpLocations() {
 
@@ -673,6 +681,7 @@ export class KeywordsComponent implements OnInit {
        
         let j = x.filter((j) => j.location_code == this.selectedState)
         let m = j[0].location_code;
+        this.current_loc_name=j[0].location_name+","+x[0].location_name;
         let e = result.filter((e) => e.location_type == "City");
         let f = result.filter((f) => f.location_type == "District");
         let g = e.concat(f);

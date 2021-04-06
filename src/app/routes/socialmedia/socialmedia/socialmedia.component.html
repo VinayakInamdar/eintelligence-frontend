@@ -17,18 +17,40 @@
         </div>
         <div class="col move-center">
             <div class="col-md-3">
-            <select class="form-control" [(ngModel)]="period" (change)="onSelect($event.target.value)">
-                <option value='0'>Select Date Range</option>
-                <option value='day'>Yesterday</option>
-                <option value='week'>Week</option>
-                <option value='days_28' selected>28 Days</option>
-            </select>
-        </div>
+                <select class="form-control" [(ngModel)]="period" (change)="onSelect($event.target.value)">
+                    <option value='0'>Select Date Range</option>
+                    <option value='day'>Yesterday</option>
+                    <option value='week'>Week</option>
+                    <option value='days_28' selected>28 Days</option>
+                </select>
+            </div>
+            <div [formGroup]="myForm">
+                <div class="col">
+
+                    <mat-form-field appearance="fill" class="pr-sm-4" fxFlex="20">
+                        <mat-label>Start date</mat-label>
+                        <input matInput [matDatepicker]="startDatePicker" name="start" formControlName="fromDate" (dateChange)="onStartDateChange($event)">
+                        <mat-datepicker-toggle matSuffix [for]="startDatePicker"></mat-datepicker-toggle>
+                        <mat-datepicker #startDatePicker></mat-datepicker>
+                        <mat-error>Please select start date!</mat-error>
+                    </mat-form-field>
+
+
+                    <mat-form-field appearance="fill" class="pr-sm-4" fxFlex="0">
+                        <mat-label>End date</mat-label>
+                        <input matInput [matDatepicker]="endDatePicker" name="end" [formControl]="toDate" (dateChange)="onEndDateChange($event)">
+                        <mat-datepicker-toggle matSuffix [for]="endDatePicker"></mat-datepicker-toggle>
+                        <mat-datepicker #endDatePicker></mat-datepicker>
+                        <mat-error>Please select End date!</mat-error>
+                    </mat-form-field>
+                </div>
+            </div>
             <!-- <button class="mr-1 btn btn-primary btn-lg" type="button" (click)="loginWithOptions()">
                 <i class="fa fa-facebook mr-1"></i>
                 Login with Facebook
             </button> -->
         </div>
+
         <!-- <div class="col-md-2">
 
             <select class="form-control" [(ngModel)]="period" (change)="onSelect($event.target.value)">
@@ -51,7 +73,8 @@
         <div class="card card-default shadow bg-white rounded height200pxfit-content cursor-set">
             <div class="card-header">
                 <div class="row borderBtm padding5">
-                    <h2 class="col-xs-12 col-12page col-md-10 fontsize15px colour-set">Facebook: Performance Summary</h2>
+                    <h2 class="col-xs-12 col-12page col-md-10 fontsize15px colour-set">Facebook: Performance Summary
+                    </h2>
 
                 </div>
 
@@ -299,44 +322,45 @@
         </div>
         <div class="col-sm-2">
             <div class="card card-default shadow bg-white rounded height200pxfit-content cursor-set">
-            <div class="widget-content">
-                <div class="overviewdivborder">
-            <h3 class="colour-light">LIKES LOST</h3>
-            <h3 class="fontxlrge">{{lostLikes}}</h3>
-            <h3 class="fontsizesmall">Avg. per day : {{avgLostLikes}}</h3></div>
-            </div>
+                <div class="widget-content">
+                    <div class="overviewdivborder">
+                        <h3 class="colour-light">LIKES LOST</h3>
+                        <h3 class="fontxlrge">{{lostLikes}}</h3>
+                        <h3 class="fontsizesmall">Avg. per day : {{avgLostLikes}}</h3>
+                    </div>
+                </div>
             </div>
 
         </div>
         <div class="vl"></div>
         <div class="col-sm-2">
             <div class="card card-default shadow bg-white rounded height200pxfit-content cursor-set">
-            <div class="overviewdivborder">
-            <h3 class="colour-light"> ORGANIC VS PAID LIKES</h3>
-            <table class="table table-bordered font-weight-bold colour-light">
-                <thead>
-                    <tr>
+                <div class="overviewdivborder">
+                    <h3 class="colour-light"> ORGANIC VS PAID LIKES</h3>
+                    <table class="table table-bordered font-weight-bold colour-light">
+                        <thead>
+                            <tr>
 
-                        <td>
-                            ORGANIC
-                        </td>
-                        <td>
-                            PAID
-                        </td>
-                    </tr>
-                </thead>
-                <tbody>
-                    <tr>
-                        <td class="text-blue">
-                            {{percentPositive}}%
-                        </td>
-                        <td style="color:red;">
-                            {{percentNegative}}%
-                        </td>
-                    </tr>
-            </table>
+                                <td>
+                                    ORGANIC
+                                </td>
+                                <td>
+                                    PAID
+                                </td>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr>
+                                <td class="text-blue">
+                                    {{percentPositive}}%
+                                </td>
+                                <td style="color:red;">
+                                    {{percentNegative}}%
+                                </td>
+                            </tr>
+                    </table>
+                </div>
             </div>
-</div>
 
         </div>
     </div>
@@ -415,7 +439,7 @@
                                     </tr>
                                 </thead>
                                 <tbody>
-                                    <tr >
+                                    <tr>
                                         <td class="text-blue">
                                             {{totalimpressionByCountryName}}
                                         </td>
@@ -438,4 +462,3 @@
         </div>
     </div>
 </div>
-

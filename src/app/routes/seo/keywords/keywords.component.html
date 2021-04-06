@@ -90,7 +90,7 @@
                                 <div class="col-md-6 setelementright setpaddinginlineend" *ngIf="showLocationCities">
                                     <select #location_field_city class="countrydropdown " (change)="setSelectedLocationCity(location_field_city.value)" form="carform" searchable="Search here..">
                                         <option [ngValue]="null" [disabled]="true">City</option>
-                                        <option value={{cities.location_code}} *ngFor="let cities of cities">{{cities.location_name}}
+                                        <option value={{cities.location_code}},{{cities.location_name}} *ngFor="let cities of cities">{{cities.location_name}}
                                         </option>
                                     </select>
 
@@ -123,7 +123,7 @@
     </div>
     <div class="col-md-2"></div>
 </div>
-<div class="row" >
+<div class="row">
     <div class="col-md-1"></div>
     <div class="col-md-3 keywordfontsw">
         <h4 class="paddingtop25px ">Keyword Rankings</h4>

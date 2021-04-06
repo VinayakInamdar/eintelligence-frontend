@@ -105,14 +105,20 @@ export class CampaignService {
       params: new HttpParams().set('pageSize', '1000').set("searchParam", searchParam)
     });
   }
-
-  // using to add new keyword in selected campaign Id
-  addNewKeyword(CampaignID: string, Keyword: any, Location: string, searchParam: string): Observable<SerpDto> {
+  addNewKeyword(CampaignID: string, Keyword: any, Location: string,LocationName:string, searchParam: string): Observable<SerpDto> {
     return this.http.post<SerpDto>(`${this.Url}serps/GetSerpData`, {}, {
-      params: new HttpParams().set('CampaignID', CampaignID).set('Keywords', Keyword.join(',')).set('Location', Location).set('searchParam', "&tbs=qdr:m")
+      params: new HttpParams().set('CampaignID', CampaignID).set('Keywords', Keyword.join(',')).set('Location', Location).set('LocationName', LocationName).set('searchParam', "&tbs=qdr:m")
     });
 
   }
+
+  // using to add new keyword in selected campaign Id
+  // addNewKeyword(CampaignID: string, Keyword: any, Location: string, searchParam: string): Observable<SerpDto> {
+  //   return this.http.post<SerpDto>(`${this.Url}serps/GetSerpData`, {}, {
+  //     params: new HttpParams().set('CampaignID', CampaignID).set('Keywords', Keyword.join(',')).set('Location', Location).set('searchParam', "&tbs=qdr:m")
+  //   });
+
+  // }
 
   // using to get google analytics report of selected campaign Id, Start Date , End Date
   getGaAnalyticsReports(campaignId: string, startDate: string, endDate: string): Observable<any[]> {
