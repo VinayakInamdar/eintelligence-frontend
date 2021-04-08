@@ -1133,12 +1133,11 @@ getDifference(previous, current) {
   let per = (diff / parseFloat(current)) * 100
   return parseFloat(per.toString()).toFixed(2);
 }
-testFunction(){
-  
+testFunction(){ 
   this.campaignService.GetUpdateKeywordsStatus().subscribe(
     res=>{
       if(res){
-        
+        console.log(res);
       }
      
     }
