@@ -209,7 +209,7 @@ export class KeywordsComponent implements OnInit {
 
 
   ngOnInit(): void {
-    debugger
+    
     // this.getSerpLocations();
     let id = this.route.snapshot.paramMap.get('id');
     this.selectedCampId = `${id.substring(3)}`;
@@ -307,7 +307,7 @@ export class KeywordsComponent implements OnInit {
       LocationName:''
       //Tags: []
     }
-    debugger
+    
     var result: SerpDto = Object.assign({}, value);
     keywordDto.CampaignID = this.selectedCampId
     keywordDto.Keyword = result['keyword'].split('\n')
@@ -384,8 +384,12 @@ export class KeywordsComponent implements OnInit {
   showSpinnerLocationContent:boolean;
   current_loc_code:any;
   current_loc_name:any;
+  locIsSelected:boolean;
+
+
   public setSelectedLocation(event) {
-    debugger;
+    
+    this.locIsSelected=true;
     event.preventDefault();
     let clc = country.filter((clc) => clc.country_iso_code === this.valForm.value.location);
     this.current_loc_code=clc[0].location_code+"";
@@ -638,7 +642,7 @@ export class KeywordsComponent implements OnInit {
   showLocationCities:boolean=false;
   showLocationStates:boolean=false;
   setSelectedLocationState(event) {
-    debugger;
+    ;
     event.preventDefault;
     this.changedIsoCode=this.valForm.value.location
     this.selectedState = event;
@@ -647,7 +651,7 @@ export class KeywordsComponent implements OnInit {
     this.showSpinnerLocationContent = true;
   }
   setSelectedLocationCity(event){
-    debugger;
+    ;
     event.preventDefault;
     this.temp_loc_code=event.split(",")
     this.current_loc_code=this.temp_loc_code[0];
@@ -656,7 +660,7 @@ export class KeywordsComponent implements OnInit {
   getSerpLocations() {
 
     this.campaignService.getSerpLocations(this.isoCode).subscribe((res) => { 
-      debugger
+      
       let result;
       result = res;
 

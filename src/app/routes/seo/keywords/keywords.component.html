@@ -108,7 +108,7 @@
                                 <div class="col-md-3">
                                     <div class="col-md-4">
                                         <!-- <a routerLink="./home"> -->
-                                        <button class="mr-1 btn btn-primary btn-lg" type="submit">Submit</button>
+                                            <button class="mr-1 btn btn-primary btn-lg" type="submit" [disabled]="!this.locIsSelected || (showSpinnerLocationContent)">Submit</button>
                                         <!-- </a> -->
                                     </div>
                                 </div>

@@ -57,7 +57,7 @@ export class IntegrationsComponent implements OnInit {
     
     this.integrationsService.googleAuth(this.selectedCampId).subscribe(
       res => {
-        debugger
+        
         this.integrationData = res; 
         this.getGaSetupByCampaignId();
 
@@ -83,7 +83,7 @@ export class IntegrationsComponent implements OnInit {
     this.integrationsService.getGaSetupByCampaignId(this.selectedCampId).subscribe(
 
       res => {
-        debugger
+        
         this.googleAnalyticsAccountSetupList = res;
         if(this.googleAnalyticsAccountSetupList && this.googleAnalyticsAccountSetupList.length > 0 ){
 
@@ -129,7 +129,7 @@ export class IntegrationsComponent implements OnInit {
   };
 
   activeAccountSelection(id) {
-    debugger
+    
     this.profiles = this.googleAnalyticsAccountSetupList.filter((item) => item.googleAccountSetupID == id);
 
     this.activeProfile =  this.profiles.filter((item) => item.active == true)[0];

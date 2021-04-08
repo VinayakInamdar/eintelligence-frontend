@@ -181,7 +181,7 @@ export class HomeGscService {
           this.positionPreviousYear = parseFloat(rows[0].position).toFixed(2).toString();
 
           //pecentgage calculate
-          debugger
+          
           this.percentClicks = this.getYearwiseDifference(this.clicksPreviousYear, this.clicksThisYear);
           localStorage.setItem("percentClicks",this.percentClicks);
           this.percentImpressions = this.getYearwiseDifference(this.impressionsPreviousYear, this.impressionsThisYear);
@@ -230,7 +230,7 @@ this.accessToken = localStorage.getItem('googleGscAccessToken');
       alert("Start Date can not be grater then End Date");
     }
     else {
-      debugger
+      
       this.getDataCurrentYear(this.startDate, this.endDate, 0);
       this.getDataPreviousYear(this.previousStartDate, this.previousEndDate, 0);
       this.getDataCurrentYear(this.startDate, this.endDate, 1);

@@ -25,14 +25,14 @@ export class IntegrationsService {
 
  
   googleAuth(id: string): Observable<any> {
-    debugger
+    
     let companyid= localStorage.getItem('companyID');
    var res =this.http.post<any>(`${this.Url}googleanalyticsaccounts/AuthGoogleAnalyticsAccount?id=` + id+`&CompanyId=` + companyid, {});
    
    return res;
   }
   refreshGoogleAccount(acccessToken: string, refreshToken:string): Observable<any> {
-    debugger
+    
    var res =this.http.post<any>(`${this.Url}googleanalyticsaccounts/AuthRefreshGoogleAccount?refreshToken=` + refreshToken+`&accessToken=` + acccessToken, {});
    
    return res;

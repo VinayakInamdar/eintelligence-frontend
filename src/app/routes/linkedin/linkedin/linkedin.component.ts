@@ -16,7 +16,7 @@ export class LinkedinComponent implements OnInit {
   };
   //constructor(private _linkedInService: LinkedInService) { }
   constructor(private http: HttpClient,  private activatedRoute: ActivatedRoute) { 
-    debugger
+    
     this.accessToken = this.activatedRoute.snapshot.queryParams["code"];
   }
 
@@ -36,10 +36,10 @@ export class LinkedinComponent implements OnInit {
     }&redirect_uri=${this.linkedInCredentials.redirectUrl}&scope=r_emailaddress`;
     this.http.get(url).subscribe(res => {
       if (res) {
-        debugger
+        
       }
     }, error => {
-      debugger
+      
       alert(error.message);
     });
     // let url = "https://www.linkedin.com/oauth/v2/accessToken";

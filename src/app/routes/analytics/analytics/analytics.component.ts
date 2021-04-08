@@ -1167,7 +1167,7 @@ itemDeselected(event) {
     this.router.navigate([`./instagram/instagram`, { id: this.selectedCampId }])
   }
   public goToGSC(event) {
-    debugger
+    
     this.router.navigate([`./gsc/gsc`, { id: this.selectedCampId }])
   }
   //using to close create campaign  component

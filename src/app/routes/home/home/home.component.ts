@@ -221,7 +221,7 @@ tempRes:string="";
         filter: false,
         type: 'html',
         valuePrepareFunction: (value) => {
-          debugger;
+          ;
           let a = value;
           let b = "https://www.";
           let c = b.concat(a);
@@ -234,29 +234,29 @@ tempRes:string="";
         type: 'html',
         valuePrepareFunction: (value) => {
           this.tempStr = value;
-          
-          let st=  this.tempStr.split("--");
-          if(this.tempStr != '' && this.tempStr != undefined && this.tempStr != null){
-          if(this.tempStr.toString().includes("--")){
-            if(parseInt(st[0]) > parseInt(st[1])){
-              this.tempRes =  st[0] +  ` <i class='fas fa-arrow-alt-circle-down' style='font-size:48px;color:red'></i> ` + st[1]
+
+          let st = this.tempStr.split("--");
+          if (this.tempStr != '' && this.tempStr != undefined && this.tempStr != null) {
+            if (this.tempStr.toString().includes("--")) {
+              if (parseInt(st[0]) > parseInt(st[1])) {
+                this.tempRes = st[0] + ` <span class="text-danger"><i class='fas fa-arrow-alt-circle-down'></i></span> ` + st[1]
+              }
+              if (parseInt(st[0]) < parseInt(st[1])) {
+                this.tempRes = st[0] + ` <span class="text-success"><i class='fas fa-arrow-alt-circle-up'></i></span> ` + st[1]
+              }
+              if (parseInt(st[0]) == parseInt(st[1])) {
+                this.tempRes = st[0] + " - " + st[1];
+              }
             }
-            if(parseInt(st[0]) < parseInt(st[1])){
-              this.tempRes =    st[0] +  ` <i class='fas fa-arrow-alt-circle-up' style='font-size:48px;color:green'></i> ` + st[1]
-            }
-            if(parseInt(st[0]) == parseInt(st[1])){
-              this.tempRes =    st[0] +  " - " + st[1];
-            }
+          } else {
+            this.tempRes = st[0] + " - " + st[1];
           }
-        }else{
-          this.tempRes =    st[0] +  " - " + st[1];
+          if (this.tempRes.includes('undefined')) {
+            this.tempRes = '';
+          }
+          return this.tempRes;
         }
-        if(this.tempRes.includes('undefined')){
-          this.tempRes ='';
-        }
-        return this.tempRes;
-      }
-     
+
       },
       traffic: {
         title: 'Organic Traffic',
@@ -264,28 +264,28 @@ tempRes:string="";
         type: 'html',
         valuePrepareFunction: (value) => {
           this.tempStr = value;
-          
-          let st=  this.tempStr.split("--");
-          if(this.tempStr != '' && this.tempStr != undefined && this.tempStr != null){
-          if(this.tempStr.toString().includes("--")){
-            if(parseInt(st[0]) > parseInt(st[1])){
-              this.tempRes =  st[0] +  ` <i class='fas fa-arrow-alt-circle-down' style='font-size:48px;color:red'></i> ` + st[1]
+
+          let st = this.tempStr.split("--");
+          if (this.tempStr != '' && this.tempStr != undefined && this.tempStr != null) {
+            if (this.tempStr.toString().includes("--")) {
+              if (parseInt(st[0]) > parseInt(st[1])) {
+                this.tempRes = st[0] + ` <span class="text-danger"><i class='fas fa-arrow-alt-circle-down'></i></span> ` + st[1]
+              }
+              if (parseInt(st[0]) < parseInt(st[1])) {
+                this.tempRes = st[0] + ` <span class="text-success"><i class='fas fa-arrow-alt-circle-up'></i></span> ` + st[1]
+              }
+              if (parseInt(st[0]) == parseInt(st[1])) {
+                this.tempRes = st[0] + " - " + st[1];
+              }
             }
-            if(parseInt(st[0]) < parseInt(st[1])){
-              this.tempRes =    st[0] +  ` <i class='fas fa-arrow-alt-circle-up' style='font-size:48px;color:green'></i> ` + st[1]
-            }
-            if(parseInt(st[0]) == parseInt(st[1])){
-              this.tempRes =    st[0] +  " - " + st[1];
-            }
+          } else {
+            this.tempRes = st[0] + " - " + st[1];
           }
-        }else{
-          this.tempRes =    st[0] +  " - " + st[1];
+          if (this.tempRes.includes('undefined')) {
+            this.tempRes = '';
+          }
+          return this.tempRes;
         }
-        if(this.tempRes.includes('undefined')){
-          this.tempRes ='';
-        }
-        return this.tempRes;
-      }
 
       },
       gsc: {
@@ -294,30 +294,30 @@ tempRes:string="";
         type: 'html',
         valuePrepareFunction: (value) => {
           this.tempStr = value;
-          
-          let st=  this.tempStr.split("--");
-          if(this.tempStr != '' && this.tempStr != undefined && this.tempStr != null){
-          if(this.tempStr.toString().includes("--")){
-            if(parseInt(st[0]) > parseInt(st[1])){
-              this.tempRes =  st[0] +  ` <i class='fas fa-arrow-alt-circle-down' style='font-size:48px;color:red'></i> ` + st[1]
+
+          let st = this.tempStr.split("--");
+          if (this.tempStr != '' && this.tempStr != undefined && this.tempStr != null) {
+            if (this.tempStr.toString().includes("--")) {
+              if (parseInt(st[0]) > parseInt(st[1])) {
+                this.tempRes = st[0] + ` <span class="text-danger"><i class='fas fa-arrow-alt-circle-down' ></i></span> ` + st[1]
+              }
+              if (parseInt(st[0]) < parseInt(st[1])) {
+                this.tempRes = st[0] + `<span class="text-success"> <i class='fas fa-arrow-alt-circle-up' ></i></span> ` + st[1]
+              }
+              if (parseInt(st[0]) == parseInt(st[1])) {
+                this.tempRes = st[0] + " - " + st[1];
+              }
             }
-            if(parseInt(st[0]) < parseInt(st[1])){
-              this.tempRes =    st[0] +  ` <i class='fas fa-arrow-alt-circle-up' style='font-size:48px;color:green'></i> ` + st[1]
-            }
-            if(parseInt(st[0]) == parseInt(st[1])){
-              this.tempRes =    st[0] +  " - " + st[1];
-            }
+          } else {
+            this.tempRes = st[0] + " - " + st[1];
           }
-        }else{
-          this.tempRes =    st[0] +  " - " + st[1];
+          if (this.tempRes.includes('undefined')) {
+            this.tempRes = '';
+          }
+          return this.tempRes;
         }
-        if(this.tempRes.includes('undefined')){
-          this.tempRes ='';
-        }
-        return this.tempRes;
-      }
-      
-      
+
+
 
       },
       socialMedia: {
@@ -326,30 +326,30 @@ tempRes:string="";
         type: 'html',
         valuePrepareFunction: (value) => {
           this.tempStr = value;
-          
-          let st=  this.tempStr.split("--");
-          if(this.tempStr != '' && this.tempStr != undefined && this.tempStr != null){
-          if(this.tempStr.toString().includes("--")){
-            if(parseInt(st[0]) > parseInt(st[1])){
-              this.tempRes =  st[0] +  ` <i class='fas fa-arrow-alt-circle-down' style='font-size:48px;color:red'></i> ` + st[1]
+
+          let st = this.tempStr.split("--");
+          if (this.tempStr != '' && this.tempStr != undefined && this.tempStr != null) {
+            if (this.tempStr.toString().includes("--")) {
+              if (parseInt(st[0]) > parseInt(st[1])) {
+                this.tempRes = st[0] + ` <span class="text-danger"><i class='fas fa-arrow-alt-circle-down'></i></span>` + st[1]
+              }
+              if (parseInt(st[0]) < parseInt(st[1])) {
+                this.tempRes = st[0] + ` <span class="text-success"> <i class='fas fa-arrow-alt-circle-up' ></i></span> ` + st[1]
+              }
+              if (parseInt(st[0]) == parseInt(st[1])) {
+                this.tempRes = st[0] + " - " + st[1];
+              }
             }
-            if(parseInt(st[0]) < parseInt(st[1])){
-              this.tempRes =    st[0] +  ` <i class='fas fa-arrow-alt-circle-up' style='font-size:48px;color:green'></i> ` + st[1]
-            }
-            if(parseInt(st[0]) == parseInt(st[1])){
-              this.tempRes =    st[0] +  " - " + st[1];
-            }
+          } else {
+            this.tempRes = st[0] + " - " + st[1];
           }
-        }else{
-          this.tempRes =    st[0] +  " - " + st[1];
+          if (this.tempRes.includes('undefined')) {
+            this.tempRes = '';
+          }
+          return this.tempRes;
         }
-        if(this.tempRes.includes('undefined')){
-          this.tempRes ='';
-        }
-        return this.tempRes;
-      }
-      
-      
+
+
 
       },
       googleLeads: {
@@ -393,7 +393,7 @@ tempRes:string="";
    }
 
    getCompany() {
-      debugger
+      
     var userId = this.openIdConnectService.user.profile.sub;
     this.accountService.getCompany(userId).subscribe(
       res=>{
@@ -402,7 +402,7 @@ tempRes:string="";
           
           this.companyinformation = res
           this.CompanyID = this.companyinformation.companyID;
-          debugger
+          
           localStorage.setItem('companyID', this.CompanyID);
           localStorage.setItem('userID',userId);
 
@@ -414,16 +414,22 @@ tempRes:string="";
   }
  //###############################################For ranking graph rubina
   GetRankingPosition(selectedCampId) {
+    
     this.tempSerpList = this.serpList;
     let p;
     let totalPosition = 0;
+    // let todate=new Date(this.toDate.value);
+    // todate = new Date(todate.setDate(todate.getDate()-1));
     //this slab
+    //todate =new Date( todate.setHours(0,0,0,0));
     p = this.tempSerpList.filter(x => x.campaignID.toString() === selectedCampId.toLowerCase());
     if (p.length > 0) {
-      p = p.filter(x => (new Date(x.createdOn) <= new Date(this.toDate.value) && new Date(x.createdOn) >= new Date(this.fromDate.value)));
+      
+      p = p.filter(x => (new Date(x.createdOn).setHours(0,0,0,0) <= new Date(this.toDate.value).setHours(0,0,0,0) && new Date(x.createdOn).setHours(0,0,0,0) >= new Date(this.fromDate.value).setHours(0,0,0,0)));
       p = this.sortData(p);
       if (p.length > 0) {
-        let maxDate = p[0].createdOn;
+        let maxDate =  p[0].createdOn;
+        
         p = p.filter(x => this.datepipe.transform(x.createdOn, 'yyyy-MM-dd') == this.datepipe.transform(maxDate, 'yyyy-MM-dd'));
         if (p != null && p != undefined && p.length > 0) {
           for (let i = 0; i < p.length; i++) {
@@ -442,9 +448,11 @@ tempRes:string="";
     //Previous slab
     this.tempSerpList = this.serpList;
     totalPosition = 0;
+    //let previousEndDate=new Date(this.previousEndDate.value);
+    //previousEndDate = new Date(previousEndDate.setDate(todate.getDate()-1));
     p = this.tempSerpList.filter(x => x.campaignID.toString() === selectedCampId.toLowerCase());
     if (p.length > 0) {
-      p = p.filter(x => (new Date(x.createdOn) <= new Date(this.previousEndDate.value) && new Date(x.createdOn) >= new Date(this.previousStartDate.value)));
+      p = p.filter(x => (new Date(x.createdOn).setHours(0,0,0,0) <= new Date(this.previousEndDate.value).setHours(0,0,0,0) && new Date(x.createdOn).setHours(0,0,0,0) >= new Date(this.previousStartDate.value).setHours(0,0,0,0)));
       p = this.sortData(p);
       if (p.length > 0) {
         let maxDate = p[0].createdOn;
@@ -545,7 +553,8 @@ tempRes:string="";
     localStorage.setItem('gscaccesstoken', '');
     localStorage.setItem('selectedCampName', '');
     localStorage.setItem('selectedCampUrl', '');
-    localStorage.setItem('editMasterId', ''); localStorage.setItem('editMasterId', '');
+    localStorage.setItem('editMasterId', '');
+     localStorage.setItem('editMasterId', '');
     localStorage.setItem('gaid', '');
     localStorage.setItem('gadsid', '');
     localStorage.setItem('facebookid', '');
@@ -933,7 +942,7 @@ tempRes:string="";
         if (diff > 0) { this.trafficPve = this.trafficPve + 1; }
         if (diff < 0) { this.trafficNve = this.trafficNve + 1; }
         if (diff == 0) { this.trafficNut = this.trafficNut + 1; }
-        debugger
+        
         this.pieChartData2 = [this.trafficPve.toString(), this.trafficNve.toString(), this.trafficNut.toString()];
         //Converssions calculation for chart
         this.lastMonthConversions = rows[0]["1"];
@@ -1042,7 +1051,7 @@ tempRes:string="";
     this.campaignService.getCampaign(userid).subscribe(res => {
       this.campaignList = res;
 
-      for (let i = 0; i < res.length; i++) {
+       for (let i = 0; i < res.length; i++) {
         let ga = this.CampaignGAList.filter(x => x.campaignID == res[i].id);
         if (ga != null && ga != undefined && ga.length > 0) {
           this.refreshGoogleAnalyticsAccount(i, ga[0]['refreshToken'], ga[0]['urlOrName']);
@@ -1055,11 +1064,12 @@ tempRes:string="";
         if (facebook != null && facebook != undefined && facebook.length > 0) {
 
         }
+      
         this.GetRankingPosition(res[i].id);
         
-        this.campaignList[i].ranking = this.rankingPrev  +  "--"  + this.rankingThis;
-      }
-      this.source = new LocalDataSource(this.campaignList);
+         this.campaignList[i].ranking = this.rankingPrev  +  "--"  + this.rankingThis;
+       }
+       this.source = new LocalDataSource(this.campaignList);
     });
   }
   sortData(p) {
@@ -1122,5 +1132,16 @@ getDifference(previous, current) {
   let diff = (parseFloat(previous) - parseFloat(current));
   let per = (diff / parseFloat(current)) * 100
   return parseFloat(per.toString()).toFixed(2);
+}
+testFunction(){
+  
+  this.campaignService.GetUpdateKeywordsStatus().subscribe(
+    res=>{
+      if(res){
+        
+      }
+     
+    }
+  )
 }
 }

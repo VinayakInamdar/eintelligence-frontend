@@ -90,7 +90,7 @@ export class SocialmediaComponent implements OnInit {
       appId: '200487178533939',//environment.facebook_appid,//3574916862576976
       version: 'v9.0'
     });
-    debugger
+    
     //let id = this.route.snapshot.paramMap.get('id');
     let id = localStorage.getItem("selectedCampId");
     this.pagename = localStorage.getItem("facebookpagename");
@@ -137,9 +137,9 @@ export class SocialmediaComponent implements OnInit {
    let p = (new Date(date)).getTime() / 1000;
    return p;
   }
-
+ 
   ngOnInit(): void {
-    debugger
+    
     //106684034810637/insights/page_impressions_unique?since=1612154532&until=1617252132&period=lifetime
     this.pagename = localStorage.getItem('facebookpagename');
     this.accessToken = localStorage.getItem('facebookaccesstoken');
@@ -148,10 +148,12 @@ export class SocialmediaComponent implements OnInit {
     this.externalReferrerList = []// [{ "url": "1", "count": "2", "percent": "3" }, { "url": "4", "count": "5", "percent": "6" }];
   }
   onStartDateChange(event) {
+    
     this.getDateDiff();
     this.getAllDataByDateChange();
   }
   onEndDateChange(event) {
+    
     this.getDateDiff();
     this.getAllDataByDateChange();
   }
@@ -178,10 +180,10 @@ export class SocialmediaComponent implements OnInit {
     const url = "https://graph.facebook.com/oauth/access_token?grant_type=fb_exchange_token&client_id=200487178533939&client_secret=e2b6565db23b735aff9f7c5536dbb217&fb_exchange_token="+this.accessToken+"";
     this.http.get(url).subscribe(res => {
       if (res) {
-        debugger
+        
         this.accessToken = res['access_token'];
         let facebookid =localStorage.getItem('facebookid');
-        let masterid = localStorage.getItem('masterCampaignId');
+        let masterid = localStorage.getItem('selectedCampId');
         let data = {
           id: facebookid,
           urlOrName: this.pagename,
@@ -229,7 +231,9 @@ export class SocialmediaComponent implements OnInit {
         this.pageToken = currPage[0].access_token;
         this.pageid = currPage[0].id;
         localStorage.setItem('FacebookPageToken', this.pageToken);
-        this.getAllDataByPeriod('days_28');
+       // this.getAllDataByPeriod('days_28');
+       this.getDateDiff();
+       this.getAllDataByDateChange();
         //this. getPageLikes();
         //this.getPageNewLikes();
         //this.generatePageToken();
@@ -271,11 +275,11 @@ export class SocialmediaComponent implements OnInit {
     this.getAllDataByPeriod(period);
   }
   getAllDataByDateChange() {
-    debugger
-    //const url = "https://graph.facebook.com/" + this.pageid + "/insights/page_impressions_unique,page_total_actions,page_positive_feedback_by_type,page_negative_feedback,page_views_total,page_impressions,page_views_external_referrals,page_fans_by_unlike_source_unique,page_impressions_organic,page_impressions_paid,page_fan_removes_unique,page_impressions_by_country_unique?access_token=" + this.pageToken+"&since="+this.unixstartDate+"&until="+this.unixendDate+"&period=lifetime";
-    const url = "https://graph.facebook.com/" + this.pageid + "/insights/page_impressions_unique,page_total_actions,page_positive_feedback_by_type,page_negative_feedback,page_views_total,page_impressions,page_views_external_referrals,page_fans_by_unlike_source_unique,page_impressions_organic,page_impressions_paid,page_fan_removes_unique,page_impressions_by_country_unique?access_token=" + this.pageToken+"&since=1612154532&until=1617252132&period=lifetime";
+    
+    const url = "https://graph.facebook.com/" + this.pageid + "/insights/page_impressions_unique,page_total_actions,page_positive_feedback_by_type,page_negative_feedback,page_views_total,page_impressions,page_views_external_referrals,page_fans_by_unlike_source_unique,page_impressions_organic,page_impressions_paid,page_fan_removes_unique,page_impressions_by_country_unique?access_token=" + this.pageToken+"&since="+this.unixstartDate+"&until="+this.unixendDate;
+    //const url = "https://graph.facebook.com/" + this.pageid + "/insights/page_impressions_unique,page_total_actions,page_positive_feedback_by_type,page_negative_feedback,page_views_total,page_impressions,page_views_external_referrals,page_fans_by_unlike_source_unique,page_impressions_organic,page_impressions_paid,page_fan_removes_unique,page_impressions_by_country_unique?access_token=" + this.pageToken+"&since=1612154532&until=1617252132";
     this.http.get(url).subscribe(res => {
-      debugger
+      
       let avgNum = 0;
       avgNum =  this.calculateDateSlabDiff(this.toDate.value, this.fromDate.value);
       if (res) {
@@ -348,9 +352,11 @@ export class SocialmediaComponent implements OnInit {
             }
             this.avgProfileView = this.getAverage(this.profileViewTotal, avgNum);
           }
+          
           //Page Impressions
           if (p.name == 'page_impressions') {
             let l = p['values'];
+            
             this.pageImpressionsTotal = 0;
             for (let k = 0; k < l.length; k++) {
               this.pageImpressionsTotal = parseInt(this.pageImpressionsTotal) + parseInt(l[k].value)
@@ -400,9 +406,11 @@ export class SocialmediaComponent implements OnInit {
               this.organicReach = parseInt(this.organicReach) + parseInt(l[k].value)
             }
           }
+          
           //Paid Reach
           if (p.name == 'page_impressions_paid') {
             let l = p['values'];
+            
             this.paidReach = 0;
             for (let k = 0; k < l.length; k++) {
               this.paidReach = parseInt(this.paidReach) + parseInt(l[k].value)
@@ -537,6 +545,7 @@ export class SocialmediaComponent implements OnInit {
             for (let k = 0; k < l.length; k++) {
               this.pageImpressionsTotal = parseInt(this.pageImpressionsTotal) + parseInt(l[k].value)
             }
+            
             this.avgPageImpression = this.getAverage(this.pageImpressionsTotal, avgNum);
           }
 
@@ -677,40 +686,40 @@ export class SocialmediaComponent implements OnInit {
       this.snackbarService.show('Fetch Total Page Reach Count Failed : ' + JSON.stringify(error.error));
     });
   }
-  getPageImpression() {
+  // getPageImpression() {
 
-    const url = "https://graph.facebook.com/" + this.pageid + "/insights/page_impressions?access_token=" + this.pageToken;
-    this.http.get(url).subscribe(res => {
-      if (res) {
+  //   const url = "https://graph.facebook.com/" + this.pageid + "/insights/page_impressions?access_token=" + this.pageToken;
+  //   this.http.get(url).subscribe(res => {
+  //     if (res) {
 
-        let p = res['data'][2];
-        let l = p['values'];
-        this.pageImpressionsTotal = 0;
-        for (let i = 0; i < l.length; i++) {
-          this.pageImpressionsTotal = parseInt(this.pageImpressionsTotal) + parseInt(l[i].value)
-        }
-      }
-    }, error => {
-      this.snackbarService.show('Fetch Total Page Reach Count Failed : ' + JSON.stringify(error.error));
-    });
-  }
-  getPageReachCount() {
-    //page_views_unique Page Views from users logged into Facebook day
-    const url = "https://graph.facebook.com/" + this.pageid + "/insights/page_impressions_unique?access_token=" + this.pageToken;
-    //const url = "https://graph.facebook.com/102988865108273/insights/page_impressions_unique?access_token=EAAGXn3oGklwBAAni75mymZAVNH0RB7ecJ7BSj6lYmnRwWewDSJMvhUZCxwMlnPH1HnMHWYKccrsDR6dyjeeQPBDpucGeN6EtvYTYcZC1OeWa2ObRAlHS2ZC2yMMmOLB5AkJWuxK0YtLBv2EpaD2RtsEjeb8EgbPUUeJLkDnbG4jplrccWCKgzu8LU4ie0abbeBrdzscvuATZCusuSOXku";
-    this.http.get(url).subscribe(res => {
-      if (res) {
-        let p = res['data'][2];
-        let l = p['values'];
-        this.pageReachTotal = 0;
-        for (let i = 0; i < l.length; i++) {
-          this.pageReachTotal = parseInt(this.pageReachTotal) + parseInt(l[i].value)
-        }
-      }
-    }, error => {
-      this.snackbarService.show('Fetch Total Page Reach Count Failed : ' + JSON.stringify(error.error));
-    });
-  }
+  //       let p = res['data'][2];
+  //       let l = p['values'];
+  //       this.pageImpressionsTotal = 0;
+  //       for (let i = 0; i < l.length; i++) {
+  //         this.pageImpressionsTotal = parseInt(this.pageImpressionsTotal) + parseInt(l[i].value)
+  //       }
+  //     }
+  //   }, error => {
+  //     this.snackbarService.show('Fetch Total Page Reach Count Failed : ' + JSON.stringify(error.error));
+  //   });
+  // }
+  // getPageReachCount() {
+  //   //page_views_unique Page Views from users logged into Facebook day
+  //   const url = "https://graph.facebook.com/" + this.pageid + "/insights/page_impressions_unique?access_token=" + this.pageToken;
+  //   //const url = "https://graph.facebook.com/102988865108273/insights/page_impressions_unique?access_token=EAAGXn3oGklwBAAni75mymZAVNH0RB7ecJ7BSj6lYmnRwWewDSJMvhUZCxwMlnPH1HnMHWYKccrsDR6dyjeeQPBDpucGeN6EtvYTYcZC1OeWa2ObRAlHS2ZC2yMMmOLB5AkJWuxK0YtLBv2EpaD2RtsEjeb8EgbPUUeJLkDnbG4jplrccWCKgzu8LU4ie0abbeBrdzscvuATZCusuSOXku";
+  //   this.http.get(url).subscribe(res => {
+  //     if (res) {
+  //       let p = res['data'][2];
+  //       let l = p['values'];
+  //       this.pageReachTotal = 0;
+  //       for (let i = 0; i < l.length; i++) {
+  //         this.pageReachTotal = parseInt(this.pageReachTotal) + parseInt(l[i].value)
+  //       }
+  //     }
+  //   }, error => {
+  //     this.snackbarService.show('Fetch Total Page Reach Count Failed : ' + JSON.stringify(error.error));
+  //   });
+  // }
   getPageReachOrganicCount() {
     //if this field name wrong then try for page_impressions_organic_unique
     const url = "https://graph.facebook.com/" + this.pageid + "/insights/page_impressions_organic?access_token=" + this.pageToken;

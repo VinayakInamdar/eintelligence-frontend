@@ -421,7 +421,7 @@ export class SeoComponent implements OnInit {
         },
         filter: false
       },
-      location: {
+      locationName: {
         title: 'Locations',
         filter: false
       }
@@ -952,7 +952,7 @@ export class SeoComponent implements OnInit {
 
         if (p != null && p != undefined && p.length > 0) {
           this.keywordTableList = p;
-          debugger
+          
           for (let i = 0; i < p.length; i++) {
             //  keywords,position,prevposition,searches,location
             // this.keywordTableList[i].keywords
@@ -1072,13 +1072,9 @@ export class SeoComponent implements OnInit {
     this.selectedCampIdWebUrl = localStorage.getItem('selectedCampUrl');
     if (this.gaurl != 'null' && this.gaurl != null && this.gaurl != undefined && this.gaurl != '') {
       this.refreshGoogleAnalyticsAccount();
-      //this.getAnalyticsProfileIds();
-      //this.getSiteSpeedDataMobile();
-      //this.getSiteSpeedDataDesktop();
     }
     if (this.gscurl != 'null' && this.gscurl != null && this.gscurl != undefined && this.gscurl != '') {
       this.getDateSettings();
-      // this.getData();
       this.refreshGSCAccount();
     }
     this.sub = this.route.params.subscribe(params => {
@@ -1197,7 +1193,7 @@ export class SeoComponent implements OnInit {
     });
   }
   getAnalyticsOrganicTrafficPrevious(profileid, startdate, endDate) {
-    debugger
+    
     let currDate = new Date();
     let endDate1 = this.datepipe.transform(currDate, 'yyyy-MM-dd');
     let startDate1 = this.datepipe.transform(currDate.setDate(currDate.getDate() - 28), 'yyyy-MM-dd');
@@ -1211,7 +1207,7 @@ export class SeoComponent implements OnInit {
     const url = "https://www.googleapis.com/analytics/v3/data/ga?ids=ga:" + profileid + "&dimensions=ga:date&start-date=" + startdate + "&end-date=" + endDate + "&metrics=ga:organicsearches";
     this.http.get(url, this.httpOptionJSON).subscribe(res => {
       if (res) {
-        debugger
+        
         let rows = res['rows'];
         this.showSpinnerBaseChart = false;
         this.lineChartData1[1].data = [];
@@ -2046,7 +2042,7 @@ export class SeoComponent implements OnInit {
     this.selectedCampId = `${id.substring(3)}`;
     filterOptionModel.searchQuery = 'CampaignID=="' + this.selectedCampId + '"'
     this.campaignService.getSerpForKeyword(filterOptionModel, "&tbs=qdr:m").subscribe(res => {
-      debugger
+      
       this.serpList = res;
       this.tempSerpList = this.serpList;
       this.GetRankingPosition(this.selectedCampId);
@@ -2439,7 +2435,7 @@ export class SeoComponent implements OnInit {
 
         let rows = res['rows'];
         if (all == 0) {
-          debugger
+          
           this.clicksThisYear = rows[0].clicks;
           this.impressionsThisYear = rows[0].impressions;
           this.cTRThisYear = parseFloat(rows[0].ctr).toFixed(2).toString();
@@ -2496,7 +2492,7 @@ export class SeoComponent implements OnInit {
           this.positionPreviousYear = parseFloat(rows[0].position).toFixed(2).toString();
 
           //pecentgage calculate
-          debugger
+          
           this.percentClicks = this.getYearwiseDifference(this.clicksPreviousYear, this.clicksThisYear);
           this.percentImpressions = this.getYearwiseDifference(this.impressionsPreviousYear, this.impressionsThisYear);
           this.percentPosition = this.getYearwiseDifference(this.positionPreviousYear, this.positionThisYear);
@@ -2546,7 +2542,7 @@ export class SeoComponent implements OnInit {
   }
 
   getDateDiff() {
-    debugger
+    
     this.startDate = this.datepipe.transform(this.fromDate.value, 'yyyy-MM-dd');
     this.endDate = this.datepipe.transform(this.toDate.value, 'yyyy-MM-dd');
     let diff = this.calculateDateSlabDiff(this.toDate.value, this.fromDate.value);
@@ -2556,7 +2552,7 @@ export class SeoComponent implements OnInit {
     this.previousStartDate = this.datepipe.transform(this.tempDate.setDate(this.tempDate.getDate() - diff), 'yyyy-MM-dd');
   }
   getYearwiseDifference(previous, current) {
-    debugger
+    
     let res;
     if (previous == 0 && current != 0) {
       res = 100.00;

@@ -325,7 +325,7 @@ export class GscdataComponent implements OnInit {
     };
     this.authService.signIn(GoogleLoginProvider.PROVIDER_ID, googleLoginOptions)
       .then((res) => {
-        debugger
+        
         this.accessToken = res['authToken'];
         localStorage.setItem('googleGscAccessToken', this.accessToken );
         this.getData();
