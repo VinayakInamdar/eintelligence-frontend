@@ -658,7 +658,7 @@ export class KeywordsComponent implements OnInit {
     this.current_loc_name = this.temp_loc_code[1] + "," + this.current_loc_name;
   }
   getSerpLocations() {
-
+    debugger
     this.campaignService.getSerpLocations(this.isoCode).subscribe((res) => { 
       
       let result;

@@ -139,11 +139,12 @@ export class SocialmediaComponent implements OnInit {
   }
  
   ngOnInit(): void {
-    
+    //https://graph.facebook.com/v2.6/pagename/insights/page_fans_country/lifetime?&since=yyy-mm-dd&until=yyyy-mm-dd&access_token=xxx
+    //1502045853440674/insights/page_impressions_unique?since=1617148800&until=1617840000&period=day
     //106684034810637/insights/page_impressions_unique?since=1612154532&until=1617252132&period=lifetime
     this.pagename = localStorage.getItem('facebookpagename');
     this.accessToken = localStorage.getItem('facebookaccesstoken');
-    this.refreshToken();
+    //this.refreshToken();
     this.pageUnlikeList = [];// [{ "source": "1", "count": "2", "percent": "3" }, { "source": "4", "count": "5", "percent": "6" }];
     this.externalReferrerList = []// [{ "url": "1", "count": "2", "percent": "3" }, { "url": "4", "count": "5", "percent": "6" }];
   }
@@ -273,6 +274,25 @@ export class SocialmediaComponent implements OnInit {
   }
   onSelect(period) {
     this.getAllDataByPeriod(period);
+  }
+  testDateSlab(){
+    debugger
+    let sdate = '2020-12-02'
+    let edate = '2021-04-13'
+    let tempdt;
+    let diff = this.calculateDateSlabDiff(edate,sdate);
+    if(diff > 93){
+      tempdt =  this.datepipe.transform(this.tempDate.setDate(new Date(sdate).getDate() + 92), 'yyyy-MM-dd');
+    }
+    const url = "https://graph.facebook.com/" + this.pageid + "/insights/page_impressions_unique,page_total_actions,page_positive_feedback_by_type,page_negative_feedback,page_views_total,page_impressions,page_views_external_referrals,page_fans_by_unlike_source_unique,page_impressions_organic,page_impressions_paid,page_fan_removes_unique,page_impressions_by_country_unique?access_token=" + this.pageToken+"&since="+sdate+"&until="+edate;
+    this.http.get(url).subscribe(res => {
+      if (res) { 
+debugger
+      }
+
+    }, error => {
+      this.snackbarService.show('Fetch Data Failed : ' + JSON.stringify(error.error));
+    });
   }
   getAllDataByDateChange() {
     

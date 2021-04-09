@@ -239,10 +239,10 @@ tempRes:string="";
           if (this.tempStr != '' && this.tempStr != undefined && this.tempStr != null) {
             if (this.tempStr.toString().includes("--")) {
               if (parseInt(st[0]) > parseInt(st[1])) {
-                this.tempRes = st[0] + ` <span class="text-danger"><i class='fas fa-arrow-alt-circle-down'></i></span> ` + st[1]
+                this.tempRes = st[0] + ` <span class="text-success"><i class='fas fa-arrow-alt-circle-up'></i></span> ` + st[1]
               }
               if (parseInt(st[0]) < parseInt(st[1])) {
-                this.tempRes = st[0] + ` <span class="text-success"><i class='fas fa-arrow-alt-circle-up'></i></span> ` + st[1]
+                this.tempRes = st[0] + ` <span class="text-danger"><i class='fas fa-arrow-alt-circle-down'></i></span> ` + st[1]
               }
               if (parseInt(st[0]) == parseInt(st[1])) {
                 this.tempRes = st[0] + " - " + st[1];
@@ -371,7 +371,7 @@ tempRes:string="";
       appId: environment.facebook_appid,
       version: 'v9.0'
     });
-    this.getSerpList();
+   
     this.getDateDiff();
     let ycode = localStorage.getItem("gacode");
     if (ycode != 'null' && ycode != null && ycode != undefined && ycode != '') {
@@ -384,6 +384,7 @@ tempRes:string="";
   }
   ngOnInit() {
     this.resetChartVariables();
+    this.getSerpList();
      this.getCampaignGA();
      this.getCampaignGAds();
      this.getCampaignFacebook();
@@ -1006,7 +1007,7 @@ tempRes:string="";
     const filterOptionModel = this.getFilterOption();
     this.campaignService.getFilteredGSC(filterOptionModel).subscribe((response: any) => {
       if (response) {
-
+        debugger
         this.CampaignGSCList = response.body;
       }
     })
@@ -1046,6 +1047,7 @@ tempRes:string="";
     return ((100 * num) / total)
   }
   public getCampaignList(): void {
+    debugger
     this.resetChartVariables();
     var userid = this.openIdConnectService.user.profile.sub;
     this.campaignService.getCampaign(userid).subscribe(res => {
@@ -1054,11 +1056,11 @@ tempRes:string="";
        for (let i = 0; i < res.length; i++) {
         let ga = this.CampaignGAList.filter(x => x.campaignID == res[i].id);
         if (ga != null && ga != undefined && ga.length > 0) {
-          this.refreshGoogleAnalyticsAccount(i, ga[0]['refreshToken'], ga[0]['urlOrName']);
+          //this.refreshGoogleAnalyticsAccount(i, ga[0]['refreshToken'], ga[0]['urlOrName']);
         }
         let gsc = this.CampaignGSCList.filter(x => x.campaignID == res[i].id);
         if (gsc != null && gsc != undefined && gsc.length > 0) {
-          this.refreshGSCAccount(i, gsc[0]['refreshToken'], gsc[0]['urlOrName']);
+          //this.refreshGSCAccount(i, gsc[0]['refreshToken'], gsc[0]['urlOrName']);
         }
         let facebook = this.CampaignFacebookList.filter(x => x.campaignID == res[i].id);
         if (facebook != null && facebook != undefined && facebook.length > 0) {
