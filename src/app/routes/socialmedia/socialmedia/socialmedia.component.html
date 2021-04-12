@@ -16,14 +16,14 @@
             Campaign name: {{selectedCampaignName}}
         </div>
         <div class="col move-center">
-            <div class="col-md-3">
+            <!-- <div class="col-md-3">
                 <select class="form-control" [(ngModel)]="period" (change)="onSelect($event.target.value)">
                     <option value='0'>Select Date Range</option>
                     <option value='day'>Yesterday</option>
                     <option value='week'>Week</option>
                     <option value='days_28' selected>28 Days</option>
                 </select>
-            </div>
+            </div> -->
             <div [formGroup]="myForm">
                 <div class="col">
 
@@ -86,9 +86,20 @@
                     <div class="row">
                         <div class="col-sm-3">
                             <h3 class="colour-light">PAGE PROFILE VIEWS</h3>
-                            <h3 class="fontxlrge">{{profileViewTotal}}</h3>
+                            <div class="row">
+                                <div class="col">
+                                    <h3 class="fontxlrge">{{profileViewTotal}}</h3>
+                                </div>
+                                <div class="col">
+                                    <h3 *ngIf="percentProfileView > 0" class="text-success"><span><i
+                                                class="fas fa-arrow-up"></i></span> {{percentProfileView.toString().replace('-', '')}}%</h3>
+                                    <h3 *ngIf="percentProfileView < 0" class="text-danger"><span><i
+                                                class="fas fa-arrow-down"></i></span> {{percentProfileView.toString().replace('-', '')}}%</h3>
+                                </div>
+                            </div>
                             <h3 class="fontsizesmall">Avg. per day : {{avgProfileView}}</h3>
                         </div>
+                   
                         <div class="vl"></div>
                         <div class="col-sm-3">
                             <h3 class="colour-light">TOP EXTERNAL REFERRER</h3>
@@ -122,7 +133,14 @@
                         <div class="col-sm-3">
                             <h3 class="colour-light">PAGE CLICKS</h3>
                             <h3 class="fontxlrge">{{pageClicksTotal}}</h3>
-                            <h3 class="fontsizesmall">Avg. per day : {{avgProfileView}}</h3>
+                            <div class="col">
+                                <h3 *ngIf="percentPageClicks > 0" class="text-success"><span><i
+                                            class="fas fa-arrow-up"></i></span>{{percentPageClicks.toString().replace('-', '')}} % </h3>
+                                <h3 *ngIf="percentPageClicks < 0" class="text-danger"><span><i
+                                            class="fas fa-arrow-down"></i></span>{{percentPageClicks.toString().replace('-', '')}} % </h3>
+                            </div>
+                            <h3 class="fontsizesmall">Avg. per day : {{avgPageClicks}}</h3>
+
                         </div>
                         <div class="vl"></div>
                         <div class="col-sm-2">
@@ -162,7 +180,7 @@
 
 
 
-        <!-- <div class="card card-default shadow bg-white rounded height200pxfit-content cursor-set">
+      <div class="card card-default shadow bg-white rounded height200pxfit-content cursor-set">
             <div class="card-header">
                 <div class="row borderBtm padding5">
                     <h2 class="col-xs-12 col-12 col-md-10 fontsize15px colour-set">Facebook: Audience Summary</h2>
@@ -183,6 +201,8 @@
                         <div class="col-sm-3">
                             <h3 class="colour-light">NEW LIKES</h3>
                             <h3 class="fontxlrge">{{pageNewlikesTotal}}</h3>
+                            <h3 class="fontsizesmall">Avg. per day : {{avgpageNewlikes}}</h3>
+                            <h3 class="fontsizesmall">{{percentpageNewlikes.toString().replace('-', '')}}%</h3>
                         </div>
 
                         <div class="vl"></div>
@@ -190,6 +210,7 @@
                             <h3 class="colour-light">LIKES LOST</h3>
                             <h3 class="fontxlrge">{{lostLikes}}</h3>
                             <h3 class="fontsizesmall">Avg. per day : {{avgLostLikes}}</h3>
+                            <h3 class="fontsizesmall">{{percentlostLikes.toString().replace('-', '')}}%</h3>
                         </div>
                         <div class="vl"></div>
                         <div class="col-sm-2">
@@ -222,8 +243,8 @@
                 </div>
 
             </div>
-        </div> -->
-        <div class="col-lg-4">
+        </div>
+        <div class="col-lg-6">
             <div class="card card-default shadow bg-white rounded height200pxfit-content cursor-set">
                 <div class="card-header">
                     <div class="row borderBtm padding5">
@@ -272,7 +293,7 @@
                 </div>
             </div>
         </div>
-        <div class="col-lg-4">
+        <div class="col-lg-6">
             <div class="card card-default shadow bg-white rounded height200pxfit-content cursor-set">
                 <div class="card-header">
                     <div class="row borderBtm padding5">
@@ -321,7 +342,7 @@
                 </div>
             </div>
         </div>
-        <div class="col-sm-2">
+        <!-- <div class="col-sm-2">
             <div class="card card-default shadow bg-white rounded height200pxfit-content cursor-set">
                 <div class="widget-content">
                     <div class="overviewdivborder">
@@ -332,8 +353,8 @@
                 </div>
             </div>
 
-        </div>
-        <div class="vl"></div>
+        </div> -->
+        <!-- <div class="vl"></div>
         <div class="col-sm-2">
             <div class="card card-default shadow bg-white rounded height200pxfit-content cursor-set">
                 <div class="overviewdivborder">
@@ -363,7 +384,7 @@
                 </div>
             </div>
 
-        </div>
+        </div> -->
     </div>
 
 
@@ -384,13 +405,15 @@
                             <h3 class="colour-light">PAGE IMPRESSIONS</h3>
                             <h3 class="fontxlrge">{{pageImpressionsTotal}}</h3>
                             <h3 class="fontsizesmall">Avg. per day : {{avgPageImpression}}</h3>
-
+                            <h3 class="fontsizesmall">{{avgPageImpression}}</h3>
+                            <h3 class="fontsizesmall">{{percentpageImpressions}}%</h3>
                         </div>
                         <div class="vl"></div>
                         <div class="col-sm-3">
                             <h3 class="colour-light">PAGE REACH</h3>
                             <h3 class="fontxlrge">{{pageReachTotal}}</h3>
-                            <h3 class="fontsizesmall">Avg. per day : {{avgLostLikes}}</h3>
+                            <h3 class="fontsizesmall">Avg. per day : {{pageReachTotal}}</h3>
+                            <h3 class="fontsizesmall">{{percentPageReach}}%</h3>
                         </div>
                         <div class="vl"></div>
                         <div class="col-sm-3">

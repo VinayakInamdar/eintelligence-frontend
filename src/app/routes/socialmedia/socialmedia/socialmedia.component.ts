@@ -12,6 +12,7 @@ import { CampaignService } from '../../campaign/campaign.service';
 import { LocalDataSource } from 'ng2-smart-table';
 import { FormControl, FormGroup } from '@angular/forms';
 import { DatePipe } from '@angular/common';
+import { differenceBy } from 'lodash';
 @Component({
   selector: 'app-socialmedia',
   templateUrl: './socialmedia.component.html',
@@ -20,19 +21,57 @@ import { DatePipe } from '@angular/common';
 export class SocialmediaComponent implements OnInit {
   selectedCampaignName: string;
   str = [];
+
   pageid;
   pagename;
   accessToken;
   tokenType;
-  pagelikesTotal;
+  //Profile View
   profileViewTotal;
+  profileViewTotalPrev;
+  avgProfileView;
+  percentProfileView
+  //Page Clicks
+  pageClicksTotal;
+  avgPageClicks;
+  pageClicksPrev;
+  percentPageClicks;
+  //Lost Likes
+  lostLikes;
+  avgLostLikes;
+  lostLikesPrev;
+  percentlostLikes;
+  //New Likes
+  pagelikesTotal;
+  avgpageNewlikes;
   pageNewlikesTotal
+  percentpageNewlikes;
+  //Page Impression
   pageImpressionsTotal;
+  avgPageImpression;
+  pageImpressionsTotalPrev;
+  percentpageImpressions;
+  //Page Reach
+  pageReachFullTotal;
   pageReachTotal;
+  percentPageReach;
+  pageReachTotalPrev;
+  organicReach;
+  organicReachPrev;
+  percentOrganicReach;
+  paidReach;
+  paidReachPrev;
+  percentPaidReach;
+
+
+
+
+
+
   pageToken;
   userId;
   userName;
-  pageClicksTotal;
+
   //------------feedback
   positiveFeedback;
   negativeFeedback;
@@ -44,11 +83,8 @@ export class SocialmediaComponent implements OnInit {
   percentOrganicLikes;
   paidLikes;
   percentPaidLikes;
-  lostLikes;
-  organicReach;
-  percentOrganicReach;
-  percentPaidReach;
-  paidReach;
+
+
   topCountry;
   topReferrer;
   pageUnlikeList;
@@ -58,11 +94,8 @@ export class SocialmediaComponent implements OnInit {
   totalimpressionByCountryPercent;
   totalimpressionByCountryCount;
   totalimpressionByCountryName;
-  avgProfileView;
   avgNewLikes;
-  avgPageClicks;
-  avgLostLikes;
-  avgPageImpression;
+
   avgPageReach;
   campaignList = [];
   selectedCampIdWebUrl: string;
@@ -79,23 +112,24 @@ export class SocialmediaComponent implements OnInit {
   unixendDate;
   unixpreviousStartDate;
   unixpreviousEndDate;
-  clicksThisYear: string 
+  //CComprision Variables
+  ProfileVie
   myForm = new FormGroup({
     fromDate: this.fromDate,
     toDate: this.toDate,
   });
-   constructor(private http: HttpClient, private snackbarService: SnackbarService, public datepipe: DatePipe, private fb: FacebookService, public router: Router,
+  constructor(private http: HttpClient, private snackbarService: SnackbarService, public datepipe: DatePipe, private fb: FacebookService, public router: Router,
     private campaignService: CampaignService, public openIdConnectService: OpenIdConnectService, public route: ActivatedRoute) {
     fb.init({
       appId: '200487178533939',//environment.facebook_appid,//3574916862576976
       version: 'v9.0'
     });
-    
+
     //let id = this.route.snapshot.paramMap.get('id');
     let id = localStorage.getItem("selectedCampId");
     this.pagename = localStorage.getItem("facebookpagename");
     this.accessToken = localStorage.getItem("facebookaccesstoken");
-    this.selectedCampaignName = this.pagename  !== "" ? this.pagename  : undefined;
+    this.selectedCampaignName = this.pagename !== "" ? this.pagename : undefined;
     this.selectedCampId = `${id}`;
     //this.getCampaignList();
   }
@@ -132,31 +166,32 @@ export class SocialmediaComponent implements OnInit {
   private handleError(error) {
     console.error('Error processing action', error);
   }
-  convertDateToUnixTimeStamp(date){
+  convertDateToUnixTimeStamp(date) {
     //   let p = (new Date('2021-04-01')).getTime() / 1000;
-   let p = (new Date(date)).getTime() / 1000;
-   return p;
+    let p = (new Date(date)).getTime() / 1000;
+    return p;
   }
- 
+
   ngOnInit(): void {
-    //https://graph.facebook.com/v2.6/pagename/insights/page_fans_country/lifetime?&since=yyy-mm-dd&until=yyyy-mm-dd&access_token=xxx
-    //1502045853440674/insights/page_impressions_unique?since=1617148800&until=1617840000&period=day
-    //106684034810637/insights/page_impressions_unique?since=1612154532&until=1617252132&period=lifetime
+    this.resetVariables();
     this.pagename = localStorage.getItem('facebookpagename');
     this.accessToken = localStorage.getItem('facebookaccesstoken');
-    //this.refreshToken();
+    this.refreshToken();
     this.pageUnlikeList = [];// [{ "source": "1", "count": "2", "percent": "3" }, { "source": "4", "count": "5", "percent": "6" }];
     this.externalReferrerList = []// [{ "url": "1", "count": "2", "percent": "3" }, { "url": "4", "count": "5", "percent": "6" }];
   }
   onStartDateChange(event) {
-    
+
     this.getDateDiff();
-    this.getAllDataByDateChange();
+    this.testDateSlab(this.startDate, this.endDate, 0)
+    this.testDateSlab(this.previousStartDate, this.previousEndDate, 1)
+    // this.getAllDataByDateChange();
   }
   onEndDateChange(event) {
-    
     this.getDateDiff();
-    this.getAllDataByDateChange();
+    this.testDateSlab(this.startDate, this.endDate, 0)
+    this.testDateSlab(this.previousStartDate, this.previousEndDate, 1)
+    // this.getAllDataByDateChange();
   }
   calculateDateSlabDiff(start, end) {
     end = new Date(end);
@@ -177,13 +212,13 @@ export class SocialmediaComponent implements OnInit {
     this.unixpreviousStartDate = this.convertDateToUnixTimeStamp(this.previousStartDate);
 
   }
-  refreshToken(){   
-    const url = "https://graph.facebook.com/oauth/access_token?grant_type=fb_exchange_token&client_id=200487178533939&client_secret=e2b6565db23b735aff9f7c5536dbb217&fb_exchange_token="+this.accessToken+"";
+  refreshToken() {
+    const url = "https://graph.facebook.com/oauth/access_token?grant_type=fb_exchange_token&client_id=200487178533939&client_secret=e2b6565db23b735aff9f7c5536dbb217&fb_exchange_token=" + this.accessToken + "";
     this.http.get(url).subscribe(res => {
       if (res) {
-        
+
         this.accessToken = res['access_token'];
-        let facebookid =localStorage.getItem('facebookid');
+        let facebookid = localStorage.getItem('facebookid');
         let masterid = localStorage.getItem('selectedCampId');
         let data = {
           id: facebookid,
@@ -191,10 +226,10 @@ export class SocialmediaComponent implements OnInit {
           isActive: true,
           CampaignID: masterid,
           accessToken: this.accessToken,
-          refreshToken:  '1111'
+          refreshToken: '1111'
         }
         this.campaignService.updateFacebook(facebookid, data).subscribe(response => {
-          
+
         });
         this.getUserId();
         this.getAllPagesList();
@@ -204,11 +239,11 @@ export class SocialmediaComponent implements OnInit {
     });
   }
   getUserId() {
-    
+
     const url = "https://graph.facebook.com/me?access_token=" + this.accessToken;
     this.http.get(url).subscribe(res => {
       if (res) {
-        
+
         this.userId = res['id'];
         this.userName = res['name'];
         //this.getUserPermission();
@@ -220,23 +255,23 @@ export class SocialmediaComponent implements OnInit {
     });
   }
   getAllPagesList() {
-    
+
     const url = "https://graph.facebook.com/me/accounts?&access_token=" + this.accessToken;
     // const  url = "https://graph.facebook.com/" + this.userId + "/accounts?access_token=" + this.accessToken;
     this.http.get(url).subscribe(res => {
       if (res) {
-        
+
         let pagelist = res['data'];
 
         let currPage = pagelist.filter(x => x.name.toLowerCase() === this.selectedCampaignName.toLowerCase());
         this.pageToken = currPage[0].access_token;
         this.pageid = currPage[0].id;
         localStorage.setItem('FacebookPageToken', this.pageToken);
-       // this.getAllDataByPeriod('days_28');
-       this.getDateDiff();
-       this.getAllDataByDateChange();
-        //this. getPageLikes();
-        //this.getPageNewLikes();
+        this.getDateDiff();
+        this.testDateSlab(this.startDate, this.endDate, 0)
+        this.testDateSlab(this.previousStartDate, this.previousEndDate, 1)
+        this.getPageLikes(this.startDate, this.endDate);
+        this.getPageNewLikes(this.startDate, this.endDate);
         //this.generatePageToken();
       }
     }, error => {
@@ -275,33 +310,333 @@ export class SocialmediaComponent implements OnInit {
   onSelect(period) {
     this.getAllDataByPeriod(period);
   }
-  testDateSlab(){
-    debugger
-    let sdate = '2020-12-02'
-    let edate = '2021-04-13'
-    let tempdt;
-    let diff = this.calculateDateSlabDiff(edate,sdate);
-    if(diff > 93){
-      tempdt =  this.datepipe.transform(this.tempDate.setDate(new Date(sdate).getDate() + 92), 'yyyy-MM-dd');
-    }
-    const url = "https://graph.facebook.com/" + this.pageid + "/insights/page_impressions_unique,page_total_actions,page_positive_feedback_by_type,page_negative_feedback,page_views_total,page_impressions,page_views_external_referrals,page_fans_by_unlike_source_unique,page_impressions_organic,page_impressions_paid,page_fan_removes_unique,page_impressions_by_country_unique?access_token=" + this.pageToken+"&since="+sdate+"&until="+edate;
-    this.http.get(url).subscribe(res => {
-      if (res) { 
-debugger
+  testDateSlab(sdate, edate, isPrev) {
+    //   sdate = "2020-9-02";
+    // edate = "2021-04-13";
+    let tempsdt;
+    let tempedt;
+    let d = 0;
+    let tempDiff = 0;
+    let diff = this.calculateDateSlabDiff(edate, sdate);
+    if (diff > 93) {
+      d = diff / 93;
+      if (d > 0) {
+        d = Math.floor(d);
+        for (let i = 0; i <= d; i++) {
+          if (i == 0) {
+            tempsdt = sdate;
+            tempedt = this.datepipe.transform(new Date(sdate).setDate(new Date(sdate).getDate() + 93), "yyyy-MM-dd");
+            tempDiff = diff - 93;
+            this.callFaceBookApi(tempsdt, tempedt, isPrev);
+          }
+          else {
+            tempsdt = this.datepipe.transform(new Date(tempedt).setDate(new Date(tempedt).getDate() - 1), "yyyy-MM-dd");
+            if (tempDiff >= 93) {
+              tempedt = this.datepipe.transform(new Date(tempedt).setDate(new Date(tempedt).getDate() + 93), "yyyy-MM-dd");
+              tempDiff = tempDiff - 93;
+            } else {
+              tempedt = this.datepipe.transform(new Date(tempedt).setDate(new Date(tempedt).getDate() + tempDiff), "yyyy-MM-dd");
+            }
+            this.callFaceBookApi(tempsdt, tempedt, isPrev);
+          }
+        }
       }
+    }
+    else {
+      this.callFaceBookApi(sdate, edate, isPrev);
+    }
+  }
+  resetVariables() {
+    this.pageReachTotal = 0;
+    this.pageClicksTotal = 0;
+    this.positiveFeedback = 0;
+    this.negativeFeedback = 0;
+    this.profileViewTotal = 0;
+    this.pageImpressionsTotal = 0;
+    this.externalReferrerList = [];
+    this.pageUnlikeList = [];
+    this.organicReach = 0;
+    this.paidReach = 0;
+    this.lostLikes = 0;
+    this.lostLikesPrev = 0;
+    this.impressionByCountry = [];
+    this.totalimpressionByCountry = "0";
+    this.profileViewTotalPrev = 0;
+    this.pageClicksPrev = 0;
+    this.pageImpressionsTotalPrev = 0;
+    this.percentpageImpressions = 0;
+    this.pageReachTotal = 0;
+    this.organicReach = 0;
+    this.organicReachPrev = 0;
+    this.percentOrganicReach = 0;
+    this.paidReach = 0;
+    this.paidReachPrev = 0;
+    this.percentPaidReach = 0;
+    this. pageReachTotalPrev=0;
+  }
+  callFaceBookApi(sdt, edt, isPrev) {
+    let avgNum = 0;
+    avgNum = this.calculateDateSlabDiff(this.toDate.value, this.fromDate.value);
+    const url = "https://graph.facebook.com/" + this.pageid + "/insights/page_impressions_unique,page_total_actions,page_positive_feedback_by_type,page_negative_feedback,page_views_total,page_impressions,page_views_external_referrals,page_fans_by_unlike_source_unique,page_impressions_organic,page_impressions_paid,page_fan_removes_unique,page_impressions_by_country_unique?access_token=" + this.pageToken + "&since=" + sdt + "&until=" + edt + "&period=day";
+    this.http.get(url).subscribe(res => {
+      if (res) {
+        for (let i = 0; i < res['data'].length; i++) {
 
+          let p = res['data'][i];
+          //Page Reach
+          if (p.name == 'page_impressions_unique') {
+            let l = p['values'];
+            // this.pageReachTotal = 0;
+            for (let k = 0; k < l.length; k++) {
+              this.pageReachTotal = parseInt(this.pageReachTotal) + parseInt(l[k].value)
+            }
+          }
+          //Clicks
+          if (p.name == 'page_total_actions') {
+            let l = p['values'];
+            //  this.pageClicksTotal = 0;
+            if (isPrev == 0) {
+              for (let k = 0; k < l.length; k++) {
+                this.pageClicksTotal = parseInt(this.pageClicksTotal) + parseInt(l[k].value)
+              }
+              this.avgPageClicks = this.getAverage(this.pageClicksTotal, avgNum);
+            }
+            if (isPrev == 1) {
+
+              for (let k = 0; k < l.length; k++) {
+                this.pageClicksPrev = parseInt(this.pageClicksPrev) + parseInt(l[k].value)
+              }
+              let diff = this.pageClicksTotal - this.pageClicksPrev;
+              this.percentPageClicks = this.getPercentageChange(this.pageClicksPrev, this.pageClicksTotal);
+              if (diff < 0) {
+                this.percentPageClicks = this.pos_to_neg(this.percentPageClicks);
+              }
+            }
+          }
+
+          //positive feedback
+          if (p.name == 'page_positive_feedback_by_type') {
+            let l = p['values'];
+            // this.positiveFeedback = 0;
+            for (let k = 0; k < l.length; k++) {
+              if (l[k].value['other']) {
+                this.positiveFeedback = parseInt(this.positiveFeedback) + parseInt(l[k].value['other']);
+              }
+              if (l[k].value['like']) {
+                this.positiveFeedback = parseInt(this.positiveFeedback) + parseInt(l[k].value['like']);
+              }
+              if (l[k].value['comment']) {
+                this.positiveFeedback = parseInt(this.positiveFeedback) + parseInt(l[k].value['comment']);
+              }
+            }
+          }
+          //negative feedback
+          if (p.name == 'page_negative_feedback') {
+            let l = p['values'];
+            //this.negativeFeedback = 0;
+            for (let k = 0; k < l.length; k++) {
+              if (l[k].value['other']) {
+                this.negativeFeedback = parseInt(this.negativeFeedback) + parseInt(l[k].value['other']);
+              }
+              if (l[k].value['like']) {
+                this.negativeFeedback = parseInt(this.negativeFeedback) + parseInt(l[k].value['like']);
+              }
+              if (l[k].value['comment']) {
+                this.negativeFeedback = parseInt(this.negativeFeedback) + parseInt(l[k].value['comment']);
+              }
+            }
+            this.totalfeedback = parseInt(this.positiveFeedback) + parseInt(this.negativeFeedback)
+            this.percentPositive = this.getPercentage(parseInt(this.positiveFeedback), parseInt(this.totalfeedback));
+            if (this.percentPositive == 'NaN') { this.percentPositive = 0; }
+            this.percentNegative = this.getPercentage(parseInt(this.negativeFeedback), parseInt(this.totalfeedback));
+            if (this.percentNegative == 'NaN') { this.percentNegative = 0; }
+
+
+          }
+          //Profile view count
+          if (p.name == 'page_views_total') {
+
+            let l = p['values'];
+            // this.profileViewTotal = 0;
+            if (isPrev == 0) {
+              for (let k = 0; k < l.length; k++) {
+                this.profileViewTotal = parseInt(this.profileViewTotal) + parseInt(l[k].value)
+              }
+              this.avgProfileView = this.getAverage(this.profileViewTotal, avgNum);
+            }
+            if (isPrev == 1) {
+
+              for (let k = 0; k < l.length; k++) {
+                this.profileViewTotalPrev = parseInt(this.profileViewTotalPrev) + parseInt(l[k].value)
+              }
+              let diff = this.profileViewTotal - this.profileViewTotalPrev;
+              this.percentProfileView = this.getPercentageChange(this.profileViewTotalPrev, this.profileViewTotal);
+              if (diff < 0) {
+                this.percentProfileView = this.pos_to_neg(this.percentProfileView);
+              }
+            }
+          }
+
+          //Page Impressions
+          if (p.name == 'page_impressions') {
+            let l = p['values'];
+
+            // this.pageImpressionsTotal = 0;
+            if (isPrev == 0) {
+              for (let k = 0; k < l.length; k++) {
+                this.pageImpressionsTotal = parseInt(this.pageImpressionsTotal) + parseInt(l[k].value)
+              }
+              this.avgPageImpression = this.getAverage(this.pageImpressionsTotal, avgNum);
+            }
+            if (isPrev == 1) {
+              for (let k = 0; k < l.length; k++) {
+                this.pageImpressionsTotalPrev = parseInt(this.pageImpressionsTotalPrev) + parseInt(l[k].value)
+              }
+              let diff = this.profileViewTotal - this.pageImpressionsTotalPrev;
+              this.percentpageImpressions = this.getPercentageChange(this.pageImpressionsTotalPrev, this.pageImpressionsTotal);
+              if (diff < 0) {
+                this.percentpageImpressions = this.pos_to_neg(this.percentpageImpressions);
+              }
+            }
+          }
+
+          //Page External Referrer
+
+          if (p.name == 'page_views_external_referrals') {
+            let l = p['values'];
+            let str = l[1].value;
+
+            //this.externalReferrerList = [];
+            if (str != undefined) {
+              for (let i = 0; i < Object.keys(str).length; i++) {
+                this.externalReferrerList.push({ 'url': Object.keys(str)[i], 'count': Object.values(str)[i], "percent": "0" });
+              }
+            }
+            // for (let k = 0; k < l.length; k++) {
+            //   this.profileViewTotal = parseInt(this.profileViewTotal) + parseInt(l[k].value)
+            // }
+          }
+          //Page Unlike 
+          if (p.name == 'page_fans_by_unlike_source_unique') {
+            let l = p['values'];
+
+            this.str = l[1].value;
+            if (this.str != undefined || this.str.length != undefined) {
+              let str = l[1].value;
+              // this.pageUnlikeList = [];
+              if (str != undefined) {
+                for (let i = 0; i < Object.keys(str).length; i++) {
+                  this.pageUnlikeList.push({ 'url': Object.keys(str)[i], 'count': Object.values(str)[i], "percent": "0" });
+                }
+              }
+            }
+            // for (let k = 0; k < l.length; k++) {
+            //   this.pageImpressionsTotal = parseInt(this.pageImpressionsTotal) + parseInt(l[k].value)
+            // }
+          }
+          //Organic Reach
+          if (p.name == 'page_impressions_organic') {
+            let l = p['values'];
+            //this.organicReach = 0;
+            if (isPrev == 0) {
+            for (let k = 0; k < l.length; k++) {
+              this.organicReach = parseInt(this.organicReach) + parseInt(l[k].value)
+            }
+          }
+          if (isPrev == 1) {
+            for (let k = 0; k < l.length; k++) {
+              this.organicReachPrev = parseInt(this.organicReachPrev) + parseInt(l[k].value)
+            }
+          }
+          }
+
+          //Paid Reach
+          if (p.name == 'page_impressions_paid') {
+            let l = p['values'];
+
+            //this.paidReach = 0;
+            if (isPrev == 0) {
+            for (let k = 0; k < l.length; k++) {
+              this.paidReach = parseInt(this.paidReach) + parseInt(l[k].value)
+            }
+            this.pageReachTotal = parseInt(this.paidReach) + parseInt(this.organicReach)
+          }
+          if (isPrev == 1) {
+            for (let k = 0; k < l.length; k++) {
+              this.paidReachPrev = parseInt(this.paidReachPrev) + parseInt(l[k].value)
+            }
+
+            this.pageReachTotalPrev = parseInt(this.paidReachPrev) + parseInt(this.organicReachPrev)
+            this.pageReachFullTotal = this.pageReachTotal + this.pageReachTotalPrev;
+            let diff = this.pageReachTotal - this.pageReachTotalPrev;
+            this.percentPageReach = this.getPercentageChange(this.pageReachTotalPrev, this.pageReachTotal);
+            if (diff < 0) {
+              this.percentPageReach = this.pos_to_neg(this.percentPageReach);
+            }
+            
+          }
+            this.avgPageReach = this.getAverage(this.pageReachFullTotal, avgNum);
+            this.percentOrganicReach = this.getPercentage(parseInt(this.organicReach), parseInt(this.pageReachTotal));
+            this.percentPaidReach = this.getPercentage(parseInt(this.paidReach), parseInt(this.pageReachTotal));
+          }
+          //Lost Likes
+          if (p.name == 'page_fan_removes_unique') {
+            let l = p['values'];
+            // this.lostLikes = 0;
+            if (isPrev == 0) {
+              for (let k = 0; k < l.length; k++) {
+                this.lostLikes = parseInt(this.lostLikes) + parseInt(l[k].value)
+              }
+              this.avgLostLikes = this.getAverage(this.lostLikes, avgNum);
+            }
+            if (isPrev == 1) {
+              debugger
+              for (let k = 0; k < l.length; k++) {
+                this.lostLikesPrev = parseInt(this.lostLikesPrev) + parseInt(l[k].value)
+              }
+              let diff = this.lostLikes - this.lostLikesPrev;
+              this.percentlostLikes = this.getPercentageChange(this.lostLikesPrev, this.lostLikes);
+              if (diff < 0) {
+                this.percentlostLikes = this.pos_to_neg(this.percentlostLikes);
+              }
+            }
+          }
+          //page_impressions_by_country_unique
+          if (p.name == 'page_impressions_by_country_unique') {
+            let l = p['values'];
+            let str = l[0].value;
+            this.str = l[0].value;
+            if (Object.keys(str).length != undefined) {
+              // this.impressionByCountry = [];
+              // this.totalimpressionByCountry = "0";
+
+              if (str != undefined) {
+                for (let i = 0; i < Object.keys(str).length; i++) {
+                  this.impressionByCountry.push({ 'country': Object.keys(str)[i], 'count': Object.values(str)[i], "percent": "0" });
+                  this.totalimpressionByCountry = parseInt(this.totalimpressionByCountry) + parseInt(Object.values(str)[i].toString());
+                }
+                this.impressionByCountry.sort((a, b) => (a.count > b.count ? -1 : 1));
+                this.totalimpressionByCountryName = this.impressionByCountry[0].country;
+                this.totalimpressionByCountryCount = this.impressionByCountry[0].count;
+                this.totalimpressionByCountryPercent = this.getPercentage(this.impressionByCountry[0].count, this.totalimpressionByCountry)
+                // this.totalimpressionByCountryPercent = parseFloat(this.totalimpressionByCountryPercent.toString()).toFixed(2)
+              }
+            }
+          }
+        }
+      }
     }, error => {
       this.snackbarService.show('Fetch Data Failed : ' + JSON.stringify(error.error));
     });
   }
   getAllDataByDateChange() {
-    
-    const url = "https://graph.facebook.com/" + this.pageid + "/insights/page_impressions_unique,page_total_actions,page_positive_feedback_by_type,page_negative_feedback,page_views_total,page_impressions,page_views_external_referrals,page_fans_by_unlike_source_unique,page_impressions_organic,page_impressions_paid,page_fan_removes_unique,page_impressions_by_country_unique?access_token=" + this.pageToken+"&since="+this.unixstartDate+"&until="+this.unixendDate;
+
+    const url = "https://graph.facebook.com/" + this.pageid + "/insights/page_impressions_unique,page_total_actions,page_positive_feedback_by_type,page_negative_feedback,page_views_total,page_impressions,page_views_external_referrals,page_fans_by_unlike_source_unique,page_impressions_organic,page_impressions_paid,page_fan_removes_unique,page_impressions_by_country_unique?access_token=" + this.pageToken + "&since=" + this.unixstartDate + "&until=" + this.unixendDate;
     //const url = "https://graph.facebook.com/" + this.pageid + "/insights/page_impressions_unique,page_total_actions,page_positive_feedback_by_type,page_negative_feedback,page_views_total,page_impressions,page_views_external_referrals,page_fans_by_unlike_source_unique,page_impressions_organic,page_impressions_paid,page_fan_removes_unique,page_impressions_by_country_unique?access_token=" + this.pageToken+"&since=1612154532&until=1617252132";
     this.http.get(url).subscribe(res => {
-      
+
       let avgNum = 0;
-      avgNum =  this.calculateDateSlabDiff(this.toDate.value, this.fromDate.value);
+      avgNum = this.calculateDateSlabDiff(this.toDate.value, this.fromDate.value);
       if (res) {
         for (let i = 0; i < res['data'].length; i++) {
 
@@ -317,13 +652,13 @@ debugger
           //Clicks
           if (p.name == 'page_total_actions') {
             let l = p['values'];
-            this.pageClicksTotal = 0;
+            //this.pageClicksTotal = 0;
             for (let k = 0; k < l.length; k++) {
               this.pageClicksTotal = parseInt(this.pageClicksTotal) + parseInt(l[k].value)
             }
             this.avgPageClicks = this.getAverage(this.pageClicksTotal, avgNum);
-          } 
-          
+          }
+
           //positive feedback
           if (p.name == 'page_positive_feedback_by_type') {
             let l = p['values'];
@@ -372,11 +707,11 @@ debugger
             }
             this.avgProfileView = this.getAverage(this.profileViewTotal, avgNum);
           }
-          
+
           //Page Impressions
           if (p.name == 'page_impressions') {
             let l = p['values'];
-            
+
             this.pageImpressionsTotal = 0;
             for (let k = 0; k < l.length; k++) {
               this.pageImpressionsTotal = parseInt(this.pageImpressionsTotal) + parseInt(l[k].value)
@@ -403,7 +738,7 @@ debugger
           //Page Unlike 
           if (p.name == 'page_fans_by_unlike_source_unique') {
             let l = p['values'];
-            
+
             this.str = l[1].value;
             if (this.str != undefined || this.str.length != undefined) {
               let str = l[1].value;
@@ -426,11 +761,11 @@ debugger
               this.organicReach = parseInt(this.organicReach) + parseInt(l[k].value)
             }
           }
-          
+
           //Paid Reach
           if (p.name == 'page_impressions_paid') {
             let l = p['values'];
-            
+
             this.paidReach = 0;
             for (let k = 0; k < l.length; k++) {
               this.paidReach = parseInt(this.paidReach) + parseInt(l[k].value)
@@ -457,7 +792,7 @@ debugger
             if (Object.keys(str).length != undefined) {
               this.impressionByCountry = [];
               this.totalimpressionByCountry = "0";
-              
+
               if (str != undefined) {
                 for (let i = 0; i < Object.keys(str).length; i++) {
                   this.impressionByCountry.push({ 'country': Object.keys(str)[i], 'count': Object.values(str)[i], "percent": "0" });
@@ -467,7 +802,7 @@ debugger
                 this.totalimpressionByCountryName = this.impressionByCountry[0].country;
                 this.totalimpressionByCountryCount = this.impressionByCountry[0].count;
                 this.totalimpressionByCountryPercent = this.getPercentage(this.impressionByCountry[0].count, this.totalimpressionByCountry)
-               // this.totalimpressionByCountryPercent = parseFloat(this.totalimpressionByCountryPercent.toString()).toFixed(2)
+                // this.totalimpressionByCountryPercent = parseFloat(this.totalimpressionByCountryPercent.toString()).toFixed(2)
               }
             }
           }
@@ -485,9 +820,9 @@ debugger
     const url = "https://graph.facebook.com/" + this.pageid + "/insights/page_impressions_unique,page_total_actions,page_positive_feedback_by_type,page_negative_feedback,page_views_total,page_impressions,page_views_external_referrals,page_fans_by_unlike_source_unique,page_impressions_organic,page_impressions_paid,page_fan_removes_unique,page_impressions_by_country_unique?access_token=" + this.pageToken;
     this.http.get(url).subscribe(res => {
       let avgNum = 0;
-      if(period == 'days_28'){avgNum= 28;}
-      if(period == 'week'){avgNum= 7;}
-      if(period == 'day'){avgNum= 1;}
+      if (period == 'days_28') { avgNum = 28; }
+      if (period == 'week') { avgNum = 7; }
+      if (period == 'day') { avgNum = 1; }
       if (res) {
         for (let i = 0; i < res['data'].length; i++) {
 
@@ -508,8 +843,8 @@ debugger
               this.pageClicksTotal = parseInt(this.pageClicksTotal) + parseInt(l[k].value)
             }
             this.avgPageClicks = this.getAverage(this.pageClicksTotal, avgNum);
-          } 
-          
+          }
+
           //positive feedback
           if (p.name == 'page_positive_feedback_by_type' && p.period == period) {
             let l = p['values'];
@@ -565,7 +900,7 @@ debugger
             for (let k = 0; k < l.length; k++) {
               this.pageImpressionsTotal = parseInt(this.pageImpressionsTotal) + parseInt(l[k].value)
             }
-            
+
             this.avgPageImpression = this.getAverage(this.pageImpressionsTotal, avgNum);
           }
 
@@ -588,7 +923,7 @@ debugger
           //Page Unlike 
           if (p.name == 'page_fans_by_unlike_source_unique') {
             let l = p['values'];
-            
+
             this.str = l[1].value;
             if (this.str != undefined || this.str.length != undefined) {
               let str = l[1].value;
@@ -640,7 +975,7 @@ debugger
             if (Object.keys(str).length != undefined) {
               this.impressionByCountry = [];
               this.totalimpressionByCountry = "0";
-              
+
               if (str != undefined) {
                 for (let i = 0; i < Object.keys(str).length; i++) {
                   this.impressionByCountry.push({ 'country': Object.keys(str)[i], 'count': Object.values(str)[i], "percent": "0" });
@@ -650,7 +985,7 @@ debugger
                 this.totalimpressionByCountryName = this.impressionByCountry[0].country;
                 this.totalimpressionByCountryCount = this.impressionByCountry[0].count;
                 this.totalimpressionByCountryPercent = this.getPercentage(this.impressionByCountry[0].count, this.totalimpressionByCountry)
-               // this.totalimpressionByCountryPercent = parseFloat(this.totalimpressionByCountryPercent.toString()).toFixed(2)
+                // this.totalimpressionByCountryPercent = parseFloat(this.totalimpressionByCountryPercent.toString()).toFixed(2)
               }
             }
           }
@@ -663,24 +998,25 @@ debugger
       this.snackbarService.show('Fetch Data Failed : ' + JSON.stringify(error.error));
     });
   }
-  getPageLikes() {
+  getPageLikes(sdt, edt) {
 
-    const url = "https://graph.facebook.com/" + environment.facebook_pageid + "?access_token=" + this.accessToken + "&fields=new_like_count";
+    const url = "https://graph.facebook.com/" + this.pageid + "?access_token=" + this.pageToken + "&fields=new_like_count&since=" + sdt + "&until=" + edt + "&period=day";
     this.http.get(url).subscribe(res => {
       if (res) {
-        
+
         this.pageNewlikesTotal = res['new_like_count'];
       }
     }, error => {
       this.snackbarService.show('Fetch New Likes Count Failed : ' + JSON.stringify(error.error));
     });
   }
-  getPageNewLikes() {
+  getPageNewLikes(sdt, edt) {
 
-    const url = "https://graph.facebook.com/" + environment.facebook_pageid + "?access_token=" + this.accessToken + "&fields=country_page_likes";
+
+    const url = "https://graph.facebook.com/" + this.pageid + "?access_token=" + this.pageToken + "&fields=country_page_likes&since=" + sdt + "&until=" + edt + "&period=day";
     this.http.get(url).subscribe(res => {
       if (res) {
-        
+
         this.pagelikesTotal = res['country_page_likes'];
       }
     }, error => {
@@ -900,19 +1236,7 @@ debugger
       this.snackbarService.show('Fetch Total Positive Feedback Count Failed : ' + JSON.stringify(error.error));
     });
   }
-  testApi() {
-    //page_views_unique Page Views from users logged into Facebook day
-    const url = "https://graph.facebook.com/" + this.pageid + "/insights/page_impressions_unique?access_token=" + this.accessToken;
 
-    this.http.get(url).subscribe(res => {
-      if (res) {
-
-        this.profileViewTotal = res['page_views_unique'];
-      }
-    }, error => {
-      this.snackbarService.show('Fetch Total Profile View Count Failed : ' + JSON.stringify(error.error));
-    });
-  }
   getPercentage(num, total) {
     let p = ((100 * num) / total);
     return parseFloat(p.toString()).toFixed(0);
@@ -924,6 +1248,13 @@ debugger
     } else {
       return parseInt(p.toString()).toFixed(0);
     }
+  }
+  getPercentageChange(oldNumber, newNumber) {
+    var decreaseValue = oldNumber - newNumber;
+    return (decreaseValue / oldNumber) * 100;
+  }
+  pos_to_neg(num) {
+    return -Math.abs(num);
   }
   //this not in used but working for facebook authentication
   // authFacebookAccount() {

@@ -17,7 +17,8 @@ import { parseDate } from 'ngx-bootstrap/chronos';
 import { environment } from 'src/environments/environment';
 import { GoogleLoginProvider, SocialAuthService } from 'angularx-social-login';
 import { FacebookService, LoginOptions, LoginResponse } from 'ngx-facebook';
-declare var gapi: any;
+import { TranslateService } from '@ngx-translate/core';
+const success = require('sweetalert');
 @Component({
   selector: 'app-home',
   templateUrl: './home.component.html',
@@ -201,7 +202,13 @@ tempRes:string="";
     })
   };
   settings = {
-    actions: { add: false, edit: false, delete: false },
+    actions: {
+      columnTitle: '',
+      custom: [{ name: 'editCampaign', title: '<i class="fas fa-edit"></i>' },
+      { name: 'deleteCampaign', title: '<span class="text-danger col"><i class="fas fa-trash-alt"></i></span>' }
+      ],
+      add: false, edit: false, delete: false, position: 'right'
+    },
     columns: {
       SrNo: {
         title: 'Sr No.',
@@ -225,7 +232,7 @@ tempRes:string="";
           let a = value;
           let b = "https://www.";
           let c = b.concat(a);
-          return `<a href=` + c + `>` + a + `</a>`;
+          return `<a href=` + c + `  target="_blank" rel="noopener noreferrer">` + a + `</a>`;
         }
       },
       ranking: {
@@ -360,7 +367,7 @@ tempRes:string="";
   };
   source: LocalDataSource;
 
-  constructor(private authService: SocialAuthService, private facebook: FacebookService, public datepipe: DatePipe, private homeGscService: HomeGscService, public http: HttpClient, public campaignService: CampaignService, private router: Router,
+  constructor( private translate: TranslateService,private authService: SocialAuthService, private facebook: FacebookService, public datepipe: DatePipe, private homeGscService: HomeGscService, public http: HttpClient, public campaignService: CampaignService, private router: Router,
     public auditsService: AuditsService, public toasterService: ToasterService, public toastr: ToastrService
     , fb: FormBuilder, private route: ActivatedRoute, private openIdConnectService: OpenIdConnectService, private accountService: AccountService) {
     //  this.facebookPageToken = localStorage.getItem('FacebookAccessToken');
@@ -1144,5 +1151,82 @@ testFunction(){
      
     }
   )
+}
+onCustomAction(event) {
+  switch (event.action) {
+    case 'editCampaign':
+      debugger;
+      this.editCampaign(event.data);
+      break;
+    case 'deleteCampaign':
+      this.deleteCampaign(event.data);
+      break;
+  }
+}
+editCampaign(campaign: any) {
+  debugger;
+  localStorage.setItem('editMasterId', campaign.id);
+  localStorage.setItem('selectedCampName', campaign.name);
+  localStorage.setItem('selectedCampUrl', campaign.webUrl);
+  this.router.navigate(['/home/campaign']);
+}
+deleteCampaign(event) {
+  success({
+    icon: this.translate.instant('sweetalert.WARNINGICON'),
+    title: this.translate.instant('message.DELETEMSG'),
+    buttons: {
+      cancel: {
+        text: this.translate.instant('sweetalert.CANCELBUTTON'),
+        value: null,
+        visible: true,
+        className: "",
+        closeModal: false
+      },
+      confirm: {
+        text: this.translate.instant('sweetalert.CONFIRMBUTTON'),
+        value: true,
+        visible: true,
+        className: "bg-danger",
+        closeModal: false
+      }
+    }
+  }).then((isConfirm: any) => {
+    if (isConfirm) {
+      this.campaignService.deleteCampaignById(event.id).subscribe(res => {
+
+        success({
+          icon: this.translate.instant('sweetalert.WARNINGICON'),
+          title: this.translate.instant('message.DELETEMSG'),
+          buttons: {
+            confirm: {
+              text: this.translate.instant('sweetalert.OKBUTTON'),
+              value: true,
+              visible: true,
+              className: "bg-primary",
+              closeModal: true,
+            }
+          }
+        }).then((isConfirm) => {
+          if (isConfirm) {
+            window.location.reload();
+          }
+        })
+      });
+    } else {
+      success({
+        icon: this.translate.instant('sweetalert.WARNINGICON'),
+        title: this.translate.instant('message.CANCLEMSG'),
+        buttons: {
+          confirm: {
+            text: this.translate.instant('sweetalert.OKBUTTON'),
+            value: true,
+            visible: true,
+            className: "bg-primary",
+            closeModal: true,
+          }
+        }
+      }).then((isConfirm) => { })
+    }
+  });
 }
 }
