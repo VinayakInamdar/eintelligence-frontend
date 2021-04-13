@@ -86,20 +86,19 @@
                     <div class="row">
                         <div class="col-sm-3">
                             <h3 class="colour-light">PAGE PROFILE VIEWS</h3>
-                            <div class="row">
-                                <div class="col">
-                                    <h3 class="fontxlrge">{{profileViewTotal}}</h3>
-                                </div>
-                                <div class="col">
-                                    <h3 *ngIf="percentProfileView > 0" class="text-success"><span><i
+                            <div class="row setmargininlinestart">
+
+                                <h3 class="fontxlrge">{{profileViewTotal}}</h3>
+                                &nbsp;&nbsp;&nbsp;&nbsp;
+                                <h3 *ngIf="percentProfileView > 0" class="text-success setmargintop"><span><i
                                                 class="fas fa-arrow-up"></i></span> {{percentProfileView.toString().replace('-', '')}}%</h3>
-                                    <h3 *ngIf="percentProfileView < 0" class="text-danger"><span><i
+                                <h3 *ngIf="percentProfileView < 0" class="text-danger setmargintop"><span><i
                                                 class="fas fa-arrow-down"></i></span> {{percentProfileView.toString().replace('-', '')}}%</h3>
-                                </div>
+
                             </div>
                             <h3 class="fontsizesmall">Avg. per day : {{avgProfileView}}</h3>
                         </div>
-                   
+
                         <div class="vl"></div>
                         <div class="col-sm-3">
                             <h3 class="colour-light">TOP EXTERNAL REFERRER</h3>
@@ -132,12 +131,15 @@
                         <div class="vl"></div>
                         <div class="col-sm-3">
                             <h3 class="colour-light">PAGE CLICKS</h3>
-                            <h3 class="fontxlrge">{{pageClicksTotal}}</h3>
-                            <div class="col">
-                                <h3 *ngIf="percentPageClicks > 0" class="text-success"><span><i
-                                            class="fas fa-arrow-up"></i></span>{{percentPageClicks.toString().replace('-', '')}} % </h3>
-                                <h3 *ngIf="percentPageClicks < 0" class="text-danger"><span><i
-                                            class="fas fa-arrow-down"></i></span>{{percentPageClicks.toString().replace('-', '')}} % </h3>
+                            <div class="row setmargininlinestart">
+
+                                <h3 class="fontxlrge">{{pageClicksTotal}}</h3>
+                                &nbsp;&nbsp;&nbsp;&nbsp;
+                                <h3 *ngIf="percentPageClicks > 0" class="text-success setmargintop"><span><i
+                                            class="fas fa-arrow-up"></i></span> {{percentPageClicks.toString().replace('-', '')}} % </h3>
+                                <h3 *ngIf="percentPageClicks < 0" class="text-danger setmargintop"><span><i
+                                            class="fas fa-arrow-down"></i></span> {{percentPageClicks.toString().replace('-', '')}} % </h3>
+
                             </div>
                             <h3 class="fontsizesmall">Avg. per day : {{avgPageClicks}}</h3>
 
@@ -180,7 +182,7 @@
 
 
 
-      <div class="card card-default shadow bg-white rounded height200pxfit-content cursor-set">
+        <div class="card card-default shadow bg-white rounded height200pxfit-content cursor-set">
             <div class="card-header">
                 <div class="row borderBtm padding5">
                     <h2 class="col-xs-12 col-12 col-md-10 fontsize15px colour-set">Facebook: Audience Summary</h2>
@@ -200,17 +202,28 @@
                         <div class="vl"></div>
                         <div class="col-sm-3">
                             <h3 class="colour-light">NEW LIKES</h3>
-                            <h3 class="fontxlrge">{{pageNewlikesTotal}}</h3>
-                            <h3 class="fontsizesmall">Avg. per day : {{avgpageNewlikes}}</h3>
-                            <h3 class="fontsizesmall">{{percentpageNewlikes.toString().replace('-', '')}}%</h3>
+                            <div class="row setmargininlinestart">
+                                <h3 class="fontxlrge">{{pageNewlikesTotal}}</h3>
+                                &nbsp;&nbsp;&nbsp;&nbsp;
+                                <h3 *ngIf="percentpageNewlikes > 0" class="text-success setmargintop"><span><i class="fas fa-arrow-up"></i></span> {{percentpageNewlikes.toString().replace('-', '')}}%</h3>
+                                <h3 *ngIf="percentpageNewlikes < 0" class="text-danger setmargintop"><span><i class="fas fa-arrow-down"></i></span> {{percentpageNewlikes.toString().replace('-', '')}}%</h3>
+                            </div>
+                            <h3 class="fontsizesmall">Avg. per day : {{avgNewlikes}}</h3>
+
                         </div>
 
                         <div class="vl"></div>
                         <div class="col-sm-3">
                             <h3 class="colour-light">LIKES LOST</h3>
-                            <h3 class="fontxlrge">{{lostLikes}}</h3>
+                            <div class="row setmargininlinestart">
+                                <h3 class="fontxlrge">{{lostLikes}}</h3>
+                                &nbsp;&nbsp;&nbsp;&nbsp;
+                                <h3 *ngIf="percentlostLikes > 0" class="text-success setmargintop"><span><i class="fas fa-arrow-up"></i></span> {{percentlostLikes.toString().replace('-', '')}}%</h3>
+                                <h3 *ngIf="percentlostLikes < 0" class="text-danger setmargintop"><span><i class="fas fa-arrow-down"></i></span> {{percentlostLikes.toString().replace('-', '')}}%
+                                </h3>
+                            </div>
                             <h3 class="fontsizesmall">Avg. per day : {{avgLostLikes}}</h3>
-                            <h3 class="fontsizesmall">{{percentlostLikes.toString().replace('-', '')}}%</h3>
+
                         </div>
                         <div class="vl"></div>
                         <div class="col-sm-2">
@@ -342,49 +355,6 @@
                 </div>
             </div>
         </div>
-        <!-- <div class="col-sm-2">
-            <div class="card card-default shadow bg-white rounded height200pxfit-content cursor-set">
-                <div class="widget-content">
-                    <div class="overviewdivborder">
-                        <h3 class="colour-light">LIKES LOST</h3>
-                        <h3 class="fontxlrge">{{lostLikes}}</h3>
-                        <h3 class="fontsizesmall">Avg. per day : {{avgLostLikes}}</h3>
-                    </div>
-                </div>
-            </div>
-
-        </div> -->
-        <!-- <div class="vl"></div>
-        <div class="col-sm-2">
-            <div class="card card-default shadow bg-white rounded height200pxfit-content cursor-set">
-                <div class="overviewdivborder">
-                    <h3 class="colour-light"> ORGANIC VS PAID LIKES</h3>
-                    <table class="table table-bordered font-weight-bold colour-light">
-                        <thead>
-                            <tr>
-
-                                <td>
-                                    ORGANIC
-                                </td>
-                                <td>
-                                    PAID
-                                </td>
-                            </tr>
-                        </thead>
-                        <tbody>
-                            <tr>
-                                <td class="text-blue">
-                                    {{percentPositive}}%
-                                </td>
-                                <td style="color:red;">
-                                    {{percentNegative}}%
-                                </td>
-                            </tr>
-                    </table>
-                </div>
-            </div>
-
-        </div> -->
     </div>
 
 
@@ -403,17 +373,28 @@
                     <div class="row">
                         <div class="col-sm-3">
                             <h3 class="colour-light">PAGE IMPRESSIONS</h3>
-                            <h3 class="fontxlrge">{{pageImpressionsTotal}}</h3>
+                            <div class="row setmargininlinestart">
+                                <h3 class="fontxlrge">{{pageImpressionsTotal}}</h3>
+                                &nbsp;&nbsp;&nbsp;&nbsp;
+                                <h3 *ngIf="percentpageImpressions > 0" class="text-success setmargintop"><span><i class="fas fa-arrow-up"></i></span> {{percentpageImpressions}}%</h3>
+                                <h3 *ngIf="percentpageImpressions < 0" class="text-danger setmargintop"><span><i
+                                            class="fas fa-arrow-down"></i></span> {{percentpageImpressions}}%</h3>
+                            </div>
                             <h3 class="fontsizesmall">Avg. per day : {{avgPageImpression}}</h3>
-                            <h3 class="fontsizesmall">{{avgPageImpression}}</h3>
-                            <h3 class="fontsizesmall">{{percentpageImpressions}}%</h3>
+
                         </div>
                         <div class="vl"></div>
                         <div class="col-sm-3">
                             <h3 class="colour-light">PAGE REACH</h3>
-                            <h3 class="fontxlrge">{{pageReachTotal}}</h3>
-                            <h3 class="fontsizesmall">Avg. per day : {{pageReachTotal}}</h3>
-                            <h3 class="fontsizesmall">{{percentPageReach}}%</h3>
+                            <div class="row setmargininlinestart">
+                                <h3 class="fontxlrge">{{pageReachTotal}}</h3>
+                                &nbsp;&nbsp;&nbsp;&nbsp;
+                                <h3 *ngIf="percentPageReach > 0" class="text-success setmargintop"><span><i class="fas fa-arrow-up"></i></span> {{percentPageReach}}%</h3>
+                                <h3 *ngIf="percentPageReach < 0" class="text-danger setmargintop"><span><i
+                                            class="fas fa-arrow-down"></i></span> {{percentPageReach}}%</h3>
+                            </div>
+                            <h3 class="fontsizesmall">Avg. per day : {{avgPageReach}}</h3>
+
                         </div>
                         <div class="vl"></div>
                         <div class="col-sm-3">

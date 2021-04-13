@@ -245,14 +245,16 @@ tempRes:string="";
           let st = this.tempStr.split("--");
           if (this.tempStr != '' && this.tempStr != undefined && this.tempStr != null) {
             if (this.tempStr.toString().includes("--")) {
-              if (parseInt(st[0]) > parseInt(st[1])) {
-                this.tempRes = st[0] + ` <span class="text-success"><i class='fas fa-arrow-alt-circle-up'></i></span> ` + st[1]
-              }
-              if (parseInt(st[0]) < parseInt(st[1])) {
-                this.tempRes = st[0] + ` <span class="text-danger"><i class='fas fa-arrow-alt-circle-down'></i></span> ` + st[1]
-              }
-              if (parseInt(st[0]) == parseInt(st[1])) {
-                this.tempRes = st[0] + " - " + st[1];
+              let diff = parseInt(st[0]) - parseInt(st[1])
+              diff  = parseInt(diff.toString().replace('-', ''));
+              if(parseInt(st[0]) == 0){
+                this.tempRes = st[0] + ` <span class="text-success"><i class='fas fa-arrow-alt-circle-up'></i></span> ` + diff
+              }else if (parseInt(st[0]) > parseInt(st[1])) {
+                this.tempRes = st[0] + ` <span class="text-success"><i class='fas fa-arrow-alt-circle-up'></i></span> ` + diff
+              }else if (parseInt(st[0]) < parseInt(st[1])) {
+                this.tempRes = st[0] + ` <span class="text-danger"><i class='fas fa-arrow-alt-circle-down'></i></span> ` + diff
+              }else if (parseInt(st[0]) == parseInt(st[1])) {
+                this.tempRes = st[0] + " - " + diff;
               }
             }
           } else {
@@ -487,48 +489,7 @@ tempRes:string="";
     this.pieChartData1 = [this.pve, this.nve, this.nut];
   }
  
-  calculateRankings() {
-    this.accessToken = localStorage.getItem('googleGscAccessToken');
-    if (this.accessToken != null && this.accessToken != undefined && this.accessToken != '') {
-      const d = new Date();
-      let currYear = d.getFullYear();
-      for (let i = 0; i < this.campaignList.length; i++) {
-        //  this.DeleteRankingGraphData(this.campaignList[i].id.toString());
-        let p = this.tempRankingGraphData.filter(x => x.campaignId.toString().toLowerCase() === this.campaignList[i].id.toString().toLowerCase() && x.year == currYear)
-        p.sort(function (a, b) {
-          var MONTH = {
-            January: 1, February: 2, March: 3, April: 4, May: 5, June: 6,
-            July: 7, August: 8, September: 9, October: 10, November: 11, December: 12
-          };
-          return a.year - b.year || MONTH[a.month] - MONTH[b.month];
-        });
-        let thisMonth = p[p.length - 1];
-        let PrevMonth = p[p.length - 2];
-        let tap = 0, pap = 0;
-        if (thisMonth != undefined) { tap = thisMonth.avragePosition }
-        if (PrevMonth != undefined) { pap = PrevMonth.avragePosition }
-        let g = this.getDifference(pap, tap);
 
-        if (g == 'NaN') { g = "0"; }
-        this.total = this.campaignList.length;
-
-        this.selectedCampIdWebUrl = this.campaignList[i].webUrl;
-
-        if (this.selectedCampIdWebUrl == '' || this.selectedCampIdWebUrl == null || this.selectedCampIdWebUrl == undefined) {
-          if (this.facebookAccessToken != null && this.facebookAccessToken != undefined && this.facebookAccessToken != '') {
-            this.getFacebookUserId(i);
-          }
-        } else {
-          if (this.IsError == false) {
-            //this.getAnalyticsProfileIds(i);
-            this.campaignList[i].ranking = g + "%";
-          }
-        }
-      }
-    }
-    this.tableData = this.campaignList;
-    this.source = new LocalDataSource(this.campaignList)
-  }
 
   // using to search campaign locally
   onSearch(query: string = '') {
@@ -573,35 +534,49 @@ tempRes:string="";
 
   // using to view analytics report of selected campaign Id
   userRowSelect(campaign: any): void {
-    this.SelectedCampaignId = campaign.data.id;
-    let ga = this.CampaignGAList.filter(x => x.campaignID == this.SelectedCampaignId);
-    if (ga != null && ga != undefined && ga.length > 0) {
+    localStorage.setItem('gaurl','');
+     localStorage.setItem('gaaccesstoken','');
+     localStorage.setItem('gadsaccesstoken','');
+     localStorage.setItem('facebookurl','');
+     localStorage.setItem('facebookaccesstoken','');
+     localStorage.setItem('gscurl','');
+     localStorage.setItem('gscaccesstoken','');
+     localStorage.setItem('selectedCampName','');
+     localStorage.setItem('selectedCampUrl','');
+     this.SelectedCampaignId = campaign.data.id;
+     let ga = this.CampaignGAList.filter(x => x.campaignID == this.SelectedCampaignId);
+     if(ga !=null && ga != undefined && ga.length > 0){
       localStorage.setItem('gaurl', ga[0]['urlOrName']);
       localStorage.setItem('gaaccesstoken', ga[0]['accessToken']);
-    }
-    let gads = this.CampaignGAdsList.filter(x => x.campaignID == this.SelectedCampaignId);
-    if (gads != null && gads != undefined && gads.length > 0) {
+      localStorage.setItem('garefreshtoken', ga[0]['refreshToken']);
+      localStorage.setItem('gaid', ga[0]['id']);
+     }
+     let gads = this.CampaignGAdsList.filter(x => x.campaignID == this.SelectedCampaignId);
+     if(gads !=null && gads != undefined && gads.length > 0){
       localStorage.setItem('gadsurl', gads[0]['urlOrName']);
       localStorage.setItem('gadsaccesstoken', gads[0]['accessToken']);
-    }
-    let facebook = this.CampaignFacebookList.filter(x => x.campaignID == this.SelectedCampaignId);
-    if (facebook != null && facebook != undefined && facebook.length > 0) {
+      localStorage.setItem('gadsid', gads[0]['id']);
+
+     }
+     let facebook = this.CampaignFacebookList.filter(x => x.campaignID == this.SelectedCampaignId);
+     if(facebook !=null && facebook != undefined && facebook.length > 0){
       localStorage.setItem('facebookpagename', facebook[0]['urlOrName']);
       localStorage.setItem('facebookaccesstoken', facebook[0]['accessToken']);
-    }
-    let gsc = this.CampaignGSCList.filter(x => x.campaignID == this.SelectedCampaignId);
-    if (gsc != null && gsc != undefined && gsc.length > 0) {
+      localStorage.setItem('facebookid', facebook[0]['id']);
+
+     }
+     let gsc = this.CampaignGSCList.filter(x => x.campaignID == this.SelectedCampaignId);
+     if(gsc !=null && gsc != undefined && gsc.length > 0){
       localStorage.setItem('gscurl', gsc[0]['urlOrName']);
       localStorage.setItem('gscaccesstoken', gsc[0]['accessToken']);
-    }
-    localStorage.setItem('selectedCampId', campaign.data.id);
-    localStorage.setItem('selectedCampName', campaign.data.name);
-    this.router.navigate([`../campaign/:id${campaign.data.id}/seo`]);
-    // this.router.navigate(['/campaign', { id: campaign.data.id }], {
-    //   queryParams: {
-    //     view: 'showReport'
-    //   },
-    // });
+      localStorage.setItem('gscrefreshtoken', gsc[0]['refreshToken']);
+      localStorage.setItem('gscid', gsc[0]['id']);
+
+     }
+      localStorage.setItem('selectedCampId', campaign.data.id);
+      localStorage.setItem('selectedCampName', campaign.data.name);
+      localStorage.setItem('selectedCampUrl', campaign.data.webUrl);
+      this.router.navigate([`../campaign/:id${campaign.data.id}/seo`]);
 
 
   }
@@ -1063,11 +1038,12 @@ tempRes:string="";
        for (let i = 0; i < res.length; i++) {
         let ga = this.CampaignGAList.filter(x => x.campaignID == res[i].id);
         if (ga != null && ga != undefined && ga.length > 0) {
-          //this.refreshGoogleAnalyticsAccount(i, ga[0]['refreshToken'], ga[0]['urlOrName']);
+          debugger
+          this.refreshGoogleAnalyticsAccount(i, ga[0]['refreshToken'], ga[0]['urlOrName']);
         }
         let gsc = this.CampaignGSCList.filter(x => x.campaignID == res[i].id);
         if (gsc != null && gsc != undefined && gsc.length > 0) {
-          //this.refreshGSCAccount(i, gsc[0]['refreshToken'], gsc[0]['urlOrName']);
+          this.refreshGSCAccount(i, gsc[0]['refreshToken'], gsc[0]['urlOrName']);
         }
         let facebook = this.CampaignFacebookList.filter(x => x.campaignID == res[i].id);
         if (facebook != null && facebook != undefined && facebook.length > 0) {
@@ -1076,7 +1052,7 @@ tempRes:string="";
       
         this.GetRankingPosition(res[i].id);
         
-         this.campaignList[i].ranking = this.rankingPrev  +  "--"  + this.rankingThis;
+         this.campaignList[i].ranking = this.rankingPrev  +  "--"  + this.rankingThis ;
        }
        this.source = new LocalDataSource(this.campaignList);
     });
@@ -1168,6 +1144,27 @@ editCampaign(campaign: any) {
   localStorage.setItem('editMasterId', campaign.id);
   localStorage.setItem('selectedCampName', campaign.name);
   localStorage.setItem('selectedCampUrl', campaign.webUrl);
+  this.SelectedCampaignId = campaign.id;
+    let ga = this.CampaignGAList.filter(x => x.campaignID == this.SelectedCampaignId);
+    if (ga != null && ga != undefined && ga.length > 0) {
+      localStorage.setItem('gaurl', ga[0]['urlOrName']);
+      localStorage.setItem('gaaccesstoken', ga[0]['accessToken']);
+    }
+    let gads = this.CampaignGAdsList.filter(x => x.campaignID == this.SelectedCampaignId);
+    if (gads != null && gads != undefined && gads.length > 0) {
+      localStorage.setItem('gadsurl', gads[0]['urlOrName']);
+      localStorage.setItem('gadsaccesstoken', gads[0]['accessToken']);
+    }
+    let facebook = this.CampaignFacebookList.filter(x => x.campaignID == this.SelectedCampaignId);
+    if (facebook != null && facebook != undefined && facebook.length > 0) {
+      localStorage.setItem('facebookpagename', facebook[0]['urlOrName']);
+      localStorage.setItem('facebookaccesstoken', facebook[0]['accessToken']);
+    }
+    let gsc = this.CampaignGSCList.filter(x => x.campaignID == this.SelectedCampaignId);
+    if (gsc != null && gsc != undefined && gsc.length > 0) {
+      localStorage.setItem('gscurl', gsc[0]['urlOrName']);
+      localStorage.setItem('gscaccesstoken', gsc[0]['accessToken']);
+    }
   this.router.navigate(['/home/campaign']);
 }
 deleteCampaign(event) {

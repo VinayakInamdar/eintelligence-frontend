@@ -4,7 +4,6 @@ import { EMPTY, from, of } from 'rxjs';
 import { concatMap } from 'rxjs/operators';
 import { environment } from '../../../../environments/environment';
 import { SnackbarService } from '../../../shared/services/snackbar/snackbar.service';
-import { FacebookService, LoginResponse, LoginOptions, UIResponse, UIParams, FBVideoComponent } from 'ngx-facebook';
 import { positionElements } from 'ngx-bootstrap/positioning';
 import { ActivatedRoute, Router } from '@angular/router';
 import { OpenIdConnectService } from '../../../shared/services/open-id-connect.service';
@@ -43,8 +42,10 @@ export class SocialmediaComponent implements OnInit {
   percentlostLikes;
   //New Likes
   pagelikesTotal;
-  avgpageNewlikes;
+  pagelikesTotalPrev;
+  avgNewlikes;
   pageNewlikesTotal
+  pageNewlikesTotalPrev;
   percentpageNewlikes;
   //Page Impression
   pageImpressionsTotal;
@@ -54,6 +55,7 @@ export class SocialmediaComponent implements OnInit {
   //Page Reach
   pageReachFullTotal;
   pageReachTotal;
+  avgPageReach;
   percentPageReach;
   pageReachTotalPrev;
   organicReach;
@@ -94,9 +96,8 @@ export class SocialmediaComponent implements OnInit {
   totalimpressionByCountryPercent;
   totalimpressionByCountryCount;
   totalimpressionByCountryName;
-  avgNewLikes;
 
-  avgPageReach;
+
   campaignList = [];
   selectedCampIdWebUrl: string;
   selectedCampId: string;
@@ -118,13 +119,8 @@ export class SocialmediaComponent implements OnInit {
     fromDate: this.fromDate,
     toDate: this.toDate,
   });
-  constructor(private http: HttpClient, private snackbarService: SnackbarService, public datepipe: DatePipe, private fb: FacebookService, public router: Router,
+  constructor(private http: HttpClient, private snackbarService: SnackbarService, public datepipe: DatePipe, public router: Router,
     private campaignService: CampaignService, public openIdConnectService: OpenIdConnectService, public route: ActivatedRoute) {
-    fb.init({
-      appId: '200487178533939',//environment.facebook_appid,//3574916862576976
-      version: 'v9.0'
-    });
-
     //let id = this.route.snapshot.paramMap.get('id');
     let id = localStorage.getItem("selectedCampId");
     this.pagename = localStorage.getItem("facebookpagename");
@@ -231,29 +227,13 @@ export class SocialmediaComponent implements OnInit {
         this.campaignService.updateFacebook(facebookid, data).subscribe(response => {
 
         });
-        this.getUserId();
         this.getAllPagesList();
       }
     }, error => {
       alert('Fetch Refresh Token Failed : ' + JSON.stringify(error.error));
     });
   }
-  getUserId() {
-
-    const url = "https://graph.facebook.com/me?access_token=" + this.accessToken;
-    this.http.get(url).subscribe(res => {
-      if (res) {
-
-        this.userId = res['id'];
-        this.userName = res['name'];
-        //this.getUserPermission();
-        // this.generatePageToken();
-
-      }
-    }, error => {
-      this.snackbarService.show('Fetch New Likes Count Failed : ' + JSON.stringify(error.error));
-    });
-  }
+ 
   getAllPagesList() {
 
     const url = "https://graph.facebook.com/me/accounts?&access_token=" + this.accessToken;
@@ -271,45 +251,16 @@ export class SocialmediaComponent implements OnInit {
         this.testDateSlab(this.startDate, this.endDate, 0)
         this.testDateSlab(this.previousStartDate, this.previousEndDate, 1)
         this.getPageLikes(this.startDate, this.endDate);
-        this.getPageNewLikes(this.startDate, this.endDate);
+        this.getPageNewLikes(this.startDate, this.endDate ,0);
+        this.getPageNewLikes(this.startDate, this.endDate ,1);
+
         //this.generatePageToken();
       }
     }, error => {
       this.snackbarService.show('Fetch New Likes Count Failed : ' + JSON.stringify(error.error));
     });
   }
-  getUserPermission() {
-
-    const url = "https://graph.facebook.com/" + this.userId + "/permissions?access_token=" + this.accessToken;
-    // const url = "https://graph.facebook.com/105114094889635/accounts?access_token=EAAGXn3oGklwBAEDY2dpA11KLDG0hhHYWi9pts9qmPJxXs6Ywb4UOq6SRhvr5kFpNDeUrHkG1rIZCxHJMxQS3U7UurncvEnjuuaD4aLmKDAT5uIoSb3QWSE92GkLWOS0Oqub7ZAIcxwtMBAaLOSQWqEiwsMuqaugO5XwiXJx97ekfXeuB8cnQhISZAtINl8ZD";
-    this.http.get(url).subscribe(res => {
-      if (res) {
-
-        this.pageToken = res['data'][0].access_token;
-        localStorage.setItem('FacebookPageToken', this.pageToken);
-      }
-    }, error => {
-      this.snackbarService.show('Fetch Page Token Failed : ' + JSON.stringify(error.error));
-    });
-  }
-  generatePageToken() {
-    //  const url = "https://graph.facebook.com/{page-id}?fields=access_token&access_token=" + this.accessToken;
-
-    const url = "https://graph.facebook.com/me/accounts?fields=name,access_token&access_token=" + this.accessToken;
-    // const url = "https://graph.facebook.com/105114094889635/accounts?access_token=EAAGXn3oGklwBAEDY2dpA11KLDG0hhHYWi9pts9qmPJxXs6Ywb4UOq6SRhvr5kFpNDeUrHkG1rIZCxHJMxQS3U7UurncvEnjuuaD4aLmKDAT5uIoSb3QWSE92GkLWOS0Oqub7ZAIcxwtMBAaLOSQWqEiwsMuqaugO5XwiXJx97ekfXeuB8cnQhISZAtINl8ZD";
-    this.http.get(url).subscribe(res => {
-      if (res) {
-        this.pageToken = res['data'][0].access_token;
-        localStorage.setItem('FacebookPageToken', this.pageToken);
-        this.getAllDataByPeriod('days_28');
-      }
-    }, error => {
-      this.snackbarService.show('Fetch Page Token Failed : ' + JSON.stringify(error.error));
-    });
-  }
-  onSelect(period) {
-    this.getAllDataByPeriod(period);
-  }
+  
   testDateSlab(sdate, edate, isPrev) {
     //   sdate = "2020-9-02";
     // edate = "2021-04-13";
@@ -373,6 +324,7 @@ export class SocialmediaComponent implements OnInit {
     this.paidReachPrev = 0;
     this.percentPaidReach = 0;
     this. pageReachTotalPrev=0;
+    this.percentpageNewlikes = 0;
   }
   callFaceBookApi(sdt, edt, isPrev) {
     let avgNum = 0;
@@ -409,7 +361,7 @@ export class SocialmediaComponent implements OnInit {
               let diff = this.pageClicksTotal - this.pageClicksPrev;
               this.percentPageClicks = this.getPercentageChange(this.pageClicksPrev, this.pageClicksTotal);
               if (diff < 0) {
-                this.percentPageClicks = this.pos_to_neg(this.percentPageClicks);
+                this.percentPageClicks = this.pos_to_neg(this.percentPageClicks).toFixed(2);
               }
             }
           }
@@ -445,6 +397,7 @@ export class SocialmediaComponent implements OnInit {
                 this.negativeFeedback = parseInt(this.negativeFeedback) + parseInt(l[k].value['comment']);
               }
             }
+            debugger
             this.totalfeedback = parseInt(this.positiveFeedback) + parseInt(this.negativeFeedback)
             this.percentPositive = this.getPercentage(parseInt(this.positiveFeedback), parseInt(this.totalfeedback));
             if (this.percentPositive == 'NaN') { this.percentPositive = 0; }
@@ -472,7 +425,7 @@ export class SocialmediaComponent implements OnInit {
               let diff = this.profileViewTotal - this.profileViewTotalPrev;
               this.percentProfileView = this.getPercentageChange(this.profileViewTotalPrev, this.profileViewTotal);
               if (diff < 0) {
-                this.percentProfileView = this.pos_to_neg(this.percentProfileView);
+                this.percentProfileView = this.pos_to_neg(this.percentProfileView).toFixed(2);
               }
             }
           }
@@ -495,7 +448,7 @@ export class SocialmediaComponent implements OnInit {
               let diff = this.profileViewTotal - this.pageImpressionsTotalPrev;
               this.percentpageImpressions = this.getPercentageChange(this.pageImpressionsTotalPrev, this.pageImpressionsTotal);
               if (diff < 0) {
-                this.percentpageImpressions = this.pos_to_neg(this.percentpageImpressions);
+                this.percentpageImpressions = this.pos_to_neg(this.percentpageImpressions).toFixed(2);
               }
             }
           }
@@ -571,7 +524,7 @@ export class SocialmediaComponent implements OnInit {
             let diff = this.pageReachTotal - this.pageReachTotalPrev;
             this.percentPageReach = this.getPercentageChange(this.pageReachTotalPrev, this.pageReachTotal);
             if (diff < 0) {
-              this.percentPageReach = this.pos_to_neg(this.percentPageReach);
+              this.percentPageReach = this.pos_to_neg(this.percentPageReach).toFixed(2);
             }
             
           }
@@ -597,7 +550,7 @@ export class SocialmediaComponent implements OnInit {
               let diff = this.lostLikes - this.lostLikesPrev;
               this.percentlostLikes = this.getPercentageChange(this.lostLikesPrev, this.lostLikes);
               if (diff < 0) {
-                this.percentlostLikes = this.pos_to_neg(this.percentlostLikes);
+                this.percentlostLikes = this.pos_to_neg(this.percentlostLikes).toFixed(2);
               }
             }
           }
@@ -629,388 +582,33 @@ export class SocialmediaComponent implements OnInit {
       this.snackbarService.show('Fetch Data Failed : ' + JSON.stringify(error.error));
     });
   }
-  getAllDataByDateChange() {
-
-    const url = "https://graph.facebook.com/" + this.pageid + "/insights/page_impressions_unique,page_total_actions,page_positive_feedback_by_type,page_negative_feedback,page_views_total,page_impressions,page_views_external_referrals,page_fans_by_unlike_source_unique,page_impressions_organic,page_impressions_paid,page_fan_removes_unique,page_impressions_by_country_unique?access_token=" + this.pageToken + "&since=" + this.unixstartDate + "&until=" + this.unixendDate;
-    //const url = "https://graph.facebook.com/" + this.pageid + "/insights/page_impressions_unique,page_total_actions,page_positive_feedback_by_type,page_negative_feedback,page_views_total,page_impressions,page_views_external_referrals,page_fans_by_unlike_source_unique,page_impressions_organic,page_impressions_paid,page_fan_removes_unique,page_impressions_by_country_unique?access_token=" + this.pageToken+"&since=1612154532&until=1617252132";
-    this.http.get(url).subscribe(res => {
-
-      let avgNum = 0;
-      avgNum = this.calculateDateSlabDiff(this.toDate.value, this.fromDate.value);
-      if (res) {
-        for (let i = 0; i < res['data'].length; i++) {
-
-          let p = res['data'][i];
-          //Page Reach
-          if (p.name == 'page_impressions_unique') {
-            let l = p['values'];
-            this.pageReachTotal = 0;
-            for (let k = 0; k < l.length; k++) {
-              this.pageReachTotal = parseInt(this.pageReachTotal) + parseInt(l[k].value)
-            }
-          }
-          //Clicks
-          if (p.name == 'page_total_actions') {
-            let l = p['values'];
-            //this.pageClicksTotal = 0;
-            for (let k = 0; k < l.length; k++) {
-              this.pageClicksTotal = parseInt(this.pageClicksTotal) + parseInt(l[k].value)
-            }
-            this.avgPageClicks = this.getAverage(this.pageClicksTotal, avgNum);
-          }
-
-          //positive feedback
-          if (p.name == 'page_positive_feedback_by_type') {
-            let l = p['values'];
-            this.positiveFeedback = 0;
-            for (let k = 0; k < l.length; k++) {
-              if (l[k].value['other']) {
-                this.positiveFeedback = parseInt(this.positiveFeedback) + parseInt(l[k].value['other']);
-              }
-              if (l[k].value['like']) {
-                this.positiveFeedback = parseInt(this.positiveFeedback) + parseInt(l[k].value['like']);
-              }
-              if (l[k].value['comment']) {
-                this.positiveFeedback = parseInt(this.positiveFeedback) + parseInt(l[k].value['comment']);
-              }
-            }
-          }
-          //negative feedback
-          if (p.name == 'page_negative_feedback') {
-            let l = p['values'];
-            this.negativeFeedback = 0;
-            for (let k = 0; k < l.length; k++) {
-              if (l[k].value['other']) {
-                this.negativeFeedback = parseInt(this.negativeFeedback) + parseInt(l[k].value['other']);
-              }
-              if (l[k].value['like']) {
-                this.negativeFeedback = parseInt(this.negativeFeedback) + parseInt(l[k].value['like']);
-              }
-              if (l[k].value['comment']) {
-                this.negativeFeedback = parseInt(this.negativeFeedback) + parseInt(l[k].value['comment']);
-              }
-            }
-            this.totalfeedback = parseInt(this.positiveFeedback) + parseInt(this.negativeFeedback)
-            this.percentPositive = this.getPercentage(parseInt(this.positiveFeedback), parseInt(this.totalfeedback));
-            if (this.percentPositive == 'NaN') { this.percentPositive = 0; }
-            this.percentNegative = this.getPercentage(parseInt(this.negativeFeedback), parseInt(this.totalfeedback));
-            if (this.percentNegative == 'NaN') { this.percentNegative = 0; }
-
-
-          }
-          //Profile view count
-          if (p.name == 'page_views_total') {
-            let l = p['values'];
-            this.profileViewTotal = 0;
-            for (let k = 0; k < l.length; k++) {
-              this.profileViewTotal = parseInt(this.profileViewTotal) + parseInt(l[k].value)
-            }
-            this.avgProfileView = this.getAverage(this.profileViewTotal, avgNum);
-          }
-
-          //Page Impressions
-          if (p.name == 'page_impressions') {
-            let l = p['values'];
-
-            this.pageImpressionsTotal = 0;
-            for (let k = 0; k < l.length; k++) {
-              this.pageImpressionsTotal = parseInt(this.pageImpressionsTotal) + parseInt(l[k].value)
-            }
-            this.avgPageImpression = this.getAverage(this.pageImpressionsTotal, avgNum);
-          }
-
-          //Page External Referrer
-
-          if (p.name == 'page_views_external_referrals') {
-            let l = p['values'];
-            let str = l[1].value;
-
-            this.externalReferrerList = [];
-            if (str != undefined) {
-              for (let i = 0; i < Object.keys(str).length; i++) {
-                this.externalReferrerList.push({ 'url': Object.keys(str)[i], 'count': Object.values(str)[i], "percent": "0" });
-              }
-            }
-            // for (let k = 0; k < l.length; k++) {
-            //   this.profileViewTotal = parseInt(this.profileViewTotal) + parseInt(l[k].value)
-            // }
-          }
-          //Page Unlike 
-          if (p.name == 'page_fans_by_unlike_source_unique') {
-            let l = p['values'];
-
-            this.str = l[1].value;
-            if (this.str != undefined || this.str.length != undefined) {
-              let str = l[1].value;
-              this.pageUnlikeList = [];
-              if (str != undefined) {
-                for (let i = 0; i < Object.keys(str).length; i++) {
-                  this.pageUnlikeList.push({ 'url': Object.keys(str)[i], 'count': Object.values(str)[i], "percent": "0" });
-                }
-              }
-            }
-            // for (let k = 0; k < l.length; k++) {
-            //   this.pageImpressionsTotal = parseInt(this.pageImpressionsTotal) + parseInt(l[k].value)
-            // }
-          }
-          //Organic Reach
-          if (p.name == 'page_impressions_organic') {
-            let l = p['values'];
-            this.organicReach = 0;
-            for (let k = 0; k < l.length; k++) {
-              this.organicReach = parseInt(this.organicReach) + parseInt(l[k].value)
-            }
-          }
-
-          //Paid Reach
-          if (p.name == 'page_impressions_paid') {
-            let l = p['values'];
-
-            this.paidReach = 0;
-            for (let k = 0; k < l.length; k++) {
-              this.paidReach = parseInt(this.paidReach) + parseInt(l[k].value)
-            }
-            this.pageReachTotal = parseInt(this.paidReach) + parseInt(this.organicReach)
-            this.avgPageReach = this.getAverage(this.pageReachTotal, avgNum);
-            this.percentOrganicReach = this.getPercentage(parseInt(this.organicReach), parseInt(this.pageReachTotal));
-            this.percentPaidReach = this.getPercentage(parseInt(this.paidReach), parseInt(this.pageReachTotal));
-          }
-          //Lost Likes
-          if (p.name == 'page_fan_removes_unique') {
-            let l = p['values'];
-            this.lostLikes = 0;
-            for (let k = 0; k < l.length; k++) {
-              this.lostLikes = parseInt(this.lostLikes) + parseInt(l[k].value)
-            }
-            this.avgLostLikes = this.getAverage(this.lostLikes, avgNum);
-          }
-          //page_impressions_by_country_unique
-          if (p.name == 'page_impressions_by_country_unique') {
-            let l = p['values'];
-            let str = l[0].value;
-            this.str = l[0].value;
-            if (Object.keys(str).length != undefined) {
-              this.impressionByCountry = [];
-              this.totalimpressionByCountry = "0";
-
-              if (str != undefined) {
-                for (let i = 0; i < Object.keys(str).length; i++) {
-                  this.impressionByCountry.push({ 'country': Object.keys(str)[i], 'count': Object.values(str)[i], "percent": "0" });
-                  this.totalimpressionByCountry = parseInt(this.totalimpressionByCountry) + parseInt(Object.values(str)[i].toString());
-                }
-                this.impressionByCountry.sort((a, b) => (a.count > b.count ? -1 : 1));
-                this.totalimpressionByCountryName = this.impressionByCountry[0].country;
-                this.totalimpressionByCountryCount = this.impressionByCountry[0].count;
-                this.totalimpressionByCountryPercent = this.getPercentage(this.impressionByCountry[0].count, this.totalimpressionByCountry)
-                // this.totalimpressionByCountryPercent = parseFloat(this.totalimpressionByCountryPercent.toString()).toFixed(2)
-              }
-            }
-          }
-        }
-      }
-
-
-
-    }, error => {
-      this.snackbarService.show('Fetch Data Failed : ' + JSON.stringify(error.error));
-    });
-  }
-  getAllDataByPeriod(period) {
-
-    const url = "https://graph.facebook.com/" + this.pageid + "/insights/page_impressions_unique,page_total_actions,page_positive_feedback_by_type,page_negative_feedback,page_views_total,page_impressions,page_views_external_referrals,page_fans_by_unlike_source_unique,page_impressions_organic,page_impressions_paid,page_fan_removes_unique,page_impressions_by_country_unique?access_token=" + this.pageToken;
-    this.http.get(url).subscribe(res => {
-      let avgNum = 0;
-      if (period == 'days_28') { avgNum = 28; }
-      if (period == 'week') { avgNum = 7; }
-      if (period == 'day') { avgNum = 1; }
-      if (res) {
-        for (let i = 0; i < res['data'].length; i++) {
-
-          let p = res['data'][i];
-          //Page Reach
-          if (p.name == 'page_impressions_unique' && p.period == period) {
-            let l = p['values'];
-            this.pageReachTotal = 0;
-            for (let k = 0; k < l.length; k++) {
-              this.pageReachTotal = parseInt(this.pageReachTotal) + parseInt(l[k].value)
-            }
-          }
-          //Clicks
-          if (p.name == 'page_total_actions' && p.period == period) {
-            let l = p['values'];
-            this.pageClicksTotal = 0;
-            for (let k = 0; k < l.length; k++) {
-              this.pageClicksTotal = parseInt(this.pageClicksTotal) + parseInt(l[k].value)
-            }
-            this.avgPageClicks = this.getAverage(this.pageClicksTotal, avgNum);
-          }
-
-          //positive feedback
-          if (p.name == 'page_positive_feedback_by_type' && p.period == period) {
-            let l = p['values'];
-            this.positiveFeedback = 0;
-            for (let k = 0; k < l.length; k++) {
-              if (l[k].value['other']) {
-                this.positiveFeedback = parseInt(this.positiveFeedback) + parseInt(l[k].value['other']);
-              }
-              if (l[k].value['like']) {
-                this.positiveFeedback = parseInt(this.positiveFeedback) + parseInt(l[k].value['like']);
-              }
-              if (l[k].value['comment']) {
-                this.positiveFeedback = parseInt(this.positiveFeedback) + parseInt(l[k].value['comment']);
-              }
-            }
-          }
-          //negative feedback
-          if (p.name == 'page_negative_feedback' && p.period == period) {
-            let l = p['values'];
-            this.negativeFeedback = 0;
-            for (let k = 0; k < l.length; k++) {
-              if (l[k].value['other']) {
-                this.negativeFeedback = parseInt(this.negativeFeedback) + parseInt(l[k].value['other']);
-              }
-              if (l[k].value['like']) {
-                this.negativeFeedback = parseInt(this.negativeFeedback) + parseInt(l[k].value['like']);
-              }
-              if (l[k].value['comment']) {
-                this.negativeFeedback = parseInt(this.negativeFeedback) + parseInt(l[k].value['comment']);
-              }
-            }
-            this.totalfeedback = parseInt(this.positiveFeedback) + parseInt(this.negativeFeedback)
-            this.percentPositive = this.getPercentage(parseInt(this.positiveFeedback), parseInt(this.totalfeedback));
-            if (this.percentPositive == 'NaN') { this.percentPositive = 0; }
-            this.percentNegative = this.getPercentage(parseInt(this.negativeFeedback), parseInt(this.totalfeedback));
-            if (this.percentNegative == 'NaN') { this.percentNegative = 0; }
-
-
-          }
-          //Profile view count
-          if (p.name == 'page_views_total' && p.period == period) {
-            let l = p['values'];
-            this.profileViewTotal = 0;
-            for (let k = 0; k < l.length; k++) {
-              this.profileViewTotal = parseInt(this.profileViewTotal) + parseInt(l[k].value)
-            }
-            this.avgProfileView = this.getAverage(this.profileViewTotal, avgNum);
-          }
-          //Page Impressions
-          if (p.name == 'page_impressions' && p.period == period) {
-            let l = p['values'];
-            this.pageImpressionsTotal = 0;
-            for (let k = 0; k < l.length; k++) {
-              this.pageImpressionsTotal = parseInt(this.pageImpressionsTotal) + parseInt(l[k].value)
-            }
-
-            this.avgPageImpression = this.getAverage(this.pageImpressionsTotal, avgNum);
-          }
-
-          //Page External Referrer
-
-          if (p.name == 'page_views_external_referrals') {
-            let l = p['values'];
-            let str = l[1].value;
-
-            this.externalReferrerList = [];
-            if (str != undefined) {
-              for (let i = 0; i < Object.keys(str).length; i++) {
-                this.externalReferrerList.push({ 'url': Object.keys(str)[i], 'count': Object.values(str)[i], "percent": "0" });
-              }
-            }
-            // for (let k = 0; k < l.length; k++) {
-            //   this.profileViewTotal = parseInt(this.profileViewTotal) + parseInt(l[k].value)
-            // }
-          }
-          //Page Unlike 
-          if (p.name == 'page_fans_by_unlike_source_unique') {
-            let l = p['values'];
-
-            this.str = l[1].value;
-            if (this.str != undefined || this.str.length != undefined) {
-              let str = l[1].value;
-              this.pageUnlikeList = [];
-              if (str != undefined) {
-                for (let i = 0; i < Object.keys(str).length; i++) {
-                  this.pageUnlikeList.push({ 'url': Object.keys(str)[i], 'count': Object.values(str)[i], "percent": "0" });
-                }
-              }
-            }
-            // for (let k = 0; k < l.length; k++) {
-            //   this.pageImpressionsTotal = parseInt(this.pageImpressionsTotal) + parseInt(l[k].value)
-            // }
-          }
-          //Organic Reach
-          if (p.name == 'page_impressions_organic' && p.period == period) {
-            let l = p['values'];
-            this.organicReach = 0;
-            for (let k = 0; k < l.length; k++) {
-              this.organicReach = parseInt(this.organicReach) + parseInt(l[k].value)
-            }
-          }
-          //Paid Reach
-          if (p.name == 'page_impressions_paid' && p.period == period) {
-            let l = p['values'];
-            this.paidReach = 0;
-            for (let k = 0; k < l.length; k++) {
-              this.paidReach = parseInt(this.paidReach) + parseInt(l[k].value)
-            }
-            this.pageReachTotal = parseInt(this.paidReach) + parseInt(this.organicReach)
-            this.avgPageReach = this.getAverage(this.pageReachTotal, avgNum);
-            this.percentOrganicReach = this.getPercentage(parseInt(this.organicReach), parseInt(this.pageReachTotal));
-            this.percentPaidReach = this.getPercentage(parseInt(this.paidReach), parseInt(this.pageReachTotal));
-          }
-          //Lost Likes
-          if (p.name == 'page_fan_removes_unique' && p.period == period) {
-            let l = p['values'];
-            this.lostLikes = 0;
-            for (let k = 0; k < l.length; k++) {
-              this.lostLikes = parseInt(this.lostLikes) + parseInt(l[k].value)
-            }
-            this.avgLostLikes = this.getAverage(this.lostLikes, avgNum);
-          }
-          //page_impressions_by_country_unique
-          if (p.name == 'page_impressions_by_country_unique') {
-            let l = p['values'];
-            let str = l[0].value;
-            this.str = l[0].value;
-            if (Object.keys(str).length != undefined) {
-              this.impressionByCountry = [];
-              this.totalimpressionByCountry = "0";
-
-              if (str != undefined) {
-                for (let i = 0; i < Object.keys(str).length; i++) {
-                  this.impressionByCountry.push({ 'country': Object.keys(str)[i], 'count': Object.values(str)[i], "percent": "0" });
-                  this.totalimpressionByCountry = parseInt(this.totalimpressionByCountry) + parseInt(Object.values(str)[i].toString());
-                }
-                this.impressionByCountry.sort((a, b) => (a.count > b.count ? -1 : 1));
-                this.totalimpressionByCountryName = this.impressionByCountry[0].country;
-                this.totalimpressionByCountryCount = this.impressionByCountry[0].count;
-                this.totalimpressionByCountryPercent = this.getPercentage(this.impressionByCountry[0].count, this.totalimpressionByCountry)
-                // this.totalimpressionByCountryPercent = parseFloat(this.totalimpressionByCountryPercent.toString()).toFixed(2)
-              }
-            }
-          }
-        }
-      }
-
-
-
-    }, error => {
-      this.snackbarService.show('Fetch Data Failed : ' + JSON.stringify(error.error));
-    });
-  }
-  getPageLikes(sdt, edt) {
-
+  getPageNewLikes(sdt, edt, isPrev) {
+   
     const url = "https://graph.facebook.com/" + this.pageid + "?access_token=" + this.pageToken + "&fields=new_like_count&since=" + sdt + "&until=" + edt + "&period=day";
     this.http.get(url).subscribe(res => {
       if (res) {
-
+        debugger
+        let avgNum = 0;
+        avgNum = this.calculateDateSlabDiff(this.toDate.value, this.fromDate.value);
+        if (isPrev == 0) {
         this.pageNewlikesTotal = res['new_like_count'];
+          this.avgNewlikes = this.getAverage(this.pageNewlikesTotal, avgNum);
+        }
+        if (isPrev == 1) {
+          this.pageNewlikesTotalPrev = res['new_like_count'];
+
+          let diff = this.pageNewlikesTotal - this.pageNewlikesTotalPrev;
+          this.percentpageNewlikes = this.getPercentageChange(this.pageNewlikesTotalPrev, this.pageNewlikesTotal);
+          if (diff < 0) {
+            this.percentpageNewlikes = this.pos_to_neg(this.percentpageNewlikes).toFixed(2);
+          }
+        }
       }
     }, error => {
       this.snackbarService.show('Fetch New Likes Count Failed : ' + JSON.stringify(error.error));
     });
   }
-  getPageNewLikes(sdt, edt) {
+  getPageLikes(sdt, edt) {
 
 
     const url = "https://graph.facebook.com/" + this.pageid + "?access_token=" + this.pageToken + "&fields=country_page_likes&since=" + sdt + "&until=" + edt + "&period=day";
@@ -1021,219 +619,6 @@ export class SocialmediaComponent implements OnInit {
       }
     }, error => {
       this.snackbarService.show('Fetch Total Likes Count Failed : ' + JSON.stringify(error.error));
-    });
-  }
-  getProfileViewCount() {
-    //page_views_unique Page Views from users logged into Facebook day
-    const url = "https://graph.facebook.com/" + this.pageid + "/insights/page_views_total?access_token=" + this.pageToken;
-    //const url = "https://graph.facebook.com/102988865108273/insights/page_impressions_unique?access_token=EAAGXn3oGklwBAAni75mymZAVNH0RB7ecJ7BSj6lYmnRwWewDSJMvhUZCxwMlnPH1HnMHWYKccrsDR6dyjeeQPBDpucGeN6EtvYTYcZC1OeWa2ObRAlHS2ZC2yMMmOLB5AkJWuxK0YtLBv2EpaD2RtsEjeb8EgbPUUeJLkDnbG4jplrccWCKgzu8LU4ie0abbeBrdzscvuATZCusuSOXku";
-    this.http.get(url).subscribe(res => {
-      if (res) {
-        let p = res['data'][2];
-        let l = p['values'];
-        this.profileViewTotal = 0;
-        for (let i = 0; i < l.length; i++) {
-          this.profileViewTotal = parseInt(this.profileViewTotal) + parseInt(l[i].value)
-        }
-
-        this.avgProfileView = this.getAverage(this.profileViewTotal, 28);
-      }
-    }, error => {
-      this.snackbarService.show('Fetch Total Page Reach Count Failed : ' + JSON.stringify(error.error));
-    });
-  }
-  // getPageImpression() {
-
-  //   const url = "https://graph.facebook.com/" + this.pageid + "/insights/page_impressions?access_token=" + this.pageToken;
-  //   this.http.get(url).subscribe(res => {
-  //     if (res) {
-
-  //       let p = res['data'][2];
-  //       let l = p['values'];
-  //       this.pageImpressionsTotal = 0;
-  //       for (let i = 0; i < l.length; i++) {
-  //         this.pageImpressionsTotal = parseInt(this.pageImpressionsTotal) + parseInt(l[i].value)
-  //       }
-  //     }
-  //   }, error => {
-  //     this.snackbarService.show('Fetch Total Page Reach Count Failed : ' + JSON.stringify(error.error));
-  //   });
-  // }
-  // getPageReachCount() {
-  //   //page_views_unique Page Views from users logged into Facebook day
-  //   const url = "https://graph.facebook.com/" + this.pageid + "/insights/page_impressions_unique?access_token=" + this.pageToken;
-  //   //const url = "https://graph.facebook.com/102988865108273/insights/page_impressions_unique?access_token=EAAGXn3oGklwBAAni75mymZAVNH0RB7ecJ7BSj6lYmnRwWewDSJMvhUZCxwMlnPH1HnMHWYKccrsDR6dyjeeQPBDpucGeN6EtvYTYcZC1OeWa2ObRAlHS2ZC2yMMmOLB5AkJWuxK0YtLBv2EpaD2RtsEjeb8EgbPUUeJLkDnbG4jplrccWCKgzu8LU4ie0abbeBrdzscvuATZCusuSOXku";
-  //   this.http.get(url).subscribe(res => {
-  //     if (res) {
-  //       let p = res['data'][2];
-  //       let l = p['values'];
-  //       this.pageReachTotal = 0;
-  //       for (let i = 0; i < l.length; i++) {
-  //         this.pageReachTotal = parseInt(this.pageReachTotal) + parseInt(l[i].value)
-  //       }
-  //     }
-  //   }, error => {
-  //     this.snackbarService.show('Fetch Total Page Reach Count Failed : ' + JSON.stringify(error.error));
-  //   });
-  // }
-  getPageReachOrganicCount() {
-    //if this field name wrong then try for page_impressions_organic_unique
-    const url = "https://graph.facebook.com/" + this.pageid + "/insights/page_impressions_organic?access_token=" + this.pageToken;
-    //const url = "https://graph.facebook.com/102988865108273/insights/page_impressions_unique?access_token=EAAGXn3oGklwBAAni75mymZAVNH0RB7ecJ7BSj6lYmnRwWewDSJMvhUZCxwMlnPH1HnMHWYKccrsDR6dyjeeQPBDpucGeN6EtvYTYcZC1OeWa2ObRAlHS2ZC2yMMmOLB5AkJWuxK0YtLBv2EpaD2RtsEjeb8EgbPUUeJLkDnbG4jplrccWCKgzu8LU4ie0abbeBrdzscvuATZCusuSOXku";
-    this.http.get(url).subscribe(res => {
-      if (res) {
-
-        let p = res['data'][2];
-        let l = p['values'];
-        this.organicReach = 0;
-        for (let i = 0; i < l.length; i++) {
-          this.organicReach = parseInt(this.organicReach) + parseInt(l[i].value)
-        }
-      }
-    }, error => {
-      this.snackbarService.show('Fetch Total Organic Page Reach Count Failed : ' + JSON.stringify(error.error));
-    });
-  }
-  getPageReachPaidCount() {
-    //if this field name wrong then try for page_impressions_paid_unique
-    const url = "https://graph.facebook.com/" + this.pageid + "/insights/page_impressions_paid?access_token=" + this.pageToken;
-    //const url = "https://graph.facebook.com/102988865108273/insights/page_impressions_unique?access_token=EAAGXn3oGklwBAAni75mymZAVNH0RB7ecJ7BSj6lYmnRwWewDSJMvhUZCxwMlnPH1HnMHWYKccrsDR6dyjeeQPBDpucGeN6EtvYTYcZC1OeWa2ObRAlHS2ZC2yMMmOLB5AkJWuxK0YtLBv2EpaD2RtsEjeb8EgbPUUeJLkDnbG4jplrccWCKgzu8LU4ie0abbeBrdzscvuATZCusuSOXku";
-    this.http.get(url).subscribe(res => {
-      if (res) {
-
-        let p = res['data'][2];
-        let l = p['values'];
-        this.paidReach = 0;
-        for (let i = 0; i < l.length; i++) {
-          this.paidReach = parseInt(this.paidReach) + parseInt(l[i].value)
-        }
-        this.pageReachTotal = parseInt(this.paidReach) + parseInt(this.organicReach)
-        this.percentOrganicReach = this.getPercentage(parseInt(this.organicReach), parseInt(this.pageReachTotal));
-        this.percentOrganicReach = parseFloat(this.percentOrganicReach.toString()).toFixed(0);
-        this.percentPaidReach = this.getPercentage(parseInt(this.paidReach), parseInt(this.pageReachTotal));
-        this.percentPaidReach = parseFloat(this.percentPaidReach.toString()).toFixed(0);
-      }
-    }, error => {
-      this.snackbarService.show('Fetch Total Paid Page Reach Count Failed : ' + JSON.stringify(error.error));
-    });
-  }
-  getTotalClicksCount() {
-    const url = "https://graph.facebook.com/" + this.pageid + "/insights/page_total_actions?access_token=" + this.pageToken;
-    this.http.get(url).subscribe(res => {
-      if (res) {
-
-        let p = res['data'][2];
-        let l = p['values'];
-        this.pageClicksTotal = 0;
-        for (let i = 0; i < l.length; i++) {
-          this.pageClicksTotal = parseInt(this.pageClicksTotal) + parseInt(l[i].value)
-          // this.pageClicksTotal = parseInt(l[0].value) + parseInt(l[1].value);
-        }
-      }
-    }, error => {
-      this.snackbarService.show('Fetch Total Page Clicks Count Failed : ' + JSON.stringify(error.error));
-    });
-  }
-  getPageUnlikeBySOurceCount() {
-
-    const url = "https://graph.facebook.com/" + this.pageid + "/insights/page_fans_by_unlike_source_unique?access_token=" + this.pageToken;
-    this.http.get(url).subscribe(res => {
-      if (res) {
-
-        let p = res['data'][2];
-        let l = p['values'];
-        // this.pageClicksTotal = 0;
-        // for (let i = 0; i < l.length; i++) {
-        //   this.pageClicksTotal = parseInt(this.pageClicksTotal) + parseInt(l[i].value)
-        // }
-      }
-    }, error => {
-      this.snackbarService.show('Fetch Total Page Clicks Count Failed : ' + JSON.stringify(error.error));
-    });
-  }
-  getTotalExternamReferrer() {
-    const url = "https://graph.facebook.com/" + this.pageid + "/insights/page_views_external_referrals?access_token=" + this.pageToken;
-    this.http.get(url).subscribe(res => {
-      if (res) {
-
-        let p = res['data'][2];
-        let l = p['values'];
-        this.pageClicksTotal = 0;
-        for (let i = 0; i < l.length; i++) {
-          this.pageClicksTotal = parseInt(this.pageClicksTotal) + parseInt(l[i].value)
-        }
-      }
-    }, error => {
-      this.snackbarService.show('Fetch Total External Referrer Count Failed : ' + JSON.stringify(error.error));
-    });
-  }
-  getTotalLikesLost() {
-    const url = "https://graph.facebook.com/" + this.pageid + "/insights/page_fan_removes_unique?access_token=" + this.pageToken;
-    this.http.get(url).subscribe(res => {
-      if (res) {
-
-        let p = res['data'][2];
-        let l = p['values'];
-        this.lostLikes = 0;
-        for (let i = 0; i < l.length; i++) {
-          this.lostLikes = parseInt(this.lostLikes) + parseInt(l[i].value)
-        }
-        this.avgLostLikes = this.getAverage(this.lostLikes, 28);
-      }
-    }, error => {
-      this.snackbarService.show('Fetch Total External Referrer Count Failed : ' + JSON.stringify(error.error));
-    });
-  }
-  getPositiveFeedbackCount() {
-    const url = "https://graph.facebook.com/" + this.pageid + "/insights/page_positive_feedback_by_type?access_token=" + this.pageToken;
-    this.http.get(url).subscribe(res => {
-      if (res) {
-        let p = res['data'][2];
-        let l = p['values'];
-        this.positiveFeedback = 0;
-        for (let i = 0; i < l.length; i++) {
-          if (l[i].value['other']) {
-            this.positiveFeedback = parseInt(this.positiveFeedback) + parseInt(l[i].value['other']);
-          }
-          if (l[i].value['like']) {
-            this.positiveFeedback = parseInt(this.positiveFeedback) + parseInt(l[i].value['like']);
-          }
-          if (l[i].value['comment']) {
-            this.positiveFeedback = parseInt(this.positiveFeedback) + parseInt(l[i].value['comment']);
-          }
-        }
-      }
-    }, error => {
-      this.snackbarService.show('Fetch Total Positive Feedback Count Failed : ' + JSON.stringify(error.error));
-    });
-  }
-  getNegativeFeedbackCount() {
-    const url = "https://graph.facebook.com/" + this.pageid + "/insights/page_negative_feedback?access_token=" + this.pageToken;
-    this.http.get(url).subscribe(res => {
-      if (res) {
-        let p = res['data'][2];
-        let l = p['values'];
-        this.negativeFeedback = parseInt(l[0].value) + parseInt(l[1].value);
-        this.negativeFeedback = 0;
-        for (let i = 0; i < l.length; i++) {
-          if (l[i].value['other']) {
-            this.negativeFeedback = parseInt(this.negativeFeedback) + parseInt(l[i].value['other']);
-          }
-          if (l[i].value['like']) {
-            this.negativeFeedback = parseInt(this.negativeFeedback) + parseInt(l[i].value['like']);
-          }
-          if (l[i].value['comment']) {
-            this.negativeFeedback = parseInt(this.negativeFeedback) + parseInt(l[i].value['comment']);
-          }
-        }
-
-        this.totalfeedback = parseInt(this.positiveFeedback) + parseInt(this.negativeFeedback)
-        this.percentPositive = this.getPercentage(parseInt(this.positiveFeedback), parseInt(this.totalfeedback));
-        this.percentNegative = this.getPercentage(parseInt(this.negativeFeedback), parseInt(this.totalfeedback));
-
-      }
-    }, error => {
-      this.snackbarService.show('Fetch Total Positive Feedback Count Failed : ' + JSON.stringify(error.error));
     });
   }
 
@@ -1250,8 +635,12 @@ export class SocialmediaComponent implements OnInit {
     }
   }
   getPercentageChange(oldNumber, newNumber) {
+    if(oldNumber == 0 && newNumber == 0){
+     return 0; 
+    }else{
     var decreaseValue = oldNumber - newNumber;
     return (decreaseValue / oldNumber) * 100;
+    }
   }
   pos_to_neg(num) {
     return -Math.abs(num);

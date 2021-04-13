@@ -427,6 +427,7 @@ export class SeoComponent implements OnInit {
       }
     }
   };
+
   bsValue = new Date();
   date = new Date();
   startDate = new Date(new Date().setDate(new Date().getDate() - 31)).toISOString().split("T")[0]; queryParams: any;
@@ -921,7 +922,7 @@ export class SeoComponent implements OnInit {
     //this.getAnalyticsData();
     // this.getCampaignList();
     this.getSerpList();
-    this.getRankingGraphDataDelete();
+    //this.getRankingGraphDataDelete();
     this.showdiv = true;
     this.show = 'seo';
     this.showDefault = 'seo';
@@ -954,6 +955,10 @@ export class SeoComponent implements OnInit {
           this.keywordTableList = p;
           
           for (let i = 0; i < p.length; i++) {
+            // this.addColumn("keywords",p[i].keywords,i);
+            // this.addColumn("position",p[i].position,i);
+            // this.addColumn("searches",p[i].searches,i);
+            // this.addColumn("location",p[i].location,i);
             //  keywords,position,prevposition,searches,location
             // this.keywordTableList[i].keywords
             // this.keywordTableList.push("keywords",p[i].keywords);
@@ -987,6 +992,11 @@ export class SeoComponent implements OnInit {
     else {
     }
   }
+  public addColumn(title , value, index) {
+    debugger
+    this.settings.columns["new column " + index] = { title: title, value : value};
+    this.settings = Object.assign({}, this.settings);
+}
   sortData(p) {
     return p.sort((a, b) => {
       return <any>new Date(b.createdOn) - <any>new Date(a.createdOn);
@@ -1029,7 +1039,7 @@ export class SeoComponent implements OnInit {
         this.getData();
       }
     }, error => {
-      alert('eeee : ' + JSON.stringify(error.error));
+      alert('Gsc : ' + JSON.stringify(error.error));
     });
   }
   refreshGoogleAnalyticsAccount() {
@@ -1052,7 +1062,7 @@ export class SeoComponent implements OnInit {
         this.getSiteSpeedDataDesktop();
       }
     }, error => {
-      alert('eeee : ' + JSON.stringify(error.error));
+      alert('GA : ' + JSON.stringify(error.error));
     });
 
   }
@@ -1060,6 +1070,7 @@ export class SeoComponent implements OnInit {
   ngOnInit(): void {
     // this.lineChartData1=[];
     // this.lineChartLabels1 = [];
+    debugger
     this.gaurl = localStorage.getItem('gaurl');
     this.gaaccesstoken = localStorage.getItem('gaaccesstoken');
     this.garefreshtoken = localStorage.getItem('garefreshtoken');
@@ -2042,7 +2053,7 @@ export class SeoComponent implements OnInit {
     this.selectedCampId = `${id.substring(3)}`;
     filterOptionModel.searchQuery = 'CampaignID=="' + this.selectedCampId + '"'
     this.campaignService.getSerpForKeyword(filterOptionModel, "&tbs=qdr:m").subscribe(res => {
-      
+      debugger
       this.serpList = res;
       this.tempSerpList = this.serpList;
       this.GetRankingPosition(this.selectedCampId);

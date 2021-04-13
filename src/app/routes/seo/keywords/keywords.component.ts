@@ -51,14 +51,6 @@ export class KeywordsComponent implements OnInit {
         title: 'KEYWORD PHRASE',
         filter: false
       },
-      tags: {
-        title: 'TAGS',
-        filter: false
-      },
-      position: {
-        title: 'POSITION',
-        filter: false
-      },
       searches: {
         title: 'SEARCHES',
         valuePrepareFunction: (searches) => {
@@ -313,7 +305,7 @@ export class KeywordsComponent implements OnInit {
     keywordDto.Keyword = result['keyword'].split('\n')
     keywordDto.Location = result['location']
     keywordDto.LocationName=result['location_name']
-   // keywordDto.Tags = this.tags
+    //keywordDto.Tags = this.tags
     this.showSpinner = true
 
     this.campaignService.addNewKeyword(keywordDto.CampaignID, keywordDto.Keyword, keywordDto.Location, keywordDto.LocationName,'').subscribe((res) => {
@@ -659,41 +651,44 @@ export class KeywordsComponent implements OnInit {
   }
   getSerpLocations() {
     debugger
-    this.campaignService.getSerpLocations(this.isoCode).subscribe((res) => { 
-      
-      let result;
-      result = res;
-
-      let x = result.map((h) => {
-        var z = h.location_name.split(",");
-        h.location_name = z[0];
-        return h;
-      });
-
-      if (this.selectedState == null||(this.changedIsoCode!==this.isoCode)) {
-       
-        let a = x.filter((a) => a.location_type == "Union Territory");
-        let b = x.filter((b) => b.location_type == "State");
-        let c = x.filter((b) => b.location_type == "Province");
-        let d = (a.concat(b)).concat(c);
-        this.showSpinnerLocationContent = false;
-        this.state = d;
-        this.showLocationStates=true;
-      }
-     
-      if (this.selectedState!== null || (this.changedIsoCode !== this.isoCode)) {
-       
-        let j = x.filter((j) => j.location_code == this.selectedState)
-        let m = j[0].location_code;
-        this.current_loc_name=j[0].location_name+","+x[0].location_name;
-        let e = result.filter((e) => e.location_type == "City");
-        let f = result.filter((f) => f.location_type == "District");
-        let g = e.concat(f);
-        let n = g.filter((n) => n.location_code_parent == m);
-        this.showSpinnerLocationContent = false;
-        this.cities = n;
-        this.showLocationCities = true;
-      }
+    this.campaignService.getSerpLocations(this.isoCode).subscribe((res) => {
+    
+    let result;
+    result = res;
+    
+    let x = result.map((h) => {
+    var z = h.location_name.split(",");
+    h.location_name = z[0];
+    return h;
     });
-  }
+    if (this.changedIsoCode !== this.isoCode) {
+    this.selectedState = null;
+    }
+    if (this.selectedState == null) {
+    
+    let a = x.filter((a) => a.location_type == "Union Territory");
+    let b = x.filter((b) => b.location_type == "State");
+    let c = x.filter((b) => b.location_type == "Province");
+    let d = (a.concat(b)).concat(c);
+    this.showSpinnerLocationContent = false;
+    this.state = d;
+    this.showLocationStates = true;
+    }
+    
+    if (this.selectedState !== null && this.selectedState != undefined) {
+    
+    let j = x.filter((j) => j.location_code == this.selectedState)
+    let m = j[0].location_code;
+    this.current_loc_name = j[0].location_name + "," + x[0].location_name;
+    let e = result.filter((e) => e.location_type == "City");
+    let f = result.filter((f) => f.location_type == "District");
+    let g = e.concat(f);
+    let n = g.filter((n)=> n.location_code_parent == m);
+    this.showSpinnerLocationContent = false;
+    this.cities = n;
+    this.showLocationCities = true;
+    }
+    
+    });
+    }
 }
