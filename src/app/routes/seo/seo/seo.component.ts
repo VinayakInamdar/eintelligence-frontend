@@ -2414,7 +2414,7 @@ export class SeoComponent implements OnInit {
       }
     });
   }
-  getDataCurrentYear(startDate, endDate, all, url) {
+  getDataCurrentYear(startDate, endDate, url) {
     this.httpOptionJSON = {
       headers: new HttpHeaders({
         'Accept': 'application/json',
@@ -2422,7 +2422,75 @@ export class SeoComponent implements OnInit {
       })
     };
     let data = {};
-    if (all == 1) {
+    
+      data = {
+        "startRow": 0,
+        "startDate": startDate,
+        "endDate": endDate,
+        "dataState": "ALL",
+      };
+    
+    this.http.post(url, data, this.httpOptionJSON).subscribe(res => {
+      if (res) {
+        let rows = res['rows'];
+          this.clicksThisYear = rows[0].clicks;
+          this.impressionsThisYear = rows[0].impressions;
+          this.cTRThisYear = parseFloat(rows[0].ctr).toFixed(2).toString();
+          this.positionThisYear = parseFloat(rows[0].position).toFixed(2).toString();
+          this.getDataPreviousYear(this.previousStartDate, this.previousEndDate, url);
+      }
+    }, error => {
+
+      // alert('Data fetch failed for current year : ' + JSON.stringify(error.error));
+    });
+
+  }
+  getDataPreviousYear(startDate, endDate, url) {
+    this.httpOptionJSON = {
+      headers: new HttpHeaders({
+        'Accept': 'application/json',
+        'Authorization': 'Bearer ' + this.gscaccesstoken,
+      })
+    };
+    let data = {
+      "startRow": 0,
+      "startDate": startDate,
+      "endDate": endDate,
+      "dataState": "ALL"
+    };
+    this.http.post(url, data, this.httpOptionJSON).subscribe(res => {
+      if (res) {
+
+        let rows = res['rows'];
+   
+          this.clicksPreviousYear = rows[0].clicks;
+          this.impressionsPreviousYear = rows[0].impressions;
+          this.cTRPreviousYear = parseFloat(rows[0].ctr).toFixed(2).toString();
+          this.positionPreviousYear = parseFloat(rows[0].position).toFixed(2).toString();
+
+          //pecentgage calculate
+          
+          this.percentClicks = this.getYearwiseDifference(this.clicksPreviousYear, this.clicksThisYear);
+          this.percentImpressions = this.getYearwiseDifference(this.impressionsPreviousYear, this.impressionsThisYear);
+          this.percentPosition = this.getYearwiseDifference(this.positionPreviousYear, this.positionThisYear);
+          this.percentCTR = this.getYearwiseDifference(this.cTRPreviousYear, this.cTRThisYear);
+       
+      }
+    }, error => {
+
+      //alert('Data fetch failed for previous year : ' + JSON.stringify(error.error));
+    });
+
+  }
+  getDataCurrentYearWithDate(startDate, endDate, url) {
+    this.httpOptionJSON = {
+      headers: new HttpHeaders({
+        'Accept': 'application/json',
+        'Authorization': 'Bearer ' + this.gscaccesstoken,
+      })
+    };
+    let data = {};
+  
       data = {
         "startRow": 0,
         "startDate": startDate,
@@ -2432,27 +2500,12 @@ export class SeoComponent implements OnInit {
           "DATE"
         ]
       };
-    }
-    if (all == 0) {
-      data = {
-        "startRow": 0,
-        "startDate": startDate,
-        "endDate": endDate,
-        "dataState": "ALL",
-      };
-    }
+   
     this.http.post(url, data, this.httpOptionJSON).subscribe(res => {
       if (res) {
 
         let rows = res['rows'];
-        if (all == 0) {
-          
-          this.clicksThisYear = rows[0].clicks;
-          this.impressionsThisYear = rows[0].impressions;
-          this.cTRThisYear = parseFloat(rows[0].ctr).toFixed(2).toString();
-          this.positionThisYear = parseFloat(rows[0].position).toFixed(2).toString();
-        }
-        else {
+       
           this.dateListData = [];
           this.barDataClicks.datasets[0].data = [];
           this.barDataImpressions.datasets[0].data = [];
@@ -2468,7 +2521,7 @@ export class SeoComponent implements OnInit {
             this.barDataPositions.datasets[0].data.push(rows[i].position);
             this.barChartLabels.push(this.currDate);
           }
-        }
+        this.getDataPreviousYearWithDate(this.previousStartDate, this.previousEndDate, url);
       }
     }, error => {
 
@@ -2476,7 +2529,7 @@ export class SeoComponent implements OnInit {
     });
 
   }
-  getDataPreviousYear(startDate, endDate, all, url) {
+  getDataPreviousYearWithDate(startDate, endDate, url) {
     this.httpOptionJSON = {
       headers: new HttpHeaders({
         'Accept': 'application/json',
@@ -2496,20 +2549,7 @@ export class SeoComponent implements OnInit {
       if (res) {
 
         let rows = res['rows'];
-        if (all == 0) {
-          this.clicksPreviousYear = rows[0].clicks;
-          this.impressionsPreviousYear = rows[0].impressions;
-          this.cTRPreviousYear = parseFloat(rows[0].ctr).toFixed(2).toString();
-          this.positionPreviousYear = parseFloat(rows[0].position).toFixed(2).toString();
-
-          //pecentgage calculate
-          
-          this.percentClicks = this.getYearwiseDifference(this.clicksPreviousYear, this.clicksThisYear);
-          this.percentImpressions = this.getYearwiseDifference(this.impressionsPreviousYear, this.impressionsThisYear);
-          this.percentPosition = this.getYearwiseDifference(this.positionPreviousYear, this.positionThisYear);
-          this.percentCTR = this.getYearwiseDifference(this.cTRPreviousYear, this.cTRThisYear);
-        }
-        else {
+       
           this.dateListData = [];
           this.barDataClicks.datasets[1].data = [];
           this.barDataImpressions.datasets[1].data = [];
@@ -2524,7 +2564,7 @@ export class SeoComponent implements OnInit {
 
             this.barChartLabels.push(this.currDate);
           }
-        }
+        
       }
     }, error => {
 
@@ -2532,7 +2572,6 @@ export class SeoComponent implements OnInit {
     });
 
   }
-
 
   onStartDateChange(event) {
     this.getDateDiff();
@@ -2592,10 +2631,8 @@ export class SeoComponent implements OnInit {
       const url = "https://www.googleapis.com/webmasters/v3/sites/https%3A%2F%2F" + urlcamp + "/searchAnalytics/query?key=AIzaSyC1IsrCeeNXp9ksAmC8szBtYVjTLJC9UWQ";
 
       //const url = "https://searchconsole.googleapis.com/webmasters/v3/sites/https%3A%2F%2Fpatwa.co.in/searchAnalytics/query?key=AIzaSyC1IsrCeeNXp9ksAmC8szBtYVjTLJC9UWQ"
-      this.getDataCurrentYear(this.startDate, this.endDate, 0, url);
-      this.getDataPreviousYear(this.previousStartDate, this.previousEndDate, 0, url);
-      this.getDataCurrentYear(this.startDate, this.endDate, 1, url);
-      this.getDataPreviousYear(this.previousStartDate, this.previousEndDate, 1, url);
+      this.getDataCurrentYear(this.startDate, this.endDate, url);
+      this.getDataCurrentYearWithDate(this.startDate, this.endDate, url);
       this.getDataByDevice(this.startDate, this.endDate, url)
     }
   }

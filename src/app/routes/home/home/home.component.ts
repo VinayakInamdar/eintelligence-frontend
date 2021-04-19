@@ -18,6 +18,7 @@ import { environment } from 'src/environments/environment';
 import { GoogleLoginProvider, SocialAuthService } from 'angularx-social-login';
 import { FacebookService, LoginOptions, LoginResponse } from 'ngx-facebook';
 import { TranslateService } from '@ngx-translate/core';
+import { env } from 'process';
 const success = require('sweetalert');
 @Component({
   selector: 'app-home',
@@ -89,8 +90,8 @@ export class HomeComponent implements OnInit {
 
   startDate;
   endDate;
-tempStr:string="";
-tempRes:string="";
+  tempStr: string = "";
+  tempRes: string = "";
   tempDate = new Date();
   clicksThisYear: string = "0";
   clicksPreviousYear: string = "0";
@@ -246,14 +247,14 @@ tempRes:string="";
           if (this.tempStr != '' && this.tempStr != undefined && this.tempStr != null) {
             if (this.tempStr.toString().includes("--")) {
               let diff = parseInt(st[0]) - parseInt(st[1])
-              diff  = parseInt(diff.toString().replace('-', ''));
-              if(parseInt(st[0]) == 0){
+              diff = parseInt(diff.toString().replace('-', ''));
+              if (parseInt(st[0]) == 0) {
                 this.tempRes = st[0] + ` <span class="text-success"><i class='fas fa-arrow-alt-circle-up'></i></span> ` + diff
-              }else if (parseInt(st[0]) > parseInt(st[1])) {
+              } else if (parseInt(st[0]) > parseInt(st[1])) {
                 this.tempRes = st[0] + ` <span class="text-success"><i class='fas fa-arrow-alt-circle-up'></i></span> ` + diff
-              }else if (parseInt(st[0]) < parseInt(st[1])) {
+              } else if (parseInt(st[0]) < parseInt(st[1])) {
                 this.tempRes = st[0] + ` <span class="text-danger"><i class='fas fa-arrow-alt-circle-down'></i></span> ` + diff
-              }else if (parseInt(st[0]) == parseInt(st[1])) {
+              } else if (parseInt(st[0]) == parseInt(st[1])) {
                 this.tempRes = st[0] + " - " + diff;
               }
             }
@@ -277,14 +278,16 @@ tempRes:string="";
           let st = this.tempStr.split("--");
           if (this.tempStr != '' && this.tempStr != undefined && this.tempStr != null) {
             if (this.tempStr.toString().includes("--")) {
+              let diff = parseInt(st[0]) - parseInt(st[1])
+              diff = parseInt(diff.toString().replace('-', ''));
               if (parseInt(st[0]) > parseInt(st[1])) {
-                this.tempRes = st[0] + ` <span class="text-danger"><i class='fas fa-arrow-alt-circle-down'></i></span> ` + st[1]
+                this.tempRes = st[0] + ` <span class="text-danger"><i class='fas fa-arrow-alt-circle-down'></i></span> ` + diff
               }
               if (parseInt(st[0]) < parseInt(st[1])) {
-                this.tempRes = st[0] + ` <span class="text-success"><i class='fas fa-arrow-alt-circle-up'></i></span> ` + st[1]
+                this.tempRes = st[0] + ` <span class="text-success"><i class='fas fa-arrow-alt-circle-up'></i></span> ` + diff
               }
               if (parseInt(st[0]) == parseInt(st[1])) {
-                this.tempRes = st[0] + " - " + st[1];
+                this.tempRes = st[0] + " - " + diff;
               }
             }
           } else {
@@ -307,14 +310,16 @@ tempRes:string="";
           let st = this.tempStr.split("--");
           if (this.tempStr != '' && this.tempStr != undefined && this.tempStr != null) {
             if (this.tempStr.toString().includes("--")) {
+              let diff = parseInt(st[0]) - parseInt(st[1])
+              diff = parseInt(diff.toString().replace('-', ''));
               if (parseInt(st[0]) > parseInt(st[1])) {
-                this.tempRes = st[0] + ` <span class="text-danger"><i class='fas fa-arrow-alt-circle-down' ></i></span> ` + st[1]
+                this.tempRes = st[0] + ` <span class="text-danger"><i class='fas fa-arrow-alt-circle-down' ></i></span> ` + diff
               }
               if (parseInt(st[0]) < parseInt(st[1])) {
-                this.tempRes = st[0] + `<span class="text-success"> <i class='fas fa-arrow-alt-circle-up' ></i></span> ` + st[1]
+                this.tempRes = st[0] + `<span class="text-success"> <i class='fas fa-arrow-alt-circle-up' ></i></span> ` + diff
               }
               if (parseInt(st[0]) == parseInt(st[1])) {
-                this.tempRes = st[0] + " - " + st[1];
+                this.tempRes = st[0] + " - " + diff;
               }
             }
           } else {
@@ -339,14 +344,16 @@ tempRes:string="";
           let st = this.tempStr.split("--");
           if (this.tempStr != '' && this.tempStr != undefined && this.tempStr != null) {
             if (this.tempStr.toString().includes("--")) {
+              let diff = parseInt(st[0]) - parseInt(st[1])
+              diff = parseInt(diff.toString().replace('-', ''));
               if (parseInt(st[0]) > parseInt(st[1])) {
-                this.tempRes = st[0] + ` <span class="text-danger"><i class='fas fa-arrow-alt-circle-down'></i></span>` + st[1]
+                this.tempRes = st[0] + ` <span class="text-danger"><i class='fas fa-arrow-alt-circle-down'></i></span>` + diff
               }
               if (parseInt(st[0]) < parseInt(st[1])) {
-                this.tempRes = st[0] + ` <span class="text-success"> <i class='fas fa-arrow-alt-circle-up' ></i></span> ` + st[1]
+                this.tempRes = st[0] + ` <span class="text-success"> <i class='fas fa-arrow-alt-circle-up' ></i></span> ` + diff
               }
               if (parseInt(st[0]) == parseInt(st[1])) {
-                this.tempRes = st[0] + " - " + st[1];
+                this.tempRes = st[0] + " - " + diff;
               }
             }
           } else {
@@ -368,8 +375,9 @@ tempRes:string="";
     }
   };
   source: LocalDataSource;
-
-  constructor( private translate: TranslateService,private authService: SocialAuthService, private facebook: FacebookService, public datepipe: DatePipe, private homeGscService: HomeGscService, public http: HttpClient, public campaignService: CampaignService, private router: Router,
+  instacode;
+  instaAccessToken;
+  constructor(private translate: TranslateService, private authService: SocialAuthService, private facebook: FacebookService, public datepipe: DatePipe, private homeGscService: HomeGscService, public http: HttpClient, public campaignService: CampaignService, private router: Router,
     public auditsService: AuditsService, public toasterService: ToasterService, public toastr: ToastrService
     , fb: FormBuilder, private route: ActivatedRoute, private openIdConnectService: OpenIdConnectService, private accountService: AccountService) {
     //  this.facebookPageToken = localStorage.getItem('FacebookAccessToken');
@@ -380,7 +388,7 @@ tempRes:string="";
       appId: environment.facebook_appid,
       version: 'v9.0'
     });
-   
+
     this.getDateDiff();
     let ycode = localStorage.getItem("gacode");
     if (ycode != 'null' && ycode != null && ycode != undefined && ycode != '') {
@@ -390,41 +398,93 @@ tempRes:string="";
     if (gsccode != 'null' && gsccode != null && gsccode != undefined && gsccode != '') {
       this.router.navigate(['/home/campaign']);
     }
+    this.instacode = localStorage.getItem("instacode");
+    if (this.instacode != 'null' && this.instacode != null && this.instacode != undefined && this.instacode != '') {
+      this.getTokenInstagram(this.instacode);
+    }
   }
+  getTokenInstagram(code) {
+
+    const url = "https://api.instagram.com/oauth/access_token";
+    //const url = "https://www.googleapis.com/oauth2/v4/token";
+    const body = new URLSearchParams();
+    body.set('client_id', environment.insta_appid);
+    body.set('client_secret', environment.insta_appsecret);
+    body.set('code', code);
+    body.set('grant_type', 'authorization_code');
+    body.set('redirect_uri', environment.insta_redirecturl);
+    this.http.post(url, body.toString(), this.httpOptionJSON1).subscribe(res => {
+      if (res) {
+        
+        this.instaAccessToken = res["access_token"];
+        this.getAllPagesList();
+
+      }
+    }, error => {
+      console.log(error.message, 'Error');
+    });
+  }
+  refreshTokenInstagram() {
+    
+    const url = "https://graph.facebook.com/oauth/access_token?grant_type=fb_exchange_token&client_id="+environment.insta_appid+"&client_secret="+environment.insta_appsecret+"&fb_exchange_token=" + this.instaAccessToken + "";
+    this.http.get(url).subscribe(res => {
+      if (res) {
+        
+        
+      }
+    }, error => {
+      alert('Fetch Refresh Token Failed : ' + JSON.stringify(error.error));
+    });
+  }
+  getAllPagesList() {
+    const url = "https://graph.instagram.com/me?&access_token=" + this.instaAccessToken;
+    this.http.get(url).subscribe(res => {
+      if (res) {
+    debugger
+        let pagelist = res['data'];
+        let currPage = pagelist.filter(x => x.name.toLowerCase() === this.selectedCampaignName.toLowerCase());
+        //this.generatePageToken();
+      }
+    }, error => {
+    });
+  }
+  
   ngOnInit() {
     this.resetChartVariables();
     this.getSerpList();
-     this.getCampaignGA();
-     this.getCampaignGAds();
-     this.getCampaignFacebook();
-     this.getCampaignGSC();
-     this.getCampaignList();
- 
-   }
+    this.getCampaignGA();
+    this.getCampaignGAds();
+    this.getCampaignFacebook();
+    this.getCampaignGSC();
+    this.getCampaignList();
 
-   getCompany() {
-      
+  }
+  getInstaToken() {
+
+  }
+  getCompany() {
+
     var userId = this.openIdConnectService.user.profile.sub;
     this.accountService.getCompany(userId).subscribe(
-      res=>{
-        
-        if(res){
-          
+      res => {
+
+        if (res) {
+
           this.companyinformation = res
           this.CompanyID = this.companyinformation.companyID;
-          
-          localStorage.setItem('companyID', this.CompanyID);
-          localStorage.setItem('userID',userId);
 
-         
+          localStorage.setItem('companyID', this.CompanyID);
+          localStorage.setItem('userID', userId);
+
+
         }
-       
+
       }
     )
   }
- //###############################################For ranking graph rubina
+  //###############################################For ranking graph rubina
   GetRankingPosition(selectedCampId) {
-    
+
     this.tempSerpList = this.serpList;
     let p;
     let totalPosition = 0;
@@ -434,12 +494,12 @@ tempRes:string="";
     //todate =new Date( todate.setHours(0,0,0,0));
     p = this.tempSerpList.filter(x => x.campaignID.toString() === selectedCampId.toLowerCase());
     if (p.length > 0) {
-      
-      p = p.filter(x => (new Date(x.createdOn).setHours(0,0,0,0) <= new Date(this.toDate.value).setHours(0,0,0,0) && new Date(x.createdOn).setHours(0,0,0,0) >= new Date(this.fromDate.value).setHours(0,0,0,0)));
+
+      p = p.filter(x => (new Date(x.createdOn).setHours(0, 0, 0, 0) <= new Date(this.toDate.value).setHours(0, 0, 0, 0) && new Date(x.createdOn).setHours(0, 0, 0, 0) >= new Date(this.fromDate.value).setHours(0, 0, 0, 0)));
       p = this.sortData(p);
       if (p.length > 0) {
-        let maxDate =  p[0].createdOn;
-        
+        let maxDate = p[0].createdOn;
+
         p = p.filter(x => this.datepipe.transform(x.createdOn, 'yyyy-MM-dd') == this.datepipe.transform(maxDate, 'yyyy-MM-dd'));
         if (p != null && p != undefined && p.length > 0) {
           for (let i = 0; i < p.length; i++) {
@@ -462,7 +522,7 @@ tempRes:string="";
     //previousEndDate = new Date(previousEndDate.setDate(todate.getDate()-1));
     p = this.tempSerpList.filter(x => x.campaignID.toString() === selectedCampId.toLowerCase());
     if (p.length > 0) {
-      p = p.filter(x => (new Date(x.createdOn).setHours(0,0,0,0) <= new Date(this.previousEndDate.value).setHours(0,0,0,0) && new Date(x.createdOn).setHours(0,0,0,0) >= new Date(this.previousStartDate.value).setHours(0,0,0,0)));
+      p = p.filter(x => (new Date(x.createdOn).setHours(0, 0, 0, 0) <= new Date(this.previousEndDate.value).setHours(0, 0, 0, 0) && new Date(x.createdOn).setHours(0, 0, 0, 0) >= new Date(this.previousStartDate.value).setHours(0, 0, 0, 0)));
       p = this.sortData(p);
       if (p.length > 0) {
         let maxDate = p[0].createdOn;
@@ -488,7 +548,7 @@ tempRes:string="";
     if (g == 0) { this.nut = this.nut + 1; }
     this.pieChartData1 = [this.pve, this.nve, this.nut];
   }
- 
+
 
 
   // using to search campaign locally
@@ -510,7 +570,7 @@ tempRes:string="";
     }
 
   }
- 
+
   //using to open create campaign view to create new campaign in db
   public onClick(): any {
     localStorage.setItem('gaurl', '');
@@ -523,7 +583,7 @@ tempRes:string="";
     localStorage.setItem('selectedCampName', '');
     localStorage.setItem('selectedCampUrl', '');
     localStorage.setItem('editMasterId', '');
-     localStorage.setItem('editMasterId', '');
+    localStorage.setItem('editMasterId', '');
     localStorage.setItem('gaid', '');
     localStorage.setItem('gadsid', '');
     localStorage.setItem('facebookid', '');
@@ -534,56 +594,56 @@ tempRes:string="";
 
   // using to view analytics report of selected campaign Id
   userRowSelect(campaign: any): void {
-    localStorage.setItem('gaurl','');
-     localStorage.setItem('gaaccesstoken','');
-     localStorage.setItem('gadsaccesstoken','');
-     localStorage.setItem('facebookurl','');
-     localStorage.setItem('facebookaccesstoken','');
-     localStorage.setItem('gscurl','');
-     localStorage.setItem('gscaccesstoken','');
-     localStorage.setItem('selectedCampName','');
-     localStorage.setItem('selectedCampUrl','');
-     this.SelectedCampaignId = campaign.data.id;
-     let ga = this.CampaignGAList.filter(x => x.campaignID == this.SelectedCampaignId);
-     if(ga !=null && ga != undefined && ga.length > 0){
+    localStorage.setItem('gaurl', '');
+    localStorage.setItem('gaaccesstoken', '');
+    localStorage.setItem('gadsaccesstoken', '');
+    localStorage.setItem('facebookurl', '');
+    localStorage.setItem('facebookaccesstoken', '');
+    localStorage.setItem('gscurl', '');
+    localStorage.setItem('gscaccesstoken', '');
+    localStorage.setItem('selectedCampName', '');
+    localStorage.setItem('selectedCampUrl', '');
+    this.SelectedCampaignId = campaign.data.id;
+    let ga = this.CampaignGAList.filter(x => x.campaignID == this.SelectedCampaignId);
+    if (ga != null && ga != undefined && ga.length > 0) {
       localStorage.setItem('gaurl', ga[0]['urlOrName']);
       localStorage.setItem('gaaccesstoken', ga[0]['accessToken']);
       localStorage.setItem('garefreshtoken', ga[0]['refreshToken']);
       localStorage.setItem('gaid', ga[0]['id']);
-     }
-     let gads = this.CampaignGAdsList.filter(x => x.campaignID == this.SelectedCampaignId);
-     if(gads !=null && gads != undefined && gads.length > 0){
+    }
+    let gads = this.CampaignGAdsList.filter(x => x.campaignID == this.SelectedCampaignId);
+    if (gads != null && gads != undefined && gads.length > 0) {
       localStorage.setItem('gadsurl', gads[0]['urlOrName']);
       localStorage.setItem('gadsaccesstoken', gads[0]['accessToken']);
       localStorage.setItem('gadsid', gads[0]['id']);
 
-     }
-     let facebook = this.CampaignFacebookList.filter(x => x.campaignID == this.SelectedCampaignId);
-     if(facebook !=null && facebook != undefined && facebook.length > 0){
+    }
+    let facebook = this.CampaignFacebookList.filter(x => x.campaignID == this.SelectedCampaignId);
+    if (facebook != null && facebook != undefined && facebook.length > 0) {
       localStorage.setItem('facebookpagename', facebook[0]['urlOrName']);
       localStorage.setItem('facebookaccesstoken', facebook[0]['accessToken']);
       localStorage.setItem('facebookid', facebook[0]['id']);
 
-     }
-     let gsc = this.CampaignGSCList.filter(x => x.campaignID == this.SelectedCampaignId);
-     if(gsc !=null && gsc != undefined && gsc.length > 0){
+    }
+    let gsc = this.CampaignGSCList.filter(x => x.campaignID == this.SelectedCampaignId);
+    if (gsc != null && gsc != undefined && gsc.length > 0) {
       localStorage.setItem('gscurl', gsc[0]['urlOrName']);
       localStorage.setItem('gscaccesstoken', gsc[0]['accessToken']);
       localStorage.setItem('gscrefreshtoken', gsc[0]['refreshToken']);
       localStorage.setItem('gscid', gsc[0]['id']);
 
-     }
-      localStorage.setItem('selectedCampId', campaign.data.id);
-      localStorage.setItem('selectedCampName', campaign.data.name);
-      localStorage.setItem('selectedCampUrl', campaign.data.webUrl);
-      this.router.navigate([`../campaign/:id${campaign.data.id}/seo`]);
+    }
+    localStorage.setItem('selectedCampId', campaign.data.id);
+    localStorage.setItem('selectedCampName', campaign.data.name);
+    localStorage.setItem('selectedCampUrl', campaign.data.webUrl);
+    this.router.navigate([`../campaign/:id${campaign.data.id}/seo`]);
 
 
   }
-  
+
 
   //############################################### GSC data
-    getDataCurrentYear(startDate, endDate, url, campaignIndex) {
+  getDataCurrentYear(startDate, endDate, url, campaignIndex) {
     this.httpOptionJSON = {
       headers: new HttpHeaders({
         'Accept': 'application/json',
@@ -605,7 +665,8 @@ tempRes:string="";
         this.clicksThisYear = rows[0].clicks;
         this.impressionsThisYear = rows[0].impressions;
         this.cTRThisYear = parseFloat(rows[0].ctr).toFixed(2).toString();
-        this.positionThisYear = parseFloat(rows[0].position).toFixed(2).toString()
+        this.positionThisYear = parseFloat(rows[0].position).toFixed(2).toString();
+        this.getDataPreviousYear(this.previousStartDate, this.previousEndDate, campaignIndex, url);
       }
     }, error => {
       this.IsError = true;
@@ -636,20 +697,20 @@ tempRes:string="";
     this.http.post(url, data, this.httpOptionJSON).subscribe(res => {
       if (res) {
         let rows = res['rows'];
-          
-          this.clicksPreviousYear = rows[0].clicks;
-          this.impressionsPreviousYear = rows[0].impressions;
-          this.cTRPreviousYear = parseFloat(rows[0].ctr).toFixed(2).toString();
-          this.positionPreviousYear = parseFloat(rows[0].position).toFixed(2).toString();
-          let diff1 = this.impressionsThisYear - this.impressionsPreviousYear
-          if (diff1 > 0) { this.impressionPve= this.impressionPve + 1; }
-          if (diff1 < 0) { this.impressionNve= this.impressionNve + 1; }
-          if (diff1 == 0) { this.impressionNute= this.impressionNute + 1; }
-          this.pieChartData4 = [this.impressionPve.toString(), this.impressionNve.toString(), this.impressionNute.toString()];
-          this.campaignList[campaignIndex].gsc = this.impressionsPreviousYear + "--" + this.impressionsThisYear;
-          this.tableData = this.campaignList;
-          this.source = new LocalDataSource(this.campaignList)
-        
+
+        this.clicksPreviousYear = rows[0].clicks;
+        this.impressionsPreviousYear = rows[0].impressions;
+        this.cTRPreviousYear = parseFloat(rows[0].ctr).toFixed(2).toString();
+        this.positionPreviousYear = parseFloat(rows[0].position).toFixed(2).toString();
+        let diff1 = this.impressionsThisYear - this.impressionsPreviousYear
+        if (diff1 > 0) { this.impressionPve = this.impressionPve + 1; }
+        if (diff1 < 0) { this.impressionNve = this.impressionNve + 1; }
+        if (diff1 == 0) { this.impressionNute = this.impressionNute + 1; }
+        this.pieChartData4 = [this.impressionPve.toString(), this.impressionNve.toString(), this.impressionNute.toString()];
+        this.campaignList[campaignIndex].gsc = this.impressionsPreviousYear + "--" + this.impressionsThisYear;
+        this.tableData = this.campaignList;
+        this.source = new LocalDataSource(this.campaignList)
+
       }
     }, error => {
       //this.campaignList[campaignIndex].gsc = "0%";
@@ -667,8 +728,8 @@ tempRes:string="";
       let urlcamp = gscurl.replace('https://', '');
       urlcamp = urlcamp.replace('/', '');
       const url = "https://www.googleapis.com/webmasters/v3/sites/https%3A%2F%2F" + urlcamp + "/searchAnalytics/query?key=AIzaSyC1IsrCeeNXp9ksAmC8szBtYVjTLJC9UWQ";
-     this.getDataCurrentYear(this.startDate, this.endDate, url, campaignIndex);
-     this.getDataPreviousYear(this.previousStartDate, this.previousEndDate,campaignIndex, url);
+      this.getDataCurrentYear(this.startDate, this.endDate, url, campaignIndex);
+     
     }
   }
   refreshGSCAccount(campaignIndex, refreshToken, gscurl) {
@@ -684,9 +745,9 @@ tempRes:string="";
     };
     this.http.post(url, data).subscribe(res => {
       if (res) {
-        
+
         this.gscaccesstoken = res['access_token'];
-        this.getData(campaignIndex,gscurl);
+        this.getData(campaignIndex, gscurl);
       }
     }, error => {
       alert('eeee : ' + JSON.stringify(error.error));
@@ -776,7 +837,7 @@ tempRes:string="";
     });
   }
 
-  loginWithOptions(i) {
+  thOptions(i) {
     const loginOptions: LoginOptions = {
       enable_profile_selector: true,
       return_scopes: true,
@@ -819,7 +880,7 @@ tempRes:string="";
       console.log('Fetch Page Token Failed : ' + JSON.stringify(error.error));
     });
   }
- //###############################################Google Analytics
+  //###############################################Google Analytics
 
   refreshGoogleAnalyticsAccount(campaignIndex, refreshToken, gaUrl) {
     const url = "https://www.googleapis.com/oauth2/v4/token";
@@ -867,7 +928,7 @@ tempRes:string="";
 
           if (q.includes(url)) {
             this.getAnalyticsOrganicTrafficThisMonth(rows[i].webProperties[0].profiles[0].id, campaignIndex);
-            this.getAnalyticsOrganicTrafficLastMonth(rows[i].webProperties[0].profiles[0].id, campaignIndex);
+           
             break;
           }
           // accountSummaryIds.push(rows[i].webProperties[0].profiles[0].id);
@@ -895,6 +956,7 @@ tempRes:string="";
         let rows = res['rows'];
         this.thisMonthTraffic = rows[0]["0"];
         this.thisMonthConversions = rows[0]["1"];
+        this.getAnalyticsOrganicTrafficLastMonth(profileid, campaignIndex);
       }
     }, error => {
       //alert('Analytics Data Fetch failed : ' + JSON.stringify(error.error));
@@ -925,7 +987,7 @@ tempRes:string="";
         if (diff > 0) { this.trafficPve = this.trafficPve + 1; }
         if (diff < 0) { this.trafficNve = this.trafficNve + 1; }
         if (diff == 0) { this.trafficNut = this.trafficNut + 1; }
-        
+
         this.pieChartData2 = [this.trafficPve.toString(), this.trafficNve.toString(), this.trafficNut.toString()];
         //Converssions calculation for chart
         this.lastMonthConversions = rows[0]["1"];
@@ -941,7 +1003,7 @@ tempRes:string="";
         if (diff1 < 0) { this.ConversionsNve = this.ConversionsNve + 1; }
         if (diff1 == 0) { this.ConversionsNut = this.ConversionsNut + 1; }
         this.pieChartData3 = [this.ConversionsPve.toString(), this.ConversionsNve.toString(), this.ConversionsNut.toString()];
-        
+
         this.campaignList[campaignIndex].traffic = this.lastMonthTraffic + "--" + this.thisMonthTraffic;
         this.tableData = this.campaignList;
         this.source = new LocalDataSource(this.campaignList)
@@ -952,7 +1014,7 @@ tempRes:string="";
     });
   }
 
-//###############################################/general functions
+  //###############################################/general functions
   private getFilterOption() {
     return {
       pageNumber: 1,
@@ -989,7 +1051,7 @@ tempRes:string="";
     const filterOptionModel = this.getFilterOption();
     this.campaignService.getFilteredGSC(filterOptionModel).subscribe((response: any) => {
       if (response) {
-        debugger
+        
         this.CampaignGSCList = response.body;
       }
     })
@@ -1029,17 +1091,17 @@ tempRes:string="";
     return ((100 * num) / total)
   }
   public getCampaignList(): void {
-    debugger
+    
     this.resetChartVariables();
     var userid = this.openIdConnectService.user.profile.sub;
     this.campaignService.getCampaign(userid).subscribe(res => {
       this.campaignList = res;
 
-       for (let i = 0; i < res.length; i++) {
+      for (let i = 0; i < res.length; i++) {
         let ga = this.CampaignGAList.filter(x => x.campaignID == res[i].id);
         if (ga != null && ga != undefined && ga.length > 0) {
-          debugger
-          this.refreshGoogleAnalyticsAccount(i, ga[0]['refreshToken'], ga[0]['urlOrName']);
+          
+         this.refreshGoogleAnalyticsAccount(i, ga[0]['refreshToken'], ga[0]['urlOrName']);
         }
         let gsc = this.CampaignGSCList.filter(x => x.campaignID == res[i].id);
         if (gsc != null && gsc != undefined && gsc.length > 0) {
@@ -1049,12 +1111,12 @@ tempRes:string="";
         if (facebook != null && facebook != undefined && facebook.length > 0) {
 
         }
-      
+
         this.GetRankingPosition(res[i].id);
-        
-         this.campaignList[i].ranking = this.rankingPrev  +  "--"  + this.rankingThis ;
-       }
-       this.source = new LocalDataSource(this.campaignList);
+
+        this.campaignList[i].ranking = this.rankingPrev + "--" + this.rankingThis;
+      }
+      this.source = new LocalDataSource(this.campaignList);
     });
   }
   sortData(p) {
@@ -1091,60 +1153,60 @@ tempRes:string="";
     return parseFloat(diff.toString()).toFixed(2)
 
   }
-//Ranking Data
-public getSerpList(): void {
-  this.campaignService.getSerp("&tbs=qdr:m").subscribe(res => {
-    this.serpList = res;
-    this.tempSerpList = this.serpList;
-  });
-}
-
-private getFilterOptionPlans() {
-  return {
-    pageNumber: 1,
-    pageSize: 1000,
-    fields: '',
-    searchQuery: '',
-    orderBy: ''
+  //Ranking Data
+  public getSerpList(): void {
+    this.campaignService.getSerp("&tbs=qdr:m").subscribe(res => {
+      this.serpList = res;
+      this.tempSerpList = this.serpList;
+    });
   }
-}
 
-getDifference(previous, current) {
-  // Decrease = Original Number - New Number
-  // % Decrease = Decrease ÷ Original Number × 100
-  // let diff = ((parseFloat(previous) - parseFloat(current)) * 100) / parseFloat(previous)
-  // return parseFloat(diff.toString()).toFixed(2);
-  let diff = (parseFloat(previous) - parseFloat(current));
-  let per = (diff / parseFloat(current)) * 100
-  return parseFloat(per.toString()).toFixed(2);
-}
-testFunction(){ 
-  this.campaignService.GetUpdateKeywordsStatus().subscribe(
-    res=>{
-      if(res){
-        console.log(res);
-      }
-     
+  private getFilterOptionPlans() {
+    return {
+      pageNumber: 1,
+      pageSize: 1000,
+      fields: '',
+      searchQuery: '',
+      orderBy: ''
     }
-  )
-}
-onCustomAction(event) {
-  switch (event.action) {
-    case 'editCampaign':
-      debugger;
-      this.editCampaign(event.data);
-      break;
-    case 'deleteCampaign':
-      this.deleteCampaign(event.data);
-      break;
   }
-}
-editCampaign(campaign: any) {
-  debugger;
-  localStorage.setItem('editMasterId', campaign.id);
-  localStorage.setItem('selectedCampName', campaign.name);
-  localStorage.setItem('selectedCampUrl', campaign.webUrl);
-  this.SelectedCampaignId = campaign.id;
+
+  getDifference(previous, current) {
+    // Decrease = Original Number - New Number
+    // % Decrease = Decrease ÷ Original Number × 100
+    // let diff = ((parseFloat(previous) - parseFloat(current)) * 100) / parseFloat(previous)
+    // return parseFloat(diff.toString()).toFixed(2);
+    let diff = (parseFloat(previous) - parseFloat(current));
+    let per = (diff / parseFloat(current)) * 100
+    return parseFloat(per.toString()).toFixed(2);
+  }
+  testFunction() {
+    this.campaignService.GetUpdateKeywordsStatus().subscribe(
+      res => {
+        if (res) {
+          console.log(res);
+        }
+
+      }
+    )
+  }
+  onCustomAction(event) {
+    switch (event.action) {
+      case 'editCampaign':
+        ;
+        this.editCampaign(event.data);
+        break;
+      case 'deleteCampaign':
+        this.deleteCampaign(event.data);
+        break;
+    }
+  }
+  editCampaign(campaign: any) {
+    
+    localStorage.setItem('editMasterId', campaign.id);
+    localStorage.setItem('selectedCampName', campaign.name);
+    localStorage.setItem('selectedCampUrl', campaign.webUrl);
+    this.SelectedCampaignId = campaign.id;
     let ga = this.CampaignGAList.filter(x => x.campaignID == this.SelectedCampaignId);
     if (ga != null && ga != undefined && ga.length > 0) {
       localStorage.setItem('gaurl', ga[0]['urlOrName']);
@@ -1165,35 +1227,54 @@ editCampaign(campaign: any) {
       localStorage.setItem('gscurl', gsc[0]['urlOrName']);
       localStorage.setItem('gscaccesstoken', gsc[0]['accessToken']);
     }
-  this.router.navigate(['/home/campaign']);
-}
-deleteCampaign(event) {
-  success({
-    icon: this.translate.instant('sweetalert.WARNINGICON'),
-    title: this.translate.instant('message.DELETEMSG'),
-    buttons: {
-      cancel: {
-        text: this.translate.instant('sweetalert.CANCELBUTTON'),
-        value: null,
-        visible: true,
-        className: "",
-        closeModal: false
-      },
-      confirm: {
-        text: this.translate.instant('sweetalert.CONFIRMBUTTON'),
-        value: true,
-        visible: true,
-        className: "bg-danger",
-        closeModal: false
+    this.router.navigate(['/home/campaign']);
+  }
+  deleteCampaign(event) {
+    success({
+      icon: this.translate.instant('sweetalert.WARNINGICON'),
+      title: this.translate.instant('message.DELETEMSG'),
+      buttons: {
+        cancel: {
+          text: this.translate.instant('sweetalert.CANCELBUTTON'),
+          value: null,
+          visible: true,
+          className: "",
+          closeModal: false
+        },
+        confirm: {
+          text: this.translate.instant('sweetalert.CONFIRMBUTTON'),
+          value: true,
+          visible: true,
+          className: "bg-danger",
+          closeModal: false
+        }
       }
-    }
-  }).then((isConfirm: any) => {
-    if (isConfirm) {
-      this.campaignService.deleteCampaignById(event.id).subscribe(res => {
+    }).then((isConfirm: any) => {
+      if (isConfirm) {
+        this.campaignService.deleteCampaignById(event.id).subscribe(res => {
 
+          success({
+            icon: this.translate.instant('sweetalert.WARNINGICON'),
+            title: this.translate.instant('message.DELETEMSG'),
+            buttons: {
+              confirm: {
+                text: this.translate.instant('sweetalert.OKBUTTON'),
+                value: true,
+                visible: true,
+                className: "bg-primary",
+                closeModal: true,
+              }
+            }
+          }).then((isConfirm) => {
+            if (isConfirm) {
+              window.location.reload();
+            }
+          })
+        });
+      } else {
         success({
           icon: this.translate.instant('sweetalert.WARNINGICON'),
-          title: this.translate.instant('message.DELETEMSG'),
+          title: this.translate.instant('message.CANCLEMSG'),
           buttons: {
             confirm: {
               text: this.translate.instant('sweetalert.OKBUTTON'),
@@ -1203,27 +1284,30 @@ deleteCampaign(event) {
               closeModal: true,
             }
           }
-        }).then((isConfirm) => {
-          if (isConfirm) {
-            window.location.reload();
-          }
-        })
-      });
-    } else {
-      success({
-        icon: this.translate.instant('sweetalert.WARNINGICON'),
-        title: this.translate.instant('message.CANCLEMSG'),
-        buttons: {
-          confirm: {
-            text: this.translate.instant('sweetalert.OKBUTTON'),
-            value: true,
-            visible: true,
-            className: "bg-primary",
-            closeModal: true,
-          }
-        }
-      }).then((isConfirm) => { })
-    }
-  });
-}
+        }).then((isConfirm) => { })
+      }
+    });
+  }
+  instagramapp() {
+    localStorage.setItem("isinsta", "1");
+    const url = "https://api.instagram.com/oauth/authorize?ccess_type=offline&prompt=consent&client_id=1381661432190657&redirect_uri=https://localhost:4200/home&scope=user_profile,user_media&response_type=code";
+    window.location.href = url;
+    // let data = {};
+    // data = {
+    //   client_id: environment.googleClientId,
+    //   client_secret: environment.googleClientSecret,
+    //   refresh_token: refreshToken,
+    //   grant_type: 'refresh_token',
+    //   access_type: 'offline'
+    // };
+    // this.http.post(url, data).subscribe(res => {
+    //   if (res) {
+
+    //     this.gscaccesstoken = res['access_token'];
+    //     this.getData(campaignIndex, gscurl);
+    //   }
+    // }, error => {
+    //   alert('eeee : ' + JSON.stringify(error.error));
+    // });
+  }
 }

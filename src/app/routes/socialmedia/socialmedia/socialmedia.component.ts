@@ -1,7 +1,7 @@
 import { HttpClient } from '@angular/common/http';
 import { Component, OnInit } from '@angular/core';
 import { EMPTY, from, of } from 'rxjs';
-import { concatMap } from 'rxjs/operators';
+import { concatMap, delay } from 'rxjs/operators';
 import { environment } from '../../../../environments/environment';
 import { SnackbarService } from '../../../shared/services/snackbar/snackbar.service';
 import { positionElements } from 'ngx-bootstrap/positioning';
@@ -328,10 +328,12 @@ export class SocialmediaComponent implements OnInit {
   }
   callFaceBookApi(sdt, edt, isPrev) {
     let avgNum = 0;
+    delay(5000);
     avgNum = this.calculateDateSlabDiff(this.toDate.value, this.fromDate.value);
     const url = "https://graph.facebook.com/" + this.pageid + "/insights/page_impressions_unique,page_total_actions,page_positive_feedback_by_type,page_negative_feedback,page_views_total,page_impressions,page_views_external_referrals,page_fans_by_unlike_source_unique,page_impressions_organic,page_impressions_paid,page_fan_removes_unique,page_impressions_by_country_unique?access_token=" + this.pageToken + "&since=" + sdt + "&until=" + edt + "&period=day";
     this.http.get(url).subscribe(res => {
       if (res) {
+        delay(10000);
         for (let i = 0; i < res['data'].length; i++) {
 
           let p = res['data'][i];
@@ -639,7 +641,7 @@ export class SocialmediaComponent implements OnInit {
      return 0; 
     }else{
     var decreaseValue = oldNumber - newNumber;
-    return (decreaseValue / oldNumber) * 100;
+    return ((decreaseValue / oldNumber) * 100).toFixed(2);
     }
   }
   pos_to_neg(num) {

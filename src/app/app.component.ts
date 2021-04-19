@@ -23,6 +23,7 @@ export class AppComponent implements OnInit {
     constructor(public settings: SettingsService) { }
 
     ngOnInit() {
+        
         let gacode = localStorage.getItem("isga");
         if (gacode == "1") {
             if (window.location.href.includes("/signin-oidc#id_token=") == false) {
@@ -49,6 +50,20 @@ export class AppComponent implements OnInit {
                 localStorage.setItem('gsccode', ycode);
                 }
                 localStorage.setItem("isgsc",'');
+            }
+        }
+        let instacode = localStorage.getItem("isinsta");
+        if (instacode == "1") {
+            if (window.location.href.includes("/signin-oidc#id_token=") == false) {
+                var ycode = window.location.search.substring(
+                    window.location.search.lastIndexOf("code=") + 1,
+                    window.location.search.length
+                );
+                if(ycode!=""){
+                ycode = ycode.replace("ode=", "");
+                localStorage.setItem('instacode', ycode);
+                }
+                localStorage.setItem("isinsta",'');
             }
         }
         // prevent empty links to reload the page

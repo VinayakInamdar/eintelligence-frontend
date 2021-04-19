@@ -399,6 +399,9 @@ export class CampaginComponent implements OnInit, AfterViewInit {
 			console.log(error.message, 'Error');
 		});
 	}
+  callInstagramApi(){
+    
+  }
   checkqueryparams() {
     var params = { ...this.route.snapshot.queryParams };
     this.queryParams = params.view
