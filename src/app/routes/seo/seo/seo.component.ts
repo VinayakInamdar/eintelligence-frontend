@@ -51,6 +51,41 @@ export class SeoComponent implements OnInit {
   gscrefreshtoken;
   //variable passed from campaign list end
   //############# Site Speed start############################
+
+  performanceScore;
+  performanceScoreDesktop;
+  showGreenZoneScore: boolean = false;
+  showYellowZoneScore: boolean = false;
+  showRedZoneScore: boolean = false;
+  showMobileScore: boolean = false;
+  showDesktopScore:boolean=false;
+  showRedZoneScoreDesktop;
+  showYellowZoneScoreDesktop;
+  showGreenZoneScoreDesktop;
+  pieOptions2 = {
+    animate: {
+      duration: 800,
+      enabled: true
+    },
+    barColor: 'red',
+    trackColor: 'rgba(200,200,200,0.4)',
+    scaleColor: false,
+    lineWidth: 10,
+    lineCap: 'round',
+    size: 125
+  };
+  pieOptions3 = {
+    animate: {
+      duration: 800,
+      enabled: true
+    },
+    barColor: 'red',
+    trackColor: 'rgba(200,200,200,0.4)',
+    scaleColor: false,
+    lineWidth: 10,
+    lineCap: 'round',
+    size: 125
+  };
   //for loding
   CUMULATIVE_LAYOUT_SHIFT_SCORE
   FIRST_CONTENTFUL_PAINT_MS
@@ -116,6 +151,7 @@ export class SeoComponent implements OnInit {
   showGreenZoneCLS_Desktop: boolean;
   showOrangezoneCLS_Desktop: boolean;
   showRedZoneCLS_Desktop: boolean;
+
   //############# Site Speed end############################
 
   //Ranking graph rubina
@@ -953,7 +989,7 @@ export class SeoComponent implements OnInit {
 
         if (p != null && p != undefined && p.length > 0) {
           this.keywordTableList = p;
-          
+
           for (let i = 0; i < p.length; i++) {
             // this.addColumn("keywords",p[i].keywords,i);
             // this.addColumn("position",p[i].position,i);
@@ -992,11 +1028,11 @@ export class SeoComponent implements OnInit {
     else {
     }
   }
-  public addColumn(title , value, index) {
+  public addColumn(title, value, index) {
     debugger
-    this.settings.columns["new column " + index] = { title: title, value : value};
+    this.settings.columns["new column " + index] = { title: title, value: value };
     this.settings = Object.assign({}, this.settings);
-}
+  }
   sortData(p) {
     return p.sort((a, b) => {
       return <any>new Date(b.createdOn) - <any>new Date(a.createdOn);
@@ -1204,7 +1240,7 @@ export class SeoComponent implements OnInit {
     });
   }
   getAnalyticsOrganicTrafficPrevious(profileid, startdate, endDate) {
-    
+
     let currDate = new Date();
     let endDate1 = this.datepipe.transform(currDate, 'yyyy-MM-dd');
     let startDate1 = this.datepipe.transform(currDate.setDate(currDate.getDate() - 28), 'yyyy-MM-dd');
@@ -1218,7 +1254,7 @@ export class SeoComponent implements OnInit {
     const url = "https://www.googleapis.com/analytics/v3/data/ga?ids=ga:" + profileid + "&dimensions=ga:date&start-date=" + startdate + "&end-date=" + endDate + "&metrics=ga:organicsearches";
     this.http.get(url, this.httpOptionJSON).subscribe(res => {
       if (res) {
-        
+
         let rows = res['rows'];
         this.showSpinnerBaseChart = false;
         this.lineChartData1[1].data = [];
@@ -2072,7 +2108,7 @@ export class SeoComponent implements OnInit {
 
   }
   getSiteSpeedDataMobile() {
-
+    debugger;
     this.httpOptionJSON = {
       headers: new HttpHeaders({
         'Accept': 'application/json',
@@ -2105,12 +2141,36 @@ export class SeoComponent implements OnInit {
         // this.first_meaningful_paint = lighthouse.audits['first-meaningful-paint'].displayValue,
         // this.first_cpu_idle = lighthouse.audits['first-cpu-idle'].displayValue,
         // this.Eestimated_input_latency = lighthouse.audits['estimated-input-latency'].displayValue
+        debugger;
         this.first_contentful_paint = lighthouse.audits['first-contentful-paint'].displayValue;
         this.speed_index = lighthouse.audits['speed-index'].displayValue;
         this.largest_contentful_paint = lighthouse.audits['largest-contentful-paint'].displayValue;
         this.interactive = lighthouse.audits['interactive'].displayValue;
         this.total_blocking_time = lighthouse.audits['total-blocking-time'].displayValue;
         this.cumulative_layout_shift = lighthouse.audits['cumulative-layout-shift'].displayValue
+
+        let msFcp: any = lighthouse.audits['first-contentful-paint'].score * 100;
+        let msSi: any = lighthouse.audits['speed-index'].score * 100;
+        let msLcp: any = lighthouse.audits['largest-contentful-paint'].score * 100;
+        let msToi: any = lighthouse.audits['interactive'].score * 100;
+        let msTbt: any = lighthouse.audits['total-blocking-time'].score * 100;
+        let msCls: any = lighthouse.audits['cumulative-layout-shift'].score * 100;
+
+        this.performanceScore = ((msFcp * 0.15) + (msSi * 0.15) + (msLcp * 0.25) + (msToi * 0.15) + (msTbt * 0.25) + (msCls * 0.05));
+        this.performanceScore = Math.round(this.performanceScore);
+
+        this.showMobileScore = true;
+        if (this.performanceScore >= 0 && this.performanceScore <= 49) {
+          this.showRedZoneScore = true;
+        }
+        else if (this.performanceScore >= 50 && this.performanceScore <= 89) {
+          this.showYellowZoneScore = true;
+          this.pieOptions2.barColor = 'orange';
+        }
+        else {
+          this.showGreenZoneScore = true;
+          this.pieOptions2.barColor = 'green';
+        }
 
         var fcp: any = (parseFloat(this.first_contentful_paint) * 1000).toFixed(0).toString();
         var si: any = (parseFloat(this.speed_index) * 1000).toFixed(0);
@@ -2213,8 +2273,9 @@ export class SeoComponent implements OnInit {
       //console.log('Data fetch failed by device : ' + JSON.stringify(error.error));
     });
   }
-  getSiteSpeedDataDesktop() {
 
+  getSiteSpeedDataDesktop() {
+    debugger;
     this.httpOptionJSON = {
       headers: new HttpHeaders({
         'Accept': 'application/json',
@@ -2254,6 +2315,30 @@ export class SeoComponent implements OnInit {
         this.interactive_Desktop = lighthouse.audits['interactive'].displayValue;
         this.total_blocking_time_Desktop = lighthouse.audits['total-blocking-time'].displayValue;
         this.cumulative_layout_shift_Desktop = lighthouse.audits['cumulative-layout-shift'].displayValue
+
+        let msFcpDesktop: any = lighthouse.audits['first-contentful-paint'].score * 100;
+        let msSiDesktop: any = lighthouse.audits['speed-index'].score * 100;
+        let msLcpDesktop: any = lighthouse.audits['largest-contentful-paint'].score * 100;
+        let msToiDesktop: any = lighthouse.audits['interactive'].score * 100;
+        let msTbtDesktop: any = lighthouse.audits['total-blocking-time'].score * 100;
+        let msClsDesktop: any = lighthouse.audits['cumulative-layout-shift'].score * 100;
+        debugger;
+
+        this.performanceScoreDesktop = ((msFcpDesktop * 0.15) + (msSiDesktop * 0.15) + (msLcpDesktop * 0.25) + (msToiDesktop * 0.15) + (msTbtDesktop * 0.25) + (msClsDesktop * 0.05));
+        this.performanceScoreDesktop = Math.round(this.performanceScoreDesktop);
+
+        this.showDesktopScore = true;
+        if (this.performanceScoreDesktop >= 0 && this.performanceScoreDesktop <= 49) {
+          this.showRedZoneScoreDesktop = true;
+        }
+        else if (this.performanceScoreDesktop >= 50 && this.performanceScoreDesktop <= 89) {
+          this.showYellowZoneScoreDesktop = true;
+          this.pieOptions3.barColor = 'orange';
+        }
+        else {
+          this.showGreenZoneScoreDesktop = true;
+          this.pieOptions3.barColor = 'green';
+        }
 
         var fcp: any = (parseFloat(this.first_contentful_paint_Desktop) * 1000).toFixed(0).toString();
         var si: any = (parseFloat(this.speed_index_Desktop) * 1000).toFixed(0);
@@ -2422,22 +2507,22 @@ export class SeoComponent implements OnInit {
       })
     };
     let data = {};
-    
-      data = {
-        "startRow": 0,
-        "startDate": startDate,
-        "endDate": endDate,
-        "dataState": "ALL",
-      };
-    
+
+    data = {
+      "startRow": 0,
+      "startDate": startDate,
+      "endDate": endDate,
+      "dataState": "ALL",
+    };
+
     this.http.post(url, data, this.httpOptionJSON).subscribe(res => {
       if (res) {
         let rows = res['rows'];
-          this.clicksThisYear = rows[0].clicks;
-          this.impressionsThisYear = rows[0].impressions;
-          this.cTRThisYear = parseFloat(rows[0].ctr).toFixed(2).toString();
-          this.positionThisYear = parseFloat(rows[0].position).toFixed(2).toString();
-          this.getDataPreviousYear(this.previousStartDate, this.previousEndDate, url);
+        this.clicksThisYear = rows[0].clicks;
+        this.impressionsThisYear = rows[0].impressions;
+        this.cTRThisYear = parseFloat(rows[0].ctr).toFixed(2).toString();
+        this.positionThisYear = parseFloat(rows[0].position).toFixed(2).toString();
+        this.getDataPreviousYear(this.previousStartDate, this.previousEndDate, url);
       }
     }, error => {
 
@@ -2462,19 +2547,19 @@ export class SeoComponent implements OnInit {
       if (res) {
 
         let rows = res['rows'];
-   
-          this.clicksPreviousYear = rows[0].clicks;
-          this.impressionsPreviousYear = rows[0].impressions;
-          this.cTRPreviousYear = parseFloat(rows[0].ctr).toFixed(2).toString();
-          this.positionPreviousYear = parseFloat(rows[0].position).toFixed(2).toString();
 
-          //pecentgage calculate
-          
-          this.percentClicks = this.getYearwiseDifference(this.clicksPreviousYear, this.clicksThisYear);
-          this.percentImpressions = this.getYearwiseDifference(this.impressionsPreviousYear, this.impressionsThisYear);
-          this.percentPosition = this.getYearwiseDifference(this.positionPreviousYear, this.positionThisYear);
-          this.percentCTR = this.getYearwiseDifference(this.cTRPreviousYear, this.cTRThisYear);
-       
+        this.clicksPreviousYear = rows[0].clicks;
+        this.impressionsPreviousYear = rows[0].impressions;
+        this.cTRPreviousYear = parseFloat(rows[0].ctr).toFixed(2).toString();
+        this.positionPreviousYear = parseFloat(rows[0].position).toFixed(2).toString();
+
+        //pecentgage calculate
+
+        this.percentClicks = this.getYearwiseDifference(this.clicksPreviousYear, this.clicksThisYear);
+        this.percentImpressions = this.getYearwiseDifference(this.impressionsPreviousYear, this.impressionsThisYear);
+        this.percentPosition = this.getYearwiseDifference(this.positionPreviousYear, this.positionThisYear);
+        this.percentCTR = this.getYearwiseDifference(this.cTRPreviousYear, this.cTRThisYear);
+
       }
     }, error => {
 
@@ -2490,37 +2575,37 @@ export class SeoComponent implements OnInit {
       })
     };
     let data = {};
-  
-      data = {
-        "startRow": 0,
-        "startDate": startDate,
-        "endDate": endDate,
-        "dataState": "ALL",
-        "dimensions": [
-          "DATE"
-        ]
-      };
-   
+
+    data = {
+      "startRow": 0,
+      "startDate": startDate,
+      "endDate": endDate,
+      "dataState": "ALL",
+      "dimensions": [
+        "DATE"
+      ]
+    };
+
     this.http.post(url, data, this.httpOptionJSON).subscribe(res => {
       if (res) {
 
         let rows = res['rows'];
-       
-          this.dateListData = [];
-          this.barDataClicks.datasets[0].data = [];
-          this.barDataImpressions.datasets[0].data = [];
-          this.barDataCTR.datasets[0].data = [];
-          this.barDataPositions.datasets[0].data = [];
-          this.barChartLabels = [];
-          for (let i = 0; i < rows.length; i++) {
-            this.currDate = rows[i].keys[0]
-            this.currDate = this.currDate.substring(5, 10);
-            this.barDataClicks.datasets[0].data.push(rows[i].clicks);
-            this.barDataImpressions.datasets[0].data.push(rows[i].impressions);
-            this.barDataCTR.datasets[0].data.push(rows[i].ctr);
-            this.barDataPositions.datasets[0].data.push(rows[i].position);
-            this.barChartLabels.push(this.currDate);
-          }
+
+        this.dateListData = [];
+        this.barDataClicks.datasets[0].data = [];
+        this.barDataImpressions.datasets[0].data = [];
+        this.barDataCTR.datasets[0].data = [];
+        this.barDataPositions.datasets[0].data = [];
+        this.barChartLabels = [];
+        for (let i = 0; i < rows.length; i++) {
+          this.currDate = rows[i].keys[0]
+          this.currDate = this.currDate.substring(5, 10);
+          this.barDataClicks.datasets[0].data.push(rows[i].clicks);
+          this.barDataImpressions.datasets[0].data.push(rows[i].impressions);
+          this.barDataCTR.datasets[0].data.push(rows[i].ctr);
+          this.barDataPositions.datasets[0].data.push(rows[i].position);
+          this.barChartLabels.push(this.currDate);
+        }
         this.getDataPreviousYearWithDate(this.previousStartDate, this.previousEndDate, url);
       }
     }, error => {
@@ -2549,22 +2634,22 @@ export class SeoComponent implements OnInit {
       if (res) {
 
         let rows = res['rows'];
-       
-          this.dateListData = [];
-          this.barDataClicks.datasets[1].data = [];
-          this.barDataImpressions.datasets[1].data = [];
-          this.barChartLabels = [];
-          for (let i = 0; i < rows.length; i++) {
-            this.currDate = rows[i].keys[0]
-            this.currDate = this.currDate.substring(5, 10);
-            this.barDataClicks.datasets[1].data.push(rows[i].clicks + 10);
-            this.barDataImpressions.datasets[1].data.push(rows[i].impressions);
-            this.barDataCTR.datasets[1].data.push(rows[i].ctr);
-            this.barDataPositions.datasets[1].data.push(rows[i].position);
 
-            this.barChartLabels.push(this.currDate);
-          }
-        
+        this.dateListData = [];
+        this.barDataClicks.datasets[1].data = [];
+        this.barDataImpressions.datasets[1].data = [];
+        this.barChartLabels = [];
+        for (let i = 0; i < rows.length; i++) {
+          this.currDate = rows[i].keys[0]
+          this.currDate = this.currDate.substring(5, 10);
+          this.barDataClicks.datasets[1].data.push(rows[i].clicks + 10);
+          this.barDataImpressions.datasets[1].data.push(rows[i].impressions);
+          this.barDataCTR.datasets[1].data.push(rows[i].ctr);
+          this.barDataPositions.datasets[1].data.push(rows[i].position);
+
+          this.barChartLabels.push(this.currDate);
+        }
+
       }
     }, error => {
 
@@ -2592,7 +2677,7 @@ export class SeoComponent implements OnInit {
   }
 
   getDateDiff() {
-    
+
     this.startDate = this.datepipe.transform(this.fromDate.value, 'yyyy-MM-dd');
     this.endDate = this.datepipe.transform(this.toDate.value, 'yyyy-MM-dd');
     let diff = this.calculateDateSlabDiff(this.toDate.value, this.fromDate.value);
@@ -2602,7 +2687,7 @@ export class SeoComponent implements OnInit {
     this.previousStartDate = this.datepipe.transform(this.tempDate.setDate(this.tempDate.getDate() - diff), 'yyyy-MM-dd');
   }
   getYearwiseDifference(previous, current) {
-    
+
     let res;
     if (previous == 0 && current != 0) {
       res = 100.00;

@@ -167,7 +167,7 @@ export class SocialmediaComponent implements OnInit {
     let p = (new Date(date)).getTime() / 1000;
     return p;
   }
-
+ 
   ngOnInit(): void {
     this.resetVariables();
     this.pagename = localStorage.getItem('facebookpagename');

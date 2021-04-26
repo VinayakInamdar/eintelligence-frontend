@@ -1045,10 +1045,14 @@ h4.text-link {
     width: 1rem;
     height: 1rem;
     margin-left: 1rem !important;
+    margin-top: 0.1rem;
 }
 
 .set-statictitle {
     margin-left: 0.3rem !important;
+    margin-top: 0.1rem;
+    font-weight: 450;
+    font-size: small;
 }
 
 .matrics-padding {
@@ -1094,4 +1098,38 @@ h4.text-link {
 
 .tablepadding {
     padding-left: 1rem;
+}
+
+.easypie-chart {
+    display: inline-block;
+    position: relative;
+    padding: 0 6px;
+    span {
+        display: block;
+        position: absolute;
+        left: 50%;
+        top: 50%;
+        width: 100%;
+        margin-left: -50%;
+        height: 30px;
+        margin-top: -15px;
+        font-size: 20px;
+    }
+    canvas {
+        max-width: 100%;
+    }
+    &.easypie-chart-lg {
+        span {
+            font-size: 40px;
+            margin-top: -25px;
+            line-height: 40px;
+        }
+    }
+    &.easypie-chart-md {
+        span {
+            font-size: 30px;
+            margin-top: -25px;
+            line-height: 40px;
+        }
+    }
 }
