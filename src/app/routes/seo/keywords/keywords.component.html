@@ -59,11 +59,20 @@
                             <div class="form-group row ">
 
 
-                                <select #location_field class="col-sm-12 countrydropdown" formControlName="location" (change)="setSelectedLocation($event)" form="carform" searchable="Search here..">
-                                    <option [ngValue]="null" [disabled]="true">Select country name</option>
-                                    <option value={{country.country_iso_code}} *ngFor="let country of countriesList">
-                                        {{country.location_name}}</option>
-                                </select>
+                                <mat-form-field appearance="outline" class="setdropdownwidth">
+                                    <mat-label>Country Name</mat-label>
+                                    <mat-select formControlName="location" (selectionChange)="setSelectedLocation($event)">
+                                        <mat-form-field class="setdropdownwidth setdropdownpadding">
+                                            <input matInput (keyup)="onKey($event.target.value)" placeholder="Search Country Name">
+                                        </mat-form-field>
+
+                                        <mat-option value={{country.country_iso_code}} *ngFor="let country of countriesList ">
+                                            {{country.location_name}}</mat-option>
+                                    </mat-select>
+
+                                </mat-form-field>
+
+
 
                                 <span class="text-danger" *ngIf="valForm.controls['location'].hasError('required') && (valForm.controls['location'].dirty || valForm.controls['location'].touched)">
                                     {{'validation.LOCATIONISREQUIRED' | translate}}</span>
@@ -77,28 +86,46 @@
                                     <div></div>
                                 </div>
                                 <div class="col-md-6 setpaddinginlinestart" *ngIf="showLocationStates">
-                                    <select #location_field_state class="countrydropdown" (change)="setSelectedLocationState(location_field_state.value)" form="carform" searchable="Search here..">
-                                        <option [ngValue]="null" [disabled]="true">State or Province</option>
-                                        <option value={{state.location_code}} *ngFor="let state of state">
-                                            {{state.location_name}}</option>
-                                    </select>
+
+                                    <mat-form-field appearance="outline" class="setdropdownwidth">
+                                        <mat-label>State or Province</mat-label>
+                                        <mat-select #location_field_state (selectionChange)="setSelectedLocationState(location_field_state.value)">
+                                            <mat-form-field class="setdropdownwidth setdropdownpadding">
+                                                <input matInput (keyup)="onKeyState($event.target.value)" placeholder="Search State or Province">
+                                            </mat-form-field>
+
+                                            <mat-option value={{state.location_code}} *ngFor="let state of state">
+                                                {{state.location_name}}</mat-option>
+                                        </mat-select>
+
+                                    </mat-form-field>
+
 
                                     <span class="text-danger" *ngIf="valForm.controls['location'].hasError('required') && (valForm.controls['location'].dirty || valForm.controls['location'].touched)">
                                         {{'validation.LOCATIONISREQUIRED' | translate}}</span>
                                 </div>
                                 <div class="col-md-1"></div>
                                 <div class="col-md-6 setelementright setpaddinginlineend" *ngIf="showLocationCities">
-                                    <select #location_field_city class="countrydropdown " (change)="setSelectedLocationCity(location_field_city.value)" form="carform" searchable="Search here..">
-                                        <option [ngValue]="null" [disabled]="true">City</option>
-                                        <option value={{cities.location_code}},{{cities.location_name}} *ngFor="let cities of cities">{{cities.location_name}}
-                                        </option>
-                                    </select>
+
+                                    <mat-form-field appearance="outline" class="setdropdownwidth">
+                                        <mat-label>City</mat-label>
+                                        <mat-select #location_field_city (selectionChange)="setSelectedLocationCity(location_field_city.value)">
+                                            <mat-form-field class="setdropdownwidth setdropdownpadding">
+                                                <input matInput (keyup)="onKeyCities($event.target.value)" placeholder="Search City Name">
+                                            </mat-form-field>
+
+                                            <mat-option value={{cities.location_code}},{{cities.location_name}} *ngFor="let cities of cities">
+                                                {{cities.location_name}}</mat-option>
+                                        </mat-select>
+
+                                    </mat-form-field>
+
 
                                     <span class="text-danger" *ngIf="valForm.controls['location'].hasError('required') && (valForm.controls['location'].dirty || valForm.controls['location'].touched)">
                                         {{'validation.LOCATIONISREQUIRED' | translate}}</span>
                                 </div>
                             </div>
-
+                            <br><br>
                             <div class="row">
                                 <div class="col-md-3">
                                     <button class="mr-1 btn btn-secondary btn-lg" type="submit" (click)="goToPreviousTab($event,0)">
@@ -108,7 +135,7 @@
                                 <div class="col-md-3">
                                     <div class="col-md-4">
                                         <!-- <a routerLink="./home"> -->
-                                            <button class="mr-1 btn btn-primary btn-lg" type="submit" [disabled]="!this.locIsSelected || (showSpinnerLocationContent)">Submit</button>
+                                        <button class="mr-1 btn btn-primary btn-lg" type="submit" [disabled]="!this.locIsSelected || (showSpinnerLocationContent)">Submit</button>
                                         <!-- </a> -->
                                     </div>
                                 </div>

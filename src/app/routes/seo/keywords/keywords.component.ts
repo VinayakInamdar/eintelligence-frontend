@@ -1,7 +1,7 @@
 import { Component, OnInit, ViewChild, ElementRef } from '@angular/core';
 import { LocalDataSource } from 'ng2-smart-table';
 import { TranslateService } from '@ngx-translate/core';
-import { FormBuilder, FormGroup, Validators } from '@angular/forms';
+import { FormBuilder, FormControl, FormGroup, Validators } from '@angular/forms';
 import { CampaignService } from '../../campaign/campaign.service';
 import { ActivatedRoute, Router } from '@angular/router';
 import { IntegrationsService } from '../../integrations/integrations.service';
@@ -201,7 +201,7 @@ export class KeywordsComponent implements OnInit {
 
 
   ngOnInit(): void {
-    
+
     // this.getSerpLocations();
     let id = this.route.snapshot.paramMap.get('id');
     this.selectedCampId = `${id.substring(3)}`;
@@ -290,25 +290,26 @@ export class KeywordsComponent implements OnInit {
   // using to add new keyword in db
 
   submitForm(value: any) {
-    value.location_name=this.current_loc_name;
-    value.location=this.current_loc_code;
+    ; ;
+    value.location_name = this.current_loc_name;
+    value.location = this.current_loc_code;
     var keywordDto = {
       CampaignID: '',
       Keyword: '',
       Location: '',
-      LocationName:''
+      LocationName: ''
       //Tags: []
     }
-    
+
     var result: SerpDto = Object.assign({}, value);
     keywordDto.CampaignID = this.selectedCampId
     keywordDto.Keyword = result['keyword'].split('\n')
     keywordDto.Location = result['location']
-    keywordDto.LocationName=result['location_name']
+    keywordDto.LocationName = result['location_name']
     //keywordDto.Tags = this.tags
     this.showSpinner = true
 
-    this.campaignService.addNewKeyword(keywordDto.CampaignID, keywordDto.Keyword, keywordDto.Location, keywordDto.LocationName,'').subscribe((res) => {
+    this.campaignService.addNewKeyword(keywordDto.CampaignID, keywordDto.Keyword, keywordDto.Location, keywordDto.LocationName, '').subscribe((res) => {
       event.preventDefault();
       this.showSpinner = false
       this.successAlert()
@@ -373,28 +374,28 @@ export class KeywordsComponent implements OnInit {
       }
     });
   }
-  showSpinnerLocationContent:boolean;
-  current_loc_code:any;
-  current_loc_name:any;
-  locIsSelected:boolean;
+  showSpinnerLocationContent: boolean;
+  current_loc_code: any;
+  current_loc_name: any;
+  locIsSelected: boolean;
 
 
   public setSelectedLocation(event) {
-    
-    this.locIsSelected=true;
-    event.preventDefault();
+    ;
+    this.locIsSelected = true;
+    //event.preventDefault();
     let clc = country.filter((clc) => clc.country_iso_code === this.valForm.value.location);
-    this.current_loc_code=clc[0].location_code+"";
-    this.current_loc_name=clc[0].location_name;
+    this.current_loc_code = clc[0].location_code + "";
+    this.current_loc_name = clc[0].location_name;
     if (this.valForm.value.location !== null) {
 
       this.isoCode = this.valForm.value.location;
       this.getSerpLocations();
-      this.showSpinnerLocationContent=true;
-      this.showLocationStates=false;
+      this.showSpinnerLocationContent = true;
+      this.showLocationStates = false;
       this.showLocationCities = false;
-     
-     
+
+
     }
   }
 
@@ -629,66 +630,112 @@ export class KeywordsComponent implements OnInit {
     });
   }
   selectedState: any;
-  changedIsoCode:any;
-  temp_loc_code:any;
-  showLocationCities:boolean=false;
-  showLocationStates:boolean=false;
+  changedIsoCode: any;
+  temp_loc_code: any;
+  stateList: any; cityList: any;
+  showLocationCities: boolean = false;
+  showLocationStates: boolean = false;
   setSelectedLocationState(event) {
     ;
+    ;
     event.preventDefault;
-    this.changedIsoCode=this.valForm.value.location
+    this.changedIsoCode = this.valForm.value.location
     this.selectedState = event;
-    this.current_loc_code=event;
+    this.current_loc_code = event;
     this.getSerpLocations();
     this.showSpinnerLocationContent = true;
   }
-  setSelectedLocationCity(event){
+  setSelectedLocationCity(event) {
     ;
     event.preventDefault;
-    this.temp_loc_code=event.split(",")
-    this.current_loc_code=this.temp_loc_code[0];
+    this.temp_loc_code = event.split(",")
+    this.current_loc_code = this.temp_loc_code[0];
     this.current_loc_name = this.temp_loc_code[1] + "," + this.current_loc_name;
   }
   getSerpLocations() {
-    debugger
+
     this.campaignService.getSerpLocations(this.isoCode).subscribe((res) => {
-    
-    let result;
-    result = res;
-    
-    let x = result.map((h) => {
-    var z = h.location_name.split(",");
-    h.location_name = z[0];
-    return h;
+
+      let result;
+      result = res;
+
+      let x = result.map((h) => {
+        var z = h.location_name.split(",");
+        h.location_name = z[0];
+        return h;
+      });
+      if (this.changedIsoCode !== this.isoCode) {
+        this.selectedState = null;
+      }
+      if (this.selectedState == null) {
+
+        let a = x.filter((a) => a.location_type == "Union Territory");
+        let b = x.filter((b) => b.location_type == "State");
+        let c = x.filter((b) => b.location_type == "Province");
+        let d = (a.concat(b)).concat(c);
+        this.showSpinnerLocationContent = false;
+        this.state = d; this.stateList = d;
+        this.showLocationStates = true;
+      }
+
+      if (this.selectedState !== null && this.selectedState != undefined) {
+
+        let j = x.filter((j) => j.location_code == this.selectedState)
+        let m = j[0].location_code;
+        this.current_loc_name = j[0].location_name + "," + x[0].location_name;
+        let e = result.filter((e) => e.location_type == "City");
+        let f = result.filter((f) => f.location_type == "District");
+        let g = e.concat(f);
+        let n = g.filter((n) => n.location_code_parent == m);
+        this.showSpinnerLocationContent = false;
+        this.cities = n; this.cityList = n;
+        this.showLocationCities = true;
+      }
+
     });
-    if (this.changedIsoCode !== this.isoCode) {
-    this.selectedState = null;
+  }
+
+  // Receive user input and send to search method**
+  onKey(value) {
+    ;
+    if (value === '' || value == null || value == undefined) {
+      this.countriesList = country;
     }
-    if (this.selectedState == null) {
-    
-    let a = x.filter((a) => a.location_type == "Union Territory");
-    let b = x.filter((b) => b.location_type == "State");
-    let c = x.filter((b) => b.location_type == "Province");
-    let d = (a.concat(b)).concat(c);
-    this.showSpinnerLocationContent = false;
-    this.state = d;
-    this.showLocationStates = true;
+    else {
+      this.countriesList = this.search(value);
     }
-    
-    if (this.selectedState !== null && this.selectedState != undefined) {
-    
-    let j = x.filter((j) => j.location_code == this.selectedState)
-    let m = j[0].location_code;
-    this.current_loc_name = j[0].location_name + "," + x[0].location_name;
-    let e = result.filter((e) => e.location_type == "City");
-    let f = result.filter((f) => f.location_type == "District");
-    let g = e.concat(f);
-    let n = g.filter((n)=> n.location_code_parent == m);
-    this.showSpinnerLocationContent = false;
-    this.cities = n;
-    this.showLocationCities = true;
+  }
+
+  // Filter the countries list and send back to populate the countriesList**
+  search(value: string) {
+    ;
+    let filter = value.toLowerCase();
+    return this.countriesList.filter(option => option.location_name.toLowerCase().startsWith(filter));
+  }
+  onKeyState(value) {
+    ;
+    if (value === '' || value == null || value == undefined) {
+      this.state = this.stateList;
     }
-    
-    });
+    else {
+      this.state = this.searchState(value);
     }
+  }
+  searchState(value: string) {
+    let filter = value.toLowerCase();
+    return this.state.filter(option => option.location_name.toLowerCase().startsWith(filter));
+  }
+  onKeyCities(value) {
+    if (value === '' || value == null || value == undefined) {
+      this.cities = this.cityList;
+    }
+    else {
+      this.cities = this.searchCities(value);
+    }
+
+  }
+  searchCities(value: string) {
+    let filter = value.toLowerCase();
+    return this.cities.filter(option => option.location_name.toLowerCase().startsWith(filter));
+  }
 }

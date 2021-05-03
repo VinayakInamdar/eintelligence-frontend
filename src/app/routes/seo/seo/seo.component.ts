@@ -1029,7 +1029,7 @@ export class SeoComponent implements OnInit {
     }
   }
   public addColumn(title, value, index) {
-    debugger
+    
     this.settings.columns["new column " + index] = { title: title, value: value };
     this.settings = Object.assign({}, this.settings);
   }
@@ -1106,7 +1106,7 @@ export class SeoComponent implements OnInit {
   ngOnInit(): void {
     // this.lineChartData1=[];
     // this.lineChartLabels1 = [];
-    debugger
+    
     this.gaurl = localStorage.getItem('gaurl');
     this.gaaccesstoken = localStorage.getItem('gaaccesstoken');
     this.garefreshtoken = localStorage.getItem('garefreshtoken');
@@ -2089,7 +2089,7 @@ export class SeoComponent implements OnInit {
     this.selectedCampId = `${id.substring(3)}`;
     filterOptionModel.searchQuery = 'CampaignID=="' + this.selectedCampId + '"'
     this.campaignService.getSerpForKeyword(filterOptionModel, "&tbs=qdr:m").subscribe(res => {
-      debugger
+      
       this.serpList = res;
       this.tempSerpList = this.serpList;
       this.GetRankingPosition(this.selectedCampId);
@@ -2108,7 +2108,7 @@ export class SeoComponent implements OnInit {
 
   }
   getSiteSpeedDataMobile() {
-    debugger;
+    ;
     this.httpOptionJSON = {
       headers: new HttpHeaders({
         'Accept': 'application/json',
@@ -2141,7 +2141,7 @@ export class SeoComponent implements OnInit {
         // this.first_meaningful_paint = lighthouse.audits['first-meaningful-paint'].displayValue,
         // this.first_cpu_idle = lighthouse.audits['first-cpu-idle'].displayValue,
         // this.Eestimated_input_latency = lighthouse.audits['estimated-input-latency'].displayValue
-        debugger;
+        ;
         this.first_contentful_paint = lighthouse.audits['first-contentful-paint'].displayValue;
         this.speed_index = lighthouse.audits['speed-index'].displayValue;
         this.largest_contentful_paint = lighthouse.audits['largest-contentful-paint'].displayValue;
@@ -2275,7 +2275,7 @@ export class SeoComponent implements OnInit {
   }
 
   getSiteSpeedDataDesktop() {
-    debugger;
+    ;
     this.httpOptionJSON = {
       headers: new HttpHeaders({
         'Accept': 'application/json',
@@ -2322,7 +2322,7 @@ export class SeoComponent implements OnInit {
         let msToiDesktop: any = lighthouse.audits['interactive'].score * 100;
         let msTbtDesktop: any = lighthouse.audits['total-blocking-time'].score * 100;
         let msClsDesktop: any = lighthouse.audits['cumulative-layout-shift'].score * 100;
-        debugger;
+        ;
 
         this.performanceScoreDesktop = ((msFcpDesktop * 0.15) + (msSiDesktop * 0.15) + (msLcpDesktop * 0.25) + (msToiDesktop * 0.15) + (msTbtDesktop * 0.25) + (msClsDesktop * 0.05));
         this.performanceScoreDesktop = Math.round(this.performanceScoreDesktop);

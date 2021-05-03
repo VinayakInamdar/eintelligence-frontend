@@ -316,11 +316,11 @@ li:hover span.only-show-on-hover {
 }
 
 .keywordformheight {
-    height: 450px;
+    height: 520px;
 }
 
 .keywordtabheight {
-    height: 375px;
+    height: 445px;
 }
 
 .keywordpfontl {
@@ -328,7 +328,7 @@ li:hover span.only-show-on-hover {
 }
 
 .keyworddiv1paddingtop {
-    padding-top: 5px;
+    padding-top: 50px;
 }
 
 .keyworddiv2paddingtop {
@@ -336,7 +336,7 @@ li:hover span.only-show-on-hover {
 }
 
 .keywordaddpaddingtop {
-    padding-top: 50px;
+    padding-top: 20px;
 }
 
 .keywordmaindiv {
@@ -616,4 +616,16 @@ li:hover span.only-show-on-hover {
 
 .setpaddinginlineend {
     padding-inline-end: 1px;
+}
+
+.setdropdownwidth {
+    display: block;
+    width: 100%;
+    font-size: 1rem;
+    background-color: #fff;
+}
+
+.setdropdownpadding {
+    padding-left: 1rem;
+    padding-top: 1rem;
 }

@@ -440,7 +440,7 @@ export class HomeComponent implements OnInit {
     const url = "https://graph.instagram.com/me?&access_token=" + this.instaAccessToken;
     this.http.get(url).subscribe(res => {
       if (res) {
-    debugger
+    
         let pagelist = res['data'];
         let currPage = pagelist.filter(x => x.name.toLowerCase() === this.selectedCampaignName.toLowerCase());
         //this.generatePageToken();
