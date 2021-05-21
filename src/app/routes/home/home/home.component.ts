@@ -384,11 +384,6 @@ export class HomeComponent implements OnInit {
     //Ranking
     this.getCompany();
     this.hasGaSetup = true;
-    facebook.init({
-      appId: environment.facebook_appid,
-      version: 'v9.0'
-    });
-
     this.getDateDiff();
     let ycode = localStorage.getItem("gacode");
     if (ycode != 'null' && ycode != null && ycode != undefined && ycode != '') {
@@ -754,6 +749,54 @@ export class HomeComponent implements OnInit {
     });
   }
   //###############################################Facebook data
+  refreshFacebookAccount(pagename, accessToken) {
+    debugger
+    const url = "https://graph.facebook.com/oauth/access_token?grant_type=fb_exchange_token&client_id=200487178533939&client_secret=e2b6565db23b735aff9f7c5536dbb217&fb_exchange_token=" + this.accessToken + "";
+
+  //  const url = "https://graph.facebook.com/oauth/access_token?grant_type=fb_exchange_token&client_id="+environment.facebook_appid+"&client_secret="+environment.facebook_appSecret+"&fb_exchange_token=" + this.accessToken + "";
+    this.http.get(url).subscribe(res => {
+      if (res) {
+        debugger
+        this.accessToken = res['access_token'];
+        let facebookid = localStorage.getItem('facebookid');
+        let masterid = localStorage.getItem('selectedCampId');
+        let data = {
+          id: facebookid,
+          urlOrName: pagename,
+          isActive: true,
+          CampaignID: masterid,
+          accessToken: accessToken,
+          refreshToken: '1111'
+        }
+        this.campaignService.updateFacebook(facebookid, data).subscribe(response => {
+          debugger
+        });
+        this.getAllPagesListFacebook();
+      }
+    }, error => {
+      alert('Fetch Refresh Token Failed : ' + JSON.stringify(error.error));
+    });
+  }
+  getAllPagesListFacebook() {
+    debugger
+    const url = "https://graph.facebook.com/me/accounts?&access_token=" + this.accessToken;
+    // const  url = "https://graph.facebook.com/" + this.userId + "/accounts?access_token=" + this.accessToken;
+    this.http.get(url).subscribe(res => {
+      if (res) {
+        debugger
+        let pagelist = res['data'];
+
+        let currPage = pagelist.filter(x => x.name.toLowerCase() === this.selectedCampaignName.toLowerCase());
+        // this.pageToken = currPage[0].access_token;
+        // this.pageid = currPage[0].id;
+        // localStorage.setItem('FacebookPageToken', this.pageToken);
+        // this.getDateDiff();
+        // this.testDateSlab(this.startDate, this.endDate, 0)
+      }
+    }, error => {
+      //this.snackbarService.show('Fetch New Likes Count Failed : ' + JSON.stringify(error.error));
+    });
+  }
   facebookDataThisMonth(index) {
 
     const url = "https://graph.facebook.com/" + environment.facebook_pageid + "/insights/page_impressions_unique,page_total_actions,page_positive_feedback_by_type,page_negative_feedback,page_views_total,page_impressions,page_views_external_referrals,page_fans_by_unlike_source_unique,page_impressions_organic,page_impressions_paid,page_fan_removes_unique?access_token=" + this.facebookPageToken;
@@ -837,26 +880,7 @@ export class HomeComponent implements OnInit {
     });
   }
 
-  thOptions(i) {
-    const loginOptions: LoginOptions = {
-      enable_profile_selector: true,
-      return_scopes: true,
-      // scope: 'public_profile,user_friends,email,pages_show_list'
-      //scope: 'pages_show_list'
-      scope: 'pages_show_list,read_insights,pages_read_engagement'
-    };
-
-    this.facebook.login(loginOptions)
-      .then((res: LoginResponse) => {
-        console.log('Logged in', res);
-        this.facebookAccessToken = res['authResponse'].accessToken;
-        localStorage.setItem('FacebookAccessToken', this.accessToken);
-        this.getFacebookUserId(i);
-
-
-      })
-      .catch(this.handleError);
-  }
+ 
 
   getUserId() {
     const url = "https://graph.facebook.com/me?access_token=" + this.facebookAccessToken + "&fields=id,name";
@@ -1109,12 +1133,9 @@ export class HomeComponent implements OnInit {
         }
         let facebook = this.CampaignFacebookList.filter(x => x.campaignID == res[i].id);
         if (facebook != null && facebook != undefined && facebook.length > 0) {
-
+          debugger
+          this.refreshFacebookAccount(facebook[0]['urlOrName'], facebook[0]['accessToken']);
         }
-
-        this.GetRankingPosition(res[i].id);
-
-        this.campaignList[i].ranking = this.rankingPrev + "--" + this.rankingThis;
       }
       this.source = new LocalDataSource(this.campaignList);
     });

@@ -1,12 +1,31 @@
-<div class="row">
-    <div class="col-sm-3 storesubdivpadding">
-        <!-- max-width: 18%; -->
-        <div class="card" [style.height.px]="maxHeight">
+<div class="row overflow-hidden">
+    <div class="container-fluid card-padding">
+
+        <div class="col-md-12 card-padding">
+            <div class="card b bg-white rounded  row setroundedrowheight  cursor-set">
+                <p class="storepfontsize titlepadding">Services</p>
+                <div class="scrolling-wrapper row flex-row flex-nowrap mt-4 pb-4 pt-2">
+
+                    <div class="col-md-2" *ngFor="let product of products; let i = index;">
+
+                        <a [ngClass]="{'active': (settingActive == i)}" (click)="linkClick(i,product.id);" class="storeafontwfonts">
+                        &nbsp;{{product.name}}</a>
+
+                    </div>
+
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!--div class="col-sm-3 storesubdivpadding"-->
+    <!-- max-width: 18%; -->
+    <!--div class="card" [style.height.px]="maxHeight">
             <div class="card-body">
                 <p class="storepfontsize">Services</p>
                 <br>
                 <div *ngFor="let product of products; let i = index;">
-                    <a [ngClass]="{'active': (settingActive == i)}" (click) = "linkClick(i,product.id);" class="storeafontwfonts">
+                    <a [ngClass]="{'active': (settingActive == i)}" (click)="linkClick(i,product.id);" class="storeafontwfonts">
                         &nbsp;{{product.name}}</a>
                     <br>
                     <br>
@@ -14,10 +33,11 @@
 
                 <br>
             </div>
-        </div>
-    </div>
-    <div class="col-md-9">
-            <div class="card b cart-container">
+        </div-->
+    <!--/div-->
+    <div class="container-fluid card-padding">
+        <div class="col-md-12">
+            <div class="card b cart-container setplancard  cursor-set">
                 <div class="card-header storepfontsize"></div>
                 <div class="container mt-2 storeproductdivheight">
                     <div class="row pad-18">
@@ -33,7 +53,7 @@
                                     </p>
                                     <hr>
                                     <div class="product-attributes-box card-body storesubdivpaddinginitial">
-                                        <ul class="list-group list-group-flush storeulpaddingtop" >
+                                        <ul class="list-group list-group-flush storeulpaddingtop">
                                             <li class="text-left storelistyle">{{plan.features}}</li>
                                         </ul>
                                     </div>
@@ -51,7 +71,7 @@
                     </div>
                 </div>
             </div>
-        <!-- <div *ngFor="let product of products">
+            <!-- <div *ngFor="let product of products">
             <div *ngIf="settingActive == 1 && product.id == 1">
                 <div class="card b cart-container">
                     <div class="card-header storepfontsize">{{product.name}}</div>
@@ -221,6 +241,7 @@
         </div> -->
 
 
+        </div>
     </div>
 
 </div>

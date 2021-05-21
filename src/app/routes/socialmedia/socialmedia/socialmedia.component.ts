@@ -217,6 +217,7 @@ export class SocialmediaComponent implements OnInit {
 
   }
   refreshToken() {
+    //const url = "https://graph.facebook.com/oauth/access_token?grant_type=fb_exchange_token&client_id="+environment.facebook_appid+"&client_secret="+environment.facebook_appSecret+"&fb_exchange_token=" + this.accessToken + "";
     const url = "https://graph.facebook.com/oauth/access_token?grant_type=fb_exchange_token&client_id=200487178533939&client_secret=e2b6565db23b735aff9f7c5536dbb217&fb_exchange_token=" + this.accessToken + "";
     this.http.get(url).subscribe(res => {
       if (res) {

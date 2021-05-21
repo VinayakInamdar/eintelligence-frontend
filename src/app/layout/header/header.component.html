@@ -16,13 +16,11 @@
     <ul class="navbar-nav mr-auto flex-row">
         <li class="nav-item">
             <!-- Button used to collapse the left sidebar. Only visible on tablet and desktops-->
-            <a class="nav-link d-none d-md-block d-lg-block d-xl-block" trigger-resize=""
-                (click)="toggleCollapsedSideabar()" *ngIf="!isCollapsedText()">
+            <a class="nav-link d-none d-md-block d-lg-block d-xl-block" trigger-resize="" (click)="toggleCollapsedSideabar()" *ngIf="!isCollapsedText()">
                 <em class="fas fa-bars"></em>
             </a>
             <!-- Button to show/hide the sidebar on mobile. Visible on mobile only.-->
-            <a class="nav-link sidebar-toggle d-md-none"
-                (click)="settings.toggleLayoutSetting('asideToggled'); $event.stopPropagation()">
+            <a class="nav-link sidebar-toggle d-md-none" (click)="settings.toggleLayoutSetting('asideToggled'); $event.stopPropagation()">
                 <em class="fas fa-bars"></em>
             </a>
         </li>
@@ -46,6 +44,24 @@
     </ul>
     <ul class="navbar-nav flex-row" style="display: flex;flex-direction: row;justify-content: space-evenly;">
 
+        <li class="nav-item dropdown d-none d-md-block">
+            <div class="col-md-3  mt-2">
+                <div class="btn-group mt-1">
+
+                    <div class="btn-group" dropdown>
+                        <button id="button-basic" dropdownToggle type="input" class="btn dropdown-toggle btn-secondary" aria-controls="dropdown-basic">
+                            {{selectedCampaignName !== undefined ? selectedCampaignName : 'select your campaign'}}
+                            <span class="caret"> </span>
+                        </button>
+
+                        <ul id="dropdown-basic" *dropdownMenu class="dropdown-menu" role="menu" aria-labelledby="button-basic">
+                            <li role="menuitem" *ngFor="let campaign of campaignList" [ngClass]="{'active': selectedCampId == campaign.id}"><a class="dropdown-item" (click)="onCampaignSelect($event,campaign)" href="#">{{campaign.name}}</a></li>
+                        </ul>
+                    </div>
+                </div>
+            </div>
+
+        </li>
         <li class="nav-item d-none d-md-block">
             <a class="nav-link" title="Add Products" [routerLink]="'/products'">
                 <em class="fas fa-plus"></em>
