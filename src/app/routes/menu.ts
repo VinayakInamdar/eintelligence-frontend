@@ -81,7 +81,11 @@ const Reports = {
     icon: "fas fa-list-alt"
 };
 
-
+const Users = {
+    text: 'Users',
+    link: '/user-list',
+    icon: "fas fa-user"
+};
 
 // const Register = {
 //     text: 'Register',
@@ -117,6 +121,7 @@ export const menu = [
     Campaign,
     Fulfillment, 
     Reports,
+    Users,
    // MyPayments,
     //User,
    // Account,

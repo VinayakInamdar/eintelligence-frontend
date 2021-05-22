@@ -1,0 +1,97 @@
+<br><br>
+<div class="row ">
+    <div class="col-md-4"></div>
+    <div class="col-md-5">
+        <div class="card card-default shadow p-3 mb-5 bg-white rounded bordertopwidth0px">
+            <div class="row">
+                <div class="col-md-1"></div>
+                <div class="col-md-10">
+                    <div class="card-body">
+
+                        <div class="text-center" style="margin-top:0px;">
+                            <div class="card">
+                                <div class="card-body">
+                                    <p class="textaligncenter fontsizexlarge paddingtop3px">User Detail</p>
+                                </div>
+                            </div>
+                        </div>
+
+                        <form [formGroup]="valForm" class="form-horizontal" (submit)="submitForm(valForm.value)" novalidate="" #inviteUserForm="ngForm">
+
+                            <div class="form-group">
+                                <div class="row">
+                                    <div class="col-md-5">
+                                        <div class="row">
+                                            <label class="labelcss">FIRST NAME</label>
+                                            <p class="pcolorred">*</p>
+                                            <input class="form-control inputheight3rem" formControlName="fName" placeholder="i.e. Johhn" />
+                                            <span class="text-danger" *ngIf="valForm.controls['fName'].hasError('required') && (valForm.controls['fName'].dirty || valForm.controls['fName'].touched)">
+                                                {{'validation.NAMEISREQUIRED' | translate}}</span>
+                                        </div>
+                                    </div>
+                                    <div class="col-md-2"></div>
+                                    <div class="col-md-5">
+                                        <div class="row">
+                                            <label class="labelcss">LAST NAME</label>
+                                            <p class="pcolorred">*</p>
+                                            <input class="form-control inputheight3rem" formControlName="lName" placeholder="i.e. Doe" />
+                                            <span class="text-danger" *ngIf="valForm.controls['lName'].hasError('required') && (valForm.controls['lName'].dirty || valForm.controls['lName'].touched)">
+                                                {{'validation.NAMEISREQUIRED' | translate}}</span>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+
+                            <div class="form-group">
+                                <div class="row">
+                                    <label class="labelcss">EMAIL</label>
+                                    <p class="pcolorred">*</p>
+                                    <input formControlName="email" class="form-control inputheight3rem" type="email" placeholder="Enter your email" />
+                                    <span class="text-danger" *ngIf="valForm.controls['email'].hasError('required') && (valForm.controls['email'].dirty || valForm.controls['email'].touched)">
+                                        {{'validation.EMAIL' | translate}}</span>
+                                    <span class="text-danger" *ngIf="valForm.controls['email'].hasError('pattern') && (valForm.controls['email'].dirty || valForm.controls['email'].touched)">
+                                        {{'Email is not valid' | translate}}</span>
+                                </div>
+                            </div>
+
+                            <div class="form-group">
+                                <div class="row">
+                                    <label class="labelcss">CAMPAIGN</label>
+
+                                    <select formControlName="campaign" class="form-control inputheight3rem" name="campaign" id="campaign" (change)="onCampSelect($event)">
+                                    <option value="" selected>Select Campaign</option>
+                                    <option *ngFor="let campaign of campaignList" value={{campaign.id}}>{{campaign.name}}</option>
+                                    
+                                </select>
+                                </div>
+                            </div>
+
+                            <div class="form-group" *ngIf="roleselect">
+                                <div class="row">
+                                    <label class="labelcss">ROLE</label>
+
+                                    <div class="col-md-3">
+                                        <input type="radio" formControlName="roletype" value="clientuser" name="roletype"> CLIENT USER
+                                    </div>
+                                    <div class="col-md-2"> </div>
+                                    <div class="col-md-3">
+                                        <input type="radio" formControlName="roletype" value="normaluser" name="roletype"> NORMAL USER
+                                    </div>
+                                </div>
+                            </div>
+                            <fieldset></fieldset>
+                            <div class="text-center">
+                                <button class="mr-1 btn btn-primary btn-lg" type="submit" [disabled]="!inviteUserForm.form.valid">Add</button>
+                            </div>
+                            <br>
+                        </form>
+
+                    </div>
+
+                </div>
+            </div>
+        </div>
+
+    </div>
+    <div class="col-md-3"></div>
+</div>

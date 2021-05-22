@@ -221,6 +221,11 @@ export const routes: Routes = [
                 component: LayoutComponent,
                 loadChildren: () => import('./google-ads/google-ads.module').then(m => m.GoogleAdsModule)
             },
+            {
+                path: 'user-list',
+                component: LayoutComponent,
+                loadChildren: () => import('./invite-user/invite-user.module').then(m => m.InviteUserModule)
+            },
         ]
     },
     
