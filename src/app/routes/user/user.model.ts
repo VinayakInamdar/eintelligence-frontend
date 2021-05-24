@@ -6,5 +6,7 @@ export class User {
     email:string;    
     password:string;
     companyID: string;
+    cName:string;
+    companytype:string;
     phoneNumber:string;
 }

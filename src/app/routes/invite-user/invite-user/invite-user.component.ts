@@ -5,6 +5,7 @@ import { TranslateService } from '@ngx-translate/core';
 import { OpenIdConnectService } from 'src/app/shared/services/open-id-connect.service';
 import { Campaign } from '../../campaign/campaign.model';
 import { CampaignService } from '../../campaign/campaign.service';
+import { InviteUser } from '../userlist/usermodel';
 
 @Component({
   selector: 'app-invite-user',
@@ -32,8 +33,8 @@ export class InviteUserComponent implements OnInit {
       'fName': [this.fName.value, Validators.required],
       'lName': [this.lName.value, Validators.required],
       'email': [this.email.value, [Validators.required, Validators.pattern(this.emailReg)]],
-      'campaign': [this.campaign.value],
-      'roletype': [this.roletype.value]
+      'CampaignID': [this.campaign.value],
+      'CompanyRole': [this.roletype.value]
     })
       ;
     this.getCampaignList();
@@ -55,10 +56,14 @@ export class InviteUserComponent implements OnInit {
     this.roleselect = true;
   }
   submitForm(value: any) {
+    var result: InviteUser = Object.assign({}, value);
+    result.userName = result.email;
+    result.companyID = localStorage.getItem("companyID");
+    this.campaignService.inviteUsers(result).subscribe((res: any) => {
+      alert("Invite link send to user mail address");
+      console.log(res);
+    })
 
-    ;
-    var result: any = Object.assign({}, value);
-    console.log(result);
   }
 
 }

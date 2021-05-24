@@ -16,7 +16,9 @@ import { UserlistComponent } from './userlist/userlist.component';
 
 
 const routes: Routes = [
-  { path: '', component: UserlistComponent },
+  {
+    path: '', component: UserlistComponent
+  },
   { path: 'invite-user', component: InviteUserComponent }
 ];
 
@@ -40,6 +42,6 @@ const routes: Routes = [
   ],
   exports: [
     RouterModule,
-  ],
+  ]
 })
 export class InviteUserModule { }

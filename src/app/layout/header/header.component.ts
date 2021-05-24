@@ -39,7 +39,7 @@ export class HeaderComponent implements OnInit {
     SelectedCampaignId;
     selectedCampaignName: string;
     selectedCampName;
-    
+
     constructor(public menu: MenuService, public _openIdConnectService: OpenIdConnectService, public userblockService: UserblockService, public settings: SettingsService, public injector: Injector
 
         , private campaignService: CampaignService, public route: ActivatedRoute, public http: HttpClient, public datepipe: DatePipe, private snackbarService: SnackbarService) {
@@ -128,9 +128,10 @@ export class HeaderComponent implements OnInit {
 
     // using to get campaignList
     public getCampaignList(): void {
-
+        debugger
         var userid = this._openIdConnectService.user.profile.sub;
         this.campaignService.getCampaign(userid).subscribe(res => {
+            debugger
             this.campaignList = res;
             var name = "";
             if (this.selectedCampId == ":id") {
@@ -146,17 +147,17 @@ export class HeaderComponent implements OnInit {
             for (let i = 0; i < res.length; i++) {
                 let ga = this.CampaignGAList.filter(x => x.campaignID == res[i].id);
                 if (ga != null && ga != undefined && ga.length > 0) {
-                    
+
                     //this.refreshGoogleAnalyticsAccount(i, ga[0]['refreshToken'], ga[0]['urlOrName']);
                 }
                 let gsc = this.CampaignGSCList.filter(x => x.campaignID == res[i].id);
                 if (gsc != null && gsc != undefined && gsc.length > 0) {
                     // this.refreshGSCAccount(i, gsc[0]['refreshToken'], gsc[0]['urlOrName']);
-                   
+
                 }
                 let facebook = this.CampaignFacebookList.filter(x => x.campaignID == res[i].id);
                 if (facebook != null && facebook != undefined && facebook.length > 0) {
-                   
+
                 }
             }
         });
@@ -273,5 +274,5 @@ export class HeaderComponent implements OnInit {
         })
     }
 
-  
+
 }

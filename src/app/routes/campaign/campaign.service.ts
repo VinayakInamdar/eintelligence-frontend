@@ -6,8 +6,10 @@ import { HttpClient, HttpParams } from '@angular/common/http';
 import { environment } from '../../../environments/environment';
 import { Campaign } from './campaign.model';
 import { SerpDto } from '../seo/serp.model';
-import { OpenIdConnectService } from 'src/app/shared/services/open-id-connect.service';
+import { OpenIdConnectService } from '../../shared/services/open-id-connect.service';
 import { FilterOptionModel } from '../../shared/model/filter-option.model';
+import { InviteUser, UserModel } from '../invite-user/userlist/usermodel';
+import { UserInfo } from 'os';
 @Injectable({
   providedIn: 'root'
 })
@@ -73,25 +75,37 @@ export class CampaignService {
 
   }
   googleAuth(id: string): Observable<any> {
-    
-    let companyid= localStorage.getItem('companyID');
-   var res =this.http.post<any>(`${this.Url}googleanalyticsaccounts/AuthGoogleAnalyticsAccount?id=` + id+`&CompanyId=` + companyid, {});
-   
-   return res;
+
+    let companyid = localStorage.getItem('companyID');
+    var res = this.http.post<any>(`${this.Url}googleanalyticsaccounts/AuthGoogleAnalyticsAccount?id=` + id + `&CompanyId=` + companyid, {});
+
+    return res;
   }
   authGoogleRestSharp(code): Observable<any> {
-    
-   var res =this.http.post<any>(`${this.Url}googleanalyticsaccounts/AuthGoogleRestSharp?code=` + code, {});
-   return res;
+
+    var res = this.http.post<any>(`${this.Url}googleanalyticsaccounts/AuthGoogleRestSharp?code=` + code, {});
+    return res;
   }
   authRefreshGoogleAccount(code): Observable<any> {
-    
-   var res =this.http.post<any>(`${this.Url}googleanalyticsaccounts/AuthRefreshGoogleAccount?code=` + code, {});
-   return res;
+
+    var res = this.http.post<any>(`${this.Url}googleanalyticsaccounts/AuthRefreshGoogleAccount?code=` + code, {});
+    return res;
   }
-  getCampaign(userid): Observable<any[]> {
-    return this.http.get<any[]>(`${this.Url}campaigns/GetCampaignByUserId?userId=` + userid)
+  // getCampaign(userid): Observable<any[]> {
+  //   return this.http.get<any[]>(`${this.Url}campaigns/GetCampaignByUserId?userId=` + userid)
+  // }
+  getCampaign(id: string): Observable<any> {
+    var superAdmin = this.openIdConnectService.user.profile.super_admin;
+    var companyId = localStorage.getItem('companyID');
+    var allCampaign = false;
+    if (superAdmin) {
+      allCampaign = true;
+    }
+    return this.http.get<any>(`${this.Url}campaignusers/GetCampainForLoggedInUser`, {
+      params: new HttpParams().set('id', id).set("companyId", companyId).set("allCampaign", allCampaign.toString())
+    });
   }
+
   // using to get list of keywords
   getSerp(searchParam: string): Observable<any[]> {
     return this.http.get<any[]>(this.Url + '/serps', {
@@ -105,7 +119,7 @@ export class CampaignService {
       params: new HttpParams().set('pageSize', '1000').set("searchParam", searchParam)
     });
   }
-  addNewKeyword(CampaignID: string, Keyword: any, Location: string,LocationName:string, searchParam: string): Observable<SerpDto> {
+  addNewKeyword(CampaignID: string, Keyword: any, Location: string, LocationName: string, searchParam: string): Observable<SerpDto> {
     return this.http.post<SerpDto>(`${this.Url}serps/GetSerpData`, {}, {
       params: new HttpParams().set('CampaignID', CampaignID).set('Keywords', Keyword.join(',')).set('Location', Location).set('LocationName', LocationName).set('searchParam', "&tbs=qdr:m")
     });
@@ -214,13 +228,13 @@ export class CampaignService {
   }
   updateGA(id: string, data: any): Observable<any> {
     return this.http.put<any>(this.Url + `campaigngoogleanalyticss/${id}`, data);
-}
+  }
   createGSC(data): Observable<any> {
     return this.http.post<any>(this.Url + 'campaigngscs', data);
   }
   updateGSC(id: string, data: any): Observable<any> {
     return this.http.put<any>(this.Url + `campaigngscs/${id}`, data);
-}
+  }
   createGAds(data): Observable<any> {
     return this.http.post<any>(this.Url + 'campaigngoogleadss', data);
   }
@@ -229,7 +243,7 @@ export class CampaignService {
   }
   updateFacebook(id: string, data: any): Observable<any> {
     return this.http.put<any>(this.Url + `campaignfacebooks/${id}`, data);
-}
+  }
   getFilteredGA(filter: FilterOptionModel): Observable<any> {
     const params = `PageNumber=${filter.pageNumber}&PageSize=${filter.pageSize}&SearchQuery=${filter.searchQuery}&OrderBy=${filter.orderBy}&Fields=${filter.fields}`;
     return this.http.get<any>(`${this.Url}campaigngoogleanalyticss?${params}`, { observe: 'response' });
@@ -246,5 +260,19 @@ export class CampaignService {
     const params = `PageNumber=${filter.pageNumber}&PageSize=${filter.pageSize}&SearchQuery=${filter.searchQuery}&OrderBy=${filter.orderBy}&Fields=${filter.fields}`;
     return this.http.get<any>(`${this.Url}campaignfacebooks?${params}`, { observe: 'response' });
   }
+  getAllUsers(userId: string, companyId: string, SuperAdmin: boolean = false, campaignId: string = ""): Observable<any> {
+    return this.http.get<any>(`${this.Url}campaignusers/GetAllUsers`, {
+      params: new HttpParams().set('userId', userId).set('companyId', companyId).set('SuperAdmin', SuperAdmin.toString()).set("campaignId", campaignId)
+    });
+  }
+  updateUserRole(userId: string, companyId: string, role: string): Observable<any> {
+    return this.http.post<any>(`${this.Url}campaignusers/updateUserRole`, {
+      params: new HttpParams().set('userId', userId).set('companyId', companyId).set('role', role)
+    });
+  }
+  inviteUsers(users: InviteUser): Observable<any> {
+    return this.http.post<any>(`${this.Url}campaignusers/CreateAspUserWithCompanyAndCampaign`, users);
+  }
+
 
 }

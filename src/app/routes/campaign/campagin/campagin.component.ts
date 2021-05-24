@@ -625,8 +625,9 @@ export class CampaginComponent implements OnInit, AfterViewInit {
     if (this.isEditMode == false) {
       var result: Campaign = Object.assign({}, value);
       result.id = "00000000-0000-0000-0000-000000000000";
+      result.userId = this.openIdConnectService.user.profile.sub;
       //  result.profilePicture = this.fileToUpload.name
-      ;
+      
       this.campaignService.createCampaign(result).subscribe((res: Campaign) => {
         this.campaignModel = res;
         

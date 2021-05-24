@@ -426,6 +426,7 @@ export class LanguagesComponent implements OnInit {
   submitForm(value: any) {
 
     var result: Campaign = Object.assign({}, value);
+    result.userId = this.openIdConnectService.user.profile.sub;
     //  result.profilePicture = this.fileToUpload.name
 
     this.campaignService.createCampaign(result).subscribe((res: Campaign) => {
