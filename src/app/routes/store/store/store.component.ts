@@ -27,9 +27,7 @@ export class StoreComponent implements OnInit {
     
     this.companyId = localStorage.getItem('companyID');
     this.userId = this.openIdConnectService.user.profile.sub;
-    debugger;
       this.getAllProduct();
-      debugger;
     //using to get list of plans
     // this.productService.getProducts().subscribe(
     //   products => {
@@ -62,11 +60,9 @@ export class StoreComponent implements OnInit {
     })
   }
   getAllProduct() {
-    debugger;
     const filterOptionModel = this.getFilterOptionPlans();
     this.productsService.getFilteredProduct(filterOptionModel).subscribe((response: any) => {
       if (response) {
-        debugger;
         this.products = response.body
         if (this.products != undefined && this.products != null && this.products.length > 0) {
         this.products = this.products.filter(x => x.companyID == this.companyId);

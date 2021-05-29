@@ -10,7 +10,6 @@ export class SettingsService {
     public selectedCampaignId:any;
 
     constructor() {
-        debugger;
 
         this.selectedCompanyInfo = new companyInfo();
 

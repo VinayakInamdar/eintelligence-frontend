@@ -36,7 +36,6 @@ export class SecurityService {
 
       // Is Claim present
       var isClaimPresent: boolean = false;
-      debugger;
       // One of the conditions in matching. 
       if (Claim != undefined) {
         Claim.forEach(element => {
@@ -52,7 +51,6 @@ export class SecurityService {
 
         });
       }
-      debugger;
       return isClaimPresent;
     }
   }

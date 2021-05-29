@@ -15,15 +15,12 @@ export class CompanyListComponent implements OnInit {
   constructor(public openIdConnectService: OpenIdConnectService, private campaignService: CampaignService, private renderer: Renderer2, public settingsservice: SettingsService, public router: Router) { }
 
   ngOnInit(): void {
-debugger;
     var superAdmin = this.openIdConnectService.user.profile.super_admin;
     var userId = this.openIdConnectService.user.profile.sub;
-    debugger;
     if (superAdmin == undefined) {
       superAdmin = false;
     }
     this.campaignService.getCompanysList(superAdmin, userId).subscribe((res: any) => {
-      debugger;
       // this.settingservice.companyListInfo=res;
       //this.companys=res;
       this.companysList = new Array<companyInfo>();
@@ -42,7 +39,7 @@ debugger;
   }
 
   onClickCompany(company: any) {
-    debugger;
+    ;
     let a = company;
     this.settingsservice.selectedCompanyInfo.companyId = a.companyId;
     this.settingsservice.selectedCompanyInfo.companyType = a.companyType;

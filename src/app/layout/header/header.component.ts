@@ -127,11 +127,9 @@ export class HeaderComponent implements OnInit {
     }
 
     // using to get campaignList
-    public getCampaignList(): void {
-        debugger
+    public getCampaignList(): void {     
         var userid = this._openIdConnectService.user.profile.sub;
         this.campaignService.getCampaign(userid).subscribe(res => {
-            debugger
             this.campaignList = res;
             var name = "";
             if (this.selectedCampId == ":id") {
@@ -168,8 +166,7 @@ export class HeaderComponent implements OnInit {
 
         this.selectedCampaignName = selectedCampaign.name;
 
-        this.selectedCampId = selectedCampaign.id
-        debugger;
+        this.selectedCampId = selectedCampaign.id;
         localStorage.setItem('gaurl', '');
         localStorage.setItem('gaaccesstoken', '');
         localStorage.setItem('gadsaccesstoken', '');
@@ -181,7 +178,6 @@ export class HeaderComponent implements OnInit {
         localStorage.setItem('selectedCampUrl', '');
         this.SelectedCampaignId = selectedCampaign.id;
         let ga = this.CampaignGAList.filter(x => x.campaignID == this.SelectedCampaignId);
-        debugger;
         if (ga != null && ga != undefined && ga.length > 0) {
             localStorage.setItem('gaurl', ga[0]['urlOrName']);
             localStorage.setItem('gaaccesstoken', ga[0]['accessToken']);
@@ -214,7 +210,6 @@ export class HeaderComponent implements OnInit {
 
         }
 
-        debugger;
         localStorage.setItem('selectedCampId', selectedCampaign.id);
         localStorage.setItem('selectedCampName', selectedCampaign.name);
         localStorage.setItem('selectedCampUrl', selectedCampaign.webUrl);
@@ -239,7 +234,6 @@ export class HeaderComponent implements OnInit {
             if (response) {
 
                 this.CampaignGAList = response.body;
-                debugger;
             }
         })
     }

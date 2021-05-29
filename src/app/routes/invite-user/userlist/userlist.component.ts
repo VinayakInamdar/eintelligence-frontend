@@ -44,7 +44,6 @@ export class UserlistComponent implements OnInit {
     private actr: ActivatedRoute, public settingsservice: SettingsService) { }
 
   ngOnInit(): void {
-    debugger;
     // Model Driven validation
     this.getAllUserList();
 
@@ -62,7 +61,6 @@ export class UserlistComponent implements OnInit {
     this.userId = this.openIdConnectService.user.profile.sub;
     this.companyId = this.settingsservice.selectedCompanyInfo.companyId;
     this.campaignService.getAllUsers(this.userId, this.companyId, this.superAdmin).subscribe((res: any) => {
-      debugger;
       this.UserList = new Array<UserModel>();
       for (let u in res) {
         var staff = new UserModel();
@@ -89,7 +87,6 @@ export class UserlistComponent implements OnInit {
 
 
   onClick(value: any) {
-    debugger;
     if (value == "Normal User") {
       this.roleList = ["Admin"];
     }
@@ -99,17 +96,14 @@ export class UserlistComponent implements OnInit {
 
   }
   onRoleChange(p: any, value: any) {
-    debugger;
     this.userid1 = p.entityID;
     this.id2 = p.emailID;
     this.companyRole2 = value;
-    debugger;
 
 
   }
 
   onRoleSelected(value: any) {
-    debugger;
 
     var userId = this.userid1;
     var companyId: string = this.settingsservice.selectedCompanyInfo.companyId;
@@ -117,7 +111,6 @@ export class UserlistComponent implements OnInit {
     //Change Role
 
     this.campaignService.updateUserRole(userId, companyId, role).subscribe((res: any) => {
-      debugger;
       if (res == true) {
         this.getAllUserList()
       }
