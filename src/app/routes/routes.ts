@@ -2,6 +2,7 @@ import { Routes } from '@angular/router';
 import { LayoutComponent } from '../layout/layout.component';
 import { SigninOidcComponent } from '../signin-oidc/signin-oidc.component';
 import { RequireAuthenticatedUserRouteGuardService } from '../shared/services/require-authenticated-user-route-guard.service';
+import { LayoutwithoutsidebarComponent } from '../layout/layoutwithoutsidebar/layoutwithoutsidebar.component';
 
 export const routes: Routes = [
 
@@ -226,10 +227,19 @@ export const routes: Routes = [
                 component: LayoutComponent,
                 loadChildren: () => import('./invite-user/invite-user.module').then(m => m.InviteUserModule)
             },
+            {
+                path: 'campaignuser-list',
+                component: LayoutComponent,
+                loadChildren: () => import('./campaign-user/campaign-user.module').then(m => m.CampaignUserModule)
+            },
         ]
     },
     
-
+    {  
+        path: 'company',
+        component: LayoutwithoutsidebarComponent,
+        loadChildren: () => import('./company/company.module').then(m => m.CompanyModule)
+    },
     // Not found
     { path: '**', redirectTo: 'home' }
 

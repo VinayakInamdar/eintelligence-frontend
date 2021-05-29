@@ -1,0 +1,37 @@
+<app-layoutwithoutsidebar></app-layoutwithoutsidebar>
+<br>
+<br>
+<div class="container">
+    <div class="col-md-12">
+        <div class="card card-default set-cursordefault">
+            <div class="card-body">
+                <div class="table-responsive">
+
+                    <table class="table">
+                        <thead>
+                            <tr>
+                                <th class="set-fontcolor">COMPANY NAME</th>
+                                <th class="set-fontcolor">COMPANY DESCRIPTION</th>
+                                <th class="set-fontcolor">COMPANY TYPE</th>
+                                <th class="set-fontcolor">COMPANY ROLE</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr *ngFor="let p of companysList" (click)="onClickCompany(p)" class="set-cursorpointer">
+                                <td>{{p.name}}</td>
+                                <td>{{p.description}}</td>
+                                <td>{{p.companyType}}</td>
+                                <td>{{p.role}}</td>
+                            </tr>
+
+                        </tbody>
+                    </table>
+
+
+                </div>
+
+            </div>
+        </div>
+
+    </div>
+</div>

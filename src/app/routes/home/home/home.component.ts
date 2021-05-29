@@ -19,6 +19,7 @@ import { GoogleLoginProvider, SocialAuthService } from 'angularx-social-login';
 import { FacebookService, LoginOptions, LoginResponse } from 'ngx-facebook';
 import { TranslateService } from '@ngx-translate/core';
 import { env } from 'process';
+import { SettingsService } from 'src/app/core/settings/settings.service';
 const success = require('sweetalert');
 @Component({
   selector: 'app-home',
@@ -206,7 +207,8 @@ export class HomeComponent implements OnInit {
     actions: {
       columnTitle: '',
       custom: [{ name: 'editCampaign', title: '<i class="fas fa-edit"></i>' },
-      { name: 'deleteCampaign', title: '<span class="text-danger col"><i class="fas fa-trash-alt"></i></span>' }
+      { name: 'deleteCampaign', title: '<span class="text-danger col"><i class="fas fa-trash-alt"></i></span>' },
+        { name: 'onCampaignSelect', title:'<i class="fas fa-user"></i>'}
       ],
       add: false, edit: false, delete: false, position: 'right'
     },
@@ -379,7 +381,7 @@ export class HomeComponent implements OnInit {
   instaAccessToken;
   constructor(private translate: TranslateService, private authService: SocialAuthService, private facebook: FacebookService, public datepipe: DatePipe, private homeGscService: HomeGscService, public http: HttpClient, public campaignService: CampaignService, private router: Router,
     public auditsService: AuditsService, public toasterService: ToasterService, public toastr: ToastrService
-    , fb: FormBuilder, private route: ActivatedRoute, private openIdConnectService: OpenIdConnectService, private accountService: AccountService) {
+    , fb: FormBuilder, private route: ActivatedRoute, private openIdConnectService: OpenIdConnectService, private accountService: AccountService,public settingsservice:SettingsService) {
     //  this.facebookPageToken = localStorage.getItem('FacebookAccessToken');
     //Ranking
     this.getCompany();
@@ -1220,7 +1222,14 @@ export class HomeComponent implements OnInit {
       case 'deleteCampaign':
         this.deleteCampaign(event.data);
         break;
+      case 'onCampaignSelect':
+        this.onCampaignSelect(event.data);
     }
+  }
+  onCampaignSelect(campaign:any){
+    debugger;
+    this.settingsservice.selectedCampaignId=campaign.id;
+    this.router.navigate(['/campaignuser-list']);
   }
   editCampaign(campaign: any) {
     

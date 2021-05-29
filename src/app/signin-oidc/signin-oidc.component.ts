@@ -17,7 +17,7 @@ export class SigninOidcComponent implements OnInit {
 
     this.openIdConnectService.userLoaded$.subscribe((userLoaded) => {
       if (userLoaded) {
-        this.router.navigate(['./']);
+        this.router.navigate(['./company']);
       }
       else {
         if (!environment.production) {

@@ -1,14 +1,20 @@
 import { Injectable } from '@angular/core';
-
+import { companyInfo } from './../../routes/company/company-list/companymodel';
 @Injectable()
 export class SettingsService {
 
     private user: any;
     private app: any;
     private layout: any;
+    public selectedCompanyInfo: any;
+    public selectedCampaignId:any;
 
     constructor() {
+        debugger;
 
+        this.selectedCompanyInfo = new companyInfo();
+
+        this.selectedCampaignId="";
         // User Settings
         // -----------------------------------
         this.user = {

@@ -5,59 +5,85 @@
         <button class="mr-1 btn btn-primary btn-lg" type="button" (click)="goToInviteUser()"> + Invite User</button>
         <div class="col-md-1"></div>
     </div>
-    <table class="table table-responsive-md text-center">
-        <tbody>
-            <tr *ngFor="let user of UserList let i = index" style="cursor: pointer;">
-                <div class="d-flex">
-                    <div class="square initial-text text-center" [style.background]="user.color">{{user.fName}}
-                    </div>
-                    <div class="d-flex flex-column align-items-start">
-                        <div style="text-transform: uppercase;">
-                            {{user.fName}} {{user.lName}}
-                        </div>
-                        <div class="text-muted">
-                            {{user.emailID}}
-                        </div>
-                    </div>
-                    <div class="d-flex justify-content-center align-items-center" style="margin-left: 80%;">
-                        <div class="dropdown">
-                            <div id="myDropdown{{user.emailID}}" class="dropbtn fa fa-ellipsis-v ml-1 cursor-pointer">
-                            </div>
-                            <div id="myDropdown{{user.emailID}}" class="dropdown-content">
-                                <a (click)="changeAccessShow(user,changeAccess)">Edit Role</a>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-                <hr style="margin-top: 5px; margin-bottom: 15px;">
-            </tr>
-        </tbody>
-    </table>
-</div>
 
+</div>
+<br>
+<br>
+<div class="container">
+    <div class="col-md-12">
+        <div class="card card-default set-cursor">
+            <div class="card-body">
+                <div class="table-responsive">
+
+                    <table class="table">
+                        <thead>
+                            <tr>
+                                <th class="set-fontcolor">USER NAME</th>
+                                <th class="set-fontcolor">USER EMAIL</th>
+                                <th class="set-fontcolor">CURRENT ROLE</th>
+                                <th class="set-fontcolor">CHANGE ROLE</th>
+                                <th class="set-fontcolor">ACTIONS</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr *ngFor="let p of UserList">
+                                <td>{{p.fName}} {{p.lName}}</td>
+                                <td>{{p.emailID}}</td>
+                                <td>{{p.CompanyRole}}</td>
+                                <td>
+                                    <select name="role" #role aria-placeholder="Select Role" (change)="onRoleChange(p,role.value)" (click)="onClick(p.CompanyRole)">
+                                        <option selected> &nbsp;-&nbsp;-Select Role-&nbsp;-&nbsp; </option>
+                                        <option *ngFor="let role of roleList" value={{role}}>{{role}}</option>
+                                    
+                                    </select>
+
+
+                                </td>
+                                <td>
+                                    <div *ngIf="(p.emailID==id2)&&(p.CompanyRole!==companyRole2)" (click)="onRoleSelected(p)">
+                                        <i class="fa fa-check-square green-color set-icon"></i>
+                                    </div>
+                                    <!--div class="text-danger col">
+                                        <i class="fas fa-trash-alt"></i>
+                                    </div-->
+                                </td>
+                            </tr>
+
+                        </tbody>
+                    </table>
+
+
+                </div>
+
+            </div>
+        </div>
+
+    </div>
+</div>
 <!-- display model for change role -->
-<ng-template #changeAccess>
-    <form [formGroup]="valForm" class="form-validate form-horizontal" (submit)="submitForm(valForm.value)"
-        novalidate="">
+<!--ng-template #changeAccess>
+    <form [formGroup]="valForm" class="form-validate form-horizontal" (submit)="submitForm(valForm.value)" novalidate="">
         <div class="modal-header">
             <h4 class="modal-title">Change Role</h4>
             <button type="button" class="close close-btn" aria-label="Close" (click)="modalRef.hide()">
                 <span aria-hidden="true">&times;</span>
             </button>
         </div>
-        <div class="modal-body">
+        <div class="modal-body"-->
 
-            <!-- Role -->
-            <div class="form-group row">
+<!-- Role -->
+<!--div class="form-group row">
                 <label class="col-md-3 label-control">Role</label>
                 <div class="col-md-6">
                     <ngx-select [items]="roleList" formControlName="role" placeholder="No role selected">
                     </ngx-select>
-                    <span class="text-danger"
-                        *ngIf="valForm.controls['role'].hasError('required') && (valForm.controls['role'].dirty || valForm.controls['role'].touched)">
+                    <span class="text-danger" *ngIf="valForm.controls['role'].hasError('required') && (valForm.controls['role'].dirty || valForm.controls['role'].touched)">
                         {{'validation.NAMEISREQUIRED' | translate}}</span>
                     <br>
                 </div>
                 <div class="col-md-3 label-control text-muted">
                     Required</div>
             </div>
+        </div>
+    </form>
+</ng-template-->

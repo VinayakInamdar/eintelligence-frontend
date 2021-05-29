@@ -10,6 +10,7 @@ import { UserblockService } from './sidebar/userblock/userblock.service';
 import { FooterComponent } from './footer/footer.component';
 
 import { SharedModule } from '../shared/shared.module';
+import { LayoutwithoutsidebarComponent } from './layoutwithoutsidebar/layoutwithoutsidebar.component';
 
 @NgModule({
     imports: [
@@ -25,7 +26,8 @@ import { SharedModule } from '../shared/shared.module';
         HeaderComponent,
         NavsearchComponent,
         OffsidebarComponent,
-        FooterComponent
+        FooterComponent,
+        LayoutwithoutsidebarComponent
     ],
     exports: [
         LayoutComponent,
@@ -34,7 +36,8 @@ import { SharedModule } from '../shared/shared.module';
         HeaderComponent,
         NavsearchComponent,
         OffsidebarComponent,
-        FooterComponent
+        FooterComponent,
+        LayoutwithoutsidebarComponent
     ]
 })
 export class LayoutModule { }

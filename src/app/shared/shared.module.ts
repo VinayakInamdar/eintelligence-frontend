@@ -40,6 +40,7 @@ import { ContextMenuComponent } from './components/kanban-board/common/contextme
 import { ContentEditDirective } from './directives/content-edit/content-edit.directive';
 import { CardFilterPipe } from './pipes/card-filter.pipe';
 import { ConvertTohhmmssPipe } from './pipes/convert-tohhmmss.pipe';
+import {HasClaimDirective} from './directives/has-claim/has-claim-directive.directive';
 
 
 // https://angular.io/styleguide#!#04-10
@@ -89,6 +90,7 @@ import { ConvertTohhmmssPipe } from './pipes/convert-tohhmmss.pipe';
         ContentEditDirective,
         CardFilterPipe,
         ConvertTohhmmssPipe,
+      HasClaimDirective
     ],
     exports: [
         CommonModule,
@@ -131,6 +133,7 @@ import { ConvertTohhmmssPipe } from './pipes/convert-tohhmmss.pipe';
         MaterialModule,
         CardFilterPipe,      
         ConvertTohhmmssPipe,
+        HasClaimDirective
     ]
 })
 

@@ -26,6 +26,7 @@ export class UserService {
 
 
   createUser(userSetupData: User): Observable<User> {
+    debugger;
     return this.http.post<User>(this.Url + 'aspusers/InviteUser', userSetupData);
   }
 

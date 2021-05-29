@@ -7,6 +7,7 @@ import { menu } from './menu';
 import { routes } from './routes';
 import { RegisterComponent } from './register/register/register.component';
 import { SuccessComponent } from './register/success/success/success.component';
+import { SettingsService } from '../core/settings/settings.service';
 
 
 
@@ -23,7 +24,10 @@ import { SuccessComponent } from './register/success/success/success.component';
 })
 
 export class RoutesModule {
-    constructor(public menuService: MenuService, tr: TranslatorService) {
-        menuService.addMenu(menu);
+    constructor(public menuService: MenuService, tr: TranslatorService,public settingsservice:SettingsService) {
+       debugger;
+       
+            menuService.addMenu(menu);
+       
     }
 }

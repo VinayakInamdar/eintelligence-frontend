@@ -3,6 +3,7 @@ const Home = {
     text: 'Dashboard',
     link: '/home',
     icon: 'fas fa-home',
+    role:"role:All"
 };
 // const User = {
 //     text: 'User',
@@ -28,7 +29,8 @@ const Home = {
 const Fulfillment = {
     text: 'Fulfillment',
     link: '/store',
-    icon: "fas fa-store"
+    icon: "fas fa-store",
+    role: "role:All"
 };
 // const Products = {
 //     text: 'Products',
@@ -49,7 +51,8 @@ const Fulfillment = {
 const Campaign = {
     text: 'Projects',
     link: '/campaign',
-    icon: "fa fa-bullhorn"
+    icon: "fa fa-bullhorn",
+    role: "role:All"
 };
 
 //  const Integrations = {
@@ -78,13 +81,15 @@ const Campaign = {
 const Reports = {
     text: 'Reports',
     link: '/reports',
-    icon: "fas fa-list-alt"
+    icon: "fas fa-list-alt",
+    role: "role:All"
 };
 
 const Users = {
     text: 'Users',
     link: '/user-list',
-    icon: "fas fa-user"
+    icon: "fas fa-user",
+    role: "role:Admin:Super Admin"
 };
 
 // const Register = {
