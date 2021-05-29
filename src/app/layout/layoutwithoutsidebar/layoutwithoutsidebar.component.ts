@@ -31,16 +31,24 @@ export class LayoutwithoutsidebarComponent implements OnInit {
   isNavSearchVisible: boolean;
   @ViewChild('fsbutton', { static: true }) fsbutton;  // the fullscreen button
 
-  constructor(public menu: MenuService, public _openIdConnectService: OpenIdConnectService, public userblockService: UserblockService, public settings: SettingsService, public injector: Injector
-
-    , public route: ActivatedRoute, public http: HttpClient, public datepipe: DatePipe, ) {
+  constructor(public menu: MenuService,
+    public _openIdConnectService: OpenIdConnectService,
+    public userblockService: UserblockService,
+    public settings: SettingsService,
+    public injector: Injector,
+    public route: ActivatedRoute,
+    public http: HttpClient,
+    public datepipe: DatePipe,) {
     // show only a few items on demo
     this.menuItems = menu.getMenu().slice(Math.max(menu.getMenu().length - 3, 1)); // for horizontal layout
-    }
+  }
   logout() {
     this._openIdConnectService.triggerSignOut();
   }
   ngOnInit(): void {
+    this.settings.setLayoutSetting('isCollapsedText', true);
+    this.settings.setLayoutSetting('isFloat', true);
+
     this.isNavSearchVisible = false;
 
     var ua = window.navigator.userAgent;
@@ -68,7 +76,7 @@ export class LayoutwithoutsidebarComponent implements OnInit {
 
   }
 
-    // show only a few items on demo
+  // show only a few items on demo
   toggleUserBlock(event) {
     event.preventDefault();
     this.userblockService.toggleVisibility();
@@ -106,6 +114,9 @@ export class LayoutwithoutsidebarComponent implements OnInit {
       screenfull.toggle();
     }
   }
-
+  ngOnDestroy(): void {
+    this.settings.setLayoutSetting('isCollapsedText', false);
+    this.settings.setLayoutSetting('isFloat', false);
+  }
 
 }
