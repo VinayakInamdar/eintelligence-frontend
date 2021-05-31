@@ -80,7 +80,6 @@ export class CampaignlistComponent implements OnInit {
   // using to get list of campaigns
   public getCampaignList(): void {
     var userid = localStorage.getItem("userID");
-    debugger;
     this.campaignService.getCampaign(userid).subscribe(res => {
       this.campaignList = res;
       this.source = new LocalDataSource(this.campaignList)      
@@ -259,7 +258,6 @@ export class CampaignlistComponent implements OnInit {
     }
   }
   onCampaignSelect(campaign: any) {
-    debugger;
     this.settingsservice.selectedCampaignId = campaign.id;
     this.router.navigate(['/campaignuser-list']);
   }

@@ -36,13 +36,13 @@
                     <div class="col-md-6">
 
                         <div class="authBtn" *ngIf="!hasGaSetup">
-                            <button type="button" (click)="googleAuth()" class="btn btn-primary">Authorize</button>
+                            <button type="button" (click)="googleAuth()" class="btn btn-danger">Authorize</button>
                         </div>
                         <div class="authBtn" *ngIf="hasGaSetup">
                             <span><button type="button" (click)="isVisible = !isVisible"
-                                    class="btn btn-primary padding-right manage-btn margin-right">Manage</button></span>
+                                    class="btn btn-danger padding-right manage-btn margin-right">Manage</button></span>
                             <span><button type="button" (click)="googleAuth()"
-                                    class="btn btn-primary padding-right manage-btn">Disconnect</button></span>
+                                    class="btn btn-danger padding-right manage-btn">Disconnect</button></span>
                         </div>
 
                     </div>
@@ -58,7 +58,7 @@
 
                             </div>
                             <div class="col-md-9">
-                                <button type="button" (click)="googleAuth()" class="btn btn-primary">Add New
+                                <button type="button" (click)="googleAuth()" class="btn btn-danger">Add New
                                     Account</button> <span> or, authorize an existing account:</span>
                             </div>
 
@@ -81,7 +81,7 @@
                             <div class="col-md-4">
 
                                 <div>
-                                    <button type="button" class="btn btn-primary" (click)="saveProfile()">Save
+                                    <button type="button" class="btn btn-danger" (click)="saveProfile()">Save
                                         Changes</button>
                                 </div>
 
@@ -109,7 +109,7 @@
                     <div class="col-md-6">
 
                         <div class="authBtn">
-                            <button type="button" (click)="googleAdsAuth()" class="btn btn-primary">Authorize </button>
+                            <button type="button" (click)="googleAdsAuth()" class="btn btn-danger">Authorize </button>
                         </div>
 
                     </div>
@@ -133,7 +133,7 @@
                     <div class="col-md-6">
 
                         <div class="authBtn">
-                            <button type="button" class="btn btn-primary">Authorize</button>
+                            <button type="button" class="btn btn-danger">Authorize</button>
                         </div>
 
                     </div>
@@ -158,7 +158,7 @@
                     <div class="col-md-6">
 
                         <div class="authBtn">
-                            <button type="button" class="btn btn-primary">Authorize</button>
+                            <button type="button" class="btn btn-danger">Authorize</button>
                         </div>
 
                     </div>

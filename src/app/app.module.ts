@@ -1,7 +1,7 @@
 import { BrowserModule } from '@angular/platform-browser';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations'; // this is needed!
 import { NgModule } from '@angular/core';
-import { HttpClientModule, HttpClient } from '@angular/common/http';
+import { HttpClientModule, HttpClient, HTTP_INTERCEPTORS } from '@angular/common/http';
 import { TranslateService, TranslateModule, TranslateLoader } from '@ngx-translate/core';
 import { TranslateHttpLoader } from '@ngx-translate/http-loader';
 
@@ -19,6 +19,7 @@ import { NgxSummernoteModule } from 'ngx-summernote';
 import { ChartsModule } from 'ng2-charts';
 import { MatSnackBarModule } from '@angular/material/snack-bar';
 import { DatePipe } from '@angular/common';
+import { AddAuthorizationHeaderInterceptorService } from './shared/interceptors/add-authorization-header-interceptor.service';
 // https://github.com/ocombe/ng2-translate/issues/218
 export function createTranslateLoader(http: HttpClient) {
     return new TranslateHttpLoader(http, './assets/i18n/', '.json');
@@ -51,7 +52,12 @@ export function createTranslateLoader(http: HttpClient) {
     providers: [
         DatePipe,
         RequireAuthenticatedUserRouteGuardService,
-        OpenIdConnectService
+        OpenIdConnectService,
+        {
+            provide: HTTP_INTERCEPTORS,
+            useClass: AddAuthorizationHeaderInterceptorService,
+            multi: true
+          }
     ],
     bootstrap: [AppComponent]
 })

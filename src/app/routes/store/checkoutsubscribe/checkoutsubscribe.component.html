@@ -1,5 +1,5 @@
 <div class="row">
-    <div class="col-md-5">
+    <div class="col-md-5 offset-1">
         <div>
             <div class="container mt-4 storeproductdivheight">
                 <div class="row pad-18">
@@ -33,9 +33,9 @@
 
         </div>
     </div>
-    <div class="col-lg-4 checkoutdiv">
+    <div class="col-md-5 checkoutdiv">
         <div>
-            <div class="card b mb-2" *ngFor="let plan of plans">
+            <div class="card b mt-1" *ngFor="let plan of plans">
                 <div class="card-header bb">
                     <h4 class="card-title">Order Summnary</h4>
                 </div>
@@ -75,9 +75,9 @@
                 </div>
             </div>
 
-            <div class="card b mb-2">
+            <div class="card b" style="height: 256px;">
 
-            <form id="subscription-form" class="mb-1"> 
+                <form id="subscription-form" class="mb-1">
                     <div class="row mb-2">
                         <div class="col-sm-11">
                             <div id="paypal-button-container1"></div>
@@ -92,7 +92,7 @@
                     </div> -->
                     <br>
                     <br>
-                    
+
                     <div class="row  justify-content-md-center">
                         <div class="col-sm-11">
                             <label for="card" class="mb-0">Card information</label>
@@ -103,7 +103,7 @@
                     <br>
                     <div class="row justify-content-md-center">
                         <div class="col-sm-11">
-                            <button class="btn btn-primary btn-block" id="submit">
+                            <button class="btn btn-danger btn-block" id="submit">
                                 <div class="spinner hidden" id="spinner"></div>
                                 <span id="button-text">SUBSCRIBE</span>
                             </button>
@@ -119,7 +119,7 @@
                     <p class="result-message hidden">
                         Subscribe succeeded
                     </p>
-                </form> 
+                </form>
             </div>
 
 

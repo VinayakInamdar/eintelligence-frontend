@@ -37,7 +37,7 @@
 
                             <br>
                             <div class="text-center">
-                                <button class="mr-1 btn btn-primary btn-lg" type="submit" (click)="goToNextTab($event,name_field.value,'name',1)">Next </button>
+                                <button class="mr-1 btn btn-danger btn-lg" type="submit" (click)="goToNextTab($event,name_field.value,'name',1)">Next </button>
                             </div>
                         </div>
                         <div class="col-md-1"></div>
@@ -71,15 +71,15 @@
                                 <div class="col-md-6"></div>
                                 <div class="col-md-3">
                                     <p *ngIf="!isEditMode">
-                                        <button class="mr-1 btn btn-primary btn-lg" type="submit" (click)="successAlert()" [disabled]="!webUrl_field.value || (valForm.controls['webUrl'].hasError('pattern'))">Create
+                                        <button class="mr-1 btn btn-danger btn-lg" type="submit" (click)="successAlert()" [disabled]="!webUrl_field.value || (valForm.controls['webUrl'].hasError('pattern'))">Create
                                             campaign</button>
                                     </p>
                                     <p *ngIf="isEditMode">
-                                        <button class="mr-1 btn btn-primary btn-lg" type="submit" (click)="successAlert()">Update
+                                        <button class="mr-1 btn btn-danger btn-lg" type="submit" (click)="successAlert()">Update
                                             campaign</button>
                                     </p>
                                     <p *ngIf="isEditMode">
-                                        <button class="mr-1 btn btn-primary btn-lg" type="submit" (click)="goToNextTab($event,name_field.value,'webUrl',2)">Integrations
+                                        <button class="mr-1 btn btn-danger btn-lg" type="submit" (click)="goToNextTab($event,name_field.value,'webUrl',2)">Integrations
                                         </button>
                                     </p>
                                 </div>
@@ -104,7 +104,7 @@
                                                 <div class="col-md-11 setmargininlinestart">
                                                     <!-- <em class="fa-2x mr-2 fas fa-users"></em><br> -->
                                                     <p class="goalfonsize">
-                                                        <button class="mr-1 btn btn-primary btn-lg" type="button" (click)="integrateGoogleAnalytics()">Google
+                                                        <button class="mr-1 btn btn-danger btn-lg" type="button" (click)="integrateGoogleAnalytics()">Google
                                                             Analytics</button>
                                                     </p>
                                                         <form [formGroup]="gaSelectForm" class="goalfonsize" *ngIf="hasGaSetup">
@@ -118,7 +118,7 @@
                                                            
                                                         </p>
                                                     <p class="goalfonsize" *ngIf="hasGaSetup">
-                                                        <button type="button" class="btn btn-primary" (click)="saveGaAccount()" [disabled]="!gaSelectedName">Save
+                                                        <button type="button" class="btn btn-danger" (click)="saveGaAccount()" [disabled]="!gaSelectedName">Save
                                                             Changes</button>
                                                     </p>
 
@@ -136,7 +136,7 @@
                                                     <!-- <em class="fa-2x mr-2 fas fa-globe"></em> -->
 
                                                     <p class="goalfonsize">
-                                                        <button class="mr-1 btn btn-primary btn-lg" type="button" (click)="integrateGSC()">Google Search Console</button>
+                                                        <button class="mr-1 btn btn-danger btn-lg" type="button" (click)="integrateGSC()">Google Search Console</button>
                                                     </p>
                                                         <form [formGroup]="gaSelectForm" class="goalfonsize" *ngIf="hasGscSetup">
                                                             <select id="gscSelect" class="form-control" formControlName="gscSelect" (change)="onSelectGsc($event.target.value)">
@@ -149,7 +149,7 @@
                                                            
                                                         </p>
                                                     <p class="goalfonsize" *ngIf="hasGscSetup">
-                                                        <button type="button" class="btn btn-primary" (click)="saveGscAccount()" [disabled]="!gscSelectedName">Save
+                                                        <button type="button" class="btn btn-danger" (click)="saveGscAccount()" [disabled]="!gscSelectedName">Save
                                                             Changes</button>
                                                     </p>
                                                 </div>
@@ -164,7 +164,7 @@
                                                 <div class="col-md-11 setdivpadding setmargininlinestart">
                                                     <!-- <em class="fa-2x mr-2 fas fa-store"></em><br> -->
                                                     <p class="goalfonsize">
-                                                        <button class="mr-1 btn btn-primary btn-lg" type="button" (click)="loginWithOptions()">Facebook</button>
+                                                        <button class="mr-1 btn btn-danger btn-lg" type="button" (click)="loginWithOptions()">Facebook</button>
                                                     </p>
                                                     <form [formGroup]="gaSelectForm" class="goalfonsize" *ngIf="hasFacebookSetup">
                                                         <select id="facebookSelect" class="form-control" formControlName="facebookSelect" (change)="onSelectFacebook($event.target.value)">
@@ -177,7 +177,7 @@
                                                            
                                                     </p>
                                                     <p class="goalfonsize" *ngIf="hasFacebookSetup">
-                                                        <button type="button" class="btn btn-primary" (click)="saveFacebookAccount()" [disabled]="!facebookSelectedName">Save
+                                                        <button type="button" class="btn btn-danger" (click)="saveFacebookAccount()" [disabled]="!facebookSelectedName">Save
                                                             Changes</button>
                                                     </p>
                                                 </div>
@@ -195,7 +195,7 @@
                                                 <div class="col-md-11 setdivpadding">
                                                     <!-- <em class="fa-2x mr-2 fas fa-store"></em><br> -->
                                                     <p class="goalfonsize">
-                                                        <button class="mr-1 btn btn-primary btn-lg" type="button" (click)="signOut()">Google
+                                                        <button class="mr-1 btn btn-danger btn-lg" type="button" (click)="signOut()">Google
                                                             Ads</button>
                                                     </p>
                                                     
@@ -207,7 +207,7 @@
                                                         </select>
                                                     </p>
                                                     <p class="goalfonsize" >
-                                                        <button type="button" class="btn btn-primary" (click)="refreshGSCAccount()">Save
+                                                        <button type="button" class="btn btn-danger" (click)="refreshGSCAccount()">Save
                                                             Changes</button>
                                                     </p>
                                                 </div>
@@ -222,12 +222,12 @@
                                                 <div class="col-md-11">
                                                     <!-- <em class="fa-2x mr-2 fas fa-store"></em><br> -->
                                                     <p class="goalfonsize">
-                                                        <button class="mr-1 btn btn-primary btn-lg" type="button" (click)="goToAddKeywords()">Add Keywords
+                                                        <button class="mr-1 btn btn-danger btn-lg" type="button" (click)="goToAddKeywords()">Add Keywords
                                                         </button>
                                                     </p>
                                                     <p class="goalfonsize">
                                                       
-                                                        <button class="mr-1 btn btn-primary btn-lg" type="button" (click)="goToKeywords()">Keywords
+                                                        <button class="mr-1 btn btn-danger btn-lg" type="button" (click)="goToKeywords()">Keywords
                                                         </button>
                                                     </p>
                                                 </div>
@@ -262,7 +262,7 @@
     </div>
     <div class="col-md-2"></div>
     <div class="col-md-2 paddingtop13px">
-        <button class="mr-1 btn btn-primary btn-lg" type="button" (click)="AddCampaign()">Add Project</button>
+        <button class="mr-1 btn btn-danger btn-lg" type="button" (click)="AddCampaign()">Add Project</button>
         <div class="col-md-1"></div>
     </div>
     <div class="col-md-3 search-container paddingtop13px">
@@ -273,9 +273,8 @@
 </div>
 <hr *ngIf="settingActive == 2;">
 <br>
-<div class="row" *ngIf="settingActive == 2;">
-    <div class="col-md-1"></div>
-    <div class="col-md-10">
+<div class="row m-4" *ngIf="settingActive == 2;">
+    <div class="col-md-12">
         <div class="card card-default shadow p-3 mb-5 bg-white rounded cursor-default">
             <div class="table-responsive cursor-pointer">
                 <ng2-smart-table [settings]="settings" [source]="source" (userRowSelect)="userRowSelect($event)" (custom)="onCustomAction($event)">
@@ -283,7 +282,6 @@
             </div>
         </div>
     </div>
-    <div class="col-md-1"></div>
 </div>
 
 <!-- Update Campagin -->
@@ -318,7 +316,7 @@
                                 {{'validation.NAMEISREQUIRED' | translate}}</span>
                             <br>
                             <div class="text-center">
-                                <button class="mr-1 btn btn-primary btn-lg" type="submit" (click)="goToNextTabForEdit($event,name_field.value,'name',1)">Next </button>
+                                <button class="mr-1 btn btn-danger btn-lg" type="submit" (click)="goToNextTabForEdit($event,name_field.value,'name',1)">Next </button>
                             </div>
                         </div>
                         <div class="col-md-1"></div>
@@ -351,7 +349,7 @@
                                 </div>
                                 <div class="col-md-6"></div>
                                 <div class="col-md-3">
-                                    <button class="mr-1 btn btn-primary btn-lg" type="submit" (click)="goToNextTabForEdit($event,webUrl_field.value,'webUrl',2)">Next
+                                    <button class="mr-1 btn btn-danger btn-lg" type="submit" (click)="goToNextTabForEdit($event,webUrl_field.value,'webUrl',2)">Next
                                         ></button>
                                 </div>
                             </div>
@@ -419,7 +417,7 @@
                                 <div class="col-md-5"></div>
                                 <div class="col-md-4">
                                     <!-- <a routerLink="./home"> -->
-                                    <button class="mr-1 btn btn-primary btn-lg" type="submit" (click)="updateSuccessAlert();">Update
+                                    <button class="mr-1 btn btn-danger btn-lg" type="submit" (click)="updateSuccessAlert();">Update
                                         campaign</button>
                                     <!-- </a> -->
                                 </div>
@@ -453,7 +451,7 @@
                 </div>
                 <div class="btn-container footer-buttons text-center">
                     <a href="javascript:void(0)" class="btn btn-link" (click)="goToKeywords($event)">All Rankings</a> &nbsp;&nbsp;&nbsp;
-                    <button class="mr-1 btn btn-primary btn-sm" (click)="goToAddKeywords($event)">Add Keywords</button>
+                    <button class="mr-1 btn btn-danger btn-sm" (click)="goToAddKeywords($event)">Add Keywords</button>
                 </div>
             </div>
         </div>
