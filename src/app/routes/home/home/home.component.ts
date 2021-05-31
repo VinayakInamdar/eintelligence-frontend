@@ -752,13 +752,11 @@ export class HomeComponent implements OnInit {
   }
   //###############################################Facebook data
   refreshFacebookAccount(pagename, accessToken) {
-    debugger
     const url = "https://graph.facebook.com/oauth/access_token?grant_type=fb_exchange_token&client_id=200487178533939&client_secret=e2b6565db23b735aff9f7c5536dbb217&fb_exchange_token=" + this.accessToken + "";
 
   //  const url = "https://graph.facebook.com/oauth/access_token?grant_type=fb_exchange_token&client_id="+environment.facebook_appid+"&client_secret="+environment.facebook_appSecret+"&fb_exchange_token=" + this.accessToken + "";
     this.http.get(url).subscribe(res => {
-      if (res) {
-        debugger
+      if (res) { 
         this.accessToken = res['access_token'];
         let facebookid = localStorage.getItem('facebookid');
         let masterid = localStorage.getItem('selectedCampId');
@@ -770,8 +768,7 @@ export class HomeComponent implements OnInit {
           accessToken: accessToken,
           refreshToken: '1111'
         }
-        this.campaignService.updateFacebook(facebookid, data).subscribe(response => {
-          debugger
+        this.campaignService.updateFacebook(facebookid, data).subscribe(response => {    
         });
         this.getAllPagesListFacebook();
       }
@@ -780,12 +777,10 @@ export class HomeComponent implements OnInit {
     });
   }
   getAllPagesListFacebook() {
-    debugger
     const url = "https://graph.facebook.com/me/accounts?&access_token=" + this.accessToken;
     // const  url = "https://graph.facebook.com/" + this.userId + "/accounts?access_token=" + this.accessToken;
     this.http.get(url).subscribe(res => {
-      if (res) {
-        debugger
+      if (res) {  
         let pagelist = res['data'];
 
         let currPage = pagelist.filter(x => x.name.toLowerCase() === this.selectedCampaignName.toLowerCase());
@@ -1135,7 +1130,6 @@ export class HomeComponent implements OnInit {
         }
         let facebook = this.CampaignFacebookList.filter(x => x.campaignID == res[i].id);
         if (facebook != null && facebook != undefined && facebook.length > 0) {
-          debugger
           this.refreshFacebookAccount(facebook[0]['urlOrName'], facebook[0]['accessToken']);
         }
       }
@@ -1227,7 +1221,6 @@ export class HomeComponent implements OnInit {
     }
   }
   onCampaignSelect(campaign:any){
-    debugger;
     this.settingsservice.selectedCampaignId=campaign.id;
     this.router.navigate(['/campaignuser-list']);
   }

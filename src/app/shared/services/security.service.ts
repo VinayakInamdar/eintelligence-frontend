@@ -36,7 +36,7 @@ export class SecurityService {
 
       // Is Claim present
       var isClaimPresent: boolean = false;
-      ;
+      
       // One of the conditions in matching. 
       if (Claim != undefined) {
         Claim.forEach(element => {
@@ -45,8 +45,6 @@ export class SecurityService {
           if (element == role || element == 'All') {
             isClaimPresent = true;
           }
-
-
 
         });
       }

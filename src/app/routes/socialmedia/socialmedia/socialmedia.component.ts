@@ -681,7 +681,6 @@ export class SocialmediaComponent implements OnInit {
           this.avgLostLikes = this.getAverage(this.lostLikes, avgNum);
         }
         if (isPrev == 1) {
-          debugger
           for (let k = 0; k < l.length; k++) {
             this.lostLikesPrev = parseInt(this.lostLikesPrev) + parseInt(l[k].value)
           }

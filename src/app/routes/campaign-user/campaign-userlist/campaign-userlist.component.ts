@@ -30,13 +30,11 @@ export class CampaignUserlistComponent implements OnInit {
   }
 
   getAllCampaignUserList(){
-debugger;
     this.superAdmin = this.openIdConnectService.user.profile.super_admin;
     this.userId = this.openIdConnectService.user.profile.sub;
     this.companyId = this.settingsservice.selectedCompanyInfo.companyId;
     this.campaignId=this.settingsservice.selectedCampaignId;
     this.campaignService.getAllUsers(this.userId, this.companyId, this.superAdmin,this.campaignId).subscribe((res: any) => {
-      debugger;
 
       this.CampaignUserList = new Array<CampaignUserModel>();
       for (let u in res) {
@@ -53,10 +51,8 @@ debugger;
   }
 
   onCampaignUserSelect(value:any){
-    debugger;
     this.selectedUserId=value;
     this.campaignService.deleteCampaignUserById(this.selectedUserId,this.campaignId).subscribe((res:any)=>{
-      debugger;
       this.getAllCampaignUserList();
     })
   }

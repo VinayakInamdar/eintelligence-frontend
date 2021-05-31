@@ -25,7 +25,6 @@ import { SettingsService } from '../core/settings/settings.service';
 
 export class RoutesModule {
     constructor(public menuService: MenuService, tr: TranslatorService,public settingsservice:SettingsService) {
-       debugger;
        
             menuService.addMenu(menu);
        

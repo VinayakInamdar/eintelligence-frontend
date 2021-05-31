@@ -56,7 +56,6 @@ export class InviteUserComponent implements OnInit {
     this.roleselect = true;
   }
   submitForm(value: any) {
-    debugger;
     var result: InviteUser = Object.assign({}, value);
     result.userName = result.email;
     result.companyID = localStorage.getItem("companyID");

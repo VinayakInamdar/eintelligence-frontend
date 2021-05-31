@@ -125,13 +125,5 @@ export class HeaderComponent implements OnInit {
         }
     }
 
-    
-   
-    //setCampaignName:boolean=false;
-    //using to get selected campaign name
-   
-   
-  
-
 
 }
