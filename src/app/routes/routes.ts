@@ -91,7 +91,7 @@ export const routes: Routes = [
                 loadChildren: () => import('./account/account.module').then(m => m.AccountModule)
             },
             {
-                path: 'store',
+                path: 'store/:id',
                 component: LayoutComponent,
                 //canActivate: [RequireAuthenticatedUserRouteGuardService],
                 loadChildren: () => import('./store/store.module').then(m => m.StoreModule)

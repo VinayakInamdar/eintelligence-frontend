@@ -10,6 +10,7 @@ import { OpenIdConnectService } from '../../shared/services/open-id-connect.serv
 import { FilterOptionModel } from '../../shared/model/filter-option.model';
 import { InviteUser, UserModel } from '../invite-user/userlist/usermodel';
 import { UserInfo } from 'os';
+import { SettingsService } from '../../core/settings/settings.service';
 @Injectable({
   providedIn: 'root'
 })
@@ -19,7 +20,9 @@ export class CampaignService {
   campaignList: Campaign[];
   Url = environment.apiUrl;
 
-  constructor(private http: HttpClient, private openIdConnectService: OpenIdConnectService) { }
+  constructor(private http: HttpClient,
+    private openIdConnectService: OpenIdConnectService,
+    private settingService: SettingsService) { }
 
   //Delete Keyword
   deleteKeywordById(id: string): Observable<SerpDto> {
@@ -35,8 +38,8 @@ export class CampaignService {
   }
   // using to create new campaign in db 
   createCampaign(campaignSetupData: Campaign): Observable<Campaign> {
-    if (localStorage.getItem('companyID')) {
-      campaignSetupData.companyID = localStorage.getItem('companyID');
+    if (this.settingService.selectedCompanyInfo.companyId != "") {
+      campaignSetupData.companyID = this.settingService.selectedCompanyInfo.companyId;
     }
 
     return this.http.post<Campaign>(this.Url + 'campaigns', campaignSetupData);
@@ -76,7 +79,7 @@ export class CampaignService {
   }
   googleAuth(id: string): Observable<any> {
 
-    let companyid = localStorage.getItem('companyID');
+    let companyid = this.settingService.selectedCompanyInfo.companyId;
     var res = this.http.post<any>(`${this.Url}googleanalyticsaccounts/AuthGoogleAnalyticsAccount?id=` + id + `&CompanyId=` + companyid, {});
 
     return res;
@@ -96,7 +99,7 @@ export class CampaignService {
   // }
   getCampaign(id: string): Observable<any> {
     var superAdmin = this.openIdConnectService.user.profile.super_admin;
-    var companyId = localStorage.getItem('companyID');
+    var companyId = this.settingService.selectedCompanyInfo.companyId;
     var allCampaign = false;
     if (superAdmin) {
       allCampaign = true;
@@ -265,25 +268,25 @@ export class CampaignService {
       params: new HttpParams().set('userId', userId).set('companyId', companyId).set('SuperAdmin', SuperAdmin.toString()).set("campaignId", campaignId)
     });
   }
-  updateUserRole(userId :string, companyId: string,role:string): Observable<any> {
+  updateUserRole(userId: string, companyId: string, role: string): Observable<any> {
     //return this.http.post<any>(`${this.Url}campaignusers/updateUserRole`, {
     //  params: new HttpParams().set('userId', userId).set('companyId', companyId).set('role', role)
     //});
     return this.http.post<any>(`${this.Url}campaignusers/updateUserRole`, userId, {
-      params: new HttpParams().set('userId', userId).set('companyId', companyId).set('role',role)
+      params: new HttpParams().set('userId', userId).set('companyId', companyId).set('role', role)
     });
   }
   inviteUsers(users: InviteUser): Observable<any> {
     return this.http.post<any>(`${this.Url}campaignusers/CreateAspUserWithCompanyAndCampaign`, users);
   }
-  getCompanysList(superadmin:boolean,userId: string):Observable<any>{
-    return this.http.get<any>(`${this.Url}companyusers/GetLoggedInUserCompany`,{
-      params:new HttpParams().set('superadmin',superadmin.toString()).set('userId',userId)
+  getCompanysList(superadmin: boolean, userId: string): Observable<any> {
+    return this.http.get<any>(`${this.Url}companyusers/GetLoggedInUserCompany`, {
+      params: new HttpParams().set('superadmin', superadmin.toString()).set('userId', userId)
     });
   }
-  deleteCampaignUserById(id:string,campaignId:string):Observable<any>{
-    return this.http.delete<any>(`${this.Url}campaignusers/`+id,{
+  deleteCampaignUserById(id: string, campaignId: string): Observable<any> {
+    return this.http.delete<any>(`${this.Url}campaignusers/` + id, {
       params: new HttpParams().set('id', id).set('campaignId', campaignId)
-  });
-}
+    });
+  }
 }

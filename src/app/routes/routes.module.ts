@@ -15,7 +15,9 @@ import { SettingsService } from '../core/settings/settings.service';
 @NgModule({
     imports: [
         SharedModule,
-        RouterModule.forRoot(routes)
+        RouterModule.forRoot(routes, {
+            onSameUrlNavigation: 'reload'
+        }),
     ],
     declarations: [RegisterComponent, SuccessComponent],
     exports: [
@@ -24,9 +26,9 @@ import { SettingsService } from '../core/settings/settings.service';
 })
 
 export class RoutesModule {
-    constructor(public menuService: MenuService, tr: TranslatorService,public settingsservice:SettingsService) {
-       
-            menuService.addMenu(menu);
-       
+    constructor(public menuService: MenuService, tr: TranslatorService, public settingsservice: SettingsService) {
+
+        // menuService.addMenu(menu);
+
     }
 }

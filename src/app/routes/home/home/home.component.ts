@@ -20,6 +20,8 @@ import { FacebookService, LoginOptions, LoginResponse } from 'ngx-facebook';
 import { TranslateService } from '@ngx-translate/core';
 import { env } from 'process';
 import { SettingsService } from 'src/app/core/settings/settings.service';
+import { MenuService } from '../../../core/menu/menu.service';
+import { menu } from '../../../routes/menu';
 const success = require('sweetalert');
 @Component({
   selector: 'app-home',
@@ -208,7 +210,7 @@ export class HomeComponent implements OnInit {
       columnTitle: '',
       custom: [{ name: 'editCampaign', title: '<i class="fas fa-edit"></i>' },
       { name: 'deleteCampaign', title: '<span class="text-danger col"><i class="fas fa-trash-alt"></i></span>' },
-        { name: 'onCampaignSelect', title:'<i class="fas fa-user"></i>'}
+      { name: 'onCampaignSelect', title: '<i class="fas fa-user"></i>' }
       ],
       add: false, edit: false, delete: false, position: 'right'
     },
@@ -379,9 +381,23 @@ export class HomeComponent implements OnInit {
   source: LocalDataSource;
   instacode;
   instaAccessToken;
-  constructor(private translate: TranslateService, private authService: SocialAuthService, private facebook: FacebookService, public datepipe: DatePipe, private homeGscService: HomeGscService, public http: HttpClient, public campaignService: CampaignService, private router: Router,
-    public auditsService: AuditsService, public toasterService: ToasterService, public toastr: ToastrService
-    , fb: FormBuilder, private route: ActivatedRoute, private openIdConnectService: OpenIdConnectService, private accountService: AccountService,public settingsservice:SettingsService) {
+  constructor(private translate: TranslateService,
+    private authService: SocialAuthService,
+    private facebook: FacebookService,
+    public datepipe: DatePipe,
+    private homeGscService: HomeGscService,
+    public http: HttpClient,
+    public campaignService: CampaignService,
+    private router: Router,
+    public auditsService: AuditsService,
+    public toasterService: ToasterService,
+    public toastr: ToastrService,
+    fb: FormBuilder,
+    private route: ActivatedRoute,
+    private openIdConnectService: OpenIdConnectService,
+    private accountService: AccountService,
+    public settingsservice: SettingsService,
+    public menuService: MenuService) {
     //  this.facebookPageToken = localStorage.getItem('FacebookAccessToken');
     //Ranking
     this.getCompany();
@@ -412,7 +428,7 @@ export class HomeComponent implements OnInit {
     body.set('redirect_uri', environment.insta_redirecturl);
     this.http.post(url, body.toString(), this.httpOptionJSON1).subscribe(res => {
       if (res) {
-        
+
         this.instaAccessToken = res["access_token"];
         this.getAllPagesList();
 
@@ -422,12 +438,12 @@ export class HomeComponent implements OnInit {
     });
   }
   refreshTokenInstagram() {
-    
-    const url = "https://graph.facebook.com/oauth/access_token?grant_type=fb_exchange_token&client_id="+environment.insta_appid+"&client_secret="+environment.insta_appsecret+"&fb_exchange_token=" + this.instaAccessToken + "";
+
+    const url = "https://graph.facebook.com/oauth/access_token?grant_type=fb_exchange_token&client_id=" + environment.insta_appid + "&client_secret=" + environment.insta_appsecret + "&fb_exchange_token=" + this.instaAccessToken + "";
     this.http.get(url).subscribe(res => {
       if (res) {
-        
-        
+
+
       }
     }, error => {
       alert('Fetch Refresh Token Failed : ' + JSON.stringify(error.error));
@@ -437,7 +453,7 @@ export class HomeComponent implements OnInit {
     const url = "https://graph.instagram.com/me?&access_token=" + this.instaAccessToken;
     this.http.get(url).subscribe(res => {
       if (res) {
-    
+
         let pagelist = res['data'];
         let currPage = pagelist.filter(x => x.name.toLowerCase() === this.selectedCampaignName.toLowerCase());
         //this.generatePageToken();
@@ -445,7 +461,7 @@ export class HomeComponent implements OnInit {
     }, error => {
     });
   }
-  
+
   ngOnInit() {
     this.resetChartVariables();
     this.getSerpList();
@@ -454,7 +470,7 @@ export class HomeComponent implements OnInit {
     this.getCampaignFacebook();
     this.getCampaignGSC();
     this.getCampaignList();
-
+    this.menuService.menuCreation(this.settingsservice.selectedCompanyInfo.companyId, menu);
   }
   getInstaToken() {
 
@@ -726,7 +742,7 @@ export class HomeComponent implements OnInit {
       urlcamp = urlcamp.replace('/', '');
       const url = "https://www.googleapis.com/webmasters/v3/sites/https%3A%2F%2F" + urlcamp + "/searchAnalytics/query?key=AIzaSyC1IsrCeeNXp9ksAmC8szBtYVjTLJC9UWQ";
       this.getDataCurrentYear(this.startDate, this.endDate, url, campaignIndex);
-     
+
     }
   }
   refreshGSCAccount(campaignIndex, refreshToken, gscurl) {
@@ -754,9 +770,9 @@ export class HomeComponent implements OnInit {
   refreshFacebookAccount(pagename, accessToken) {
     const url = "https://graph.facebook.com/oauth/access_token?grant_type=fb_exchange_token&client_id=200487178533939&client_secret=e2b6565db23b735aff9f7c5536dbb217&fb_exchange_token=" + this.accessToken + "";
 
-  //  const url = "https://graph.facebook.com/oauth/access_token?grant_type=fb_exchange_token&client_id="+environment.facebook_appid+"&client_secret="+environment.facebook_appSecret+"&fb_exchange_token=" + this.accessToken + "";
+    //  const url = "https://graph.facebook.com/oauth/access_token?grant_type=fb_exchange_token&client_id="+environment.facebook_appid+"&client_secret="+environment.facebook_appSecret+"&fb_exchange_token=" + this.accessToken + "";
     this.http.get(url).subscribe(res => {
-      if (res) { 
+      if (res) {
         this.accessToken = res['access_token'];
         let facebookid = localStorage.getItem('facebookid');
         let masterid = localStorage.getItem('selectedCampId');
@@ -768,7 +784,7 @@ export class HomeComponent implements OnInit {
           accessToken: accessToken,
           refreshToken: '1111'
         }
-        this.campaignService.updateFacebook(facebookid, data).subscribe(response => {    
+        this.campaignService.updateFacebook(facebookid, data).subscribe(response => {
         });
         this.getAllPagesListFacebook();
       }
@@ -780,7 +796,7 @@ export class HomeComponent implements OnInit {
     const url = "https://graph.facebook.com/me/accounts?&access_token=" + this.accessToken;
     // const  url = "https://graph.facebook.com/" + this.userId + "/accounts?access_token=" + this.accessToken;
     this.http.get(url).subscribe(res => {
-      if (res) {  
+      if (res) {
         let pagelist = res['data'];
 
         let currPage = pagelist.filter(x => x.name.toLowerCase() === this.selectedCampaignName.toLowerCase());
@@ -877,7 +893,7 @@ export class HomeComponent implements OnInit {
     });
   }
 
- 
+
 
   getUserId() {
     const url = "https://graph.facebook.com/me?access_token=" + this.facebookAccessToken + "&fields=id,name";
@@ -949,7 +965,7 @@ export class HomeComponent implements OnInit {
 
           if (q.includes(url)) {
             this.getAnalyticsOrganicTrafficThisMonth(rows[i].webProperties[0].profiles[0].id, campaignIndex);
-           
+
             break;
           }
           // accountSummaryIds.push(rows[i].webProperties[0].profiles[0].id);
@@ -1072,7 +1088,7 @@ export class HomeComponent implements OnInit {
     const filterOptionModel = this.getFilterOption();
     this.campaignService.getFilteredGSC(filterOptionModel).subscribe((response: any) => {
       if (response) {
-        
+
         this.CampaignGSCList = response.body;
       }
     })
@@ -1112,7 +1128,7 @@ export class HomeComponent implements OnInit {
     return ((100 * num) / total)
   }
   public getCampaignList(): void {
-    
+
     this.resetChartVariables();
     var userid = this.openIdConnectService.user.profile.sub;
     this.campaignService.getCampaign(userid).subscribe(res => {
@@ -1121,8 +1137,8 @@ export class HomeComponent implements OnInit {
       for (let i = 0; i < res.length; i++) {
         let ga = this.CampaignGAList.filter(x => x.campaignID == res[i].id);
         if (ga != null && ga != undefined && ga.length > 0) {
-          
-         //this.refreshGoogleAnalyticsAccount(i, ga[0]['refreshToken'], ga[0]['urlOrName']);
+
+          //this.refreshGoogleAnalyticsAccount(i, ga[0]['refreshToken'], ga[0]['urlOrName']);
         }
         let gsc = this.CampaignGSCList.filter(x => x.campaignID == res[i].id);
         if (gsc != null && gsc != undefined && gsc.length > 0) {
@@ -1220,12 +1236,12 @@ export class HomeComponent implements OnInit {
         this.onCampaignSelect(event.data);
     }
   }
-  onCampaignSelect(campaign:any){
-    this.settingsservice.selectedCampaignId=campaign.id;
+  onCampaignSelect(campaign: any) {
+    this.settingsservice.selectedCampaignId = campaign.id;
     this.router.navigate(['/campaignuser-list']);
   }
   editCampaign(campaign: any) {
-    
+
     localStorage.setItem('editMasterId', campaign.id);
     localStorage.setItem('selectedCampName', campaign.name);
     localStorage.setItem('selectedCampUrl', campaign.webUrl);

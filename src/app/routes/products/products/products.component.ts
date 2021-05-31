@@ -14,6 +14,7 @@ import {
   StripeElementsOptions,
   StripeElement
 } from '@stripe/stripe-js';
+import { SettingsService } from '../../../core/settings/settings.service';
 declare var Stripe;
 
 
@@ -108,22 +109,27 @@ export class ProductsComponent implements OnInit {
   };
   source: LocalDataSource;
   sourcePlan: LocalDataSource;
-  constructor(private productService: ProductsService, private translate: TranslateService, private http: HttpClient
-    , private fb: FormBuilder, private stripeService: StripeService, private snackbarService: SnackbarService
+  constructor(private productService: ProductsService,
+    private translate: TranslateService,
+    private http: HttpClient,
+    private fb: FormBuilder,
+    private stripeService: StripeService,
+    private snackbarService: SnackbarService,
+    private settingService:SettingsService
     //private snackbarService: SnackbarService
   ) { }
 
   ngOnInit(): void {
 
 
-    this.companyId = localStorage.getItem('companyID');
+    this.companyId = this.settingService.selectedCompanyInfo.companyId;
     this.getProductsList();
   }
   getProductsList() {
-    
+
     this.productService.getProductsByCompanyId(this.companyId).subscribe((response: any) => {
       if (response) {
-        
+
         this.productList = response;
         //this.productList = this.productList.filter(x => x.companyID == this.companyId);
         this.source = new LocalDataSource(this.productList)
@@ -135,7 +141,7 @@ export class ProductsComponent implements OnInit {
     this.planForm.reset();
     this.productService.getPlan(planId).subscribe((response: any) => {
       if (response) {
-        
+
         this.planId = response.id;
         this.priceid = response.priceId
         this.stripeProductId = response.stripeProductId;
@@ -162,7 +168,7 @@ export class ProductsComponent implements OnInit {
   }
 
   addProduct() {
-    
+
     if (this.productId == undefined || this.productId == null) {
       let data = {
         id: "00000000-0000-0000-0000-000000000000",
@@ -193,7 +199,7 @@ export class ProductsComponent implements OnInit {
     }
   }
   addPlan() {
-    
+
     if (this.planId == undefined || this.planId == null) {
       let data = {
         id: "00000000-0000-0000-0000-000000000000",
@@ -212,13 +218,13 @@ export class ProductsComponent implements OnInit {
       this.productService.createPlan(data).subscribe(response => {
         if (response) {
           this.snackbarService.show('Plan Added');
-         // this.planId = response.id;
+          // this.planId = response.id;
           this.getPlansList();
           this.planForm.reset();
         }
       });
     } else {
-      
+
       let data = {
         id: this.planId,
         name: this.planName.value,
@@ -256,7 +262,7 @@ export class ProductsComponent implements OnInit {
     this.productService.deletePlan(this.planId).subscribe((response: any) => {
       this.planForm.reset();
       this.getPlansList();
-      this.planId  = null;
+      this.planId = null;
       this.snackbarService.show('Plan Deleted');
     })
   }
@@ -279,7 +285,7 @@ export class ProductsComponent implements OnInit {
   createProductOnStripe() {
     this.productService.createProductOnStripe(this.planName.value, this.planSubTitle.value).subscribe((response: any) => {
       if (response) {
-        
+
         this.stripeProductId = response.id;
         this.lastStripeProductId = this.stripeProductId;
         this.createStripePrice();
@@ -287,13 +293,13 @@ export class ProductsComponent implements OnInit {
     })
   }
   deleteStripeProduct() {
-    
+
     let data = {
       ProductId: this.stripeProductId,
     }
     this.productService.deleteStripeProduct(data).subscribe((response: any) => {
       if (response) {
-        
+
         //this.addPlan();
       }
     })
@@ -307,10 +313,10 @@ export class ProductsComponent implements OnInit {
       ProductId: this.stripeProductId,//"prod_IdaudQUPYxm2BV",
       Type: this.paymentType.value,
     };
-    
+
     this.productService.createStripePrice(data).subscribe((response: any) => {
       if (response) {
-        
+
         this.priceid = response.id;
         this.addPlan();
       }
@@ -318,7 +324,7 @@ export class ProductsComponent implements OnInit {
   }
   createProductOnStripe2(): Observable<any> {
     //require secret key
-    
+
     const myheader = new HttpHeaders().append('Authorization', 'Bearer sk_test_51I0iLaEKoP0zJ89QzP2qwrKaIC8vjEfoVim8j4S0Y3FsRx0T3UEkvqiaEayt1AzAcP7Na5xzZcb7aN2K7aMrtcMf00CizHVXeg');
     const options = {
       headers: myheader,
@@ -340,7 +346,7 @@ export class ProductsComponent implements OnInit {
   }
   cancelProduct() {
     this.productId = null;
-    this.planId  = null;
+    this.planId = null;
     this.planList.pop();
   }
 }

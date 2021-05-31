@@ -19,12 +19,12 @@ export class SidebarComponent implements OnInit, OnDestroy {
 
     constructor(public menu: MenuService, public settings: SettingsService, public injector: Injector) {
 
-        this.menuItems = menu.getMenu();
+
 
     }
 
     ngOnInit() {
-
+        this.menuItems = this.menu.getMenu();
         this.router = this.injector.get(Router);
 
         this.router.events.subscribe((val) => {
@@ -151,12 +151,12 @@ export class SidebarComponent implements OnInit, OnDestroy {
                 .css({
                     position: this.settings.getLayoutSetting('isFixed') ? 'fixed' : 'absolute',
                     top: menuTop,
-                    bottom: (floatingNav.outerHeight(true) + menuTop > vwHeight) ? (displacement+'px') : 'auto'
+                    bottom: (floatingNav.outerHeight(true) + menuTop > vwHeight) ? (displacement + 'px') : 'auto'
                 });
 
             floatingNav
                 .on('mouseleave', () => { floatingNav.remove(); })
-                .find('a').on('click', function(e) {
+                .find('a').on('click', function (e) {
                     e.preventDefault(); // prevents page reload on click
                     // get the exact route path to navigate
                     let routeTo = $(this).attr('route');

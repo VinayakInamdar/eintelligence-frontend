@@ -27,10 +27,11 @@ const Home = {
 // };
 
 const Fulfillment = {
-    text: 'Fulfillment',
+text: 'Fulfillment',
     link: '/store',
     icon: "fas fa-store",
-    role: "role:All"
+    role: "role:All",
+    submenu: []
 };
 // const Products = {
 //     text: 'Products',

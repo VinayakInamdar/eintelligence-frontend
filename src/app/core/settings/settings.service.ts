@@ -6,7 +6,7 @@ export class SettingsService {
     private user: any;
     private app: any;
     private layout: any;
-    public selectedCompanyInfo: any;
+    public selectedCompanyInfo: companyInfo;
     public selectedCampaignId:any;
 
     constructor() {

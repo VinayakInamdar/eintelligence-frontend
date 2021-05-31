@@ -7,6 +7,7 @@ import { environment } from '../../../environments/environment';
 import { GoogleAccountSetups } from './googleAccountSetups.model';
 import { GoogleAnalyticsAccountSetups } from './googleAnalyticsAccount.model';
 import { JsonPatchDocument } from 'src/app/shared/model/patch/jsonPatchDocument.model';
+import { SettingsService } from '../../core/settings/settings.service';
 
 
 @Injectable({
@@ -16,7 +17,7 @@ export class IntegrationsService {
 
   Url = environment.apiUrl;
 
-  constructor(private http: HttpClient) { 
+  constructor(private http: HttpClient, private settingService:SettingsService) { 
 
   }
 
@@ -26,7 +27,7 @@ export class IntegrationsService {
  
   googleAuth(id: string): Observable<any> {
     
-    let companyid= localStorage.getItem('companyID');
+    let companyid=this.settingService.selectedCompanyInfo.companyId;
    var res =this.http.post<any>(`${this.Url}googleanalyticsaccounts/AuthGoogleAnalyticsAccount?id=` + id+`&CompanyId=` + companyid, {});
    
    return res;
@@ -39,7 +40,7 @@ export class IntegrationsService {
   }
   googleAdsAuth(id: string): Observable<any> {
     
-    let companyid= localStorage.getItem('companyID');
+    let companyid= this.settingService.selectedCompanyInfo.companyId;
     var res =this.http.post<any>(`${this.Url}googleanalyticsaccounts/AuthGoogleAdsAccount?id=` + id+`&CompanyId=` + companyid, {});
  
     return res;

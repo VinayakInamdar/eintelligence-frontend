@@ -23,6 +23,7 @@ import { environment } from 'src/environments/environment';
 import { GoogleLoginProvider, SocialAuthService } from 'angularx-social-login';
 import { SnackbarService } from '../../../shared/services/snackbar/snackbar.service';
 import { FacebookService, LoginOptions, LoginResponse } from 'ngx-facebook';
+import { SettingsService } from '../../../core/settings/settings.service';
 const success = require('sweetalert');
 
 @Component({
@@ -316,7 +317,7 @@ export class CampaginComponent implements OnInit, AfterViewInit {
     private campaignService: CampaignService, private authService: SocialAuthService,
     public route: ActivatedRoute, public http: HttpClient, public datepipe: DatePipe, public router: Router, private openIdConnectService: OpenIdConnectService, private integrationsService: IntegrationsService
     , private overvieswService: OverviewService, location: PlatformLocation, private snackbarService: SnackbarService,
-    public auditsService: AuditsService) {
+    public auditsService: AuditsService, private settingService:SettingsService) {
      
     facebook.init({
       appId: '200487178533939',//environment.facebook_appid,//3574916862576976
@@ -463,7 +464,7 @@ export class CampaginComponent implements OnInit, AfterViewInit {
       }
     }
 
-    this.companyId = localStorage.getItem('companyID');
+    this.companyId = this.settingService.selectedCompanyInfo.companyId;
     this.sub = this.route.params.subscribe(params => {
       this.id = params['id'];
     });
