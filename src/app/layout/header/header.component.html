@@ -46,42 +46,30 @@
         <li class="nav-item d-none d-md-block">
             <button class="mr-1 btn btn-primary btn-lg mt-2" type="button" [routerLink]="'/company'">Change Company</button>
         </li>
-        <li class="nav-item dropdown d-none d-md-block">
-            <div class="col-md-3  mt-2">
-                <div class="btn-group mt-1">
 
-                    <div class="btn-group" dropdown>
-                        <button id="button-basic" dropdownToggle type="input" class="btn dropdown-toggle btn-secondary" aria-controls="dropdown-basic">
-                            {{selectedCampaignName !== undefined ? selectedCampaignName : 'select your campaign'}}
-                            <span class="caret"> </span>
-                        </button>
-
-                        <ul id="dropdown-basic" *dropdownMenu class="dropdown-menu" role="menu" aria-labelledby="button-basic">
-                            <li role="menuitem" *ngFor="let campaign of campaignList" [ngClass]="{'active': selectedCampId == campaign.id}"><a class="dropdown-item" (click)="onCampaignSelect($event,campaign)" href="#">{{campaign.name}}</a></li>
-                        </ul>
-                    </div>
-                </div>
-            </div>
-
-        </li>
         <li class="nav-item d-none d-md-block">
-            <a class="nav-link" title="Add Products" [routerLink]="'/products'">
+            <a class="nav-link" *ngIf="isSuperAdmin" title="Add Products" [routerLink]="'/products'">
                 <em class="fas fa-plus"></em>
             </a>
         </li>
         <li class="nav-item d-none d-md-block">
-            <a class="nav-link" title="Integrations" [routerLink]="'/integrations/:id'">
+            <a class="nav-link" title="Integrations" [routerLink]="'/integrations/:id'" hidden>
                 <em class="fas fa-cogs"></em>
             </a>
         </li>
         <li class="nav-item d-none d-md-block">
-            <a class="nav-link" title="Add Products" [routerLink]="'/products'">
+            <a class="nav-link" *ngIf="isSuperAdmin" title="Add Products" [routerLink]="'/products'">
                 <em class="fas fa-list-alt"></em>
             </a>
         </li>
         <li class="nav-item d-none d-md-block">
             <a class="nav-link" title="My Payments" [routerLink]="'/mypayments'">
                 <em class="fas fa-sticky-note"></em>
+            </a>
+        </li>
+        <li class="nav-item d-none d-md-block">
+            <a class="nav-link" title="Settings">
+                <em class="fas fa-cog"></em>
             </a>
         </li>
         <li class="nav-item d-none d-md-block">
@@ -182,7 +170,7 @@
         </li> -->
         <!-- Fullscreen (only desktops)-->
         <li class="nav-item d-none d-md-block">
-            <a class="nav-link" #fsbutton (click)="toggleFullScreen($event)">
+            <a class="nav-link" #fsbutton (click)="toggleFullScreen($event)" hidden>
                 <em class="fa fa-expand"></em>
             </a>
         </li>

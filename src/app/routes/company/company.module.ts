@@ -13,9 +13,11 @@ import { SubmenuModule } from '../submenu/submenu.module';
 import { SocialmediaSubmenuModule } from '../socialmedia-submenu/socialmedia-submenu.module';
 import { CompanyListComponent } from './company-list/company-list.component';
 import { LayoutModule } from 'src/app/layout/layout.module';
+import { CampaginComponent } from '../campaign/campagin/campagin.component';
 
 const routes: Routes = [
-  { path: '', component: CompanyListComponent }
+  { path: '', component: CompanyListComponent },
+  { path: 'campaign', component: CampaginComponent }
 ]
 
 @NgModule({

@@ -15,7 +15,7 @@ export class CompanyListComponent implements OnInit {
   constructor(public openIdConnectService: OpenIdConnectService, private campaignService: CampaignService, private renderer: Renderer2, public settingsservice: SettingsService, public router: Router) { }
 
   ngOnInit(): void {
-debugger;
+    debugger;
     var superAdmin = this.openIdConnectService.user.profile.super_admin;
     var userId = this.openIdConnectService.user.profile.sub;
     debugger;
@@ -49,8 +49,12 @@ debugger;
     this.settingsservice.selectedCompanyInfo.description = a.description;
     this.settingsservice.selectedCompanyInfo.name = a.name;
     this.settingsservice.selectedCompanyInfo.role = a.role;
-
-    this.router.navigate(['/home']);
+    if (this.settingsservice.selectedCompanyInfo.role == "Client User") {
+      this.router.navigate(['/campaign']);
+    }
+    else {
+      this.router.navigate(['/home']);
+    }
   }
 
 }

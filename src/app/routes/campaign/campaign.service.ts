@@ -265,25 +265,30 @@ export class CampaignService {
       params: new HttpParams().set('userId', userId).set('companyId', companyId).set('SuperAdmin', SuperAdmin.toString()).set("campaignId", campaignId)
     });
   }
-  updateUserRole(userId :string, companyId: string,role:string): Observable<any> {
+  updateUserRole(userId: string, companyId: string, role: string): Observable<any> {
     //return this.http.post<any>(`${this.Url}campaignusers/updateUserRole`, {
     //  params: new HttpParams().set('userId', userId).set('companyId', companyId).set('role', role)
     //});
     return this.http.post<any>(`${this.Url}campaignusers/updateUserRole`, userId, {
-      params: new HttpParams().set('userId', userId).set('companyId', companyId).set('role',role)
+      params: new HttpParams().set('userId', userId).set('companyId', companyId).set('role', role)
     });
   }
   inviteUsers(users: InviteUser): Observable<any> {
     return this.http.post<any>(`${this.Url}campaignusers/CreateAspUserWithCompanyAndCampaign`, users);
   }
-  getCompanysList(superadmin:boolean,userId: string):Observable<any>{
-    return this.http.get<any>(`${this.Url}companyusers/GetLoggedInUserCompany`,{
-      params:new HttpParams().set('superadmin',superadmin.toString()).set('userId',userId)
+  getCompanysList(superadmin: boolean, userId: string): Observable<any> {
+    return this.http.get<any>(`${this.Url}companyusers/GetLoggedInUserCompany`, {
+      params: new HttpParams().set('superadmin', superadmin.toString()).set('userId', userId)
     });
   }
-  deleteCampaignUserById(id:string,campaignId:string):Observable<any>{
-    return this.http.delete<any>(`${this.Url}campaignusers/`+id,{
+  deleteCampaignUserById(id: string, campaignId: string): Observable<any> {
+    return this.http.delete<any>(`${this.Url}campaignusers/` + id, {
       params: new HttpParams().set('id', id).set('campaignId', campaignId)
-  });
-}
+    });
+  }
+  deleteCompanyUserById(id:string,companyId:string):Observable<any>{
+    return this.http.delete<any>(`${this.Url}companyusers/`+id,{
+      params: new HttpParams().set('id', id).set('companyId', companyId)
+    });
+  }
 }

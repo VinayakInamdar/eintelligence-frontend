@@ -3,7 +3,7 @@ const Home = {
     text: 'Dashboard',
     link: '/home',
     icon: 'fas fa-home',
-    role:"role:All"
+    role:"role:Normal User:Admin:Super Admin"
 };
 // const User = {
 //     text: 'User',
@@ -30,7 +30,7 @@ const Fulfillment = {
     text: 'Fulfillment',
     link: '/store',
     icon: "fas fa-store",
-    role: "role:All"
+    role: "role:Admin:Super Admin"
 };
 // const Products = {
 //     text: 'Products',
@@ -82,7 +82,7 @@ const Reports = {
     text: 'Reports',
     link: '/reports',
     icon: "fas fa-list-alt",
-    role: "role:All"
+    role: "role:Normal User:Admin:Super Admin"
 };
 
 const Users = {
