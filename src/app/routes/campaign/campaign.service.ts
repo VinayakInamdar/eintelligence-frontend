@@ -289,4 +289,9 @@ export class CampaignService {
       params: new HttpParams().set('id', id).set('campaignId', campaignId)
     });
   }
+  deleteCompanyUserById(id:string,companyId:string):Observable<any>{
+    return this.http.delete<any>(`${this.Url}companyusers/`+id,{
+      params: new HttpParams().set('id', id).set('companyId', companyId)
+    });
+  }
 }

@@ -3,6 +3,7 @@ import { LocalDataSource } from 'ng2-smart-table';
 import { CampaignService } from '../campaign.service';
 import { ActivatedRoute, Router, ParamMap } from '@angular/router';
 import { TranslateService } from '@ngx-translate/core';
+import { SettingsService } from 'src/app/core/settings/settings.service';
 const success = require('sweetalert');
 @Component({
   selector: 'app-campaignlist',
@@ -17,7 +18,7 @@ export class CampaignlistComponent implements OnInit {
   CampaignFacebookList=[];
   SelectedCampaignId;
 
-  constructor(private translate: TranslateService,public campaignService:CampaignService, public router: Router, public route: ActivatedRoute) { }
+  constructor(private translate: TranslateService,public campaignService:CampaignService, public router: Router, public route: ActivatedRoute,public settingsservice:SettingsService) { }
 
   ngOnInit() {
     this.getCampaignList();
@@ -35,7 +36,9 @@ export class CampaignlistComponent implements OnInit {
 
     actions: {
       columnTitle: '',
-      custom: [{ name: 'editCampaign', title: '<i class="fas fa-edit"></i>' }, { name: 'deleteCampaign', title: '<span class="text-danger col" style="padding-left:1rem"><i class="fas fa-trash-alt"></i></span>' }
+      custom: [{ name: 'editCampaign', title: '<i class="fas fa-edit"></i>' }, 
+      { name: 'deleteCampaign', title: '<span class="text-danger col" style="padding-left:1rem"><i class="fas fa-trash-alt"></i></span>' },
+        { name: 'onCampaignSelect', title: '<i class="fas fa-user"></i>' }
       // { name: 'viewReports', title: '<i class="fas fa-chart-bar"></i>' }  
     ],
       add: false, edit: false, delete: false, position: 'right'
@@ -77,7 +80,7 @@ export class CampaignlistComponent implements OnInit {
   // using to get list of campaigns
   public getCampaignList(): void {
     var userid = localStorage.getItem("userID");
-    
+    debugger;
     this.campaignService.getCampaign(userid).subscribe(res => {
       this.campaignList = res;
       this.source = new LocalDataSource(this.campaignList)      
@@ -250,9 +253,15 @@ export class CampaignlistComponent implements OnInit {
         break;
       case 'deleteCampaign':
         this.deleteCampaign(event.data);
-        case 'viewReports':
-        this.viewReports(event.data);
+        break;
+      case 'onCampaignSelect':
+        this.onCampaignSelect(event.data);
     }
+  }
+  onCampaignSelect(campaign: any) {
+    debugger;
+    this.settingsservice.selectedCampaignId = campaign.id;
+    this.router.navigate(['/campaignuser-list']);
   }
   editCampaign(campaign: any) {
     localStorage.setItem('gaurl','');

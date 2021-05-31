@@ -43,9 +43,10 @@
                                     <div *ngIf="(p.emailID==id2)&&(p.CompanyRole!==companyRole2)" (click)="onRoleSelected(p)">
                                         <i class="fa fa-check-square green-color set-icon"></i>
                                     </div>
-                                    <!--div class="text-danger col">
+                                    &nbsp;
+                                    <div class="text-danger col" (click)="onCompanyUserSelect(p)">
                                         <i class="fas fa-trash-alt"></i>
-                                    </div-->
+                                    </div>
                                 </td>
                             </tr>
 
