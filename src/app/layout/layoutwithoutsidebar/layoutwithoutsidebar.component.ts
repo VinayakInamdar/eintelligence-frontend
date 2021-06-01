@@ -109,11 +109,7 @@ export class LayoutwithoutsidebarComponent implements OnInit {
     return this.settings.getLayoutSetting('isCollapsedText');
   }
 
-  toggleFullScreen(event) {
-    if (screenfull.enabled) {
-      screenfull.toggle();
-    }
-  }
+ 
   ngOnDestroy(): void {
     this.settings.setLayoutSetting('isCollapsedText', false);
     this.settings.setLayoutSetting('isFloat', false);
