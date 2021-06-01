@@ -4,4 +4,5 @@ export class companyInfo {
     public name: string = "";
     public companyType: string = "";
     public description: string = "";
+    public companyImageUrl:string="";
 }

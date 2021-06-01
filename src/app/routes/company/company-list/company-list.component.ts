@@ -24,6 +24,7 @@ export class CompanyListComponent implements OnInit {
     this.campaignService.getCompanysList(superAdmin, userId).subscribe((res: any) => {
       // this.settingservice.companyListInfo=res;
       //this.companys=res;
+
       this.companysList = new Array<companyInfo>();
       for (let u in res) {
         var company = new companyInfo();
@@ -32,6 +33,7 @@ export class CompanyListComponent implements OnInit {
         company.name = res[u].name;
         company.companyType = res[u].companyType;
         company.description = res[u].description;
+        company.companyImageUrl=res[u].companyImageUrl;
         this.companysList.push(company);
       }
     });
@@ -47,6 +49,7 @@ export class CompanyListComponent implements OnInit {
     this.settingsservice.selectedCompanyInfo.description = a.description;
     this.settingsservice.selectedCompanyInfo.name = a.name;
     this.settingsservice.selectedCompanyInfo.role = a.role;
+    this.settingsservice.selectedCompanyInfo.companyImageUrl=a.companyImageUrl;
     if (this.settingsservice.selectedCompanyInfo.role == "Client User") {
       this.router.navigate(['/campaign']);
     }

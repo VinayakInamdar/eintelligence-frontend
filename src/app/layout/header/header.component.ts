@@ -1,7 +1,7 @@
 import { Component, OnInit, ViewChild, Injector } from '@angular/core';
 import { ActivatedRoute, Router } from '@angular/router';
 const screenfull = require('screenfull');
-
+import { DomSanitizer } from '@angular/platform-browser';
 import { UserblockService } from '../sidebar/userblock/userblock.service';
 import { SettingsService } from '../../core/settings/settings.service';
 import { MenuService } from '../../core/menu/menu.service';
@@ -42,7 +42,7 @@ export class HeaderComponent implements OnInit {
 
     constructor(public menu: MenuService, public _openIdConnectService: OpenIdConnectService, public userblockService: UserblockService, public settings: SettingsService, public injector: Injector
 
-        , public settingsservice:SettingsService, public route: ActivatedRoute, public http: HttpClient, public datepipe: DatePipe, private snackbarService: SnackbarService) {
+        , public settingsservice: SettingsService, public route: ActivatedRoute, public http: HttpClient, public datepipe: DatePipe, private snackbarService: SnackbarService, private _sanitizer: DomSanitizer) {
 
         // show only a few items on demo
         this.menuItems = menu.getMenu().slice(Math.max(menu.getMenu().length - 3, 1)); // for horizontal layout
@@ -57,6 +57,7 @@ export class HeaderComponent implements OnInit {
     }
     ngOnInit() {
        
+        this.getCompanyImageLogo();
         this.isNavSearchVisible = false;
 
         var ua = window.navigator.userAgent;
@@ -124,6 +125,11 @@ export class HeaderComponent implements OnInit {
             screenfull.toggle();
         }
     }
-
-
+src:string;
+getCompanyImageLogo(){
+    debugger;
+  let image=new Image();
+image.src=this.settingsservice.selectedCompanyInfo.companyImageUrl;
+   this.src=image.src;
+}
 }

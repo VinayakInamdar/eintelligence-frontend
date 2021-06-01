@@ -8,5 +8,6 @@ export class User {
     companyID: string;
     cName:string;
     companytype:string;
+    companyImageUrl:string;
     phoneNumber:string;
 }
