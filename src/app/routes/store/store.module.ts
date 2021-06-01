@@ -11,12 +11,18 @@ import { FileUploadModule } from 'ng2-file-upload';
 import { NgxSelectModule } from 'ngx-select-ex';
 import { NgxIntlTelInputModule } from 'ngx-intl-tel-input';
 import { NgxStripeModule } from 'ngx-stripe';
+import { StoreResolverService } from './store/store.resolver.service';
 const routes: Routes = [
-  { path: '', component: StoreComponent }
+  {
+    path: '', component: StoreComponent,
+    resolve: {
+      resolvedData: StoreResolverService
+    }
+  }
 ];
 
 @NgModule({
-  declarations: [  StoreComponent],
+  declarations: [StoreComponent],
   imports: [
     CommonModule,
     SharedModule,
@@ -31,8 +37,11 @@ const routes: Routes = [
     NgxIntlTelInputModule,
     NgxStripeModule.forRoot('pk_test_51I0iLaEKoP0zJ89QGXq8ihvypBEzyryF6Y5Hiro0UDcPLQeCTzA0v8S6lYv2DNBZZS3LxICWKJATbOxzdUCOl73p00Her3EA2b'),
   ],
-  exports : [
+  exports: [
     RouterModule
   ],
+  providers: [
+    StoreResolverService
+  ]
 })
 export class StoreModule { }

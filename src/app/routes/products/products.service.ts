@@ -51,6 +51,9 @@ export class ProductsService {
         const params = `PageNumber=${filter.pageNumber}&PageSize=${filter.pageSize}&SearchQuery=${filter.searchQuery}&OrderBy=${filter.orderBy}&Fields=${filter.fields}`;
         return this.http.get<any>(`${this.Url}plans?${params}`, { observe: 'response' });
     }
+    getAllPlanByCompanyId(id: string): Observable<any> {
+        return this.http.get<any[]>(this.Url + `plans/GetAllPlanByCompanyId`, { params: { companyId: id } });
+    }
     getProductsByCompanyId(id: string): Observable<any> {
         return this.http.get<any[]>(this.Url + `products/GetProductByCompanyId`, { params: { companyId: id } });
     }

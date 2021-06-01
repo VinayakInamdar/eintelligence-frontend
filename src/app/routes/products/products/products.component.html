@@ -59,16 +59,16 @@
                                     </div>
                                 </div>
                                 <div *ngIf="productId">
-                                    <button class="mr-1 btn btn-sm float-right accountbtnbgcolor" (click)="addProduct();" type="submit">Update</button>
+                                    <button class="mr-1 btn btn-sm float-right btn-danger" (click)="addProduct();" type="submit">Update</button>
                                 </div>
                                 <div *ngIf="productId">
-                                    <button class="mr-1 btn btn-sm float-right accountbtnbgcolor" (click)="deleteProduct();" type="submit">Delete</button>
+                                    <button class="mr-1 btn btn-sm float-right btn-danger" (click)="deleteProduct();" type="submit">Delete</button>
                                 </div>
                                 <div *ngIf="!productId">
-                                    <button class="mr-1 btn btn-sm float-right accountbtnbgcolor" (click)="addProduct();" type="submit">Save</button>
+                                    <button class="mr-1 btn btn-sm float-right btn-danger" (click)="addProduct();" type="submit">Save</button>
                                 </div>
                                 <div *ngIf="productId">
-                                    <button class="mr-1 btn btn-sm float-right accountbtnbgcolor" (click)="cancelProduct();myForm.reset();planform.reset();" type="submit">Cancel</button>
+                                    <button class="mr-1 btn btn-sm float-right btn-danger" (click)="cancelProduct();myForm.reset();planform.reset();" type="submit">Cancel</button>
                                 </div>
                             </form>
                         </div>
@@ -204,13 +204,13 @@
                                     </div>
                                 </div>
                                 <div *ngIf="planId">
-                                    <button class="mr-1 btn btn-sm float-right accountbtnbgcolor" (click)="addPlan();" type="submit">Update</button>
+                                    <button class="mr-1 btn btn-sm float-right btn-danger" (click)="addPlan();" type="submit">Update</button>
                                 </div>
                                 <div *ngIf="planId">
-                                    <button class="mr-1 btn btn-sm float-right accountbtnbgcolor" (click)="deletePlan();" type="submit">Delete</button>
+                                    <button class="mr-1 btn btn-sm float-right btn-danger" (click)="deletePlan();" type="submit">Delete</button>
                                 </div>
                                 <div *ngIf="!planId">
-                                    <button class="mr-1 btn btn-sm float-right accountbtnbgcolor" (click)="createProductOnStripe();" type="submit">Save</button>
+                                    <button class="mr-1 btn btn-sm float-right btn-danger" (click)="createProductOnStripe();" type="submit">Save</button>
                                 </div>
                             </form>
                         </div>

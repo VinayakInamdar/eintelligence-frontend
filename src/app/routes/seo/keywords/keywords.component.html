@@ -37,7 +37,7 @@
                                 {{'validation.KEYWORDISREQUIRED' | translate}}</span>
                             <br>
                             <div class="text-center">
-                                <button class="mr-1 btn btn-primary btn-lg" type="submit" (click)="goToNextTab($event,keyword_field.value,'keyword',1)">Next </button>
+                                <button class="mr-1 btn btn-danger btn-lg" type="submit" (click)="goToNextTab($event,keyword_field.value,'keyword',1)">Next </button>
                             </div>
                         </div>
                         <div class="col-md-1"></div>
@@ -135,7 +135,7 @@
                                 <div class="col-md-3">
                                     <div class="col-md-4">
                                         <!-- <a routerLink="./home"> -->
-                                        <button class="mr-1 btn btn-primary btn-lg" type="submit" [disabled]="!this.locIsSelected || (showSpinnerLocationContent)">Submit</button>
+                                        <button class="mr-1 btn btn-danger btn-lg" type="submit" [disabled]="!this.locIsSelected || (showSpinnerLocationContent)">Submit</button>
                                         <!-- </a> -->
                                     </div>
                                 </div>
@@ -161,7 +161,7 @@
 
     </div>
     <div class="col-md-2">
-        <button class="mr-1 btn btn-primary btn-lg" type="button" (click)="onClickToAddKeyword($event)">Add a
+        <button class="mr-1 btn btn-danger btn-lg" type="button" (click)="onClickToAddKeyword($event)">Add a
             Keyword</button>
 
         <div class="col-md-1"></div>
@@ -169,9 +169,8 @@
 </div>
 <hr>
 <br>
-<div class="row">
-    <div class="col-md-1"></div>
-    <div class="col-md-10">
+<div class="row m-4">
+    <div class="col-md-12">
         <div class="card card-default shadow p-3 mb-5 bg-white rounded cursor-default">
             <div class="table-responsive">
                 <ng2-smart-table [settings]="settings" [source]="source" (userRowSelect)="userRowSelect($event)" (custom)="onCustomAction($event)">
@@ -179,5 +178,4 @@
             </div>
         </div>
     </div>
-    <div class="col-md-1"></div>
 </div>

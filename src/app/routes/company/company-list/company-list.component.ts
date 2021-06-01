@@ -15,7 +15,6 @@ export class CompanyListComponent implements OnInit {
   constructor(public openIdConnectService: OpenIdConnectService, private campaignService: CampaignService, private renderer: Renderer2, public settingsservice: SettingsService, public router: Router) { }
 
   ngOnInit(): void {
-    debugger;
     var superAdmin = this.openIdConnectService.user.profile.super_admin;
     var userId = this.openIdConnectService.user.profile.sub;
     if (superAdmin == undefined) {
