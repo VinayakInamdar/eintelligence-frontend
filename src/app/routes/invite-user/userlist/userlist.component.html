@@ -13,7 +13,7 @@
     <div class="col-md-12">
         <div class="card card-default set-cursor">
             <div class="card-body">
-                <div class="table-responsive">
+                <div class="table-responsive overflow-hidden">
 
                     <table class="table">
                         <thead>
@@ -40,12 +40,14 @@
 
                                 </td>
                                 <td>
-                                    <div *ngIf="(p.emailID==id2)&&(p.CompanyRole!==companyRole2)" (click)="onRoleSelected(p)">
-                                        <i class="fa fa-check-square green-color set-icon"></i>
-                                    </div>
+                                    <div class="row">
+                                        <div *ngIf="(p.emailID==id2)&&(p.CompanyRole!==companyRole2)" (click)="onRoleSelected(p)">
+                                            <i class="fa fa-check-square green-color set-icon"></i>
+                                        </div>
 
-                                    <div class="text-danger col" (click)="onCompanyUserSelect(p)" hidden>
-                                        <i class="fas fa-trash-alt"></i>
+                                        <div class="text-danger col" (click)="onCompanyUserSelect(p)">
+                                            <i class="fas fa-trash-alt"></i>
+                                        </div>
                                     </div>
                                 </td>
                             </tr>

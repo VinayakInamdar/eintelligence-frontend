@@ -1138,15 +1138,15 @@ export class HomeComponent implements OnInit {
         let ga = this.CampaignGAList.filter(x => x.campaignID == res[i].id);
         if (ga != null && ga != undefined && ga.length > 0) {
 
-          //this.refreshGoogleAnalyticsAccount(i, ga[0]['refreshToken'], ga[0]['urlOrName']);
+          this.refreshGoogleAnalyticsAccount(i, ga[0]['refreshToken'], ga[0]['urlOrName']);
         }
         let gsc = this.CampaignGSCList.filter(x => x.campaignID == res[i].id);
         if (gsc != null && gsc != undefined && gsc.length > 0) {
-          //this.refreshGSCAccount(i, gsc[0]['refreshToken'], gsc[0]['urlOrName']);
+          this.refreshGSCAccount(i, gsc[0]['refreshToken'], gsc[0]['urlOrName']);
         }
         let facebook = this.CampaignFacebookList.filter(x => x.campaignID == res[i].id);
         if (facebook != null && facebook != undefined && facebook.length > 0) {
-          this.refreshFacebookAccount(facebook[0]['urlOrName'], facebook[0]['accessToken']);
+         // this.refreshFacebookAccount(facebook[0]['urlOrName'], facebook[0]['accessToken']);
         }
       }
       this.source = new LocalDataSource(this.campaignList);

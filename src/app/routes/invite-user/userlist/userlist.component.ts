@@ -117,6 +117,7 @@ export class UserlistComponent implements OnInit {
     });
   }
   onCompanyUserSelect(value:any){
+    
     var userId = value.entityID;
     var companyId: string = this.settingsservice.selectedCompanyInfo.companyId;
     this.campaignService.deleteCompanyUserById(userId,companyId).subscribe((res:any)=>{
