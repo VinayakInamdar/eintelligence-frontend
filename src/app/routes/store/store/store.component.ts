@@ -32,26 +32,12 @@ export class StoreComponent implements OnInit {
     private actr: ActivatedRoute) { }
 
   ngOnInit(): void {
-    this.plans = [];
-    this.companyId = this.settingService.selectedCompanyInfo.companyId;
-    this.userId = this.openIdConnectService.user.profile.sub;
-
-    this.actr.data.subscribe((res) => {
-      if (res.resolvedData != null) {
-        this.plans = res.resolvedData;
-      }
-    })
-
-    // if (this.actr.snapshot.paramMap.get('id') == "ALL") {
-    //   this.queryParam = this.actr.snapshot.paramMap.get('id');
-    //   this.getAllPlans();
-    // }
-    // else {
-    //   this.productId = this.actr.snapshot.paramMap.get('id');
-    //   this.getAllPlansByProductId();
-    // }
-
-    //this.getAllProduct();
+    
+    this.companyId = localStorage.getItem('companyID');
+    this.userId = localStorage.getItem("userID");
+    debugger;
+      this.getAllProduct();
+      debugger;
     //using to get list of plans
     // this.productService.getProducts().subscribe(
     //   products => {

@@ -8,7 +8,7 @@ import { ProductsService } from '../../products/products.service'
 import { OpenIdConnectService } from '../../../shared/services/open-id-connect.service';
 import { Campaign } from '../../campaign/campaign.model';
 import { CampaignService } from '../../campaign/campaign.service';
-import { HttpClient, HttpHeaders } from '@angular/common/http';
+import { HttpClient, HttpHeaders, HttpParams } from '@angular/common/http';
 import { TranslateService } from '@ngx-translate/core';
 import { SnackbarService } from '../../../shared/services/snackbar/snackbar.service';
 import { FormGroup } from '@angular/forms';
@@ -70,8 +70,8 @@ export class CheckoutComponent implements OnInit {
   stripePromise = loadStripe(environment.stripe_key);
   currency;
   ngOnInit(): void {
-    
-    this.userId = this.openIdConnectService.user.profile.sub;
+
+    this.userId =  localStorage.getItem("userID");
     //this.userId = '2e78a42a-af26-48bb-bda2-be9e16301435';
     this.getAllPlans();
     this.getCampaignList();
@@ -79,12 +79,12 @@ export class CheckoutComponent implements OnInit {
     this.productId = this.route.snapshot.paramMap.get('productid');
   }
   onChange(cid) {
-    
+
     this.campaignid = cid;
     this.campaignError = false;
   }
   public getCampaignList(): void {
-    var userid = this.openIdConnectService.user.profile.sub;
+    var userid =   localStorage.getItem("userID");
     this.campaignService.getCampaign(userid).subscribe(res => {
 
       this.campaignList = res;
@@ -105,7 +105,7 @@ export class CheckoutComponent implements OnInit {
     const filterOptionModel = this.getFilterOptionPlans();
     this.productsService.getFilteredPlan(filterOptionModel).subscribe((response: any) => {
       if (response) {
-        
+
         this.plans = response.body
         this.plans = this.plans.filter(x => x.id == this.planid);
         this.amount = this.plans[0].price;
@@ -118,7 +118,7 @@ export class CheckoutComponent implements OnInit {
     })
   }
   makePayment2() {
-    
+
     const url = "https://api.stripe.com/v1/subscriptions";
     const body = new URLSearchParams();
     body.set('customer', 'cus_Ig2Fs0xb9PWEWr');
@@ -126,7 +126,7 @@ export class CheckoutComponent implements OnInit {
 
     this.http.post(url, body.toString(), this.httpOptionJSON).subscribe(res => {
       if (res) {
-        
+
 
       }
     }, error => {
@@ -134,7 +134,7 @@ export class CheckoutComponent implements OnInit {
     });
   }
   makePayment() {
-    
+
     // if (this.campaignid = '00000000-0000-0000-0000-000000000000') {
     //   this.campaignError = true;
     // } else {
@@ -144,7 +144,7 @@ export class CheckoutComponent implements OnInit {
     // Call your backend to create the Checkout session.
     this.productService.CreateStripePaymentCheckout(data).subscribe(
       products => {
-        
+
         this.sessionid = products.sessionId
 
         this.checkout(this.sessionid);
@@ -175,7 +175,7 @@ export class CheckoutComponent implements OnInit {
       cancelUrl: `https://localhost:4200/paymentfailure`,
     }).then((response) => response)
       .then((data) => {
-        
+
 
         window.location.href = 'https://www.google.com';
       });
@@ -249,20 +249,21 @@ export class CheckoutComponent implements OnInit {
     });
   }
   paymentIntentCall() {
-    
+
     const url = "https://api.stripe.com/v1/payment_intents";
     const body = new URLSearchParams();
     body.set('amount', this.amount);
     body.set('currency', this.currency);
+    body.set('description', 'Software development services');
     body.set('payment_method_types[]', 'card');
-
-    this.http.post(url, body.toString(), this.httpOptionJSON).subscribe(res => {
+      this.http.post(url, body.toString(), this.httpOptionJSON).subscribe(res => {
       if (res) {
-        
+
         this.clientSecret = res['id'];
         this.paymentMethodId = res['id'];
       }
     }, error => {
+      debugger
       this.loading(false);
       this.snackbarService.show('Checkout Failed For paymentIntentCall : ' + JSON.stringify(error.error));
 
@@ -271,8 +272,8 @@ export class CheckoutComponent implements OnInit {
   payWithCard(stripe, card, clientSecret) {
     this.campaignError = false;
     var form = document.getElementById("payment-form");
-    
-    
+
+
     if (this.campaignid == '00000000-0000-0000-0000-000000000000') {
       this.campaignError = true;
     }
@@ -281,29 +282,53 @@ export class CheckoutComponent implements OnInit {
     //   this.snackbarService.show('Please Enter valid Email Id');
     // }
     else {
+      debugger
       this.loading(true);
       const url = "https://api.stripe.com/v1/payment_intents/" + clientSecret + "/confirm";
+      let params: any = new HttpParams();
+
+      // Begin assigning parameters
+      // params = params.append('payment_method', 'pm_card_visa');
+      // params = params.append('receipt_email', 'rubina_lakdawala@yahoo.com');
+
+      // params = params.append('shipping[name]', 'Rubaina Lakdawala');
+      // params = params.append('shipping[address][line1]', 'Lakdawala STreet');
+      // params = params.append('shipping[address][postal_code]', '392001');
+      // params = params.append('shipping[address][city]', 'Bharuch');
+      // params = params.append('shipping[address][state]', 'Gujarat');
+      // params = params.append('shipping[address][country]', 'India');
+      // params = params.append('description', 'sdsad');
+      // params = params.append('currency', this.currency);
+      // params = params.append('payment_method_types[]', 'card');
+
+     // https://localhost:4200/checkout/1a0cece8-1171-41ab-c4f7-08d924dd8f86/c0039b84-d226-4da2-7fc4-08d924ddd4a0
       const body = new URLSearchParams();
       body.set('payment_method', 'pm_card_visa');
       body.set('receipt_email', 'rubina_lakdawala@yahoo.com');
-      // body.set('receipt_email', this.cardemail);
-
+      body.set('shipping[name]', 'Rubaina Lakdawala');
+      body.set('shipping[address][line1]', 'Lakdawala STreet');
+      body.set('shipping[address][postal_code]', '392001');
+      body.set('shipping[address][city]', 'Bharuch');
+      body.set('shipping[address][state]', 'Gujarat');
+      body.set('shipping[address][country]', 'India');
+  
       this.http.post(url, body.toString(), this.httpOptionJSON).subscribe(res => {
         if (res) {
-          
+          debugger
           this.loading(false);
           this.clientSecret = res['client_secret'];
           this.snackbarService.show('Checkout Done');
 
         }
       }, error => {
-      this.loading(false);
-      this.snackbarService.show('Checkout Failed  For Pay With Card : ' + JSON.stringify(error.error));
+        debugger
+        this.loading(false);
+        this.snackbarService.show('Checkout Failed  For Pay With Card : ' + JSON.stringify(error.error));
       });
     }
   }
   showError(errorMsgText) {
-    
+
     this.loading(false);
     var errorMsg = document.querySelector("#card-errors");
     errorMsg.textContent = errorMsgText;
@@ -324,7 +349,7 @@ export class CheckoutComponent implements OnInit {
     }
   }
 
-  
+
   //For stripe Detroja End
 
 }

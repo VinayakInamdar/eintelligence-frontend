@@ -710,7 +710,7 @@ export class HomeComponent implements OnInit {
     this.http.post(url, data, this.httpOptionJSON).subscribe(res => {
       if (res) {
         let rows = res['rows'];
-
+        debugger
         this.clicksPreviousYear = rows[0].clicks;
         this.impressionsPreviousYear = rows[0].impressions;
         this.cTRPreviousYear = parseFloat(rows[0].ctr).toFixed(2).toString();
@@ -1133,12 +1133,12 @@ export class HomeComponent implements OnInit {
     var userid = this.openIdConnectService.user.profile.sub;
     this.campaignService.getCampaign(userid).subscribe(res => {
       this.campaignList = res;
-
+      debugger
       for (let i = 0; i < res.length; i++) {
         let ga = this.CampaignGAList.filter(x => x.campaignID == res[i].id);
         if (ga != null && ga != undefined && ga.length > 0) {
-
-          this.refreshGoogleAnalyticsAccount(i, ga[0]['refreshToken'], ga[0]['urlOrName']);
+          
+         this.refreshGoogleAnalyticsAccount(i, ga[0]['refreshToken'], ga[0]['urlOrName']);
         }
         let gsc = this.CampaignGSCList.filter(x => x.campaignID == res[i].id);
         if (gsc != null && gsc != undefined && gsc.length > 0) {
