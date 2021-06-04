@@ -9,7 +9,20 @@
     <section class="section-container">
         <!-- Page content-->
         <div class="content-wrapper" style="padding: unset;">
-            <router-outlet></router-outlet>
+
+            <div class="card card-default" *ngIf="showLoadingIndicator" style="height: 83vh;">
+                <div class="card-body loader-demo d-flex align-items-center justify-content-center">
+                    <div class="line-scale">
+                        <div style="background-color: #dc3545;"></div>
+                        <div style="background-color: #dc3545;"></div>
+                        <div style="background-color: #dc3545;"></div>
+                        <div style="background-color: #dc3545;"></div>
+                        <div style="background-color: #dc3545;"></div>
+                    </div>
+                </div>
+            </div>
+
+            <router-outlet *ngIf="!showLoadingIndicator"></router-outlet>
         </div>
     </section>
     <!-- Page footer-->
