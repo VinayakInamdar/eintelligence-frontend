@@ -35,9 +35,7 @@ export class StoreComponent implements OnInit {
     
     this.companyId = localStorage.getItem('companyID');
     this.userId = localStorage.getItem("userID");
-    debugger;
       this.getAllProduct();
-      debugger;
     //using to get list of plans
     // this.productService.getProducts().subscribe(
     //   products => {
@@ -49,7 +47,7 @@ export class StoreComponent implements OnInit {
     // );
   }
   public onClick(plan): any {
-    debugger
+    
     if (plan.paymentType == 'recurring') {
       this.router.navigate(['/checkoutsubscribe', plan.id, plan.productId]);
     } else {

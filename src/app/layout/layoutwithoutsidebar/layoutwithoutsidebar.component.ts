@@ -40,7 +40,7 @@ export class LayoutwithoutsidebarComponent implements OnInit {
     public http: HttpClient,
     public datepipe: DatePipe,) {
     // show only a few items on demo
-    this.menuItems = menu.getMenu().slice(Math.max(menu.getMenu().length - 3, 1)); // for horizontal layout
+    //this.menuItems = menu.getMenu().slice(Math.max(menu.getMenu().length - 3, 1)); // for horizontal layout
   }
   logout() {
     this._openIdConnectService.triggerSignOut();
@@ -56,12 +56,12 @@ export class LayoutwithoutsidebarComponent implements OnInit {
       this.fsbutton.nativeElement.style.display = 'none';
     }
 
-    // Switch fullscreen icon indicator
-    const el = this.fsbutton.nativeElement.firstElementChild;
-    screenfull.on('change', () => {
-      if (el)
-        el.className = screenfull.isFullscreen ? 'fa fa-compress' : 'fa fa-expand';
-    });
+    // // Switch fullscreen icon indicator
+    // const el = this.fsbutton.nativeElement.firstElementChild;
+    // screenfull.on('change', () => {
+    //   if (el)
+    //     el.className = screenfull.isFullscreen ? 'fa fa-compress' : 'fa fa-expand';
+    // });
 
     this.router = this.injector.get(Router);
 

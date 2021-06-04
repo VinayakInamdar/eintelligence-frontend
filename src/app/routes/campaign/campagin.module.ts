@@ -29,6 +29,7 @@ import { SubmenuModule } from '../submenu/submenu.module';
 import { SocialLoginModule, SocialAuthServiceConfig } from 'angularx-social-login';
 import { GoogleLoginProvider } from 'angularx-social-login';
 import { CampaignlistComponent } from './campaignlist/campaignlist.component';
+import { environment } from 'src/environments/environment';
 
 const routes: Routes = [
   { path: 'home/campaign:/code', component: CampaginComponent },
@@ -54,7 +55,7 @@ const routes: Routes = [
   { path: ':id/analytics/conversions/goals', component: GoalsComponent },
   { path: ':id/seo', component: SeoComponent },
   //{path:'campaignlist',component:CampaignlistComponent},
-  
+
 
 ];
 
@@ -76,7 +77,7 @@ const routes: Routes = [
           {
             id: GoogleLoginProvider.PROVIDER_ID,
             provider: new GoogleLoginProvider(
-              '959505317275-v8294ho5b3prni9rqi4l6nnb8463uiig.apps.googleusercontent.com'//CLient id
+              environment.googleClientId//CLient id
             )
           },
 

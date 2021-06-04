@@ -7,7 +7,7 @@ import { menu } from '../../routes/menu';
 export class MenuService {
 
     menuItems: Array<any>;
-    isMenuLoad: boolean = false;
+    isMenuLoad: boolean = true;
 
     constructor(public productsService: ProductsService, private settingService: SettingsService) {
         this.menuItems = [];
@@ -44,6 +44,7 @@ export class MenuService {
         role?: string,
         submenu?: Array<any>
     }>) {
+        this.isMenuLoad = false;
         this.menuItems = [];
         var filterOptionModel = {
             pageNumber: 1,

@@ -30,7 +30,7 @@ const Fulfillment = {
 text: 'Fulfillment',
     link: '/store',
     icon: "fas fa-store",
-    role: "role:Admin:Super Admin"
+    role: "role:Admin:Super Admin",
 };
 // const Products = {
 //     text: 'Products',
