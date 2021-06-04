@@ -23,7 +23,7 @@ export class AppComponent implements OnInit {
     constructor(public settings: SettingsService) { }
 
     ngOnInit() {
-       
+       ;
         let gacode = localStorage.getItem("isga");
         if (gacode == "1") {
             if (window.location.href.includes("/signin-oidc#id_token=") == false) {

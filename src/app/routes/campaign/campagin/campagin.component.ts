@@ -955,9 +955,13 @@ export class CampaginComponent implements OnInit, AfterViewInit {
   }
 
   integrateGoogleAnalytics(): void {
+    localStorage.setItem("selectedCompanyName", this.settingService.selectedCompanyInfo.companyId);
+    localStorage.setItem("selectedCompanyRole", this.settingService.selectedCompanyInfo.role);
     localStorage.setItem("isga","1");
     let connectYouTubeUrl = 'https://accounts.google.com/o/oauth2/v2/auth?scope=https://www.googleapis.com/auth/analytics.readonly https://www.googleapis.com/auth/analytics&access_type=offline&prompt=consent&include_granted_scopes=true&redirect_uri='+environment.googleRedirectUrl+'&response_type=code&client_id=' + environment.googleClientId;
     window.location.href = connectYouTubeUrl;
+    
+    
   }
 
 
