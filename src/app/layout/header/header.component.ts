@@ -127,7 +127,6 @@ export class HeaderComponent implements OnInit {
     }
 src:string;
 getCompanyImageLogo(){
-    debugger;
   let image=new Image();
 image.src=this.settingsservice.selectedCompanyInfo.companyImageUrl;
    this.src=image.src;

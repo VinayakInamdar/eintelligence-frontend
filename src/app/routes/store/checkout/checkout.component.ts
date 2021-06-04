@@ -263,7 +263,6 @@ export class CheckoutComponent implements OnInit {
         this.paymentMethodId = res['id'];
       }
     }, error => {
-      debugger
       this.loading(false);
       this.snackbarService.show('Checkout Failed For paymentIntentCall : ' + JSON.stringify(error.error));
 
@@ -282,7 +281,7 @@ export class CheckoutComponent implements OnInit {
     //   this.snackbarService.show('Please Enter valid Email Id');
     // }
     else {
-      debugger
+      
       this.loading(true);
       const url = "https://api.stripe.com/v1/payment_intents/" + clientSecret + "/confirm";
       let params: any = new HttpParams();
@@ -314,14 +313,14 @@ export class CheckoutComponent implements OnInit {
   
       this.http.post(url, body.toString(), this.httpOptionJSON).subscribe(res => {
         if (res) {
-          debugger
+          
           this.loading(false);
           this.clientSecret = res['client_secret'];
           this.snackbarService.show('Checkout Done');
 
         }
       }, error => {
-        debugger
+        
         this.loading(false);
         this.snackbarService.show('Checkout Failed  For Pay With Card : ' + JSON.stringify(error.error));
       });

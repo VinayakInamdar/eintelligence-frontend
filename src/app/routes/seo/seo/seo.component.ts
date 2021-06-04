@@ -58,7 +58,7 @@ export class SeoComponent implements OnInit {
   showYellowZoneScore: boolean = false;
   showRedZoneScore: boolean = false;
   showMobileScore: boolean = false;
-  showDesktopScore:boolean=false;
+  showDesktopScore: boolean = false;
   showRedZoneScoreDesktop;
   showYellowZoneScoreDesktop;
   showGreenZoneScoreDesktop;
@@ -1029,7 +1029,7 @@ export class SeoComponent implements OnInit {
     }
   }
   public addColumn(title, value, index) {
-    
+
     this.settings.columns["new column " + index] = { title: title, value: value };
     this.settings = Object.assign({}, this.settings);
   }
@@ -1070,11 +1070,12 @@ export class SeoComponent implements OnInit {
     };
     this.http.post(url, data).subscribe(res => {
       if (res) {
-
+        debugger
         this.gscaccesstoken = res['access_token'];
         this.getData();
       }
     }, error => {
+      debugger
       alert('Gsc : ' + JSON.stringify(error.error));
     });
   }
@@ -1091,13 +1092,14 @@ export class SeoComponent implements OnInit {
     };
     this.http.post(url, data).subscribe(res => {
       if (res) {
-
+        debugger
         this.gaaccesstoken = res['access_token'];
         this.getAnalyticsProfileIds();
         this.getSiteSpeedDataMobile();
         this.getSiteSpeedDataDesktop();
       }
     }, error => {
+      debugger
       alert('GA : ' + JSON.stringify(error.error));
     });
 
@@ -1106,7 +1108,7 @@ export class SeoComponent implements OnInit {
   ngOnInit(): void {
     // this.lineChartData1=[];
     // this.lineChartLabels1 = [];
-    
+
     this.gaurl = localStorage.getItem('gaurl');
     this.gaaccesstoken = localStorage.getItem('gaaccesstoken');
     this.garefreshtoken = localStorage.getItem('garefreshtoken');
@@ -2090,7 +2092,7 @@ export class SeoComponent implements OnInit {
     this.selectedCampId = `${id.substring(3)}`;
     filterOptionModel.searchQuery = 'CampaignID=="' + this.selectedCampId + '"'
     this.campaignService.getSerpForKeyword(filterOptionModel, "&tbs=qdr:m").subscribe(res => {
-      
+
       this.serpList = res;
       this.tempSerpList = this.serpList;
       this.GetRankingPosition(this.selectedCampId);

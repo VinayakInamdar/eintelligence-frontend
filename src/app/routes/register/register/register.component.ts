@@ -70,7 +70,6 @@ export class RegisterComponent implements OnInit {
     // });
     this.selectedCompanyImageUrl = localStorage.getItem('companyImageUrl');
     localStorage.removeItem('companyImageUrl');
-    debugger;
     value.companyImageUrl = this.selectedCompanyImageUrl;
     
     var result: User = Object.assign({}, value);
@@ -107,7 +106,7 @@ export class RegisterComponent implements OnInit {
   }
  
   getBase64(event:any){
-    debugger;
+    
     let companyImageUrl: string
     let me = this;
     let file = event.target.files[0];
