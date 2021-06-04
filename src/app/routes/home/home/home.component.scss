@@ -66,6 +66,7 @@
 .cursor-pointer {
     cursor: pointer
 }
+
 .healthscorecard {
     font-weight: 450;
     text-align: center;
@@ -76,14 +77,28 @@
 .setbuttonpadding {
     padding-top: 1.5rem;
     padding-bottom: 2.5rem;
+    margin-left: 10rem;
 }
+
 .setsearchpadding {
     padding-left: 5rem;
-    padding-right: 22rem;
+    padding-right: 18rem;
 }
+
 .red-color {
-    color:red;
-    }
-    .green-color {
-        color:green;
-        }
+    color: red;
+}
+
+.green-color {
+    color: green;
+}
+
+.set-table {
+    margin-left: 81px;
+    margin-right: 81px;
+}
+
+.give-padding {
+    padding-right: 6rem;
+    margin-bottom: 3rem;
+}

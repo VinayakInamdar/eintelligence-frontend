@@ -208,9 +208,9 @@ export class HomeComponent implements OnInit {
   settings = {
     actions: {
       columnTitle: '',
-      custom: [{ name: 'editCampaign', title: '<i class="fas fa-edit"></i>' },
-      { name: 'deleteCampaign', title: '<span class="text-danger col"><i class="fas fa-trash-alt"></i></span>' },
-      { name: 'onCampaignSelect', title: '<i class="fas fa-user"></i>' }
+      custom: [{ name: 'editCampaign', title: '<span><i class="fas fa-edit"></i>&nbsp;&nbsp;&nbsp;</span>' },
+        { name: 'deleteCampaign', title: '<i class="fas fa-trash-alt text-danger"></i>' },
+        { name: 'onCampaignSelect', title: '<span>&nbsp;&nbsp;&nbsp;<i class="fas fa-user"></i></span>' }
       ],
       add: false, edit: false, delete: false, position: 'right'
     },
@@ -638,6 +638,7 @@ export class HomeComponent implements OnInit {
       localStorage.setItem('facebookid', facebook[0]['id']);
 
     }
+    ;
     let gsc = this.CampaignGSCList.filter(x => x.campaignID == this.SelectedCampaignId);
     if (gsc != null && gsc != undefined && gsc.length > 0) {
       localStorage.setItem('gscurl', gsc[0]['urlOrName']);
@@ -710,7 +711,7 @@ export class HomeComponent implements OnInit {
     this.http.post(url, data, this.httpOptionJSON).subscribe(res => {
       if (res) {
         let rows = res['rows'];
-        debugger
+        
         this.clicksPreviousYear = rows[0].clicks;
         this.impressionsPreviousYear = rows[0].impressions;
         this.cTRPreviousYear = parseFloat(rows[0].ctr).toFixed(2).toString();
@@ -1133,16 +1134,16 @@ export class HomeComponent implements OnInit {
     var userid = this.openIdConnectService.user.profile.sub;
     this.campaignService.getCampaign(userid).subscribe(res => {
       this.campaignList = res;
-      debugger
+      
       for (let i = 0; i < res.length; i++) {
         let ga = this.CampaignGAList.filter(x => x.campaignID == res[i].id);
         if (ga != null && ga != undefined && ga.length > 0) {
           
-         this.refreshGoogleAnalyticsAccount(i, ga[0]['refreshToken'], ga[0]['urlOrName']);
+        // this.refreshGoogleAnalyticsAccount(i, ga[0]['refreshToken'], ga[0]['urlOrName']);
         }
         let gsc = this.CampaignGSCList.filter(x => x.campaignID == res[i].id);
         if (gsc != null && gsc != undefined && gsc.length > 0) {
-          this.refreshGSCAccount(i, gsc[0]['refreshToken'], gsc[0]['urlOrName']);
+         // this.refreshGSCAccount(i, gsc[0]['refreshToken'], gsc[0]['urlOrName']);
         }
         let facebook = this.CampaignFacebookList.filter(x => x.campaignID == res[i].id);
         if (facebook != null && facebook != undefined && facebook.length > 0) {
