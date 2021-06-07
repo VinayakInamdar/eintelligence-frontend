@@ -7,13 +7,17 @@ import { menu } from './menu';
 import { routes } from './routes';
 import { RegisterComponent } from './register/register/register.component';
 import { SuccessComponent } from './register/success/success/success.component';
+import { SettingsService } from '../core/settings/settings.service';
+
 
 
 
 @NgModule({
     imports: [
         SharedModule,
-        RouterModule.forRoot(routes)
+        RouterModule.forRoot(routes, {
+            onSameUrlNavigation: 'reload'
+        }),
     ],
     declarations: [RegisterComponent, SuccessComponent],
     exports: [
@@ -22,7 +26,9 @@ import { SuccessComponent } from './register/success/success/success.component';
 })
 
 export class RoutesModule {
-    constructor(public menuService: MenuService, tr: TranslatorService) {
-        menuService.addMenu(menu);
+    constructor(public menuService: MenuService, tr: TranslatorService, public settingsservice: SettingsService) {
+
+        // menuService.addMenu(menu);
+
     }
 }

@@ -1,0 +1,132 @@
+<div class="row">
+    <div class="col-md-5 offset-1">
+        <div>
+            <div class="container mt-4 storeproductdivheight">
+                <div class="row pad-18">
+                    <div class="col-md-12 item" *ngFor="let plan of plans">
+                        <div class="card item-card card-block" [style.height.px]="maxHeight/1.2">
+                            <h3 class="card-title font-weight-bold text-left">{{plan.name}}</h3>
+                            <p class="">{{plan.name}}</p>
+                            <p class="service-link">
+                                {{plan.subtitle}}
+                            </p>
+                            <hr>
+                            <div class="product-attributes-box card-body storesubdivpaddinginitial">
+                                <ul class="list-group list-group-flush storeulpaddingtop">
+                                    <li class="text-left storelistyle">{{plan.features}}</li>
+                                </ul>
+                            </div>
+                            <hr>
+                            <div class="product-attributes-box card-body storesubdivpaddinginitial">
+                                <h3 class="card-title font-weight-bold text-left">Select Campaign</h3>
+                                <select class="form-control" [(ngModel)]="campaignDrp" #mySelect
+                                    (change)="onChange(mySelect.value)">
+                                    <option value="00000000-0000-0000-0000-000000000000"> Select Campaign</option>
+                                    <option *ngFor="let campaign of campaignList" [value]="campaign.id">
+                                        {{campaign.name}} </option>
+                                </select>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+        </div>
+    </div>
+    <div class="col-md-5 checkoutdiv">
+        <div>
+            <div class="card b mt-1" *ngFor="let plan of plans">
+                <div class="card-header bb">
+                    <h4 class="card-title">Order Summnary</h4>
+                </div>
+                <div class="card-body bt">
+                    <h4 class="b0">Order #</h4>
+                </div>
+                <table class="table">
+                    <tbody>
+                        <tr>
+                            <td>Plan Name</td>
+                            <td>
+                                <div class="text-right text-bold">{{plan.name}}</div>
+                            </td>
+                        </tr>
+                        <tr>
+                            <td>Price</td>
+                            <td>
+                                <div class="text-right text-bold">{{plan.price}}</div>
+                            </td>
+                        </tr>
+                        <tr>
+                            <td>Tax</td>
+                            <td>
+                                <div class="text-right text-bold">$0</div>
+                            </td>
+                        </tr>
+                    </tbody>
+                </table>
+                <div class="card-body">
+                    <div class="clearfix">
+                        <div class="float-right text-right">
+                            <div class="text-bold">{{plan.price}}</div>
+                            <div class="text-sm">{{plan.currency}}</div>
+                        </div>
+                        <div class="float-left text-bold text-dark">ORDER TOTAL</div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="card b" style="height: 256px;">
+
+                <form id="subscription-form" class="mb-1">
+                    <div class="row mb-2">
+                        <div class="col-sm-11">
+                            <div id="paypal-button-container1"></div>
+                        </div>
+                    </div>
+                    <!-- <div class="row  justify-content-md-center">
+                        <div class="col-sm-11">
+                            <label for="email" class="mb-0">Email</label>
+                            <input type="text" class="form-control" [(ngModel)]="cardEmail" id="email"
+                                name="email" />
+                        </div>
+                    </div> -->
+                    <br>
+                    <br>
+
+                    <div class="row  justify-content-md-center">
+                        <div class="col-sm-11">
+                            <label for="card" class="mb-0">Card information</label>
+                            <div id="card-element"></div>
+                        </div>
+                    </div>
+                    <br>
+                    <br>
+                    <div class="row justify-content-md-center">
+                        <div class="col-sm-11">
+                            <button class="btn btn-danger btn-block" id="submit">
+                                <div class="spinner hidden" id="spinner"></div>
+                                <span id="button-text">SUBSCRIBE</span>
+                            </button>
+                        </div>
+                    </div>
+                    <br>
+                    <div class="row justify-content-md-center" *ngIf="campaignError==true">
+                        <div class="alert alert-danger">
+                            <strong>Error!</strong> Plaese select Campaign before checkout.
+                        </div>
+                    </div>
+                    <p id="card-errors" role="alert"></p>
+                    <p class="result-message hidden">
+                        Subscribe succeeded
+                    </p>
+                </form>
+            </div>
+
+
+
+        </div>
+        <hr>
+
+
+    </div>
+</div>

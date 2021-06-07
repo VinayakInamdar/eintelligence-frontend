@@ -1,0 +1,370 @@
+<p>auditreport works!</p>
+<div id="report-content" class="preview">
+    <div class="webview-report-header">
+        <div class="pagewidth">
+            <div class="brand-logo">
+                <a href="#" class="back-to-list" (click)="navigateBack($event)"><i class="svg-icon svg-back-icon"></i>
+                    Back to Audit</a>
+
+            </div>
+            <div class="button-container">
+                <a href="#" class="btn btn-danger pdfstyle">Save as PDF</a>
+                <span class="pdfspn"></span>
+                <a href="#" id="btn-print" class="btn btn-danger btn-print">Print</a>
+            </div>
+        </div>
+    </div>
+
+    <div class="page" >
+        <!-- <div  id="loading">
+        </div> -->
+        <div *ngIf="showSpinner"  class="la-line-scale la-2x linescaleloadercolortopleft">
+            <div></div>
+            <div></div>
+            <div></div>
+            <div></div>
+            <div></div>
+        </div>
+
+        <div *ngIf="on_page_seo != undefined && !showSpinner"  id="general-info-section" class="section-container">
+            <div class="pagewidth">
+                <div class="column">
+            <div class="report-title">
+                <h1>Audit for:</h1>
+                <a [href]="domain" target="_BLANK" rel="noreferrer">{{domain}}</a> 
+                           
+            </div>
+            <div class="row"></div>
+            <div class="col-lg-6 breakdown right20px top5px">
+                <table class="table" style="padding-right: 20px;">
+                    <tbody>
+                        <tr>
+                            <td>Security</td>
+                            <td class="wd-sm"><div class="px-2 paddingtop5px" >
+                                <progressbar  class="m-0 progress-xs progress" type="success" value="80"   max="100">   
+                              <bar  aria-valuemin="0" role="progressbar"   class="progress-bar progress-bar-success bg-success" aria-valuenow="80" aria-valuetext="80%" style="height: 100%; width: 80%;"></bar>
+                            </progressbar></div></td>
+                            <td>A</td>
+                        </tr>
+                        <tr>
+                            <td>Organic Traffic</td>
+                            <td class="wd-sm"><div class="px-2 paddingtop5px">
+                                <progressbar  class="m-0 progress-xs progress" type="success" value="80"   max="100">   
+                              <bar  aria-valuemin="0" role="progressbar"   class="progress-bar progress-bar-success bg-success" aria-valuenow="80" aria-valuetext="80%" style="height: 100%; width: 80%;"></bar>
+                            </progressbar></div></td>
+                            <td>C</td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+
+                <!-- <div class="column"> -->
+                    
+
+                    <div class="row col-md-12 right20px top5px">
+                        <div class="col-md-4 critical-issues">
+                            <table class="table" cellpadding="0" cellspacing="0">
+                                <thead>
+                                    <tr>
+                                        <th>Critical</th>
+                                        <th class="text-right">{{critical.organic_traffic + critical.security}}</th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    <tr>
+                                        <td>Organic Traffic</td>
+                                        <td class="text-right">{{critical.organic_traffic}}</td>
+                                    </tr>
+                                    <tr>
+                                        <td>Security</td>
+                                        <td class="text-right">{{critical.security}}</td>
+                                    </tr>
+                                </tbody>
+                            </table>
+                        </div>
+                        <div class="col-md-4 for-improvement">
+                            <table class="table" cellpadding="0" cellspacing="0">
+                                <thead>
+                                    <tr>
+                                        <th>For Improvement</th>
+                                        <th class="text-right">{{for_improvement.organic_traffic}}</th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    <tr>
+                                        <td>Organic Traffic</td>
+                                        <td class="text-right">{{for_improvement.organic_traffic}}</td>
+                                    </tr>
+                                </tbody>
+                            </table>
+                        </div>
+                        <div class="col-md-4 looking-good">
+                            <table class="table" cellpadding="0" cellspacing="0">
+                                <thead>
+                                    <tr>
+                                        <th>Looking Good</th>
+                                        <th class="text-right">{{looking_good.security + looking_good.organic_traffic}}
+                                        </th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    <tr>
+                                        <td>Security</td>
+                                        <td class="text-right">{{looking_good.security}}</td>
+                                    </tr>
+                                    <tr>
+                                        <td>Organic Traffic</td>
+                                        <td class="text-right">{{looking_good.organic_traffic}}</td>
+                                    </tr>
+                                </tbody>
+                            </table>
+                        </div>
+                    </div>
+                <!-- </div> -->
+
+            </div>
+            </div>
+        </div>
+
+        <div *ngIf="on_page_seo != undefined && !showSpinner" id="security-section" class="section-container">
+            <div class="pagewidth">
+                <div class="column">
+                    <div class="section-header-wrapper row">
+                        <div class="col-sm-2 section-title">
+                            <h3>Security</h3>
+                        </div>
+                        <div class="col-sm-3 section-score">
+                            <h4>Average Score: <span class="badge looking-good">A</span></h4>
+                        </div>
+                        <div class="col-sm-7 section-score-breakdown">
+
+
+                            <span class="badge critical" *ngIf="critical.security > 0">Critical
+                                <span>{{critical.security}}</span></span>
+                            <span class="criticalspan"> </span>
+                            <span class="badge looking-good" *ngIf="looking_good.security > 0">Looking Good
+                                <span>{{looking_good.security}}</span></span>
+                        </div>
+                    </div>
+
+                    <div class="row section-item-container">
+                        <div class="col-sm-2 section-title">
+                            <span class="badge"
+                                [ngClass]="{'looking-good':securitySection.ssl === true,'critical':securitySection.ssl === false}"><i
+                                    class="svg-icon check-circle-icon"></i>{{securitySection.ssl == true ? 'Looking Good' : 'Critical'}}
+                            </span>
+                        </div>
+                        <div class="col-sm-3 section-score">
+                            <p>{{securitySection.ssl == true ? 'Safe SSL Security' : 'Not Safe SSL Security'}}</p>
+                        </div>
+                        <div class="col-sm-7 section-score-breakdown">
+                            <p>{{securitySection.ssl == true ? 'Your HTTPS is near perfection.' : 'Your HTTPS is not near perfection.'}}
+                            </p>
+                        </div>
+                    </div>
+
+
+                    <div class="row section-item-container">
+                        <div class="col-sm-2 section-title">
+                            <span class="badge"
+                                [ngClass]="{'looking-good':securitySection.sslcertificate === true,'critical':securitySection.sslcertificate === false}"><i
+                                    class="svg-icon check-circle-icon"></i>{{securitySection.sslcertificate == true ? 'Looking Good' : 'Critical'}}
+                            </span>
+                        </div>
+                        <div class="col-sm-3 section-score">
+                            <p>{{securitySection.sslcertificate == true ? 'HTTPS active' : 'HTTPS not active'}}</p>
+                        </div>
+                        <div class="col-sm-7 section-score-breakdown">
+                            <p>{{securitySection.sslcertificate == true ? 'Congratulations, your website only accepts HTTPS connections. You are providing a safe experience for your visitors.' : 'Warning, your website does not accepts HTTPS connections. You are providing a unsafe experience for your visitors.'}}
+                            </p>
+                        </div>
+                    </div>
+
+                </div>
+            </div>
+        </div>
+
+        <div *ngIf="on_page_seo != undefined && !showSpinner" id="organic-traffic-section" class="section-container">
+            <div class="pagewidth">
+                <div class="column">
+                    <div class="section-header-wrapper row">
+                        <div class="col-sm-2 section-title">
+                            <h3>Organic Traffic</h3>
+                        </div>
+                        <div class="col-sm-3 section-score">
+                            <h4>Average Score: <span class="badge for-improvement">C</span></h4>
+                        </div>
+                        <div class="col-sm-7 section-score-breakdown">
+
+                            <span class="badge critical" *ngIf="critical.organic_traffic > 0">Critical
+                                <span>{{critical.organic_traffic}}</span></span>
+                            <span class="criticalspan"> </span>
+                            <span class="badge for-improvement" *ngIf="for_improvement.organic_traffic > 0">For
+                                Improvement <span>{{for_improvement.organic_traffic}}</span></span>
+                            <span class="criticalspan"> </span>
+                            <span class="badge looking-good" *ngIf="looking_good.organic_traffic > 0">Looking Good
+                                <span>{{looking_good.organic_traffic}}</span></span>
+                        </div>
+                    </div>
+
+                    <div id="technical-seo">
+                        <h3 class="section-group-title">Technical SEO</h3>
+                        <div class="row section-item-container">
+                            <div class="col-sm-2 section-title">
+                                <span class="badge"
+                                    [ngClass]="{'looking-good':technical_seo.have_sitemap === true,'critical':technical_seo.have_sitemap === false}"><i
+                                        class="svg-icon check-circle-icon"></i>{{technical_seo.have_sitemap == true ? 'Looking Good' : 'Critical'}}
+                                </span>
+                            </div>
+                            <div class="col-sm-3 section-score">
+                                <p>{{technical_seo.have_sitemap == true ? 'Sitemap.xml found' : 'Sitemap.xml not found'}}
+                                </p>
+                            </div>
+                            <div class="col-sm-7 section-score-breakdown">
+                                <p>{{technical_seo.have_sitemap == true ? 'Nice, your sitemap.xml can be found. It allows search engines to find all of your webpages easily.' : 'Unpleasant, your sitemap.xml can not be found. It does not allows search engines to find all of your webpages easily.'}}
+                                </p>
+                            </div>
+                        </div>
+
+                        <div class="row section-item-container">
+                            <div class="col-sm-2 section-title">
+                                <span class="badge"
+                                    [ngClass]="{'looking-good':technical_seo.have_robots === true,'critical':technical_seo.have_robots === false}"><i
+                                        class="svg-icon check-circle-icon"></i>
+                                    {{technical_seo.have_robots == true ? 'Looking Good' : 'Critical'}}</span>
+                            </div>
+                            <div class="col-sm-3 section-score">
+                                <p>{{technical_seo.have_robots == true ? 'Robots.txt allows Google' : 'Robots.txt does not allows Google'}}
+                                </p>
+                            </div>
+                            <div class="col-sm-7 section-score-breakdown">
+                                <p>{{technical_seo.have_robots == true ? 'Your robots.txt is well configured.' : 'Your robots.txt is not well configured.'}}
+                                </p>
+                            </div>
+                        </div>
+
+                    </div>
+
+                    <div id="on-page">
+                        <h3 class="section-group-title">On-Page SEO</h3>
+
+                        <div class="item-collapsible open">
+                            <div class="row section-item-container">
+                                <div class="col-sm-2 section-title">
+                                    <span class="badge"
+                                        [ngClass]="{'looking-good':on_page_seo.title_length >= 65,'for-improvement' : on_page_seo.title_length >= 35,'critical':on_page_seo.title_length >= 0}"><i
+                                            class="svg-icon exclamation-icon"></i>{{on_page_seo.title_length >= 65 ? 'Looking Good' :on_page_seo.title_length >= 35 ? 'For Improvement' : 'Critical' }}</span>
+                                </div>
+                                <div class="col-sm-3 section-score">
+                                    <p>Title Tag Optimization</p>
+                                    <p class="other-details">{{on_page_seo.title_length}} Characters</p>
+                                </div>
+                                <div class="col-sm-6 section-score-breakdown">
+                                    <p>Your title meta tag should be optimized.</p>
+                                    <div class="meta-container other-details">
+                                        <p>{{on_page_seo.title}}</p>
+                                    </div>
+                                </div>
+                                <div class="col-sm-1 section-toggle">
+                                    <button class="btn-toggle"><i class="svg-icon toggle-icon"></i></button>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="item-collapsible open">
+                            <div class="row section-item-container">
+                                <div class="col-sm-2 section-title">
+                                    <span class="badge for-improvement"
+                                        [ngClass]="{'looking-good':on_page_seo.meta_description_length >= 150,'for-improvement' : on_page_seo.meta_description_length >= 90,'critical':on_page_seo.title_length >= 0}"><i
+                                            class="svg-icon exclamation-icon"></i>
+                                        {{on_page_seo.meta_description_length >= 150 ? 'Looking Good' :on_page_seo.meta_description_length >= 90 ? 'For Improvement' : 'Critical' }}</span>
+                                </div>
+                                <div class="col-sm-3 section-score">
+                                    <p>Description Tag Length</p>
+                                    <p class="other-details">{{on_page_seo.meta_description_length}} Characters</p>
+                                </div>
+                                <div class="col-sm-6 section-score-breakdown">
+                                    <p>Your description meta tag should be optimized.</p>
+                                    <div class="meta-container other-details">
+                                        <p>{{on_page_seo.meta_description}}</p>
+                                    </div>
+                                </div>
+                                <div class="col-sm-1 section-toggle">
+                                    <button class="btn-toggle"><i class="svg-icon toggle-icon"></i></button>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="item-collapsible open">
+                            <div class="row section-item-container">
+                                <div class="col-sm-2 section-title">
+                                    <span class="badge"
+                                        [ngClass]="{'looking-good':on_page_seo.h1_count + on_page_seo.h2_count + on_page_seo.h3_count >= 15,'for-improvement' : on_page_seo.h1_count + on_page_seo.h2_count + on_page_seo.h3_count >= 5,'critical':on_page_seo.h1_count + on_page_seo.h2_count + on_page_seo.h3_count >= 0}"><i
+                                            class="svg-icon exclamation-icon"></i>
+                                        {{on_page_seo.h1_count + on_page_seo.h2_count + on_page_seo.h3_count >= 15 ? 'Looking Good' : on_page_seo.h1_count + on_page_seo.h2_count + on_page_seo.h3_count >= 5 ? 'For Improvement' : 'Critical' }}</span>
+                                </div>
+                                <div class="col-sm-3 section-score">
+                                    <p>Great, your headings is optimized</p>
+                                </div>
+                                <div class="col-sm-6 section-score-breakdown">
+                                    <p>Headings are the titles and subtitles of your site. They are really important for
+                                        search engines.</p>
+                                </div>
+                                <div class="col-sm-1 section-toggle">
+                                    <button class="btn-toggle"><i class="svg-icon toggle-icon"></i></button>
+                                </div>
+                            </div>
+                            <div class="row section-item-container other-details">
+                                <div class="col-sm-2 section-title">
+                                </div>
+                                <div class="col-sm-10 section-content">
+                                    <table class="table" cellspacing="0">
+                                        <tbody>
+                                            <tr>
+                                                <td>H1</td>
+                                                <td>
+                                                    <div class="progress progressheight">
+                                                        <div class="progress-bar"
+                                                        [matTooltip]="(on_page_seo.h1_count)+('  found') "
+                                                            [style.width.%]="on_page_seo.h1_count * 5"></div>
+                                                        <span class="progressspan"></span>
+                                                    </div>
+                                                </td>
+                                            </tr>
+                                            <tr>
+                                                <td>H2</td>
+                                                <td>
+                                                    <div class="progress progressheight">
+                                                        <div class="progress-bar"
+                                                        [matTooltip]="(on_page_seo.h2_count)+('  found') "
+                                                            [style.width.%]="on_page_seo.h2_count * 5"></div>
+                                                        <span class="progressspan"></span>
+                                                    </div>
+                                                </td>
+                                            </tr>
+                                            <tr>
+                                                <td>H3</td>
+                                                <td>
+                                                    <div class="progress progressheight">
+                                                        <div class="progress-bar"
+                                                        [matTooltip]="(on_page_seo.h3_count)+('  found') "
+                                                            [style.width.%]="on_page_seo.h3_count * 5"></div>
+                                                        <span class="progressspan"></span>
+                                                    </div>
+                                                </td>
+                                            </tr>
+
+                                        </tbody>
+                                    </table>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+
+
+    </div>
+</div>

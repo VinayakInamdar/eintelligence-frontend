@@ -1,5 +1,5 @@
 <div class="content-heading">
-    <div>
+    <div class="paddingtop15px">
         {{'user.CREATE' | translate}} {{'user.USER' | translate}}
     </div>
 </div>
@@ -15,8 +15,8 @@
                     <div class="col-md-10">
                         <input formControlName="fName" class="form-control" placeholder="First Name" />
                         <span class="text-danger"
-                        *ngIf="valForm.controls['fName'].hasError('required') && (valForm.controls['fName'].dirty || valForm.controls['fName'].touched)">
-                        {{'validation.NAMEISREQUIRED' | translate}}</span>
+                            *ngIf="valForm.controls['fName'].hasError('required') && (valForm.controls['fName'].dirty || valForm.controls['fName'].touched)">
+                            {{'validation.NAMEISREQUIRED' | translate}}</span>
                     </div>
                 </div>
             </fieldset>
@@ -27,8 +27,8 @@
                     <div class="col-md-10">
                         <input formControlName="lName" class="form-control" placeholder="Last Name" />
                         <span class="text-danger"
-                        *ngIf="valForm.controls['lName'].hasError('required') && (valForm.controls['lName'].dirty || valForm.controls['lName'].touched)">
-                        {{'validation.NAMEISREQUIRED' | translate}}</span>
+                            *ngIf="valForm.controls['lName'].hasError('required') && (valForm.controls['lName'].dirty || valForm.controls['lName'].touched)">
+                            {{'validation.NAMEISREQUIRED' | translate}}</span>
                     </div>
                 </div>
             </fieldset>
@@ -39,54 +39,11 @@
                     <div class="col-md-10">
                         <input formControlName="email" class="form-control" placeholder="Email Address" />
                         <span class="text-danger"
-                        *ngIf="valForm.controls['email'].hasError('required') && (valForm.controls['email'].dirty || valForm.controls['email'].touched)">
-                        {{'validation.EMAIL' | translate}}</span>
-                    </div>
-                </div>
-            </fieldset>       
-
-            <!-- <fieldset>
-                <div class="form-group row">
-                    <label class="col-md-2 col-form-label">
-                        {{'branch.BRANCH' | translate}}</label>
-                    <div class="col-md-10">
-                        <ngx-select [allowClear]="true" [items]="branchList" optionValueField="id" formControlName="branch"
-                            (select)="Selected($event)" optionTextField="name" placeholder="Branch name selected">
-                        </ngx-select> 
-                        <span class="text-danger"
-                        *ngIf="valForm.controls['branch'].hasError('required') && (valForm.controls['branch'].dirty || valForm.controls['branch'].touched)">
-                        {{'validation.BRANCHREQUIRED' | translate}}</span>
+                            *ngIf="valForm.controls['email'].hasError('required') && (valForm.controls['email'].dirty || valForm.controls['email'].touched)">
+                            {{'validation.EMAIL' | translate}}</span>
                     </div>
                 </div>
             </fieldset>
-            <fieldset>
-                <div class="form-group row">
-                    <label class="col-md-2 col-form-label">
-                        {{'user.LEVEL' | translate}}</label>
-                    <div class="col-md-10">
-                        <ngx-select [allowClear]="true" [items]="userLevelList" optionValueField="id" formControlName="level"
-                            (select)="Selected1($event)" optionTextField="name" placeholder="Level name selected">
-                        </ngx-select>
-                        <span class="text-danger"
-                        *ngIf="valForm.controls['level'].hasError('required') && (valForm.controls['level'].dirty || valForm.controls['level'].touched)">
-                        {{'validation.LEVELREQUIRED' | translate}}</span>
-                    </div>
-                </div>
-            </fieldset>
-            <fieldset>
-                <div class="form-group row">
-                    <label class="col-md-2 col-form-label">
-                        {{'department.DEPARTMENT' | translate}}</label>
-                    <div class="col-md-10">
-                        <ngx-select [allowClear]="true" [items]="departmentList" optionValueField="id" formControlName="department"
-                            (select)="Selected2($event)" optionTextField="name" placeholder="Department name selected">
-                        </ngx-select>
-                        <span class="text-danger"
-                        *ngIf="valForm.controls['department'].hasError('required') && (valForm.controls['department'].dirty || valForm.controls['department'].touched)">
-                        {{'validation.DEPARTMENTREQUIRED' | translate}}</span>
-                    </div>
-                </div>
-            </fieldset> -->
 
             <div class="form-group row">
                 <label class="col-xl-2 col-form-label"></label>

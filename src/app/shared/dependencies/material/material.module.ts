@@ -15,6 +15,7 @@ import { MatRippleModule, MatNativeDateModule } from '@angular/material/core';
 import { MatSelectModule } from '@angular/material/select';
 import { MatToolbarModule } from '@angular/material/toolbar';
 import { MatStepperModule } from '@angular/material/stepper';
+import { MatProgressBarModule } from '@angular/material/progress-bar'
 import { MatProgressSpinnerModule } from '@angular/material/progress-spinner';
 import { MatListModule } from '@angular/material/list';
 import { MatTabsModule } from '@angular/material/tabs';
@@ -51,6 +52,7 @@ import {ClipboardModule} from '@angular/cdk/clipboard';
     MatSelectModule,
     MatToolbarModule,
     MatStepperModule,
+    MatProgressBarModule,
     MatProgressSpinnerModule,
     MatListModule,
     MatTabsModule,
@@ -80,6 +82,7 @@ import {ClipboardModule} from '@angular/cdk/clipboard';
     MatMenuModule,
     MatNativeDateModule,
     MatPaginatorModule,
+    MatProgressBarModule,
     MatProgressSpinnerModule,
     MatRadioModule,
     MatRippleModule,
@@ -110,6 +113,7 @@ import {ClipboardModule} from '@angular/cdk/clipboard';
     MatSelectModule,
     MatToolbarModule,
     MatStepperModule,
+    MatProgressBarModule,
     MatProgressSpinnerModule,
     MatListModule,
     MatTabsModule,
@@ -139,6 +143,7 @@ import {ClipboardModule} from '@angular/cdk/clipboard';
     MatMenuModule,
     MatNativeDateModule,
     MatPaginatorModule,
+    MatProgressBarModule,
     MatProgressSpinnerModule,
     MatRadioModule,
     MatRippleModule,

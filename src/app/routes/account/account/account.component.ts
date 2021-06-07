@@ -1,9 +1,16 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, ViewChild } from '@angular/core';
 import { Router } from '@angular/router';
 import { FormGroup, FormControl, Validators } from '@angular/forms';
-import { SearchCountryField, TooltipLabel, CountryISO } from 'ngx-intl-tel-input';
+import { SearchCountryField, TooltipLabel, CountryISO, NgxIntlTelInputComponent } from 'ngx-intl-tel-input';
+import { CompanyInformation } from './companyinformation.model';
+import { MatDialog, MatDialogRef } from '@angular/material/dialog';
+import { AccountService } from '../account.service';
+import { strict } from 'assert';
+import { TranslateService } from '@ngx-translate/core';
+import { OpenIdConnectService } from '../../../shared/services/open-id-connect.service';
 declare var $: any;
 
+const success = require('sweetalert');
 // Tooltips fix for summernote
 // https://github.com/Financial-Times/polyfill-library/issues/164#issuecomment-486977672
 const origToString = Object.prototype.toString;
@@ -20,15 +27,57 @@ Object.prototype.toString = function() {
   styleUrls: ['./account.component.scss']
 })
 export class AccountComponent implements OnInit {
-
+ 
+  @ViewChild('ngxintlbil', { static: false }) ngxintlbil: NgxIntlTelInputComponent;
+  @ViewChild('ngxintlcom', { static: false }) ngxintlcom: NgxIntlTelInputComponent;
   separateDialCode = true;
   SearchCountryField = SearchCountryField;
   TooltipLabel = TooltipLabel;
   CountryISO = CountryISO;
+  maxHeight = window.innerHeight/1;
+  isCollapsed = true;
   preferredCountries: CountryISO[] = [CountryISO.UnitedStates, CountryISO.UnitedKingdom];
-  phoneForm = new FormGroup({
-    phone: new FormControl(undefined, [Validators.required])
+  
+  companyInfoForm = new FormGroup({
+    name: new FormControl(undefined, [Validators.required]),
+    website: new FormControl(undefined, [Validators.required]),
+    phone: new FormControl(undefined, [Validators.required]),
+    email: new FormControl(undefined),
+    timezone: new FormControl(undefined, [Validators.required]),
+    address: new FormControl(undefined, [Validators.required]),
+    zipCode: new FormControl(undefined, [Validators.required]),
+    city: new FormControl(undefined, [Validators.required]),
+    state: new FormControl(undefined, [Validators.required]),
+    country: new FormControl(undefined, [Validators.required]),
+    description: new FormControl(undefined, [Validators.required]),
+    
   });
+  profileInfo = new FormGroup({
+    fName: new FormControl(undefined, [Validators.required]),
+    lName: new FormControl(undefined, [Validators.required]),
+    email: new FormControl(undefined, [Validators.required]),
+    phoneNumber: new FormControl(undefined, [Validators.required]),
+})
+billingInfo = new FormGroup({
+  name: new FormControl(undefined, [Validators.required]),
+  website: new FormControl(undefined, [Validators.required]),
+  phone: new FormControl(undefined, [Validators.required]),
+  email: new FormControl(undefined),
+  address: new FormControl(undefined, [Validators.required]),
+  zipCode: new FormControl(undefined, [Validators.required]),
+  city: new FormControl(undefined, [Validators.required]),
+  state: new FormControl(undefined, [Validators.required]),
+  country: new FormControl(undefined, [Validators.required]),
+  description: new FormControl(undefined, [Validators.required]),
+})
+brandingInfoForm = new FormGroup({
+  branding : new FormControl(undefined,[Validators.required])
+})
+emailSettingsForm = new FormGroup({
+  emailAdd:new FormControl(undefined,[Validators.required]),
+  emailSign:new FormControl(undefined,[Validators.required])
+})
+  settingActive = 1;
 
   //For Company Information state selection dropdown
   public state: Array<string> = ['Alabama', 'Alaska', 'Arizona', 'Arkansas', 'Byram', 'California',
@@ -40,6 +89,8 @@ export class AccountComponent implements OnInit {
     'South Carolina', 'South Dakota', 'Sublimity', 'Tennessee', 'Texas', 'Trimble', 'Utah', 'Vermont',
     'Virginia', 'Washington', 'West Virginia', 'Wisconsin', 'Wyoming'];
   changeText: boolean;
+  companyinformation: any;
+  user:any;
 
   //state dropdown list refresh
   public refreshValue(value: any): void {
@@ -104,8 +155,11 @@ export class AccountComponent implements OnInit {
     'Montenegro', 'Congo Democratic'];
 
 
-  constructor(public router: Router) { 
+  constructor(private translate: TranslateService,public router: Router,public dialog: MatDialog,private accountService: AccountService, private openIdConnectService: OpenIdConnectService) { 
     this.changeText = false;
+    this.getCompany();
+    this.getUser();
+    
   }
 
   public itemsCategories: Array<string> = ['coding', 'less', 'sass', 'angularjs', 'node', 'expressJS'];
@@ -124,6 +178,7 @@ export class AccountComponent implements OnInit {
   valueTag;
   valueReview;
   contents: string;
+  CompanyID : string;
 
   ngOnInit(): void {
     $('#summernote').summernote({
@@ -132,20 +187,326 @@ export class AccountComponent implements OnInit {
       callbacks: {
           onChange: (contents, $editable) => {
               this.contents = contents;
-              // console.log(contents);
+
           }
       }
   });
+  
 
    // Hide the initial popovers that display
    $('.note-popover').css({
     'display': 'none'
 });
 
+
+
+  }
+
+
+
+  getUser() {
+
+    var userId = this.openIdConnectService.user.profile.sub;
+    this.accountService.getUser(userId).subscribe(
+      res1=>{
+        console.log(res1);
+        for (let c in this.profileInfo.controls) {
+          this.profileInfo.controls[c].setValue(res1[c])
+      }
+                      
+        
+      }
+    )
+  }
+
+  getCompany() {
+
+    var userId = this.openIdConnectService.user.profile.sub;
+    this.accountService.getCompany(userId).subscribe(
+      res=>{
+        console.log(res)
+        
+        for (let c in this.companyInfoForm.controls) {
+          this.companyInfoForm.controls[c].setValue(res[c])
+      }
+      for (let c in this.brandingInfoForm.controls) {
+        this.brandingInfoForm.controls[c].setValue(res[c])
+    }
+        
+        this.companyinformation = res
+        this.CompanyID = this.companyinformation.companyID;
+      }
+    )
+  }
+  
+  openFile(){
+
+    document.querySelector('input').click()
+  }
+  handle(e){
+
+  }
+  public openAttachment(filepicker) {
+    document.getElementById(filepicker).click();
+  }
+  public fileChangeEvent(fileInput: any,type){
+    var filetype = "";
+    if (fileInput.target.files && fileInput.target.files[0]) {
+      var reader = new FileReader();
+
+      reader.onload = function (e : any) {
+        if(type == "img"){
+           filetype = "#previewimg"
+        }
+        else {
+          filetype = "#previewlogo"
+        }
+          $(filetype).attr('src', e.target.result);
+      }
+
+      reader.readAsDataURL(fileInput.target.files[0]);
+  }
+}
+  public setAsCompanyInformation(value){
+    if(value){
+      for (let c in this.billingInfo.controls) {
+        if(c == "phone"){
+          var value = this.companyInfoForm.controls.phone.value.number
+          this.ngxintlbil.selectedCountry = this.ngxintlcom.selectedCountry
+          this.billingInfo.controls.phone.setValue(value)  
+        }
+        else {
+          this.billingInfo.controls[c].setValue(this.companyInfoForm.controls[c].value);
+        }
+
+    }
+    }
+    else {
+      for (let c in this.billingInfo.controls) {
+        if(c == "phone"){
+          var value = null;
+          this.ngxintlbil.selectedCountry = this.ngxintlcom.selectedCountry
+          this.billingInfo.controls.phone.setValue(value)  
+        }
+        this.billingInfo.controls[c].setValue(undefined);
+    }
+    }
+  
+  }
+  submitForm(value: any,formtype: string) {
+    
+    var result = Object.assign({}, value);
+     if(this.settingActive == 1){
+      if(formtype == "companyInfoForm"){
+        //if(this.companyInfoForm.valid){
+          
+          result['id'] = this.CompanyID;
+          result['name'] = result.name
+          result['description'] = result.description
+          result['phone'] = result.phone['internationalNumber']
+          this.companyinformation = result
+          this.companyinformation['branding'] = this.brandingInfoForm.controls['branding'].value
+          this.accountService.updateCompany(this.CompanyID,this.companyinformation).subscribe(
+            res=>{
+              console.log(res)
+              this.successAlert()
+            }
+          )
+        //}
+        // else {
+        //   for (let c in this.companyInfoForm.controls) {
+        //     this.companyInfoForm.controls[c].markAsTouched();
+        // }
+        // }
+      
+   
+      }
+      else if (formtype == "profileinfoform") {
+        if(this.companyInfoForm.valid){
+          
+          var userid = this.openIdConnectService.user.profile.sub;
+          result['fName'] = result.fName
+          result['lName'] = result.lName
+          result['email'] = result.email
+          result['phoneNumber'] = result.phoneNumber['internationalNumber']
+          this.user = result
+         
+          this.accountService.updateUser(userid,this.user).subscribe(
+            res=>{
+              console.log(res)
+              this.successAlert()
+            }
+          )
+        }else{
+          for (let c in this.profileInfo.controls) {
+            this.profileInfo.controls[c].markAsTouched();
+        }
+        }
+       
+      }
+      else {
+        for (let c in this.billingInfo.controls) {
+          this.billingInfo.controls[c].markAsTouched();
+      }
+      }
+    }
+    else if(this.settingActive == 2){
+      if(formtype == "brandingInfoForm"){
+        if(this.brandingInfoForm.valid){
+        
+          this.companyinformation['branding'] = value.branding
+          this.accountService.updateCompany(this.CompanyID,this.companyinformation).subscribe(
+            res=>{
+              console.log(res)
+              this.successAlert()
+            }
+          )
+        }
+        else {
+          for (let c in this.companyInfoForm.controls) {
+            this.companyInfoForm.controls[c].markAsTouched();
+        }
+        }
+      
+   
+      }
+      else if (formtype == "profileinfoform") {
+        for (let c in this.profileInfo.controls) {
+          this.profileInfo.controls[c].markAsTouched();
+      }
+      }
+      else {
+        for (let c in this.billingInfo.controls) {
+          this.billingInfo.controls[c].markAsTouched();
+      }
+      }
+    }
+    else if(this.settingActive == 3){
+      if(formtype == "emailSettingsForm"){
+        if(this.emailSettingsForm.valid){
+          
+          result['Id'] = this.CompanyID;
+          result['email'] = value.emailAdd
+          // this.accountService.updateCompany(companyId,result).subscribe(
+          //   res=>{
+          //     console.log(res)
+          //     this.successAlert()
+          //   }
+          // )
+        }
+        else {
+          for (let c in this.companyInfoForm.controls) {
+            this.companyInfoForm.controls[c].markAsTouched();
+        }
+        }
+      
+   
+      }
+      else if (formtype == "profileinfoform") {
+        for (let c in this.profileInfo.controls) {
+          this.profileInfo.controls[c].markAsTouched();
+      }
+      }
+      else {
+        for (let c in this.billingInfo.controls) {
+          this.billingInfo.controls[c].markAsTouched();
+      }
+      }
+    }
+    else if(this.settingActive == 4){
+      if(formtype == "companyInfoForm"){
+        if(this.companyInfoForm.valid){
+      
+          result['Id'] = this.CompanyID;
+          result['name'] = result.name
+          result['description'] = result.description
+          result['phone'] = result.phone['internationalNumber']
+          this.accountService.updateCompany(this.CompanyID,result).subscribe(
+            res=>{
+              console.log(res)
+              this.successAlert()
+            }
+          )
+        }
+        else {
+          for (let c in this.companyInfoForm.controls) {
+            this.companyInfoForm.controls[c].markAsTouched();
+        }
+        }
+      
+   
+      }
+      else if (formtype == "profileinfoform") {
+        for (let c in this.profileInfo.controls) {
+          this.profileInfo.controls[c].markAsTouched();
+      }
+      }
+      else {
+        for (let c in this.billingInfo.controls) {
+          this.billingInfo.controls[c].markAsTouched();
+      }
+      }
+    }
+    
+  }
+    // using to open sweetalert to show success dialog
+    successAlert() {
+      success({
+        icon: this.translate.instant('sweetalert.SUCCESSICON'),
+        title: this.translate.instant('message.UPDATEMSG'),
+        buttons: {
+          confirm: {
+            text: this.translate.instant('sweetalert.OKBUTTON'),
+            value: true,
+            visible: true,
+            className: "bg-primary",
+            closeModal: true,
+          }
+        }
+      }).then((isConfirm: any) => {
+        if (isConfirm) {
+          // this.router.navigate(['/home']);
+        }
+      });
+    }
+  openModalWithComponent(event) {
+    event.preventDefault()
+    const dialogRef = this.dialog.open(DialogContentExampleDialog);
+
+    dialogRef.afterClosed().subscribe(result => {
+      
+    });
+  }
+
+  public changeSettingActive(event,value) {
+    this.settingActive = value
+    for (let c in this.companyInfoForm.controls) {
+      this.companyInfoForm.controls[c].setValue(this.companyinformation[c])
+  }
   }
 
   
-  //   // public onClick(): any {
-  //   //   this.router.navigate(['/account/branding']);
-  //   // }
+
+}
+@Component({
+  selector: 'dialog-content-example-dialog',
+  templateUrl: './account.modal.html',
+})
+export class DialogContentExampleDialog {
+  passwordform = new FormGroup({
+    password : new FormControl(undefined,[Validators.required])
+  })
+  constructor(
+    public dialogRef: MatDialogRef<DialogContentExampleDialog>,
+    ) {}
+    onClose(event): void {
+      event.preventDefault()
+      this.dialogRef.close();
+    }
+  submitForm(value: any,){
+    var result: CompanyInformation = Object.assign({}, value);
+    for (let c in this.passwordform.controls) {
+      this.passwordform.controls[c].markAsTouched();
+  }
+  }
 }

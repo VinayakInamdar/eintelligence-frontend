@@ -2,31 +2,103 @@
 @import "../../../shared/styles/bootstrap/_variables.scss";
 @import "../../../shared/styles/bootstrap/_mixins";
 @import '../../../shared/styles/app/variables.scss';
-
-// .home-container {
-//     margin: 0 auto;
-//     max-width: map-get($container-max-widths, "lg");
-
-//     .home-logo {
-//         width: 240px;
-//     }
-
-//     .home-text {
-//         text-align: center;
-//         @include media-breakpoint-up(lg) {
-//             text-align: left;
-//         }
-//     }
-//     .home-text-big {
-//         font-size: 3.9375rem;
-//     }
-// }
-
-.card-header{
+@import '~angular2-toaster/toaster.css';
+.card-header {
     font-size: larger;
     font-weight: normal;
     color: black;
 }
-.btn{
+
+.btn {
     font-size: larger;
+}
+
+.homemaindiv {
+    padding-top: 4%;
+}
+
+.homedivborder {
+    border: black 2px;
+}
+
+.homeinputheight {
+    height: 3.1575rem;
+}
+
+.homedivfontsw {
+    font-size: larger;
+    font-weight: normal;
+    color: black;
+}
+
+.fontsizelarger {
+    font-size: larger;
+}
+
+.fontweightnormal {
+    font-weight: normal;
+}
+
+.fontcolorblack {
+    color: black;
+}
+
+.textaligncenter {
+    text-align: center;
+}
+
+.paddingtop25px {
+    padding-top: 25px;
+}
+
+.paddingtop13px {
+    padding-top: 13px;
+}
+
+.homeinputwidth {
+    width: fit-content;
+}
+
+.cursor-default {
+    cursor: default;
+}
+
+.cursor-pointer {
+    cursor: pointer
+}
+
+.healthscorecard {
+    font-weight: 450;
+    text-align: center;
+    padding-top: 0.5rem;
+    padding-bottom: 0.5rem;
+}
+
+.setbuttonpadding {
+    padding-top: 1.5rem;
+    padding-bottom: 2.5rem;
+    margin-left: 10rem;
+}
+
+.setsearchpadding {
+    padding-left: 5rem;
+    padding-right: 18rem;
+}
+
+.red-color {
+    color: red;
+}
+
+.green-color {
+    color: green;
+}
+
+.set-table {
+    margin-left: 81px;
+    margin-right: 81px;
+}
+
+.give-padding {
+    padding-right: 6rem;
+    margin-bottom: 3rem;
 }

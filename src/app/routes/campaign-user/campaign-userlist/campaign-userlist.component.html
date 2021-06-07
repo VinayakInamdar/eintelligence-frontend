@@ -1,0 +1,42 @@
+<br>
+<br>
+
+<div class="col-md-12">
+    <div class="card card-default shadow p-3 mb-5 bg-white rounded set-cursor set-table">
+        <div class="card-body">
+            <div class="table-responsive">
+
+                <table class="table">
+                    <thead>
+                        <tr>
+                            <th class="set-fontcolor">USER NAME</th>
+                            <th class="set-fontcolor">USER EMAIL</th>
+                            <th class="set-fontcolor">CURRENT ROLE</th>
+
+                            <th class="set-fontcolor">ACTIONS</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr *ngFor="let p of CampaignUserList">
+                            <td>{{p.fName}} {{p.lName}}</td>
+                            <td>{{p.emailID}}</td>
+                            <td>{{p.CompanyRole}}</td>
+                            <td>
+                                <div class="text-danger col" (click)="onCampaignUserSelect(p.id)">
+                                    <i class="fas fa-trash-alt"></i>
+                                </div>
+
+                            </td>
+
+                        </tr>
+
+                    </tbody>
+                </table>
+
+
+            </div>
+
+        </div>
+    </div>
+
+</div>

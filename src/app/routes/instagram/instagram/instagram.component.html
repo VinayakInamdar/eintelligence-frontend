@@ -1,0 +1,33 @@
+<div class="row" *ngIf="settingActive == 1;">
+    <div class="col-md-2"></div>
+    <div class="col-md-8 closebtn paddingtop8px">
+        <a href="javascript:void(0);">
+            <em class="fa-2x mr-2 fas fa-times"></em></a>
+    </div>
+    <div class="col-md-2"> </div>
+</div>
+<app-submenu></app-submenu>
+<app-socialmedia-submenu></app-socialmedia-submenu>
+<div class="row  justify-content-center">
+    <div class="col-md-4  justify-content-center">
+        <div class="card card-default shadow bg-white rounded height100pxfit-content cursor-set">
+            <div class="card-header">
+                <div class="row borderBtm padding5">
+                    <h2 class="col-xs-12 col-12 col-md-10 fontsize15px colour-set move-center">Instagram EI Reports</h2>
+                    <div class="col-xs-12 col-12 col-md-1 fontsize15px">
+
+                    </div>
+                </div>
+
+            </div>
+            <div class="widget-content">
+                <div class="overviewdivborder  move-center">
+                    <button class="mr-1 btn btn-danger btn-lg" type="button" (click)="loginWithOptions()">
+                        <i class="fa fa-instagram mr-1"></i>
+                        Login with Instagram
+                    </button>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>

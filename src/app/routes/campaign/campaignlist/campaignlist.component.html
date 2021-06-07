@@ -1,0 +1,20 @@
+<br><br>
+
+
+<div class="col-md-12 give-padding">
+    <button class="mr-1 btn btn-danger btn-lg" type="button" (click)="AddCampaign()" style="float: right;">Add
+        Campaign</button>
+
+</div>
+<br><br>
+<div class="col-md-12">
+
+    <div class="card card-default shadow p-3 mb-5 bg-white rounded cursor-default set-table ">
+        <div class="card-body">
+            <div class="table-responsive cursor-pointer">
+                <ng2-smart-table [settings]="settings" [source]="source" (userRowSelect)="userRowSelect($event)" (custom)="onCustomAction($event)">
+                </ng2-smart-table>
+            </div>
+        </div>
+    </div>
+</div>

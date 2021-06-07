@@ -5,7 +5,6 @@ import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { RouterModule } from '@angular/router';
 import { TranslateModule } from '@ngx-translate/core';
 import { ToastrModule } from 'ngx-toastr';
-
 import { AccordionModule } from 'ngx-bootstrap/accordion';
 import { AlertModule } from 'ngx-bootstrap/alert';
 import { ButtonsModule } from 'ngx-bootstrap/buttons';
@@ -40,6 +39,9 @@ import { ListComponent } from './components/kanban-board/board/list/list.compone
 import { ContextMenuComponent } from './components/kanban-board/common/contextmenu/context-menu.component';
 import { ContentEditDirective } from './directives/content-edit/content-edit.directive';
 import { CardFilterPipe } from './pipes/card-filter.pipe';
+import { ConvertTohhmmssPipe } from './pipes/convert-tohhmmss.pipe';
+import {HasClaimDirective} from './directives/has-claim/has-claim-directive.directive';
+
 
 // https://angular.io/styleguide#!#04-10
 @NgModule({
@@ -66,7 +68,7 @@ import { CardFilterPipe } from './pipes/card-filter.pipe';
         PopoverModule.forRoot(),
         TypeaheadModule.forRoot(),
         ToastrModule.forRoot(),
-        MaterialModule,
+        MaterialModule
     ],
     providers: [
         ColorsService
@@ -86,7 +88,9 @@ import { CardFilterPipe } from './pipes/card-filter.pipe';
         ListComponent,
         ContextMenuComponent,
         ContentEditDirective,
-        CardFilterPipe
+        CardFilterPipe,
+        ConvertTohhmmssPipe,
+      HasClaimDirective
     ],
     exports: [
         CommonModule,
@@ -127,7 +131,9 @@ import { CardFilterPipe } from './pipes/card-filter.pipe';
         ContextMenuComponent,
         ContentEditDirective,
         MaterialModule,
-        CardFilterPipe
+        CardFilterPipe,      
+        ConvertTohhmmssPipe,
+        HasClaimDirective
     ]
 })
 

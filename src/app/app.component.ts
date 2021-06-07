@@ -23,6 +23,49 @@ export class AppComponent implements OnInit {
     constructor(public settings: SettingsService) { }
 
     ngOnInit() {
+       ;
+        let gacode = localStorage.getItem("isga");
+        if (gacode == "1") {
+            if (window.location.href.includes("/signin-oidc#id_token=") == false) {
+                var ycode = window.location.search.substring(
+                    window.location.search.lastIndexOf("code=") + 1,
+                    window.location.search.lastIndexOf("&scope")
+                );
+                if(ycode!=""){
+                ycode = ycode.replace("ode=", "");
+                localStorage.setItem('gacode', ycode);
+                }
+                localStorage.setItem("isga",'');
+            }
+        }
+        let gsccode = localStorage.getItem("isgsc");
+        if (gsccode == "1") {
+            if (window.location.href.includes("/signin-oidc#id_token=") == false) {
+                var ycode = window.location.search.substring(
+                    window.location.search.lastIndexOf("code=") + 1,
+                    window.location.search.lastIndexOf("&scope")
+                );
+                if(ycode!=""){
+                ycode = ycode.replace("ode=", "");
+                localStorage.setItem('gsccode', ycode);
+                }
+                localStorage.setItem("isgsc",'');
+            }
+        }
+        let instacode = localStorage.getItem("isinsta");
+        if (instacode == "1") {
+            if (window.location.href.includes("/signin-oidc#id_token=") == false) {
+                var ycode = window.location.search.substring(
+                    window.location.search.lastIndexOf("code=") + 1,
+                    window.location.search.length
+                );
+                if(ycode!=""){
+                ycode = ycode.replace("ode=", "");
+                localStorage.setItem('instacode', ycode);
+                }
+                localStorage.setItem("isinsta",'');
+            }
+        }
         // prevent empty links to reload the page
         document.addEventListener('click', e => {
             const target = e.target as HTMLElement;

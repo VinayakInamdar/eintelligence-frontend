@@ -1,4 +1,6 @@
 import { Component, OnInit } from '@angular/core';
+import { SettingsService } from 'src/app/core/settings/settings.service';
+import { OpenIdConnectService } from 'src/app/shared/services/open-id-connect.service';
 
 import { UserblockService } from './userblock.service';
 
@@ -9,7 +11,9 @@ import { UserblockService } from './userblock.service';
 })
 export class UserblockComponent implements OnInit {
     user: any;
-    constructor(public userblockService: UserblockService) {
+    public userName:any;
+    public role:any;
+    constructor(public userblockService: UserblockService, public openIdConnectService: OpenIdConnectService,public settingsservice:SettingsService) {
 
         this.user = {
             picture: 'assets/img/user/01.jpg'
@@ -17,6 +21,8 @@ export class UserblockComponent implements OnInit {
     }
 
     ngOnInit() {
+        this.userName = this.openIdConnectService.user.profile.given_name;
+        this.role = this.settingsservice.selectedCompanyInfo.role;
     }
 
     userBlockIsVisible() {

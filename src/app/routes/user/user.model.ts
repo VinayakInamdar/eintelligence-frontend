@@ -4,4 +4,10 @@ export class User {
     fName:string;    
     lName:string;
     email:string;    
+    password:string;
+    companyID: string;
+    cName:string;
+    companytype:string;
+    companyImageUrl:string;
+    phoneNumber:string;
 }

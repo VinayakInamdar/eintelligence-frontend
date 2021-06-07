@@ -1,0 +1,167 @@
+<div class="col-md-10" style="padding: 10px;">
+  <div class="col-md-12">
+    <div style="display: flex;flex-direction: column;padding-top: 20px;">
+      <div class="col-md-12" style="display: flex;flex-direction: row;">
+        <div class="col-md-6" style="display: flex;flex-direction: row;">
+          <div class="col-md-4"
+            style="display: flex;flex-direction: row;background-color: white;padding: 5px;border-top-left-radius: 10%;border-top-right-radius: 10%;">
+            <div style="padding-left: 15px;"><a><i class="fa fa-user-plus" style="font-size: 12px;"></i></a></div>
+            <div style="display: flex;flex-direction: row;padding-left: 15px;font-size: 14px;">To Do</div>
+            <div style="padding-left: 37px;"><i class="fa fa-caret-down"></i></div>
+          </div>
+
+        </div>
+        <div class="col-md-6" style="display: flex;flex-direction: row;justify-content: space-evenly;">
+          <div class="col-md-12" style="display:flex;flex-direction: row;justify-content: space-evenly;">
+            <a><i class="fa fa-users"></i> Assignee</a>
+            <a><i class="fa fa-calendar"></i> Due Date</a>
+          </div>
+        </div>
+      </div>
+      <div class="col-md-12" style="display: flex;flex-direction: row;">
+        <div style="width: 14px;"></div>
+        <div class="col-md-11" style="display: flex;flex-direction: column;background-color: white;padding: 5px;">
+          <form class="form-horizontal col-md-12" [formGroup]="todolistform" (submit)="submitForm(todolistform.value)">
+            <div class="form-group col-md-12" style="display: flex;flex-direction: column;">
+              <div class="row">
+                <div class="col-md-10 paddingtopcampname">
+                  <div style="color: gray;">Add a new task here...</div>
+                  <div style="display: flex;flex-direction: row;justify-content: space-evenly;padding-top: 15px;">
+                    <div style="padding-top: 7px;padding-right: 10px;font-size: 20px;">
+                      <a (click)="submitForm(todolistform.value)"><i class="fa fa-plus"></i></a>
+                    </div>
+
+                    <input #name_field class="form-control campinputh" formControlName="todo" placeholder="Add a task">
+                    <br>
+                  </div>
+
+                </div>
+                <div class="col-md-1"></div>
+              </div>
+            </div>
+          </form>
+        </div>
+
+
+      </div>
+    </div>    
+  </div>
+
+
+</div>
+<div class="col-md-12" style="display: flex;flex-direction: row;">
+  <div style="width: 20%;"></div>
+  <div style="left: 17px;" class="col-md-12">
+
+    <div class="card col-md-8" *ngFor="let task of tasklist;let i = index;"
+      style="display: flex;flex-direction: row;justify-content: space-between;align-items: center;padding: 5px;">
+      <div class="col-md-6">{{task.taskName}}</div>
+      <div class="col-md-4" style="display: flex;flex-direction: row;justify-content:space-evenly ;">
+        <button class="btn btn-info" (click)="openSelectedTaskView(i)">View</button>
+        <button class="btn btn-danger" (click)="deleteSelectedTaskView(i)">Delete</button>
+      </div>
+    </div>
+  </div>
+</div>
+<br>
+<div class="row" style="width:80% ;">
+  <div *ngIf="showTask" class="col-md-12">
+    <div class="col-md-1"></div>
+    <div class="card col-md-8" style="display: flex;flex-direction: column;padding: 25px;">
+      <div style="display: flex;flex-direction: row;">
+        <div class="col-md-6"></div>
+        <div class="col-md-6" style="display: flex;flex-direction: row;justify-content: flex-end;">
+          <a href="javascript:void(0);" (click)="showTask=false">
+            <em class="fa-2x mr-1 fas fa-times"></em></a>
+        </div>
+      </div>
+
+      <div style="display: flex;flex-direction: row;">
+        <div class="col-md-12" style="display: flex;flex-direction: row;justify-content: flex-start;">
+          <label>
+            <input type="checkbox" checked="checked">
+            <span class="checkmark"></span>
+          </label>
+          <span aria-multiline="true" style="font-size: 20px;padding-left: 15px;">{{taskName}}</span>
+        </div>
+
+      </div>
+      <div class="col-md-12" style="display: flex;flex-direction: row;padding-top: 20px;">
+        <div class="col-md-4" style="display: flex;flex-direction: column;">
+          <div style="display: flex;flex-direction: row;">
+            <i class="fa fa-user"></i>
+            <div style="font-size: 17px;padding-left: 10px;">Assignee</div>
+          </div>
+          <div style="display: flex;flex-direction: row;padding-top: 10px;">
+            <button class="btn btn-success">H</button>
+            <button class="btn btn-default" style="width: 30px;"><i class="fa fa-user-plus"></i></button>
+          </div>
+        </div>
+        <div class="col-md-4" style="display: flex;flex-direction: column;">
+          <div style="display: flex;flex-direction: row;">
+            <i class="fa fa-calendar"></i>
+            <div style="font-size: 17px;padding-left: 10px;">Due Date</div>
+          </div>
+          <div style="display: flex;flex-direction: row;padding-top: 10px;">
+            <button class="btn btn-success" style="color: lightgreen;">Add</button>
+          </div>
+        </div>
+      </div>
+      <div class="col-md-12" style="display: flex;flex-direction: column;padding-top: 20px;">
+        <div style="font-size: medium;display: flex;flex-direction: row;padding-top: 15px;">Show more</div>
+        <div style="display: flex;flex-direction: row;padding-top: 15px;">
+          <div class="col-md-3" style="display: flex;flex-direction: row;justify-content: space-between;">
+            <button class="btn btn-default" style="background-color:lightgray;box-shadow:0px 2px gray;"><i
+                class="fa fa-list"></i> Subtasks</button>
+            <div style="padding-left: 10px;">
+              <button class="btn btn-default"
+                style="background-color:lightgray;box-shadow:0px 2px gray;padding-left: 10px;"><i class="fa fa-cha"></i>
+                Comments</button>
+            </div>
+
+          </div>
+        </div>
+        <div style="display: flex;flex-direction: row;padding-top: 20px;">
+          <div class="col-md-4" style="display: flex;flex-direction: row;align-items: baseline;">
+            <i class="fa fa-list"></i>
+            <div style="padding-left: 10px;">Subtasks Progress</div>
+          </div>
+          <div class="col-md-4 row"></div>
+          <div>0/0</div>
+          <div class="col-md-4">
+            <div class="progress">
+              <div class="progress-bar" style="width:0%">0%</div>
+            </div>
+          </div>
+        </div>
+        <div style="display: flex;flex-direction: row;padding-top: 10px;">
+          <div class="col-md-4" style="display: flex;flex-direction: row;">
+            <i class="fa fa-plus"></i>
+            <div style="padding-left: 15px;">Add new subtask...</div>
+          </div>
+
+        </div>
+        <div style="display: flex;flex-direction: column;padding-top: 10px;">
+          <div class="col-md-10" style="display: flex;flex-direction: row;justify-content: space-between;">
+            <button class="btn btn-default" style="background-color:lightgray;box-shadow:0px 2px gray;"><i
+                class="fa fa-list"></i> Comments</button>
+            <div style="padding-left: 10px;">
+              <button class="btn btn-default"
+                style="background-color:lightgray;box-shadow:0px 2px gray;padding-left: 10px;"><i class="fa fa-cha"></i>
+                Show Activity</button>
+            </div>
+          </div>
+          <div style="display: flex;flex-direction: row;padding-top: 15px;">
+            <div style="width: 50px;height: 50px;border-radius: 50%;background-color: lightgray;"></div>
+            <div style="display: flex;flex-direction: column;padding-left: 10px;padding-top: 5px;">
+              <div>Don't let it go unsaid! Post a comment to start a discussion.</div>
+              <div> <span style="color: lightgreen;">@Mention</span> someone to notify them</div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+
+</div>

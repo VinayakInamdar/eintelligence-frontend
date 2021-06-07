@@ -1,0 +1,295 @@
+<div class="row" *ngIf="settingActive == 1;">
+    <div class="col-md-2"></div>
+    <div class="col-md-8 closebtn paddingtop8px">
+        <a href="javascript:void(0);">
+            <em class="fa-2x mr-2 fas fa-times"></em></a>
+    </div>
+    <div class="col-md-2"> </div>
+</div>
+<!-- A grey horizontal navbar that becomes vertical on small screens -->
+<nav class="navbar navbar-expand-sm" style="background-color: #F9FCFF;">
+
+    <!-- Links -->
+    <ul class="navbar-nav">
+        <li>
+            <div class="btn-group">
+                <div class="btn-add-new-campaign btn btn-default">
+                    <i class="fa fa-plus" aria-hidden="true"></i>
+                </div>
+                <div class="btn-group" dropdown>
+                    <button id="button-basic" dropdownToggle type="input" class="btn campselectedname"
+                        aria-controls="dropdown-basic">
+                        {{selectedCampaignName !== undefined ? selectedCampaignName : 'select your campaign'}}
+                        <span class="caret"> </span>
+                    </button>
+                    <ul id="dropdown-basic" *dropdownMenu class="dropdown-menu overviewulheightmax" role="menu"
+                    aria-labelledby="button-basic">
+                    <li role="menuitem" *ngFor="let campaign of campaignList"
+                        [ngClass]="{'active': selectedCampId == campaign.id}"><a class="dropdown-item"
+                            (click)="onCampaignSelect($event,campaign)" href="javascript:void(0);">{{campaign.name}}</a></li>
+                </ul>
+                </div>
+            </div>
+        </li>
+        <li id="overview_menu" class="nav-link" data-third-menu="">
+            <a href="javascript:void(0);" class="nav-link" (click)="goToCampaignOverview($event)">
+                <span class="fontsizesmall">Overview</span>
+            </a>
+        </li>
+        <li id="analytics_menu" class="nav-link" data-third-menu="analytics_menu_index">
+            <a href="javascript:void(0);" class="nav-link" (click)="goToAnalyticsOverview($event)">
+                <span class="fontsizesmall">Analytics</span>
+            </a>
+        </li>
+        <li id="seo_menu" class="nav-link" data-third-menu="seo_menu_index">
+            <a href="javascript:void(0);" class="nav-link"  (click)="goToSeoOverview($event)">
+                <span class="fontsizesmall">SEO</span>
+            </a>
+
+        </li>
+        <li id="seo_menu" class="nav-link" data-third-menu="seo_menu_index">
+            <a href="javascript:void(0);" class="nav-link" (click)="goToSocialMedia($event)">
+                <span class="fontsizesmall">Facebook</span>
+            </a>
+        </li>
+        <!-- <li id="seo_menu" class="nav-link" data-third-menu="seo_menu_index">
+            <a href="javascript:void(0);" class="nav-link" (click)="goToLinkedIn($event)">
+                <span class="fontsizesmall">LinkedIn</span>
+            </a>
+        </li>
+        <li id="seo_menu" class="nav-link" data-third-menu="seo_menu_index">
+            <a href="javascript:void(0);" class="nav-link" (click)="goToInstagram($event)">
+                <span class="fontsizesmall">Instagram</span>
+            </a>
+        </li> -->
+        <li id="seo_menu" class="nav-link" data-third-menu="seo_menu_index">
+            <a href="javascript:void(0);" class="nav-link" (click)="goToGSC($event)">
+                <span class="fontsizesmall">GSC</span>
+            </a>
+        </li>
+    </ul>
+    <div class="overviewdivborder  move-center">
+        <button class="mr-1 btn btn-danger btn-lg" type="button" (click)="signInWithGoogle()">
+            <i class="fa fa-twitter mr-1"></i>
+            Login with Google
+        </button>
+    </div>
+
+</nav>
+
+<div class="row overviewmaindiv">
+    <div class="card card-default shadow p-3 mb-5 bg-white rounded set-middle">
+        <div class="col-lg-12" [formGroup]="myForm">
+            <div class="col-lg-3">
+                Please Select Date Range
+            </div>
+            <div class="col-lg-3">
+                <mat-form-field appearance="fill" class="pr-sm-4" fxFlex="20">
+                    <mat-label>Start date</mat-label>
+                    <input matInput [matDatepicker]="startDatePicker" name="start" formControlName="fromDate" (dateChange)="onStartDateChange($event)">
+                    <mat-datepicker-toggle matSuffix [for]="startDatePicker"></mat-datepicker-toggle>
+                    <mat-datepicker #startDatePicker></mat-datepicker>
+                    <mat-error>Please select start date!</mat-error>
+                </mat-form-field>
+            </div>
+            <div class="col-md-2"></div>
+            <div class="col-lg-3">
+                <mat-form-field appearance="fill" class="pr-sm-4" fxFlex="0">
+                    <mat-label>End date</mat-label>
+                    <input matInput [matDatepicker]="endDatePicker" name="end" [formControl]="toDate" (dateChange)="onEndDateChange($event)">
+                    <mat-datepicker-toggle matSuffix [for]="endDatePicker"></mat-datepicker-toggle>
+                    <mat-datepicker #endDatePicker></mat-datepicker>
+                    <mat-error>Please select End date!</mat-error>
+                </mat-form-field>
+            </div>
+        </div>
+    </div>
+    <div class="col-lg-12">
+        <div class="col-sm-2">
+            <h3 class="colour-light">YoY</h3>
+            <h3 class="colour-light">Metrics</h3>
+            <h3 class="fontxlrge"></h3>
+            <!-- <h3 class="fontsizesmall">1</h3> -->
+
+        </div>
+        <div class="vl"></div>
+        <div class="col-sm-2">
+            <h3 class="colour-light">Clicks</h3>
+            <h3 class="fontxlrge">{{clicksThisYear}}</h3>
+            <h3 class="fontsizesmall" [ngClass]="{'red-font': 0 > percentClicks}">{{this.percentClicks}}</h3>
+
+        </div>
+        <div class="vl"></div>
+        <div class="col-sm-2">
+            <h3 class="colour-light">Impressions</h3>
+            <h3 class="fontxlrge">{{impressionsThisYear}}</h3>
+            <h3 class="fontsizesmall" [ngClass]="{'red-font': 0 > percentImpressions}">{{percentImpressions}}</h3>
+
+
+        </div>
+        <div class="vl"></div>
+        <div class="col-sm-3">
+            <h3 class="colour-light">CTR</h3>
+            <h3 class="fontxlrge">{{cTRThisYear}}</h3>
+            <h3 class="fontsizesmall" [ngClass]="{'red-font': 0 > percentCTR}">{{percentCTR}}</h3>
+
+        </div>
+        <div class="vl"></div>
+        <div class="col-sm-3">
+            <h3 class="colour-light">Position</h3>
+            <h3 class="fontxlrge">{{positionThisYear}}</h3>
+            <h3 class="fontsizesmall" [ngClass]="{'red-font': 0 > percentPosition}">{{percentPosition}}</h3>
+
+
+        </div>
+    </div>
+    <div class="col-lg-12">
+    <div class="col-lg-4">
+
+        <div class="overviewdivfontspadding"></div>
+
+        <div class="card card-default shadow bg-white rounded" >
+            <div class="card-header">
+                <div class="row borderBtm padding5">
+                    <h2 class="col-xs-12 col-12 col-md-9">Clicks By Device</h2>
+                </div>
+            </div>
+            <div class="card-body row">
+                <div class="chart-wrapper mx-auto chart-container">
+                    <canvas baseChart id="canvas1" [chartType]="'bar'" [options]="barOptions"
+                        [datasets]="barDataClicksDevice.datasets" [colors]="barColors" [labels]="barChartLabelsDevice"
+                        [legend]="true"  height="140">
+                    </canvas>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="col-lg-4">
+
+        <div class="overviewdivfontspadding"></div>
+
+        <div class="card card-default shadow bg-white rounded" >
+            <div class="card-header">
+                <div class="row borderBtm padding5">
+                    <h2 class="col-xs-12 col-12 col-md-9">Impressions By Device</h2>
+                </div>
+
+            </div>
+            <div class="card-body row">
+                <div class="chart-wrapper mx-auto chart-container">
+                    <canvas baseChart id="canvas1" [chartType]="'bar'" [options]="barOptions"
+                        [datasets]="barDataImpressionsDevice.datasets" [colors]="barColors" [labels]="barChartLabelsDevice"
+                        [legend]="true" height="140">
+                    </canvas>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="col-lg-4">
+
+        <div class="overviewdivfontspadding"></div>
+
+        <div class="card card-default shadow bg-white rounded" >
+            <div class="card-header">
+                <div class="row borderBtm padding5">
+                    <h2 class="col-xs-12 col-12 col-md-9">Position By Device</h2>
+                </div>
+
+            </div>
+            <div class="card-body row">
+                <div class="chart-wrapper mx-auto chart-container">
+                    <canvas baseChart id="canvas1" [chartType]="'bar'" [options]="barOptions"
+                        [datasets]="barDataPositionDevice.datasets" [colors]="barColors" [labels]="barChartLabelsDevice"
+                        [legend]="true" height="140">
+                    </canvas>
+                </div>
+            </div>
+        </div>
+    </div>
+    </div>
+    <div class="col-lg-12">
+
+        <div class="overviewdivfontspadding"></div>
+
+        <div class="card card-default shadow bg-white rounded" >
+            <div class="card-header">
+                <div class="row borderBtm padding5">
+                    <h2 class="col-xs-12 col-12 col-md-5"> Clicks</h2>
+                </div>
+
+            </div>
+            <div class="card-body row">
+                <div class="chart-wrapper mx-auto chart-container">
+                    <canvas baseChart id="canvas" [chartType]="'line'" [options]="barOptions"
+                        [datasets]="barDataClicks.datasets" [colors]="barColors" [labels]="barChartLabels"
+                        [legend]="true" height="50">
+                    </canvas>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div class="col-lg-12">
+
+        <div class="overviewdivfontspadding"></div>
+
+        <div class="card card-default shadow bg-white rounded">
+            <div class="card-header">
+                <div class="row borderBtm padding5">
+                    <h2 class="col-xs-12 col-12 col-md-5"> Impressions</h2>
+                </div>
+
+            </div>
+            <div class="card-body row">
+                <div class="chart-wrapper mx-auto chart-container">
+                    <canvas baseChart id="canvas1" [chartType]="'line'" [options]="barOptions"
+                        [datasets]="barDataImpressions.datasets" [colors]="barColors" [labels]="barChartLabels"
+                        [legend]="true" height="50">
+                    </canvas>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="col-lg-12">
+
+        <div class="overviewdivfontspadding"></div>
+
+        <div class="card card-default shadow bg-white rounded">
+            <div class="card-header">
+                <div class="row borderBtm padding5">
+                    <h2 class="col-xs-12 col-12 col-md-5"> Site CTR</h2>
+                </div>
+
+            </div>
+            <div class="card-body row">
+                <div class="chart-wrapper mx-auto chart-container">
+                    <canvas baseChart id="canvas1" [chartType]="'line'" [options]="barOptions"
+                        [datasets]="barDataCTR.datasets" [colors]="barColors" [labels]="barChartLabels" [legend]="true"
+                        height="50">
+                    </canvas>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="col-lg-12">
+
+        <div class="overviewdivfontspadding"></div>
+
+        <div class="card card-default shadow bg-white rounded">
+            <div class="card-header">
+                <div class="row borderBtm padding5">
+                    <h2 class="col-xs-12 col-12 col-md-5"> Positions</h2>
+                </div>
+
+            </div>
+            <div class="card-body row">
+                <div class="chart-wrapper mx-auto chart-container">
+                    <canvas baseChart id="canvas1" [chartType]="'line'" [options]="barOptions"
+                        [datasets]="barDataPositions.datasets" [colors]="barColors" [labels]="barChartLabels"
+                        [legend]="true" height="50">
+                    </canvas>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>

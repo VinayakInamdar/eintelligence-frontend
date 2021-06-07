@@ -1,12 +1,18 @@
 import { Component, OnInit, ViewChild, Injector } from '@angular/core';
-import { Router } from '@angular/router';
+import { ActivatedRoute, Router } from '@angular/router';
 const screenfull = require('screenfull');
-
+import { DomSanitizer } from '@angular/platform-browser';
 import { UserblockService } from '../sidebar/userblock/userblock.service';
 import { SettingsService } from '../../core/settings/settings.service';
 import { MenuService } from '../../core/menu/menu.service';
 import { Observable } from 'rxjs';
-
+import { OpenIdConnectService } from '../../shared/services/open-id-connect.service';
+import { Campaign } from 'src/app/routes/campaign/campaign.model';
+import { HttpClient, HttpHeaders } from '@angular/common/http';
+import { environment } from 'src/environments/environment';
+import { DatePipe } from '@angular/common';
+import { FormControl, FormGroup } from '@angular/forms';
+import { SnackbarService } from 'src/app/shared/services/snackbar/snackbar.service';
 @Component({
     selector: 'app-header',
     templateUrl: './header.component.html',
@@ -15,7 +21,7 @@ import { Observable } from 'rxjs';
 export class HeaderComponent implements OnInit {
 
     isLoggedIn$: Observable<boolean>;
-    
+
     navCollapsed = true; // for horizontal layout
     menuItems = []; // for horizontal layout
     router: Router;
@@ -23,14 +29,35 @@ export class HeaderComponent implements OnInit {
     isNavSearchVisible: boolean;
     @ViewChild('fsbutton', { static: true }) fsbutton;  // the fullscreen button
 
-    constructor(public menu: MenuService, public userblockService: UserblockService, public settings: SettingsService, public injector: Injector) {
+    campaignList: Campaign[];
+    CampaignGAList = [];
+    CampaignGSCList = [];
+    CampaignGAdsList = [];
+    CampaignFacebookList = [];
+    selectedCampId: string;
+    SelectedCampaignId;
+    selectedCampaignName: string;
+    selectedCampName;
+    isSuperAdmin:boolean=false;
+
+    constructor(public menu: MenuService, public _openIdConnectService: OpenIdConnectService, public userblockService: UserblockService, public settings: SettingsService, public injector: Injector
+
+        , public settingsservice: SettingsService, public route: ActivatedRoute, public http: HttpClient, public datepipe: DatePipe, private snackbarService: SnackbarService, private _sanitizer: DomSanitizer) {
 
         // show only a few items on demo
-        this.menuItems = menu.getMenu().slice(0, 4); // for horizontal layout
+        this.menuItems = menu.getMenu().slice(Math.max(menu.getMenu().length - 3, 1)); // for horizontal layout
+        let id = this.route.snapshot.paramMap.get('id');
+        this.selectedCampId = `${id}`;
+        //this.getCampaignList();
+
 
     }
-
+    logout() {
+        this._openIdConnectService.triggerSignOut();
+    }
     ngOnInit() {
+       
+        this.getCompanyImageLogo();
         this.isNavSearchVisible = false;
 
         var ua = window.navigator.userAgent;
@@ -54,6 +81,10 @@ export class HeaderComponent implements OnInit {
             // close collapse menu
             this.navCollapsed = true;
         });
+
+        if(this.settingsservice.selectedCompanyInfo.role=="Super Admin"){
+            this.isSuperAdmin=true;
+        }
 
     }
 
@@ -94,4 +125,10 @@ export class HeaderComponent implements OnInit {
             screenfull.toggle();
         }
     }
+src:string;
+getCompanyImageLogo(){
+  let image=new Image();
+image.src=this.settingsservice.selectedCompanyInfo.companyImageUrl;
+   this.src=image.src;
+}
 }

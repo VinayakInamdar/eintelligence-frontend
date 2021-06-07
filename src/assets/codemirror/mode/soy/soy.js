@@ -193,7 +193,7 @@
   }, "htmlmixed");
 
   CodeMirror.registerHelper("hintWords", "soy", indentingTags.concat(
-      ["delpackage", "namespace", "alias", "print", "css", "debugger"]));
+      ["delpackage", "namespace", "alias", "print", "css", ""]));
 
   CodeMirror.defineMIME("text/x-soy", "soy");
 });

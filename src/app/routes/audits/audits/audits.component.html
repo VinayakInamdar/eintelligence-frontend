@@ -1,0 +1,66 @@
+<div class="row maindiv">
+    <div class="col-sm-1"></div>
+    <div class="col-lg-10">
+        <div class="card card-default shadow p-3 mb-5 bg-white rounded">
+            <div class="card-header">
+                <div class="row">
+                    <div class="col-md-3">Web Audits</div>
+                    <div class="col-md-7"></div>
+                </div>
+                <div class="row">
+                    <div class="col-md-7 span1">Scan your prospect's website and generate an on-page SEO report.</div>
+                    <div class="col-md-3"></div>
+                </div>
+            </div>
+            <div class="card-body homedivborder">
+                <div class="row">
+
+                    <div class="col-lg-10">
+                        <form [formGroup]="valForm" class="form-horizontal  formh" (keydown.enter)="$event.preventDefault()"
+            (submit)="runAudit($event,valForm.value)" novalidate="">
+                        <input formControlName="webUrl" #weburlInput class="form-control homeinputheight" placeholder="Website URL" [(ngModel)]="siteurl">
+                        <span class="text-danger"
+                        *ngIf="valForm.controls['webUrl'].hasError('required') && (valForm.controls['webUrl'].dirty || valForm.controls['webUrl'].touched)">
+                        {{'validation.URLREQUIRED' | translate}}</span>
+                    <span class="text-danger"
+                        *ngIf="valForm.controls['webUrl'].hasError('pattern') && (valForm.controls['webUrl'].dirty || valForm.controls['webUrl'].touched)">
+                        {{'validation.URLVALIDATION' | translate}}</span>
+                            <br>
+                        </form>
+                    </div>
+                    <div class="col-lg-2">
+                        <button class="mr-1 btn btn-danger btn-lg" type="submit" (click)="runAudit($event,weburlInput.value)">RUN
+                            AUDIT</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+    </div>
+    <div class="col-sm-1"></div>
+</div>
+<div class="row">
+    <div class="col-md-1"></div>
+    <div class="col-md-3 allauditsdiv">All Audits</div>
+    <div class="col-md-4"></div>
+    <div class="col-md-3 search-container">
+        <input #search class="form-control ng-valid ng-dirty ng-valid-parse ng-touched ng-empty inputsearch" type="text"
+            placeholder="Search for websites" (keyup)="onSearch(search.value)">
+        <div class="col-md-1"></div>
+    </div>
+
+</div>
+
+<hr>
+<br>
+
+<div class="row m-4">
+    <div class="col-md-12">
+        <div class="card card-default shadow p-3 mb-5 bg-white rounded">
+            <div class="table-responsive">
+                <ng2-smart-table [settings]="settings" [source]="auditsData" (userRowSelect)="userRowSelect($event)">
+                </ng2-smart-table>
+            </div>
+        </div>
+    </div>
+</div>

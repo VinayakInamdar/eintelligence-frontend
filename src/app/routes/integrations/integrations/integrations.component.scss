@@ -1,0 +1,216 @@
+.widget-overlay-content {
+    background: #2D9CDB;
+    box-shadow: 0px 2px 11px rgba(0, 0, 0, 0.1);
+    border-radius: 6px;
+    padding: 50px 30px;
+    min-width: 440px;
+}
+
+.text-center {
+    text-align: center !important;
+}
+
+.widget-overlay {
+    background: rgba(255, 255, 255, 0.9);
+    width: 100%;
+    left: 0;
+    top: 0;
+    height: 100%;
+    z-index: 2;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.borderBtm {
+    border-bottom: 1px solid lightgrey;
+}
+
+.padding5 {
+    padding: 5px;
+}
+
+.clearfix {
+    display: block;
+}
+
+.integration-title {
+    font-family: 'OpenSans-Light';
+    margin-top: 5px;
+    font-size: 25px;
+}
+
+.authBtn {
+    float: right;
+    margin-top: 5px;
+}
+
+.margin-top5 {
+    margin-top: 5px;
+}
+
+.integrated-account-container {
+    background: #F3F3F4;
+    padding: 10px;
+    text-align: center;
+    box-sizing: border-box;
+    color: #aeaeae;
+    -moz-box-sizing: border-box;
+    -webkit-box-sizing: border-box;
+}
+
+.padding-right {
+    padding-right: 5px;
+}
+
+.manage-btn {
+    background-color: transparent;
+    color: #0a88c7;
+    border-color: #0a88c7;
+}
+
+.padding-bt5 {
+    padding-bottom: 5px;
+}
+
+.margin-right {
+    margin-right: 5px;
+}
+
+.grey-container {
+    padding: 0;
+    position: relative;
+    height: 56px;
+    margin-bottom: 0px;
+    background-color: #F9FCFF;
+    border: 1px solid #F9FCFF;
+    box-sizing: border-box;
+    border-bottom-color: #D7E9FD;
+}
+
+.pagewidth {
+    margin-left: auto;
+    margin-right: auto;
+    position: relative;
+    width: 1200px;
+}
+
+.campaign-selector-container {
+    position: absolute;
+    left: 0;
+    top: 10px;
+}
+
+.btn-group,
+.btn-group-vertical {
+    position: relative;
+    display: inline-block;
+    vertical-align: middle;
+}
+
+.select2-container {
+    margin: 0;
+    position: relative;
+    display: inline-block;
+    zoom: 1;
+    display: inline;
+    vertical-align: middle;
+}
+
+.select2-offscreen,
+.select2-offscreen:focus {
+    clip: rect(0 0 0 0) !important;
+    width: 1px !important;
+    height: 1px !important;
+    border: 0 !important;
+    margin: 0 !important;
+    padding: 0 !important;
+    overflow: hidden !important;
+    position: absolute !important;
+    outline: 0 !important;
+    left: 0px !important;
+    top: 0px !important;
+}
+
+.box-shadow-header {
+    box-shadow: 0 19px 20px -15px rgba(0, 0, 0, 0.15);
+}
+
+.seo_menu_index {
+    border-bottom: thick;
+}
+
+.fontsizesmall {
+    font-size: small;
+}
+
+.fontsizemedium {
+    font-size: medium;
+}
+
+ul#page_menu {
+    position: absolute;
+    top: 0;
+    right: 0;
+    list-style: none;
+    margin: 0;
+    padding: 0;
+}
+
+.pull-right {
+    float: right!important;
+    padding-top: 5px;
+}
+
+li {
+    display: inline;
+    text-align: -webkit-match-parent;
+}
+
+.no-third-nav:hover>div {
+    display: block;
+}
+
+li span.only-show-on-hover {
+    visibility: hidden;
+}
+
+li:hover span.only-show-on-hover {
+    visibility: visible;
+}
+
+.search-container {
+    position: relative;
+}
+
+.search-container .svg-search {
+    position: absolute;
+    top: 14px;
+    right: 4px;
+    left: unset;
+}
+
+.integrationsmaindiv {
+    padding-top: 35px;
+}
+
+.integrationsbtnwidth {
+    width: auto;
+}
+
+.integrationsulheightmax {
+    max-height: 300px;
+    overflow: auto;
+}
+
+.integrationmaindivpadding {
+    padding: 4%;
+}
+
+.integrationsdivborder {
+    border: black 2px;
+}
+
+.cursor-setdefault {
+    cursor: default;
+}

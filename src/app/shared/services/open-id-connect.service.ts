@@ -8,7 +8,7 @@ export class OpenIdConnectService {
 
   private userManager: UserManager = new UserManager(environment.openIdConnectSettings);
   private currentUser: User;
-  userLoaded$ = new ReplaySubject<boolean>(1);
+    userLoaded$ = new ReplaySubject<boolean>(1);
   
   get userAvailable(): boolean {
     return this.currentUser != null;

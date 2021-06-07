@@ -1,13 +1,14 @@
-
-    <div class="mb-3 clearfix">
-        <div class="pull-let wd-md">
-            <a routerLink="/user/createuser"><button
-                    class="mb-1 mr-1 btn btn-green btn-lg">{{'user.ADDNEWUSER' | translate}}</button></a>
-        </div>
+<div class="mb-3 clearfix">
+    <div class="pull-let wd-md paddingtop5px">
+        <a routerLink="/user/createuser"><button
+                class="mb-1 mr-1 btn btn-green btn-lg margintopauto">{{'user.ADDNEWUSER' | translate}}</button></a>
     </div>
+    <input #search class="form-control ng-valid ng-dirty ng-valid-parse ng-touched ng-empty widthfitcontent" type="text"
+        placeholder="Search..." (keyup)="onSearch(search.value)">
+</div>
 
 <div class="card card-default">
     <div class="table-responsive">
-        <ng2-smart-table [settings]="settings" [source]="tableData" (userRowSelect)="userRowSelect($event)"></ng2-smart-table>
+        <ng2-smart-table [settings]="settings" [source]="source" (custom)="onCustomAction($event)"></ng2-smart-table>
     </div>
 </div>

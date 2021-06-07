@@ -7,7 +7,7 @@ import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { HttpClientModule } from '@angular/common/http';
 import { FileUploadModule } from 'ng2-file-upload';
 import { NgxSelectModule } from 'ngx-select-ex';
-import { AccountComponent } from './account/account.component';
+import { AccountComponent, DialogContentExampleDialog } from './account/account.component';
 import { NgxIntlTelInputModule } from 'ngx-intl-tel-input';
 
 const routes: Routes = [
@@ -15,7 +15,7 @@ const routes: Routes = [
 ];
 
 @NgModule({
- 
+  declarations: [AccountComponent,DialogContentExampleDialog],
   imports: [
     CommonModule,
     SharedModule,
@@ -29,7 +29,7 @@ const routes: Routes = [
     NgxSelectModule,
     NgxIntlTelInputModule
   ],
-  declarations: [AccountComponent],
+ 
   exports: [
     RouterModule,
 ],

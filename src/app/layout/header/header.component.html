@@ -1,13 +1,13 @@
 <!-- START Top Navbar-->
-<nav class="navbar topnavbar" role="navigation" >
+<nav class="navbar topnavbar" role="navigation">
     <!-- START navbar header-->
     <div class="navbar-header">
         <a class="navbar-brand" href="#/">
             <div class="brand-logo">
-                <img class="img-fluid" src="assets/img/logo.png" alt="App Logo" />
+                <img class="img-fluid" src="{{src}}" alt="App Logo" style="width: 98px;height: 44px;" />
             </div>
             <div class="brand-logo-collapsed">
-                <img class="img-fluid" src="assets/img/logo-single.png" alt="App Logo" />
+                <img class="img-fluid" src="{{src}}" alt="App Logo" id="image" style="width: 45px;height: 44px;" />
             </div>
         </a>
     </div>
@@ -16,57 +16,176 @@
     <ul class="navbar-nav mr-auto flex-row">
         <li class="nav-item">
             <!-- Button used to collapse the left sidebar. Only visible on tablet and desktops-->
-            <a class="nav-link d-none d-md-block d-lg-block d-xl-block" trigger-resize="" (click)="toggleCollapsedSideabar()" *ngIf="!isCollapsedText()">
+            <a class="nav-link d-none d-md-block d-lg-block d-xl-block" trigger-resize=""
+                (click)="toggleCollapsedSideabar()" *ngIf="!isCollapsedText()">
                 <em class="fas fa-bars"></em>
             </a>
             <!-- Button to show/hide the sidebar on mobile. Visible on mobile only.-->
-            <a class="nav-link sidebar-toggle d-md-none" (click)="settings.toggleLayoutSetting('asideToggled'); $event.stopPropagation()">
+            <a class="nav-link sidebar-toggle d-md-none"
+                (click)="settings.toggleLayoutSetting('asideToggled'); $event.stopPropagation()">
                 <em class="fas fa-bars"></em>
             </a>
         </li>
         <!-- START User avatar toggle-->
         <li class="nav-item d-none d-md-block">
             <!-- Button used to collapse the left sidebar. Only visible on tablet and desktops-->
-            <a  class="nav-link" (click)="toggleUserBlock($event)">
+            <a class="nav-link" (click)="toggleUserBlock($event)">
                 <em class="icon-user"></em>
             </a>
         </li>
         <!-- END User avatar toggle-->
         <!-- START lock screen-->
-        <li class="nav-item d-none d-md-block">
+        <!-- <li class="nav-item d-none d-md-block">
             <a class="nav-link"  title="Lock screen" [routerLink]="'/lock'">
                 <em class="icon-lock"></em>
             </a>
-        </li>
+        </li> -->
+
+
         <!-- END lock screen-->
+    </ul>
+    <ul class="navbar-nav flex-row" style="display: flex;flex-direction: row;justify-content: space-evenly;">
+        <li class="nav-item d-none d-md-block">
+            <button class="mr-1 btn btn-outline-danger btn-lg mt-2" style="background: #ffffff;
+    color: #dc3545;" type="button" [routerLink]="'/company'">Change Company</button>
+        </li>
+
+        <li class="nav-item d-none d-md-block">
+            <a class="nav-link" *ngIf="isSuperAdmin" title="Add Products" [routerLink]="'/products'">
+                <em class="fas fa-plus"></em>
+            </a>
+        </li>
+        <li class="nav-item d-none d-md-block">
+            <a class="nav-link" title="Integrations" [routerLink]="'/integrations/:id'" hidden>
+                <em class="fas fa-cogs"></em>
+            </a>
+        </li>
+        <li class="nav-item d-none d-md-block">
+            <a class="nav-link" *ngIf="isSuperAdmin" title="Add Products" [routerLink]="'/products'">
+                <em class="fas fa-list-alt"></em>
+            </a>
+        </li>
+        <li class="nav-item d-none d-md-block">
+            <a class="nav-link" title="My Payments" [routerLink]="'/mypayments'">
+                <em class="fas fa-sticky-note"></em>
+            </a>
+        </li>
+        <li class="nav-item d-none d-md-block">
+            <a class="nav-link" title="Settings">
+                <em class="fas fa-cog"></em>
+            </a>
+        </li>
+        <li class="nav-item d-none d-md-block">
+            <a class="nav-link" title="Log Out" (click)="logout()">
+                <em class="fas fa-sign-out-alt"></em>
+            </a>
+        </li>
+
+        <!-- 
+    <li style="padding-right: 5px;" *ngFor='let item of menuItems' [ngClass]="{'nav-item': item.heading}" [routerLinkActive]="['active']">
+        <span *ngIf="item.heading">{{(item.translate | translate) || item.text}}</span>
+        <a class="nav-link" href *ngIf="!item.heading && !item.submenu && item.elink" [attr.target]="item.target" [attr.href]="item.elink" title="{{item.text}}">
+            <span class="float-right" *ngIf="item.alert" [ngClass]="item.label || 'badge badge-success'">{{item.alert}}</span>
+            <em class="{{item.icon}}" *ngIf="item.icon"></em>
+        </a>
+        <a style="display: flex;flex-direction: column;align-items: center;padding-right: 12px;" class="nav-link" href *ngIf="!item.heading && !item.submenu && !item.elink" [routerLink]="item.link" [attr.route]="item.link" title="{{item.text}}"
+            (click)="toggleSubmenuClick($event)" (mouseenter)="toggleSubmenuHover($event)">
+            <span class="float-right" *ngIf="item.alert" [ngClass]="item.label || 'badge badge-success'">{{item.alert}}</span>
+            <em class="{{item.icon}}" style="color: white;font-size: 17px;" *ngIf="item.icon"></em>
+        </a>
+        <a href *ngIf="!item.heading && item.submenu" title="{{item.text}}"
+            (click)="toggleSubmenuClick($event)" (mouseenter)="toggleSubmenuHover($event)">
+                <span class="float-right" *ngIf="item.alert" [ngClass]="item.label || 'badge badge-success'">{{item.alert}}</span>
+                <em class="{{item.icon}}" *ngIf="item.icon"></em>
+                <span>{{(item.translate | translate) || item.text}}</span>
+        </a>
+        <ul *ngIf="item.submenu" class="sidebar-nav sidebar-subnav" [routerLinkActive]="['opening']">
+            <li class="sidebar-subnav-header">{{(item.translate | translate) || item.text}}</li>
+            <li *ngFor='let subitem of item.submenu' [routerLinkActive]="['active']">
+                <a href *ngIf="!subitem.heading && !subitem.submenu && subitem.elink" [attr.target]="subitem.target" [attr.href]="subitem.elink" title="{{subitem.text}}">
+                    <span class="float-right" *ngIf="subitem.alert" [ngClass]="subitem.label || 'badge badge-success'">{{subitem.alert}}</span>
+                    <em class="{{subitem.icon}}" *ngIf="subitem.icon"></em>
+                    <span>{{(subitem.translate | translate) || subitem.text}}</span>
+                </a>
+                <a href *ngIf="!subitem.submenu && !subitem.elink" [routerLink]="subitem.link" [attr.route]="subitem.link" title="{{subitem.text}}">
+                    <span class="float-right" *ngIf="subitem.alert" [ngClass]="subitem.label || 'badge badge-success'">{{subitem.alert}}</span>
+                    <em class="{{subitem.icon}}" *ngIf="subitem.icon"></em>
+                    <span>{{(subitem.translate | translate) || subitem.text}}</span>
+                </a>
+                <a href *ngIf="subitem.submenu" title="{{subitem.text}}" 
+                    (click)="toggleSubmenuClick($event)" (mouseenter)="toggleSubmenuHover($event)">
+                        <span class="float-right" *ngIf="subitem.alert" [ngClass]="subitem.label || 'badge badge-success'">{{subitem.alert}}</span>
+                        <em class="{{subitem.icon}}" *ngIf="subitem.icon"></em>
+                        <span>{{(subitem.translate | translate) || subitem.text}}</span>
+                </a>
+                <ul *ngIf="subitem.submenu" class="sidebar-nav sidebar-subnav level2" [routerLinkActive]="['opening']">
+                    <li *ngFor='let subitem2 of subitem.submenu' [routerLinkActive]="['active']">
+                        <a href *ngIf="!subitem2.submenu" [routerLink]="subitem2.link" [attr.route]="subitem2.link" title="{{subitem2.text}}">
+                            <span class="float-right" *ngIf="subitem2.alert" [ngClass]="subitem2.label || 'badge badge-success'">{{subitem2.alert}}</span>
+                            <em class="{{subitem2.icon}}" *ngIf="subitem2.icon"></em>
+                            <span>{{(subitem2.translate | translate) || subitem2.text}}</span>
+                        </a>
+                        <a href *ngIf="subitem2.submenu" title="{{subitem2.text}}"
+                            (click)="toggleSubmenuClick($event)" (mouseenter)="toggleSubmenuHover($event)">
+                                <span class="float-right" *ngIf="subitem2.alert" [ngClass]="subitem2.label || 'badge badge-success'">{{subitem2.alert}}</span>
+                                <em class="{{subitem2.icon}}" *ngIf="subitem2.icon"></em>
+                                <span>{{(subitem2.translate | translate) || subitem2.text}}</span>
+                        </a>
+                        <ul *ngIf="subitem2.submenu" class="sidebar-nav sidebar-subnav level3" [routerLinkActive]="['opening']">
+                            <li *ngFor='let subitem3 of subitem2.submenu' [routerLinkActive]="['active']">
+                                <a href *ngIf="!subitem3.submenu" [routerLink]="subitem3.link" [attr.route]="subitem3.link" title="{{subitem3.text}}">
+                                    <span class="float-right" *ngIf="subitem3.alert" [ngClass]="subitem3.label || 'badge badge-success'">{{subitem3.alert}}</span>
+                                    <em class="{{subitem3.icon}}" *ngIf="subitem3.icon"></em>
+                                    <span>{{(subitem3.translate | translate) || subitem3.text}}</span>
+                                </a>
+                                <a href *ngIf="subitem3.submenu" title="{{subitem3.text}}"
+                                    (click)="toggleSubmenuClick($event)" (mouseenter)="toggleSubmenuHover($event)">
+                                        <span class="float-right" *ngIf="subitem3.alert" [ngClass]="subitem3.label || 'badge badge-success'">{{subitem3.alert}}</span>
+                                        <em class="{{subitem3.icon}}" *ngIf="subitem3.icon"></em>
+                                        <span>{{(subitem3.translate | translate) || subitem3.text}}</span>
+                                </a>
+                                <ul *ngIf="subitem3.submenu" class="sidebar-nav sidebar-subnav level3" [routerLinkActive]="['opening']">
+                                    <li *ngFor='let subitem4 of subitem3.submenu' [routerLinkActive]="['active']">
+                                        <a href *ngIf="!subitem4.submenu" [routerLink]="subitem4.link" [attr.route]="subitem4.link" title="{{subitem4.text}}">
+                                            <span class="float-right" *ngIf="subitem4.alert" [ngClass]="subitem4.label || 'badge badge-success'">{{subitem4.alert}}</span>
+                                            <em class="{{subitem4.icon}}" *ngIf="subitem4.icon"></em>
+                                            <span>{{(subitem4.translate | translate) || subitem4.text}}</span>
+                                        </a>
+                                    </li>
+                                </ul>
+                            </li>
+                        </ul>
+                    <li>
+                </ul>
+            <li>
+        </ul>
+    </li> -->
+
     </ul>
     <!-- END Left navbar-->
     <!-- START Right Navbar-->
     <ul class="navbar-nav flex-row">
         <!-- Search icon-->
-        <li class="nav-item">
+        <!-- <li class="nav-item">
             <a class="nav-link" (click)="openNavSearch($event)">
                 <em class="icon-magnifier"></em>
             </a>
-        </li>
+        </li> -->
         <!-- Fullscreen (only desktops)-->
         <li class="nav-item d-none d-md-block">
-            <a class="nav-link" #fsbutton (click)="toggleFullScreen($event)">
+            <a class="nav-link" #fsbutton (click)="toggleFullScreen($event)" hidden>
                 <em class="fa fa-expand"></em>
             </a>
         </li>
         <!-- START Alert menu-->
-        <li class="nav-item dropdown dropdown-list" dropdown>
+        <!-- <li class="nav-item dropdown dropdown-list" dropdown>
             <a class="nav-link dropdown-toggle dropdown-toggle-nocaret" dropdownToggle>
                 <em class="icon-bell"></em>
                 <span class="badge badge-danger">11</span>
             </a>
-            <!-- START Dropdown menu-->
             <div *dropdownMenu class="dropdown-menu dropdown-menu-right animated flipInX">
                 <div class="dropdown-item">
-                    <!-- START list group-->
                     <div class="list-group">
-                       <!-- list item-->
                        <div class="list-group-item list-group-item-action">
                           <div class="media">
                              <div class="align-self-start mr-2">
@@ -78,7 +197,6 @@
                              </div>
                           </div>
                        </div>
-                       <!-- list item-->
                        <div class="list-group-item list-group-item-action">
                           <div class="media">
                              <div class="align-self-start mr-2">
@@ -90,7 +208,6 @@
                              </div>
                           </div>
                        </div>
-                       <!-- list item-->
                        <div class="list-group-item list-group-item-action">
                           <div class="media">
                              <div class="align-self-start mr-2">
@@ -102,7 +219,6 @@
                              </div>
                           </div>
                        </div>
-                       <!-- last list item-->
                        <div class="list-group-item list-group-item-action">
                           <span class="d-flex align-items-center">
                              <span class="text-sm">More notifications</span>
@@ -110,18 +226,16 @@
                           </span>
                        </div>
                     </div>
-                    <!-- END list group-->
                 </div>
             </div>
-            <!-- END Dropdown menu-->
-        </li>
+        </li> -->
         <!-- END Alert menu-->
         <!-- START Offsidebar button-->
-        <li class="nav-item">
+        <!-- <li class="nav-item">
             <a class="nav-link" (click)="toggleOffsidebar(); $event.stopPropagation()">
                 <em class="icon-notebook"></em>
             </a>
-        </li>
+        </li> -->
         <!-- END Offsidebar menu-->
     </ul>
     <!-- END Right Navbar-->

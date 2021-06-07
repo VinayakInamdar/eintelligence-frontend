@@ -1,0 +1,27 @@
+
+<div class="dialog-content">
+    <div class="dialog-header">
+        <button type="button" class="bootbox-close-button close" data-dismiss="modal" aria-hidden="true" (click)="onClose($event)">×</button>
+        <h3 class="dialog-title">Change Password</h3>
+    </div>
+    <div class="dialog-body">
+<div class="form-group row">
+    <form class="form-horizontal" [formGroup]="passwordform"  (submit)="submitForm(passwordform.value)">
+    <label for="user_password" class="col-sm-4 col-form-label">Password</label>
+    <div class="col-md-3">
+        <input type="password" formControlName="password" class="form-control" style="height: 2.19rem;width: max-content;" />
+        <span class="text-danger" style="font-size: small;"
+*ngIf="passwordform.controls['password'].hasError('required') && (passwordform.controls['password'].dirty || passwordform.controls['password'].touched)">
+{{'validation.PASSWORDISREQUIRED' | translate}}</span><br>
+    </div>
+    </form>
+</div>
+
+    </div>
+  <div class="dialog-footer">
+    <button class="mr-1 btn btn-sm float-right" (click)="onClose($event)"
+    style="background-color:#5D9CEC;color: white;">Close</button>
+    <button class="mr-1 btn btn-sm float-right" type="submit" (click)="submitForm(passwordform.value)"
+                                            style="background-color:#5D9CEC;color: white;">Save</button>
+  </div>
+</div>

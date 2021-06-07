@@ -1,0 +1,541 @@
+<div class="row" *ngIf="settingActive == 1;">
+    <div class="col-md-2"></div>
+    <div class="col-md-8 closebtn paddingtop8px"><a href="javascript:void(0);"
+            (click)="closeCreateCampaignComponent($event)">
+            <em class="fa-2x mr-2 fas fa-times"></em></a>
+    </div>
+    <div class="col-md-2"> </div>
+</div>
+<!-- A grey horizontal navbar that becomes vertical on small screens -->
+<nav class="navbar navbar-expand-sm" style="background-color: #F9FCFF;">
+
+    <!-- Links -->
+    <ul class="navbar-nav">
+        <li>
+            <div class="btn-group">
+                <div class="btn-add-new-campaign btn btn-default">
+                    <i class="fa fa-plus" aria-hidden="true" (click)="onClick($event)"></i>
+                </div>
+                <div class="btn-group" dropdown>
+                    <button id="button-basic" dropdownToggle type="input" class="btn campselectedname"
+                        aria-controls="dropdown-basic">
+                        {{selectedCampaignName !== undefined ? selectedCampaignName : 'select your campaign'}}
+                        <span class="caret"> </span>
+                    </button>
+                    <ul id="dropdown-basic" *dropdownMenu class="dropdown-menu camplisth" role="menu"
+                        aria-labelledby="button-basic">
+                        <li role="menuitem" *ngFor="let campaign of campaignList"
+                            [ngClass]="{'active': selectedCampId == campaign.id}"><a class="dropdown-item"
+                                (click)="onCampaignSelect($event,campaign)" href="#">{{campaign.name}}</a></li>
+                    </ul>
+                </div>
+            </div>
+        </li>
+        <li id="overview_menu" class="nav-link" data-third-menu="">
+            <a href="javascript:void(0);" class="nav-link" (click)="goToCampaignOverview($event)">
+                <span class="fontsizesmall">Overview</span>
+            </a>
+        </li>
+        <li id="analytics_menu" class="nav-link" data-third-menu="analytics_menu_index">
+            <a href="javascript:void(0);" class="nav-link" (click)="goToAnalyticsOverview($event)">
+                <span class="fontsizesmall">Analytics</span>
+            </a>
+        </li>
+        <li id="seo_menu" class="nav-link" data-third-menu="seo_menu_index">
+            <a href="javascript:void(0);" class="nav-link"  (click)="goToSeoOverview($event)">
+                <span class="fontsizesmall">SEO</span>
+            </a>
+
+        </li>
+        <li id="seo_menu" class="nav-link" data-third-menu="seo_menu_index">
+            <a href="javascript:void(0);" class="nav-link" (click)="goToSocialMedia($event)">
+                <span class="fontsizesmall">Facebook</span>
+            </a>
+        </li>
+        <!-- <li id="seo_menu" class="nav-link" data-third-menu="seo_menu_index">
+            <a href="javascript:void(0);" class="nav-link" (click)="goToLinkedIn($event)">
+                <span class="fontsizesmall">LinkedIn</span>
+            </a>
+        </li>
+        <li id="seo_menu" class="nav-link" data-third-menu="seo_menu_index">
+            <a href="javascript:void(0);" class="nav-link" (click)="goToInstagram($event)">
+                <span class="fontsizesmall">Instagram</span>
+            </a>
+        </li> -->
+        <li id="seo_menu" class="nav-link" data-third-menu="seo_menu_index">
+            <a href="javascript:void(0);" class="nav-link" (click)="goToGSC($event)">
+                <span class="fontsizesmall">GSC</span>
+            </a>
+        </li>
+    </ul>
+
+</nav>
+<div *ngIf="settingActive == 1;" class="row w3-container w3-center w3-animate-right paddingtopdiv">
+    <div class="col-md-2"> </div>
+    <div class="col-md-8">
+        <form [formGroup]="valForm" class="form-horizontal card formh" (keydown.enter)="$event.preventDefault()"
+            (submit)="submitForm(valForm.value)" novalidate="">
+            <tabset [justified]="true" #staticTabs>
+                <tab class="tabh">
+                    <ng-template tabHeading>
+                        <p class="tabp">Campaign Name</p>
+                    </ng-template>
+
+                    <div class="row">
+                        <div class="col-md-1"></div>
+                        <div class="col-md-10 paddingtopcampname">
+                            <h1> Name Your Campagin</h1>
+                            <h3> Your client's campaign name</h3>
+                            <hr>
+                            <label>CAMPAIGN NAME</label>
+                            <input #name_field class="form-control campinputh" formControlName="name"
+                                placeholder="Name of your campaign">
+                            <span class="text-danger"
+                                *ngIf="valForm.controls['name'].hasError('required') && (valForm.controls['name'].dirty || valForm.controls['name'].touched)">
+                                {{'validation.NAMEISREQUIRED' | translate}}</span>
+                            <br>
+                            <div class="text-center">
+                                <button class="mr-1 btn btn-danger btn-lg" type="submit"
+                                    (click)="goToNextTab($event,name_field.value,'name',1)">Next </button>
+                            </div>
+                        </div>
+                        <div class="col-md-1"></div>
+                    </div>
+
+                </tab>
+                <tab class="tabh" tab="2">
+                    <ng-template tabHeading>
+                        <p class="tabp">Website</p>
+                    </ng-template>
+                    <div class="row">
+                        <div class="col-md-1"></div>
+                        <div class="col-md-10 paddingtopcampname">
+                            <h1>Enter a Website</h1>
+                            <h3> Provide your client's website to launch your new campaign</h3>
+                            <hr>
+                            <label>WEBSITE URL</label>
+                            <div class="form-group row">
+                                <input #webUrl_field class="form-control campinputh" type="url"
+                                    placeholder="http:// or https://" formControlName="webUrl"
+                                    [formControl]="valForm.controls['webUrl']" />
+                                <span class="text-danger"
+                                    *ngIf="valForm.controls['webUrl'].hasError('required') && (valForm.controls['webUrl'].dirty || valForm.controls['webUrl'].touched)">
+                                    {{'validation.URLREQUIRED' | translate}}</span>
+                                <span class="text-danger"
+                                    *ngIf="valForm.controls['webUrl'].hasError('pattern') && (valForm.controls['webUrl'].dirty || valForm.controls['webUrl'].touched)">
+                                    {{'validation.URLVALIDATION' | translate}}</span>
+                            </div>
+
+                            <div class="row">
+                                <div class="col-md-3">
+                                    <button class="mr-1 btn btn-secondary btn-lg" type="submit"
+                                        (click)="goToPreviousTab($event,0)">
+                                        Go Back</button>
+                                </div>
+                                <div class="col-md-6"></div>
+                                <div class="col-md-3">
+                                    <button class="mr-1 btn btn-danger btn-lg" type="submit"
+                                        (click)="goToNextTab($event,webUrl_field.value,'webUrl',2)">Next
+                                        ></button>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col-md-1"></div>
+                    </div>
+                </tab>
+                <tab class="tabh">
+                    <ng-template tabHeading>
+                        <p class="tabp">Goals</p>
+                    </ng-template>
+                    <div class="row">
+                        <div class="col-md-12" class="goaldiv">
+                            <h1> What would you like to accomplish?</h1>
+                            <h3> Set the goal of your campaign by selecting one or all. (Optional)</h3>
+                            <hr>
+                            <div class="row">
+                                <div class="col-md-4">
+                                    <div class="card card-default shadow p-2 mb-2 bg-white rounded goalsubh">
+                                        <div class="card-body form-check-inline text-center">
+                                            <div class="col-md-1">
+                                                <input formControlName="moreTraffic" class="form-check-input"
+                                                    type="checkbox" value="">
+                                            </div>
+                                            <div class="col-md-11">
+                                                <em class="fa-2x mr-2 fas fa-globe"></em><br>
+                                                <p class="goalfonsize">MORE TRAFFIC</p>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="col-md-4">
+                                    <div class="card card-default shadow p-2 mb-2 bg-white rounded goalsubh">
+                                        <div class="card-body form-check-inline text-center">
+                                            <div class="col-md-1">
+                                                <input type="checkbox" formControlName="sales" class="form-check-input"
+                                                    value="">
+                                            </div>
+                                            <div class="col-md-11">
+                                                <em class="fa-2x mr-2 fas fa-store"></em><br>
+                                                <p class="goalfonsize">SALES</p>
+                                            </div>
+
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="col-md-4">
+                                    <div class="card card-default shadow p-2 mb-2 bg-white rounded">
+                                        <div class="card-body form-check-inline text-center">
+
+                                            <div class="col-md-1">
+                                                <input type="checkbox" formControlName="leadGeneration"
+                                                    class="form-check-input" value="">
+                                            </div>
+                                            <div class="col-md-11">
+                                                <em class="fa-2x mr-2 fas fa-users"></em><br>
+                                                <p class="goalfonsize">LEAD GENERATION</p>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div><br>
+                            <div class="row">
+                                <div class="col-md-3">
+                                    <button class="mr-1 btn btn-secondary btn-lg" type="submit"
+                                        (click)="goToPreviousTab($event,1)">
+                                        Go Back</button>
+                                </div>
+                                <div class="col-md-5"></div>
+                                <div class="col-md-4">
+                                    <!-- <a routerLink="./home"> -->
+                                    <button class="mr-1 btn btn-danger btn-lg" type="submit"
+                                        (click)="successAlert()">Create
+                                        campaign</button>
+                                    <!-- </a> -->
+                                </div>
+                            </div>
+                        </div>
+
+                    </div>
+                </tab>
+            </tabset>
+        </form>
+    </div>
+    <div class="col-md-2"></div>
+</div>
+
+<div class="row overviewmaindiv" *ngIf="settingActive == 3;">
+   
+    <br>
+    <hr>
+    <br>
+    <div class="navbar navbar-default navbar-fixed-top bg-white" style="box-shadow: 2px 2px #e9e6e6;margin-left: 100px;"
+        role="navigation">
+        <a class="navbar-brand" href="#">
+            KEY PERFORMANCE INDICATOR - MOST IMPORTANT MATRICS
+        </a>
+    </div>
+    <br>
+    <hr>
+    <br>
+    <div class="col-lg-12">
+        <div class="col-lg-4">
+            <div class="card card-default shadow bg-white rounded height200px">
+                <div class="card-header">
+                    <div class="row borderBtm padding5">
+                        <h2 class="col-xs-12 col-12 col-md-10 fontsize15px">ACQUISITION</h2>
+                        <div class="col-xs-12 col-12 col-md-1 fontsize15px">
+                            <i class="fa fa-info-circle paddingtop10px"
+                                matTooltip="Geographical data to show where most of the traffic comes from"></i>
+                        </div>
+                    </div>
+
+                </div>
+                <div class="widget-content">
+                    <div class="overviewdivborder">
+                        <div class="row">
+                            <div class="col-lg-12">
+                                <table class="table table-bordered font-weight-bold">
+                                    <thead>
+                                        <tr>
+                                            <td>
+                                                Sessions
+                                            </td>
+                                            <td>
+                                                % New
+                                            </td>
+                                            <td>
+                                                Organic Searches
+                                            </td>
+                                        </tr>
+                                    </thead>
+                                    <tbody>
+                                        <tr>
+                                            <td class="text-blue">
+                                                {{reportsData.googleCustomDataDto.sessions | number}}
+                                            </td>
+                                            <td class="text-blue">
+                                                {{reportsData.googleCustomDataDto.percentNewSessions | number}}
+                                            </td>
+                                            <td class="text-blue">to retrieve </td>
+                                        </tr>
+                                </table>
+
+                            </div>
+                        </div>
+
+
+                    </div>
+
+                </div>
+            </div>
+        </div>
+        <div class="col-lg-4">
+            <div class="card card-default shadow bg-white rounded height200px">
+                <div class="card-header">
+                    <div class="row borderBtm padding5">
+                        <h2 class="col-xs-12 col-12 col-md-10 fontsize15px">BEHAVIOUR</h2>
+                        <div class="col-xs-12 col-12 col-md-1 fontsize15px">
+                            <i class="fa fa-info-circle paddingtop10px"
+                                matTooltip="Geographical data to show where most of the traffic comes from"></i>
+                        </div>
+                    </div>
+
+                </div>
+                <div class="widget-content">
+                    <div class="overviewdivborder">
+                        <div class="row">
+                            <div class="col-lg-12">
+                                <table class="table table-bordered font-weight-bold">
+                                    <thead>
+                                        <tr>
+                                            <td>
+                                                Pageviews
+                                            </td>
+                                            <td>
+                                                Bounce Rate
+                                            </td>
+                                            <td>
+                                                Avg. Time On Page
+                                            </td>
+                                        </tr>
+                                    </thead>
+                                    <tbody>
+                                        <tr>
+                                            <td class="text-blue">
+                                                {{reportsData.googleCustomDataDto.pageviews | number}}
+                                            </td>
+                                            <td class="text-blue">
+                                                {{reportsData.googleCustomDataDto.bounceRate | number}}
+                                            </td>
+                                            <td class="text-blue">{{(reportsData.googleCustomDataDto.avgSessionDuration
+                                                | number) + '%'}} </td>
+                                        </tr>
+                                </table>
+                            </div>
+                        </div>
+
+
+                    </div>
+
+                </div>
+            </div>
+        </div>
+        <div class="col-lg-4">
+            <div class="card card-default shadow bg-white rounded height200px">
+                <div class="card-header">
+                    <div class="row borderBtm padding5">
+                        <h2 class="col-xs-12 col-12 col-md-10 fontsize15px">OUTCOME</h2>
+                        <div class="col-xs-12 col-12 col-md-1 fontsize15px">
+                            <i class="fa fa-info-circle paddingtop10px"
+                                matTooltip="Geographical data to show where most of the traffic comes from"></i>
+                        </div>
+                    </div>
+
+                </div>
+                <div class="widget-content">
+                    <div class="overviewdivborder">
+                        <div class="row">
+                            <div class="col-lg-12">
+                                <table class="table table-bordered font-weight-bold">
+                                    <thead>
+                                        <tr>
+                                            <td>
+                                                Conversions
+                                            </td>
+                                            <td>
+                                                Conv. Rate
+                                            </td>
+                                            <td>
+                                                # Purchased
+                                            </td>
+                                        </tr>
+                                    </thead>
+                                    <tbody>
+                                        <tr>
+                                            <td class="text-blue">
+                                                {{reportsData.googleCustomDataDto.goalCompletionsAll | number}}
+                                            </td>
+                                            <td class="text-blue">
+                                                {{reportsData.googleCustomDataDto.goalConversionRateAll | number}}
+                                            </td>
+                                            <td class="text-blue">to retrieve </td>
+                                        </tr>
+                                </table>
+
+                            </div>
+                        </div>
+
+
+                    </div>
+
+                </div>
+            </div>
+        </div>
+    </div>
+    <!-- second -->
+    <div class="col-lg-12">
+        <div class="col-lg-4">
+            <div class="card card-default shadow bg-white rounded height450px">
+                <div class="card-header">
+                    <div class="row borderBtm padding5">
+                        <h2 class="col-xs-12 col-12 col-md-10 fontsize15px">WEB TRAFFIC BY CHANNEL</h2>
+                        <div class="col-xs-12 col-12 col-md-1 fontsize15px">
+                            <i class="fa fa-info-circle paddingtop10px"
+                                matTooltip="Groupings of different traffic sources"></i>
+                        </div>
+                    </div>
+
+                </div>
+                <div class="widget-content">
+                    <div *ngIf="showSpinnerSiteAnalysisContent" class="la-line-scale  linescaleloadercolortopleft">
+                        <div></div>
+                        <div></div>
+                        <div></div>
+                        <div></div>
+                        <div></div>
+                    </div>
+                    <div *ngIf=" !showSpinnerSiteAnalysisContent">
+                        <canvas id='dougnutChart' baseChart [chartType]="'pie'" [options]="doughnutOptions"
+                            [datasets]="doughnutData.datasets" [labels]="doughnutData.labels" [doughnut]="false"
+                            [legend]="true" height="250"></canvas>
+                        <div class="btn-container footer-buttonsabsolute text-center">
+                            <!-- <a href="javascript:void(0)" class="btn btn-link"
+                                (click)="goToAcquisitonTrafficSources($event)">See More</a> -->
+                            &nbsp;&nbsp;&nbsp;
+                        </div>
+                    </div>
+                </div>
+
+            </div>
+        </div>
+        <div class="col-lg-4">
+            <div class="card card-default shadow bg-white rounded height450px">
+                <div class="card-header">
+                    <div class="row borderBtm padding5">
+                        <h2 class="col-xs-12 col-12 col-md-10 fontsize15px">WEB TRAFFIC BY DEVICE </h2>
+                        <div class="col-xs-12 col-12 col-md-1 fontsize15px">
+                            <i class="fa fa-info-circle paddingtop10px"
+                                matTooltip="Distribution of users according to device used in accessing the site"></i>
+                        </div>
+                    </div>
+
+                </div>
+                <div class="widget-content">
+                    <div *ngIf="showSpinnerSiteAnalysisContent" class="la-line-scale  linescaleloadercolortopleft">
+                        <div></div>
+                        <div></div>
+                        <div></div>
+                        <div></div>
+                        <div></div>
+                    </div>
+                    <div *ngIf=" !showSpinnerSiteAnalysisContent">
+                        <div>
+                            <canvas id='dougnutChart1' baseChart [chartType]="'bar'" [options]="doughnutOptions1"
+                                [datasets]="doughnutData1.datasets" [labels]="doughnutData1.labels" [legend]="true"
+                                height="250"></canvas>
+                        </div>
+                        <div class="btn-container footer-buttonsabsolute text-center">
+                            <!-- <a href="javascript:void(0)" class="btn btn-link"
+                                (click)="goToAudienceDeviceCategory($event)">See More</a> -->
+                            &nbsp;&nbsp;&nbsp;
+                        </div>
+                    </div>
+                </div>
+
+            </div>
+        </div>
+        <div class="col-lg-4">
+            <!-- <highcharts-chart
+			id="container" 
+			[Highcharts]="Highcharts"
+			[constructorType]="chartConstructor"
+			[options]="chartOptions"
+		 	style="width: 100%; height: 400px; display: block;">
+		</highcharts-chart> -->
+            <!-- <google-chart  [type]="'Map'" [data]="data" [columns]="columnNames" [options]="options">
+            </google-chart>     -->
+            <google-chart [type]="myType" [data]="myData"></google-chart>
+            <div class="card card-default shadow bg-white rounded height450px">
+                <div class="card-header">
+                    <div class="row borderBtm padding5">
+                        <h2 class="col-xs-12 col-12 col-md-10 fontsize15px">TOP 5 WEB TRAFFIC BY LOCATION</h2>
+                        <div class="col-xs-12 col-12 col-md-1 fontsize15px">
+                            <i class="fa fa-info-circle paddingtop10px"
+                                matTooltip="Geographical data to show where most of the traffic comes from"></i>
+                        </div>
+                    </div>
+
+                </div>
+                <div class="widget-content">
+                    <div *ngIf="showSpinnerSiteAnalysisContent" class="la-line-scale  linescaleloadercolortopleft">
+                        <div></div>
+                        <div></div>
+                        <div></div>
+                        <div></div>
+                        <div></div>
+                    </div>
+                    <div *ngIf=" !showSpinnerSiteAnalysisContent">
+
+                        <div class="row" *ngFor="let geolocation of top5geoLocationsData ">
+                            <div class="col-md-6">
+                                <h4 class="text-blue">{{geolocation.name}}</h4>
+                            </div>
+                            <div class="col-md-2 text-right">
+                                {{geolocation.sessions}}
+                            </div>
+                            <div class="col-md-4">
+                                <div class="progress">
+                                    <div data-percentage="0%" [style.width.%]="geolocation.sessions/10"
+                                        class="progress-bar progress-bar-blue" role="progressbar" aria-valuemin="0"
+                                        aria-valuemax="1000"></div>
+                                </div>
+                            </div>
+                        </div>
+                        <!-- <div class="btn-container footer-buttonsabsolute text-center">
+                            <a href="javascript:void(0)" class="btn btn-link"
+                                (click)="goToAudienceGeoLocations($event)">See More</a>
+                            &nbsp;&nbsp;&nbsp;
+                        </div> -->
+                    </div>
+
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="col-md-12">
+        <div class="card card-default shadow p-3 mb-5 bg-white rounded">
+            <div class="row borderBtm padding5">
+                <h2 class="col-xs-12 col-12 col-md-10 fontsize15px">WEB TRAFFIC BY LOCATION</h2>
+                <div class="col-xs-12 col-12 col-md-1 fontsize15px">
+                    <i class="fa fa-info-circle paddingtop10px"
+                        matTooltip="Geographical data to show where most of the traffic comes from"></i>
+                </div>
+            </div>
+            <div class="table-responsive">
+                <ng2-smart-table [settings]="settingsGeo" [source]="sourceGeo" (userRowSelect)="userRowSelect($event)">
+                </ng2-smart-table>
+            </div>
+        </div>
+    </div>
+
+</div>

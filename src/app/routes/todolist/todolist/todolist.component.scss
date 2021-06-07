@@ -1,0 +1,48 @@
+::ng-deep .customClass > a {
+    background-color:silver !important;
+    border-bottom: none !important;
+    outline: 0 !important; 
+  }
+
+  .tab {
+    overflow: hidden;
+    border-bottom: 1px solid #ccc;
+    border-top: none;
+    background-color:transparent;
+  }
+  
+  /* Style the buttons inside the tab */
+  .tab button {
+    background-color: inherit;
+    float: left;
+    border: 1px solid #ccc;
+    border-bottom: none;
+    outline: none;
+    cursor: pointer;
+    padding: 14px 16px;
+    transition: 0.3s;
+    font-size: 17px;
+    background-color: white;
+    border-top-right-radius: 10%;
+    border-top-left-radius: 10%;
+  }
+  
+  /* Change background color of buttons on hover */
+  .tab button:hover {
+    background-color: #ddd;
+  }
+  
+  /* Create an active/current tablink class */
+  .tab button.active {
+    background-color: #ccc;
+    border-bottom: none;
+  }
+  
+  /* Style the tab content */
+  .tabcontent {
+    display: flex;
+    padding: 6px 12px;
+    border: 1px solid #ccc;
+    border-top: none;
+    background-color: white;
+  }

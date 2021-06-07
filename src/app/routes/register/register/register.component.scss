@@ -6,7 +6,7 @@
 .divider hr{
     margin-left: auto;
     margin-right: auto;
-    width: 40%;
+    width: 50%;
 }
 .left{
     float: left;
@@ -16,4 +16,65 @@
 }
 .btn{
     font-size: larger;
+}
+.boxshadow2px {
+    box-shadow: 2px 2px #e9e6e6;
+}
+.paddingright1per {
+    padding-right: 1%;
+}
+.fontsizelarge {
+    font-size: large;
+}
+.paddingtop1per {
+    padding-top: 1%;
+    width:90%;
+}
+.bordertopwidth0px {
+    border-top-width: 0px;
+}
+.textaligncenter {
+    text-align: center;
+}
+.fontsizexlarge {
+    font-size: x-large;
+}
+.paddingtop3px {
+    padding-top: 3px;
+}
+.imgheight20px {
+    height: 20px;
+}
+.pcolorred {
+    color: red;
+}
+.inputheight3rem {
+    height: 3.00rem;
+}
+.pcolorblue {
+    color:#5D9CEC;
+}
+.paddingleft5px {
+    padding-left: 5px;
+}
+.paddingright5px {
+    padding-right: 5px;
+}
+.paddingleft115px {
+    padding-left: 115px;
+}
+
+.form-group {
+ 
+    margin-top: 3px;  
+}
+.labelcss{
+    font-weight:500;
+    font-size: 9pt;
+}
+.form-control{
+    margin-top: 0px;
+}
+.card-body{
+    cursor :default;
 }

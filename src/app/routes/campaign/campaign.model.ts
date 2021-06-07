@@ -5,4 +5,7 @@ export class Campaign {
     moreTraffic:boolean;
     sales:boolean;  
     leadGeneration:boolean;  
+    companyID:string;
+    campaignType: string;
+    userId:string;
 }

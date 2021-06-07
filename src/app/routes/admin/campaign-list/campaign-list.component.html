@@ -1,0 +1,21 @@
+<div>
+    <div class="mb-3 clearfix">
+        <h3>Your Campagins</h3>
+        <select (change)="onChange($event.target.value)">
+            <option *ngFor="let agency of time" [value]="agency.id" [selected]="agency.id == agencyid"
+                [ngValue]="agencyid">{{agency.agency_name}}</option>
+        </select>
+    </div>
+</div>
+<hr>
+<br>
+<div class="row m-4">
+    <div class="col-md-12">
+        <div class="card card-default shadow p-3 mb-5 bg-white rounded">
+            <div class="table-responsive">
+                <ng2-smart-table [settings]="settings" [source]="tableData" (userRowSelect)="userRowSelect($event)">
+                </ng2-smart-table>
+            </div>
+        </div>
+    </div>
+</div>

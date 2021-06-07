@@ -1,0 +1,62 @@
+<div class="wrapper" style="overflow:hidden;">
+    <div class="main-panel">
+        <!-- BEGIN : Main Content-->
+        <div class="main-content">
+            <div class="content-wrapper">
+                <section id="login">
+
+                    <nav class="navbar navbar-default navbar-fixed-top bg-white" style="box-shadow: 2px 2px #e9e6e6;" role="navigation">
+                        <a class="navbar-brand" href="#" style="margin:auto;align-items: center;padding-top: 1rem;">
+                          My Payments
+                        </a>
+
+                    </nav>
+
+                    <br />
+                    <div class="row">
+                        <div class="col-md-12">
+                            <div class="card text-center card-default shadow p-3 mb-5 bg-white rounded">
+                                <div class="table-responsive">
+                                    <ng2-smart-table>
+                                        <table class="table table-bordered">
+                                            <thead>
+                                                <tr>
+                                                    <th scope="col">Plan Name</th>
+                                                    <th scope="col">Subscription Date</th>
+                                                    <th scope="col">Campaign</th>
+                                                    <th scope="col">Amount</th>
+                                                    <th scope="col">Payment Mode</th>
+                                                    <th scope="col">Payment Cycle</th>
+                                                </tr>
+                                            </thead>
+                                            <tbody>
+                                                <tr *ngFor="let p of payments">
+                                                    <td>{{p.plan.name}}</td>
+                                                    <td>{{p.createdOn}}</td>
+                                                    <td>{{p.campaignId}}</td>
+                                                    <td>{{p.amount}}</td>
+                                                    <td>{{p.paymentMode}}</td>
+                                                    <td>{{p.paymentCycle}}</td>
+                                                    <td>
+                                                        <button class="btn bg-primary"  *ngIf="p.isActive != false " 
+                                                        (click)="cancleSubscription(p.stripeSubscriptionId);" type="button">Cancel Subscription</button>
+                                                    </td>
+
+                                                </tr>
+                                            </tbody>
+                                        </table>
+                                    </ng2-smart-table>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </section>
+                <!--Login Page Starts-->
+
+                <!--Login Page Ends-->
+
+            </div>
+        </div>
+        <!-- END : End Main Content-->
+    </div>
+</div>

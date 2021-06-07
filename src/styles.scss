@@ -8,10 +8,16 @@
 @import '~simple-line-icons/css/simple-line-icons.css';
 @import '~summernote/dist/summernote.css';
 
+
 //== Bootstrap
 @import "./app/shared/styles/bootstrap.scss";
 //== Application
 @import "./app/shared/styles/app.scss";
+
+@import '~angular2-toaster/toaster.css';
+
+@import '~spinkit/css/spinkit.css';
+@import '~loaders.css/loaders.css';
 
 html, body { height: 100%; }
 body { margin: 0; font-family: Roboto, "Helvetica Neue", sans-serif; }
