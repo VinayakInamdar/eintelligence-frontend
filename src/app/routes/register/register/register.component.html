@@ -120,7 +120,7 @@
                                     <label class="labelcss">COMPANY LOGO</label>
                                     <p class="pcolorred">*</p>
                                     <input class="form-control inputheight3rem" type="file" placeholder="Choose your company logo" formControlName="companyImageUrl" (change)="getBase64($event)">
-                                    <p>( Please upload your image file in 45 x 45 )</p>
+                                    <p>( Please upload your image file in 100 x 45 )</p>
                                     <span class="text-danger" *ngIf="valForm.controls['companyImageUrl'].hasError('required') && (valForm.controls['companyImageUrl'].dirty || valForm.controls['companyImageUrl'].touched)">
                                         {{'No File Choosen' | translate}}</span>
                                 </div>

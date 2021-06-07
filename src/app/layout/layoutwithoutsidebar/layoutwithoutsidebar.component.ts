@@ -46,8 +46,8 @@ export class LayoutwithoutsidebarComponent implements OnInit {
     this._openIdConnectService.triggerSignOut();
   }
   ngOnInit(): void {
-    // this.settings.setLayoutSetting('isCollapsedText', true);
-    // this.settings.setLayoutSetting('isFloat', true);
+    this.settings.setLayoutSetting('isCollapsedText', true);
+    this.settings.setLayoutSetting('isFloat', true);
 
     this.isNavSearchVisible = false;
 
@@ -111,8 +111,8 @@ export class LayoutwithoutsidebarComponent implements OnInit {
 
  
   ngOnDestroy(): void {
-    // this.settings.setLayoutSetting('isCollapsedText', false);
-    // this.settings.setLayoutSetting('isFloat', false);
+    this.settings.setLayoutSetting('isCollapsedText', false);
+    this.settings.setLayoutSetting('isFloat', false);
   }
 
 }
