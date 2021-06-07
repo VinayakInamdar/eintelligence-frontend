@@ -22,6 +22,8 @@ import { OpenIdConnectService } from '../../../shared/services/open-id-connect.s
 import { HttpClient, HttpHeaders } from '@angular/common/http';
 import { parseDate } from 'ngx-bootstrap/chronos';
 import { environment } from '../../../../environments/environment';
+import html2canvas from 'html2canvas';
+import * as html2pdf from 'html2pdf.js';
 
 const success = require('sweetalert');
 @Component({
@@ -2733,4 +2735,27 @@ export class SeoComponent implements OnInit {
   }
 
   //#################  GSC data end ###########################################
+
+  generatePdf() {
+    const div = document.getElementById("pdfGenerate")!;
+    const options = {
+      margin: [15, 0, 15, 0],
+      filename: 'report_builder.pdf',
+      image: { type: 'jpeg', quality: 1 }, html2canvas: {
+        dpi: 300,
+        letterRendering: true,
+        useCORS: true
+      },
+      jsPDF: { unit: 'mm', format: 'a3', orientation: 'l' },
+      // pagebreak: { before: '.page-break', avoid: 'table' }
+    };
+
+    html2pdf()
+      .from(div)
+      .set(options)
+      .toPdf()
+      .get('pdf').then(function (pdf) {
+      })
+      .save();
+  }
 }
