@@ -22,8 +22,8 @@ export class LayoutComponent implements OnInit {
     }
 
     ngOnInit() {
-        this.settings.setLayoutSetting('isCollapsedText', false);
-        this.settings.setLayoutSetting('isFloat', false);
+        // this.settings.setLayoutSetting('isCollapsedText', false);
+        // this.settings.setLayoutSetting('isFloat', false);
     }
 
 }

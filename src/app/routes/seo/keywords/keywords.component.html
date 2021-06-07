@@ -11,13 +11,14 @@
     <div class="col-md-2"> </div>
     <div class="col-md-8">
 
-        <form [formGroup]="valForm" class="form-horizontal card keywordformheight" (keydown.enter)="$event.preventDefault()" (submit)="submitForm(valForm.value)" novalidate="">
+        <form [formGroup]="valForm" class="form-horizontal card keywordformheight"
+            (keydown.enter)="$event.preventDefault()" (submit)="submitForm(valForm.value)" novalidate="">
             <div *ngIf="showSpinner" class="la-line-scale la-2x linescaleloadercolortopleft">
-                <div></div>
-                <div></div>
-                <div></div>
-                <div></div>
-                <div></div>
+                <div style="background-color: #dc3545;"></div>
+                <div style="background-color: #dc3545;"></div>
+                <div style="background-color: #dc3545;"></div>
+                <div style="background-color: #dc3545;"></div>
+                <div style="background-color: #dc3545;"></div>
             </div>
             <tabset *ngIf="!showSpinner" [justified]="true" #staticTabs>
                 <tab class="keywordtabheight cursor-default">
@@ -32,12 +33,16 @@
                             <h3>Add one keyword per line or use the suggestion tool to retrieve related keywords.</h3>
                             <hr>
                             <label>KEYWORDS</label>
-                            <textarea id="textarea1" (keydown.enter)="triggerFunction($event)" type="textarea" #keyword_field class="form-controltextareaheight" cols='60' rows="10" formControlName="keyword" placeholder="Enter keyword here..."></textarea>
-                            <span class="text-danger" *ngIf="valForm.controls['keyword'].hasError('required') && (valForm.controls['keyword'].dirty || valForm.controls['keyword'].touched)">
+                            <textarea id="textarea1" (keydown.enter)="triggerFunction($event)" type="textarea"
+                                #keyword_field class="form-controltextareaheight" cols='60' rows="10"
+                                formControlName="keyword" placeholder="Enter keyword here..."></textarea>
+                            <span class="text-danger"
+                                *ngIf="valForm.controls['keyword'].hasError('required') && (valForm.controls['keyword'].dirty || valForm.controls['keyword'].touched)">
                                 {{'validation.KEYWORDISREQUIRED' | translate}}</span>
                             <br>
                             <div class="text-center">
-                                <button class="mr-1 btn btn-danger btn-lg" type="submit" (click)="goToNextTab($event,keyword_field.value,'keyword',1)">Next </button>
+                                <button class="mr-1 btn btn-danger btn-lg" type="submit"
+                                    (click)="goToNextTab($event,keyword_field.value,'keyword',1)">Next </button>
                             </div>
                         </div>
                         <div class="col-md-1"></div>
@@ -61,12 +66,15 @@
 
                                 <mat-form-field appearance="outline" class="setdropdownwidth">
                                     <mat-label>Country Name</mat-label>
-                                    <mat-select formControlName="location" (selectionChange)="setSelectedLocation($event)">
+                                    <mat-select formControlName="location"
+                                        (selectionChange)="setSelectedLocation($event)">
                                         <mat-form-field class="setdropdownwidth setdropdownpadding">
-                                            <input matInput (keyup)="onKey($event.target.value)" placeholder="Search Country Name">
+                                            <input matInput (keyup)="onKey($event.target.value)"
+                                                placeholder="Search Country Name">
                                         </mat-form-field>
 
-                                        <mat-option value={{country.country_iso_code}} *ngFor="let country of countriesList ">
+                                        <mat-option value={{country.country_iso_code}}
+                                            *ngFor="let country of countriesList ">
                                             {{country.location_name}}</mat-option>
                                     </mat-select>
 
@@ -74,24 +82,28 @@
 
 
 
-                                <span class="text-danger" *ngIf="valForm.controls['location'].hasError('required') && (valForm.controls['location'].dirty || valForm.controls['location'].touched)">
+                                <span class="text-danger"
+                                    *ngIf="valForm.controls['location'].hasError('required') && (valForm.controls['location'].dirty || valForm.controls['location'].touched)">
                                     {{'validation.LOCATIONISREQUIRED' | translate}}</span>
                             </div>
                             <div class="form-group row setheightrow">
-                                <div *ngIf="showSpinnerLocationContent" class="la-line-scale  linescaleloadercolortopleft">
-                                    <div></div>
-                                    <div></div>
-                                    <div></div>
-                                    <div></div>
-                                    <div></div>
+                                <div *ngIf="showSpinnerLocationContent"
+                                    class="la-line-scale  linescaleloadercolortopleft">
+                                    <div style="background-color: #dc3545;"></div>
+                                    <div style="background-color: #dc3545;"></div>
+                                    <div style="background-color: #dc3545;"></div>
+                                    <div style="background-color: #dc3545;"></div>
+                                    <div style="background-color: #dc3545;"></div>
                                 </div>
                                 <div class="col-md-6 setpaddinginlinestart" *ngIf="showLocationStates">
 
                                     <mat-form-field appearance="outline" class="setdropdownwidth">
                                         <mat-label>State or Province</mat-label>
-                                        <mat-select #location_field_state (selectionChange)="setSelectedLocationState(location_field_state.value)">
+                                        <mat-select #location_field_state
+                                            (selectionChange)="setSelectedLocationState(location_field_state.value)">
                                             <mat-form-field class="setdropdownwidth setdropdownpadding">
-                                                <input matInput (keyup)="onKeyState($event.target.value)" placeholder="Search State or Province">
+                                                <input matInput (keyup)="onKeyState($event.target.value)"
+                                                    placeholder="Search State or Province">
                                             </mat-form-field>
 
                                             <mat-option value={{state.location_code}} *ngFor="let state of state">
@@ -101,7 +113,8 @@
                                     </mat-form-field>
 
 
-                                    <span class="text-danger" *ngIf="valForm.controls['location'].hasError('required') && (valForm.controls['location'].dirty || valForm.controls['location'].touched)">
+                                    <span class="text-danger"
+                                        *ngIf="valForm.controls['location'].hasError('required') && (valForm.controls['location'].dirty || valForm.controls['location'].touched)">
                                         {{'validation.LOCATIONISREQUIRED' | translate}}</span>
                                 </div>
                                 <div class="col-md-1"></div>
@@ -109,33 +122,39 @@
 
                                     <mat-form-field appearance="outline" class="setdropdownwidth">
                                         <mat-label>City</mat-label>
-                                        <mat-select #location_field_city (selectionChange)="setSelectedLocationCity(location_field_city.value)">
+                                        <mat-select #location_field_city
+                                            (selectionChange)="setSelectedLocationCity(location_field_city.value)">
                                             <mat-form-field class="setdropdownwidth setdropdownpadding">
-                                                <input matInput (keyup)="onKeyCities($event.target.value)" placeholder="Search City Name">
+                                                <input matInput (keyup)="onKeyCities($event.target.value)"
+                                                    placeholder="Search City Name">
                                             </mat-form-field>
 
-                                            <mat-option value={{cities.location_code}},{{cities.location_name}} *ngFor="let cities of cities">
+                                            <mat-option value={{cities.location_code}},{{cities.location_name}}
+                                                *ngFor="let cities of cities">
                                                 {{cities.location_name}}</mat-option>
                                         </mat-select>
 
                                     </mat-form-field>
 
 
-                                    <span class="text-danger" *ngIf="valForm.controls['location'].hasError('required') && (valForm.controls['location'].dirty || valForm.controls['location'].touched)">
+                                    <span class="text-danger"
+                                        *ngIf="valForm.controls['location'].hasError('required') && (valForm.controls['location'].dirty || valForm.controls['location'].touched)">
                                         {{'validation.LOCATIONISREQUIRED' | translate}}</span>
                                 </div>
                             </div>
                             <br><br>
                             <div class="row">
                                 <div class="col-md-3">
-                                    <button class="mr-1 btn btn-secondary btn-lg" type="submit" (click)="goToPreviousTab($event,0)">
+                                    <button class="mr-1 btn btn-secondary btn-lg" type="submit"
+                                        (click)="goToPreviousTab($event,0)">
                                         < Go Back</button>
                                 </div>
                                 <div class="col-md-6"></div>
                                 <div class="col-md-3">
                                     <div class="col-md-4">
                                         <!-- <a routerLink="./home"> -->
-                                        <button class="mr-1 btn btn-danger btn-lg" type="submit" [disabled]="!this.locIsSelected || (showSpinnerLocationContent)">Submit</button>
+                                        <button class="mr-1 btn btn-danger btn-lg" type="submit"
+                                            [disabled]="!this.locIsSelected || (showSpinnerLocationContent)">Submit</button>
                                         <!-- </a> -->
                                     </div>
                                 </div>
@@ -157,7 +176,8 @@
     </div>
     <div class="col-md-2"></div>
     <div class="col-md-3 search-container paddingtop13px">
-        <input #search class="form-control ng-valid ng-dirty ng-valid-parse ng-touched ng-empty keywordinputwidth" type="text" placeholder="Search for keywords" (keyup)="onSearch(search.value)">
+        <input #search class="form-control ng-valid ng-dirty ng-valid-parse ng-touched ng-empty keywordinputwidth"
+            type="text" placeholder="Search for keywords" (keyup)="onSearch(search.value)">
 
     </div>
     <div class="col-md-2">
@@ -173,7 +193,8 @@
     <div class="col-md-12">
         <div class="card card-default shadow p-3 mb-5 bg-white rounded cursor-default">
             <div class="table-responsive">
-                <ng2-smart-table [settings]="settings" [source]="source" (userRowSelect)="userRowSelect($event)" (custom)="onCustomAction($event)">
+                <ng2-smart-table [settings]="settings" [source]="source" (userRowSelect)="userRowSelect($event)"
+                    (custom)="onCustomAction($event)">
                 </ng2-smart-table>
             </div>
         </div>

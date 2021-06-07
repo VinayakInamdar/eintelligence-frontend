@@ -23,9 +23,6 @@ export class CompanyListComponent implements OnInit {
           superAdmin = false;
         }
         this.campaignService.getCompanysList(superAdmin, userId).subscribe((res: any) => {
-          // this.settingservice.companyListInfo=res;
-          //this.companys=res;
-
           this.companysList = new Array<companyInfo>();
           for (let u in res) {
             var company = new companyInfo();

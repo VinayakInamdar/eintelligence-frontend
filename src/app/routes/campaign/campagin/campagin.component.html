@@ -472,11 +472,11 @@
             <div class="card-body row">
                 <div class="chart-wrapper mx-auto chart-container" *ngIf="hasActiveAccount && hasAuthorize">
                     <div *ngIf="showSpinnerBaseChart" class="la-line-scale  linescaleloadercolortopleft">
-                        <div></div>
-                        <div></div>
-                        <div></div>
-                        <div></div>
-                        <div></div>
+                        <div style="background-color: #dc3545;"></div>
+                        <div style="background-color: #dc3545;"></div>
+                        <div style="background-color: #dc3545;"></div>
+                        <div style="background-color: #dc3545;"></div>
+                        <div style="background-color: #dc3545;"></div>
                     </div>
                     <canvas *ngIf="!showSpinnerBaseChart" baseChart [datasets]="lineChartData" [labels]="lineChartLabels" [options]="lineChartOptions" [colors]="lineChartColors" [legend]="lineChartLegend" [chartType]="lineChartType" [plugins]="lineChartPlugins" [fullWidth]="true">
                     </canvas>

@@ -33,7 +33,7 @@ export class MenuService {
         return this.menuItems;
     }
 
-    menuCreation(companyId, items: Array<{
+    menuCreation(items: Array<{
         text: string,
         heading?: boolean,
         link?: string,     // internal route links
@@ -50,7 +50,7 @@ export class MenuService {
             pageNumber: 1,
             pageSize: 1000,
             fields: '',
-            searchQuery: 'CompanyID==\"' + companyId + '\"',
+            searchQuery: '',
             orderBy: ''
         }
         this.productsService.getFilteredProduct(filterOptionModel).subscribe((response: any) => {

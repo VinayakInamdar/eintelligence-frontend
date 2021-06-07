@@ -32,22 +32,16 @@ export class StoreComponent implements OnInit {
     private actr: ActivatedRoute) { }
 
   ngOnInit(): void {
-    
-    this.companyId = localStorage.getItem('companyID');
-    this.userId = localStorage.getItem("userID");
-      this.getAllProduct();
-    //using to get list of plans
-    // this.productService.getProducts().subscribe(
-    //   products => {
-    //     
-    //     this.products = products;               
-    //   },
-    //   error => this.errorMessage = <any>error
-
-    // );
+    this.companyId = this.settingService.selectedCompanyInfo.companyId;
+    this.userId = this.openIdConnectService.user.profile.sub;
+    this.actr.data.subscribe((res) => {
+      if (res.resolvedData != null) {
+        this.plans = res.resolvedData;
+      }
+    })
   }
   public onClick(plan): any {
-    
+
     if (plan.paymentType == 'recurring') {
       this.router.navigate(['/checkoutsubscribe', plan.id, plan.productId]);
     } else {
@@ -93,7 +87,7 @@ export class StoreComponent implements OnInit {
       pageNumber: 1,
       pageSize: 1000,
       fields: '',
-      searchQuery: 'CompanyID==\"' + this.companyId + '\"',
+      searchQuery: '',
       orderBy: ''
     }
   }
