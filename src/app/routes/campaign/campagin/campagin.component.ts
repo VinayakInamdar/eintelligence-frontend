@@ -78,7 +78,8 @@ export class CampaginComponent implements OnInit, AfterViewInit {
     gaSelect: this.gaSelect,
     gscSelect: this.gscSelect
   });
- 
+  integrateGSCAccount:boolean=false;
+
   //Traffic
   thisMonthTraffic = 0;
   lastMonthTraffic = 0;
@@ -494,6 +495,7 @@ export class CampaginComponent implements OnInit, AfterViewInit {
         this.getGSCSiteList();
       }
     }, error => {
+      this.integrateGSCAccount=true;
       alert('eeee : ' + JSON.stringify(error.error));
     });
   }
@@ -1053,6 +1055,8 @@ export class CampaginComponent implements OnInit, AfterViewInit {
   }
 
   integrateGSC(): void {
+    localStorage.setItem("selectedCompanyName", this.settingService.selectedCompanyInfo.companyId);
+    localStorage.setItem("selectedCompanyRole", this.settingService.selectedCompanyInfo.role);
     localStorage.setItem("isgsc","1");
     let connectYouTubeUrl = 'https://accounts.google.com/o/oauth2/v2/auth?scope=https://www.googleapis.com/auth/webmasters.readonly https://www.googleapis.com/auth/webmasters&access_type=offline&prompt=consent&include_granted_scopes=true&redirect_uri='+environment.googleRedirectUrl+'&response_type=code&client_id=' + environment.googleClientId;
     window.location.href = connectYouTubeUrl;

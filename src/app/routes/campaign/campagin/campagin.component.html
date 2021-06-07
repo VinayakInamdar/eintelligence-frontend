@@ -107,16 +107,16 @@
                                                         <button class="mr-1 btn btn-danger btn-lg" type="button" (click)="integrateGoogleAnalytics()">Google
                                                             Analytics</button>
                                                     </p>
-                                                        <form [formGroup]="gaSelectForm" class="goalfonsize" *ngIf="hasGaSetup">
-                                                            <select id="gaSelect" style="width: 150px;" class="form-control" formControlName="gaSelect" (change)="onSelectGa($event.target.value)">
+                                                    <form [formGroup]="gaSelectForm" class="goalfonsize" *ngIf="hasGaSetup">
+                                                        <select id="gaSelect" style="width: 150px;" class="form-control" formControlName="gaSelect" (change)="onSelectGa($event.target.value)">
                                                                 <option [ngValue]="undefined" [disabled]="true">Please Select
                                                                 </option>
                                                                 <option *ngFor="let gaAccount of gaAccounts"  [value]="gaAccount" >{{ gaAccount }}</option>
                                                             </select>
-                                                        </form>
-                                                        <p class="goalfonsize" *ngIf="hasGaSetup">
-                                                           
-                                                        </p>
+                                                    </form>
+                                                    <p class="goalfonsize" *ngIf="hasGaSetup">
+
+                                                    </p>
                                                     <p class="goalfonsize" *ngIf="hasGaSetup">
                                                         <button type="button" class="btn btn-danger" (click)="saveGaAccount()" [disabled]="!gaSelectedName">Save
                                                             Changes</button>
@@ -138,16 +138,16 @@
                                                     <p class="goalfonsize">
                                                         <button class="mr-1 btn btn-danger btn-lg" type="button" (click)="integrateGSC()">Google Search Console</button>
                                                     </p>
-                                                        <form [formGroup]="gaSelectForm" class="goalfonsize" *ngIf="hasGscSetup">
-                                                            <select id="gscSelect" class="form-control" formControlName="gscSelect" (change)="onSelectGsc($event.target.value)">
+                                                    <form [formGroup]="gaSelectForm" class="goalfonsize" *ngIf="hasGscSetup">
+                                                        <select id="gscSelect" class="form-control" formControlName="gscSelect" (change)="onSelectGsc($event.target.value)">
                                                                 <option [ngValue]="undefined" [disabled]="true">Please Select
                                                                 </option>
                                                                 <option *ngFor="let gscAccount of gscAccounts"   [value]="gscAccount" >{{ gscAccount }}</option>
                                                             </select>
-                                                        </form>
-                                                        <p class="goalfonsize" *ngIf="hasGscSetup">
-                                                           
-                                                        </p>
+                                                    </form>
+                                                    <p class="goalfonsize" *ngIf="hasGscSetup">
+
+                                                    </p>
                                                     <p class="goalfonsize" *ngIf="hasGscSetup">
                                                         <button type="button" class="btn btn-danger" (click)="saveGscAccount()" [disabled]="!gscSelectedName">Save
                                                             Changes</button>
@@ -157,7 +157,8 @@
                                         </div>
                                     </div>
                                 </div>
-                                <div class="col-md-4">
+                                <!--Facebook hidden,to show it,remove "hidden"-->
+                                <div class="col-md-4" hidden>
                                     <div class="card card-default shadow bg-white rounded cursor-default integration-box-hight">
                                         <div class="card-body form-check-inline text-center">
                                             <div class="row-md-3">
@@ -174,7 +175,7 @@
                                                         </select>
                                                     </form>
                                                     <p class="goalfonsize" *ngIf="hasFacebookSetup">
-                                                           
+
                                                     </p>
                                                     <p class="goalfonsize" *ngIf="hasFacebookSetup">
                                                         <button type="button" class="btn btn-danger" (click)="saveFacebookAccount()" [disabled]="!facebookSelectedName">Save
@@ -188,7 +189,8 @@
 
                             </div>
                             <div class="row-md-12">
-                                <div class="col-md-3">
+                                <!--Google ads hidden-->
+                                <div class="col-md-3" hidden>
                                     <div class="card card-default shadow bg-white rounded cursor-default integration-box-hight">
                                         <div class="card-body form-check-inline text-center">
                                             <div class="row-md-3">
@@ -198,7 +200,7 @@
                                                         <button class="mr-1 btn btn-danger btn-lg" type="button" (click)="signOut()">Google
                                                             Ads</button>
                                                     </p>
-                                                    
+
                                                     <p class="goalfonsize" *ngIf="hasGadsSetup">
                                                         <select class="form-control" (change)="onSelectGads($event.target.value)">
                                                             <option value="0">--Select--</option>
@@ -206,7 +208,7 @@
                                                                 {{facebookAccount}}</option>
                                                         </select>
                                                     </p>
-                                                    <p class="goalfonsize" >
+                                                    <p class="goalfonsize">
                                                         <button type="button" class="btn btn-danger" (click)="refreshGSCAccount()">Save
                                                             Changes</button>
                                                     </p>
@@ -226,7 +228,7 @@
                                                         </button>
                                                     </p>
                                                     <p class="goalfonsize">
-                                                      
+
                                                         <button class="mr-1 btn btn-danger btn-lg" type="button" (click)="goToKeywords()">Keywords
                                                         </button>
                                                     </p>
