@@ -38,7 +38,7 @@ export class HeaderComponent implements OnInit {
     SelectedCampaignId;
     selectedCampaignName: string;
     selectedCampName;
-    isSuperAdmin:boolean=false;
+    isSuperAdmin: boolean = false;
 
     constructor(public menu: MenuService, public _openIdConnectService: OpenIdConnectService, public userblockService: UserblockService, public settings: SettingsService, public injector: Injector
 
@@ -56,7 +56,7 @@ export class HeaderComponent implements OnInit {
         this._openIdConnectService.triggerSignOut();
     }
     ngOnInit() {
-       
+
         this.getCompanyImageLogo();
         this.isNavSearchVisible = false;
 
@@ -82,8 +82,8 @@ export class HeaderComponent implements OnInit {
             this.navCollapsed = true;
         });
 
-        if(this.settingsservice.selectedCompanyInfo.role=="Super Admin"){
-            this.isSuperAdmin=true;
+        if (this.settingsservice.selectedCompanyInfo.role == "Super Admin") {
+            this.isSuperAdmin = true;
         }
 
     }
@@ -125,10 +125,15 @@ export class HeaderComponent implements OnInit {
             screenfull.toggle();
         }
     }
-src:string;
-getCompanyImageLogo(){
-  let image=new Image();
-image.src=this.settingsservice.selectedCompanyInfo.companyImageUrl;
-   this.src=image.src;
-}
+    src: string;
+    getCompanyImageLogo() {
+        if (this.settingsservice.selectedCompanyInfo.companyImageUrl != null) {
+            let image = new Image();
+            image.src = this.settingsservice.selectedCompanyInfo.companyImageUrl;
+            this.src = image.src;
+        }
+        else {
+            this.src = "assets/img/dummy.png"
+        }
+    }
 }

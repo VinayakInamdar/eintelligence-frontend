@@ -142,10 +142,17 @@
             </ng-container>
 
             <ng-container *ngIf="!menu.isMenuLoad">
-                <span *ngIf="!isSidebarCollapsedText()" class="fa fa-spinner fa-pulse fa-3x fa-fw"
-                    style="color:white; text-align: center; margin:15px 75px;"></span>
-                <span *ngIf="isSidebarCollapsedText()" class="fa fa-spinner fa-pulse fa-3x fa-fw"
-                    style="color:white; text-align: center; margin:15px 5px;"></span>
+                <div class="card" style="background-color: transparent !important;">
+                    <div class="card-body loader-demo d-flex align-items-center justify-content-center">
+                        <div class="line-scale">
+                            <div style="background-color: #dc3545;"></div>
+                            <div style="background-color: #dc3545;"></div>
+                            <div style="background-color: #dc3545;"></div>
+                            <div style="background-color: #dc3545;"></div>
+                            <div style="background-color: #dc3545;"></div>
+                        </div>
+                    </div>
+                </div>
             </ng-container>
 
         </ul>

@@ -470,7 +470,7 @@ export class HomeComponent implements OnInit {
     this.getCampaignFacebook();
     this.getCampaignGSC();
     this.getCampaignList();
-    this.menuService.menuCreation(this.settingsservice.selectedCompanyInfo.companyId, menu);
+    this.menuService.menuCreation(menu);
   }
   getInstaToken() {
 
