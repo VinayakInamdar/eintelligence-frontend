@@ -904,15 +904,15 @@ export class CampaginComponent implements OnInit, AfterViewInit {
   //using to close create campaign  component
   public closeCreateCampaignComponent(event) {
     event.preventDefault()
-    this.settingActive = 3;
+    //this.settingActive = 3;
     this.valForm.reset()
-    if (this.url.includes('/home/campaign')) {
-      this.url = undefined;
-      this.router.navigate(['home'])
+    // if (this.url.includes('/home/campaign')) {
+    //   this.url = undefined;
+    //   this.router.navigate(['home'])
 
-    }
+    // }
 
-
+    this.router.navigate(['/campaign']);
   }
 
   // using to change color of circulr progrss bar outerstroke accroding value
@@ -958,8 +958,10 @@ export class CampaginComponent implements OnInit, AfterViewInit {
   }
 
   integrateGoogleAnalytics(): void {
+    ;
     localStorage.setItem("selectedCompanyName", this.settingService.selectedCompanyInfo.companyId);
     localStorage.setItem("selectedCompanyRole", this.settingService.selectedCompanyInfo.role);
+    localStorage.setItem("selectedCompanyImageUrl", this.settingService.selectedCompanyInfo.companyImageUrl);
     localStorage.setItem("isga", "1");
     let connectYouTubeUrl = 'https://accounts.google.com/o/oauth2/v2/auth?scope=https://www.googleapis.com/auth/analytics.readonly https://www.googleapis.com/auth/analytics&access_type=offline&prompt=consent&include_granted_scopes=true&redirect_uri=' + environment.googleRedirectUrl + '&response_type=code&client_id=' + environment.googleClientId;
     window.location.href = connectYouTubeUrl;
@@ -1051,6 +1053,7 @@ export class CampaginComponent implements OnInit, AfterViewInit {
   integrateGSC(): void {
     localStorage.setItem("selectedCompanyName", this.settingService.selectedCompanyInfo.companyId);
     localStorage.setItem("selectedCompanyRole", this.settingService.selectedCompanyInfo.role);
+    localStorage.setItem("selectedCompanyImageUrl", this.settingService.selectedCompanyInfo.companyImageUrl);
     localStorage.setItem("isgsc", "1");
     let connectYouTubeUrl = 'https://accounts.google.com/o/oauth2/v2/auth?scope=https://www.googleapis.com/auth/webmasters.readonly https://www.googleapis.com/auth/webmasters&access_type=offline&prompt=consent&include_granted_scopes=true&redirect_uri=' + environment.googleRedirectUrl + '&response_type=code&client_id=' + environment.googleClientId;
     window.location.href = connectYouTubeUrl;

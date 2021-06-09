@@ -22,14 +22,18 @@ export class SigninOidcComponent implements OnInit {
     ;
 
     this.openIdConnectService.userLoaded$.subscribe((userLoaded) => {
+      debugger;
       if (userLoaded) {
         let cName = localStorage.getItem("selectedCompanyName");
         if (cName != undefined || cName != null) {
           this.menuService.menuCreation(menu);
           this.settingsservice.selectedCompanyInfo.companyId = cName;
           this.settingsservice.selectedCompanyInfo.role = localStorage.getItem("selectedCompanyRole");
+          debugger;
+          this.settingsservice.selectedCompanyInfo.companyImageUrl = localStorage.getItem("selectedCompanyImageUrl");
           localStorage.removeItem("selectedCompanyName");
           localStorage.removeItem("selectedCompanyRole");
+          localStorage.removeItem("selectedCompanyImageUrl");
           this.router.navigate(['/home/campaign']);
 
         }

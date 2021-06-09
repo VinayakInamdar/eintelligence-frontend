@@ -50,7 +50,15 @@ export class CampaignlistComponent implements OnInit {
       },
       webUrl: {
         title: 'WEBURL',
-        filter: false
+        filter: false,
+        type: 'html',
+        valuePrepareFunction: (value) => {
+          ;
+          let a = value;
+          let b = "https://www.";
+          let c = b.concat(a);
+          return `<a href=` + c + `  target="_blank" rel="noopener noreferrer">` + a + `</a>`;
+        }
       },
       ranking: {
         title: 'RANKING',
