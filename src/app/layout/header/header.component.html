@@ -7,8 +7,7 @@
                 <img class="img-fluid" src="{{src}}" alt="App Logo" style="width: 100px;height: 45px;margin-top: -4%" />
             </div>
             <div class="brand-logo-collapsed">
-                <img class="img-fluid" src="{{src}}" alt="App Logo" id="image"
-                    style="width: 45px;height: 45px;margin-right: 25%" />
+                <img class="img-fluid" src="{{src}}" alt="App Logo" id="image" style="width: 45px;height: 45px;margin-right: 25%" />
             </div>
         </a>
     </div>
@@ -47,7 +46,7 @@
     </ul>
     <ul class="navbar-nav flex-row" style="display: flex;flex-direction: row;justify-content: space-evenly;">
         <li class="nav-item d-none d-md-block">
-            <button class="mr-1 btn btn-outline-danger btn-lg mt-2" style="background: #ffffff;
+            <button *ngIf="isSuperAdmin" class="mr-1 btn btn-outline-danger btn-lg mt-2" style="background: #ffffff;
     color: #dc3545;" type="button" [routerLink]="'/company'">Change Company</button>
         </li>
 

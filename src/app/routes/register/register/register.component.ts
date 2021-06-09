@@ -47,9 +47,9 @@ export class RegisterComponent implements OnInit {
       'fName': [this.userModel.fName, Validators.required],
       'lName': [this.userModel.lName, Validators.required],
       'email': [this.userModel.email, Validators.required],
-      'password': [this.userModel.password, Validators.required],
+     // 'password': [this.userModel.password],
       'cName': [this.cName.value, Validators.required],
-      'companytype': [this.companytype.value, Validators.required],
+      'companytype': [this.companytype.value],
       'companyImageUrl':[this.companyImageUrl.value,Validators.required]
     })
   }
@@ -63,18 +63,15 @@ export class RegisterComponent implements OnInit {
   }
 
   submitForm(value: any) {
-    // var result: Register = Object.assign({}, value);
-
-    // this.registerService.createRegiter(result).subscribe((res: Register) => {
-    //   this.registerModel = res;
-    // });
+    ;
+    value.companytype="agency";
     this.selectedCompanyImageUrl = localStorage.getItem('companyImageUrl');
     localStorage.removeItem('companyImageUrl');
     value.companyImageUrl = this.selectedCompanyImageUrl;
     
     var result: User = Object.assign({}, value);
     this.userService.createUser(result).subscribe((res: User) => {
-      
+      ;
       this.userModel = res;
 
 

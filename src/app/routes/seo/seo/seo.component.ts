@@ -24,6 +24,7 @@ import { parseDate } from 'ngx-bootstrap/chronos';
 import { environment } from '../../../../environments/environment';
 import html2canvas from 'html2canvas';
 import * as html2pdf from 'html2pdf.js';
+import { SettingsService } from 'src/app/core/settings/settings.service';
 
 const success = require('sweetalert');
 @Component({
@@ -37,6 +38,8 @@ export class SeoComponent implements OnInit {
   @ViewChild('staticTabs', { static: false }) staticTabs: TabsetComponent;
   @ViewChild(BaseChartDirective)
   period = "28Days";
+  integrateGSCAccount: boolean = false;
+  integrateGAAccount: boolean = false;
   //for keyword listing
   source: LocalDataSource;
   //variable passed from campaign list
@@ -208,9 +211,9 @@ export class SeoComponent implements OnInit {
     },
     datasets: [
       {
-        data: [], label: 'This Slab', legend: false, fill: false
+        data: [], label: 'This Period', legend: false, fill: false
       }, {
-        data: [], label: 'Previous Slab', legend: false, fill: false,
+        data: [], label: 'Previous Period', legend: false, fill: false,
       }]
   };
   barDataImpressions = {
@@ -222,9 +225,9 @@ export class SeoComponent implements OnInit {
     },
     datasets: [
       {
-        data: [], label: 'This Slab', legend: false, fill: false
+        data: [], label: 'This Period', legend: false, fill: false
       }, {
-        data: [], label: 'Previous Slab', legend: false, fill: false,
+        data: [], label: 'Previous Period', legend: false, fill: false,
       }]
   };
   barDataCTR = {
@@ -236,9 +239,9 @@ export class SeoComponent implements OnInit {
     },
     datasets: [
       {
-        data: [], label: 'This Slab', legend: false, fill: false
+        data: [], label: 'This Period', legend: false, fill: false
       }, {
-        data: [], label: 'Previous Slab', legend: false, fill: false,
+        data: [], label: 'Previous Period', legend: false, fill: false,
       }]
   };
   barDataPositions = {
@@ -250,9 +253,9 @@ export class SeoComponent implements OnInit {
     },
     datasets: [
       {
-        data: [], label: 'This Slab', legend: false, fill: false
+        data: [], label: 'This Period', legend: false, fill: false
       }, {
-        data: [], label: 'Previous Slab', legend: false, fill: false,
+        data: [], label: 'Previous Period', legend: false, fill: false,
       }]
     // datasets: [
     //   {
@@ -395,9 +398,9 @@ export class SeoComponent implements OnInit {
       'Tablet',
     ],
     datasets: [{
-      data: [130, 65, 40], label: 'This Slab'
+      data: [130, 65, 40], label: 'This Period'
     }, {
-      data: [12, 45, 450], label: 'Previuos Slab'
+      data: [12, 45, 450], label: 'Previous Period'
     }],
   };
 
@@ -946,7 +949,7 @@ export class SeoComponent implements OnInit {
     private campaignService: CampaignService, private openIdConnectService: OpenIdConnectService,
     public route: ActivatedRoute, public router: Router, private integrationsService: IntegrationsService
     , private overvieswService: OverviewService, location: PlatformLocation,
-    public auditsService: AuditsService, private http: HttpClient, public datepipe: DatePipe, private authService: SocialAuthService) {
+    public auditsService: AuditsService, private http: HttpClient, public datepipe: DatePipe, private authService: SocialAuthService, private settingService: SettingsService) {
 
 
 
@@ -1072,12 +1075,13 @@ export class SeoComponent implements OnInit {
     };
     this.http.post(url, data).subscribe(res => {
       if (res) {
-        debugger
+
         this.gscaccesstoken = res['access_token'];
         this.getData();
       }
     }, error => {
-      debugger
+
+
       alert('Gsc : ' + JSON.stringify(error.error));
     });
   }
@@ -1094,14 +1098,15 @@ export class SeoComponent implements OnInit {
     };
     this.http.post(url, data).subscribe(res => {
       if (res) {
-        debugger
+
         this.gaaccesstoken = res['access_token'];
         this.getAnalyticsProfileIds();
         this.getSiteSpeedDataMobile();
         this.getSiteSpeedDataDesktop();
       }
     }, error => {
-      debugger
+
+
       alert('GA : ' + JSON.stringify(error.error));
     });
 
@@ -1110,7 +1115,7 @@ export class SeoComponent implements OnInit {
   ngOnInit(): void {
     // this.lineChartData1=[];
     // this.lineChartLabels1 = [];
-
+    ;
     this.gaurl = localStorage.getItem('gaurl');
     this.gaaccesstoken = localStorage.getItem('gaaccesstoken');
     this.garefreshtoken = localStorage.getItem('garefreshtoken');
@@ -1123,11 +1128,21 @@ export class SeoComponent implements OnInit {
     this.selectedCampIdWebUrl = localStorage.getItem('selectedCampUrl');
     if (this.gaurl != 'null' && this.gaurl != null && this.gaurl != undefined && this.gaurl != '') {
       this.refreshGoogleAnalyticsAccount();
+      ;
     }
+    else {
+      this.integrateGAAccount = true;
+    }
+
     if (this.gscurl != 'null' && this.gscurl != null && this.gscurl != undefined && this.gscurl != '') {
+      ;
       this.getDateSettings();
       this.refreshGSCAccount();
     }
+    else {
+      this.integrateGSCAccount = true;
+    }
+
     this.sub = this.route.params.subscribe(params => {
       this.id = params['id'];
     });
@@ -1206,7 +1221,7 @@ export class SeoComponent implements OnInit {
 
   }
   getAnalyticsProfileIds() {
-
+    ;
     let currDate = new Date();
     let endDate1 = this.datepipe.transform(currDate, 'yyyy-MM-dd');
     let startDate1 = this.datepipe.transform(currDate.setDate(currDate.getDate() - 28), 'yyyy-MM-dd');
@@ -1220,7 +1235,7 @@ export class SeoComponent implements OnInit {
     const url = "https://www.googleapis.com/analytics/v3/management/accountSummaries";
     this.http.get(url, this.httpOptionJSON).subscribe(res => {
       if (res) {
-
+        ;
         let rows = res['items'];
         //let accountSummaryIds=[];
         for (let i = 0; i < rows.length; i++) {
@@ -1239,7 +1254,7 @@ export class SeoComponent implements OnInit {
 
       }
     }, error => {
-
+      ;
       //alert('Analytics Data Fetch failed : ' + JSON.stringify(error.error));
     });
   }
@@ -2521,7 +2536,9 @@ export class SeoComponent implements OnInit {
     };
 
     this.http.post(url, data, this.httpOptionJSON).subscribe(res => {
+      ;
       if (res) {
+        ;
         let rows = res['rows'];
         this.clicksThisYear = rows[0].clicks;
         this.impressionsThisYear = rows[0].impressions;
@@ -2708,14 +2725,14 @@ export class SeoComponent implements OnInit {
   }
 
   getData() {
-
+    ;
     if (this.gscaccesstoken == '' || this.gscaccesstoken == undefined || this.gscaccesstoken == null) {
       //alert("Please, Login with Google to fetch data");
     } else if (parseDate(this.endDate) < parseDate(this.startDate)) {
       //alert("Start Date can not be grater then End Date");
     }
     else {
-
+      ;
       let urlcamp = this.gscurl.replace('https://', '');
       urlcamp = urlcamp.replace('/', '');
       const url = "https://www.googleapis.com/webmasters/v3/sites/https%3A%2F%2F" + urlcamp + "/searchAnalytics/query?key=AIzaSyC1IsrCeeNXp9ksAmC8szBtYVjTLJC9UWQ";
@@ -2734,6 +2751,26 @@ export class SeoComponent implements OnInit {
     return ((100 * num) / total)
   }
 
+  // integrateGSC(): void {
+  //   ;
+  //   localStorage.setItem("selectedCompanyName", this.settingService.selectedCompanyInfo.companyId);
+  //   localStorage.setItem("selectedCompanyRole", this.settingService.selectedCompanyInfo.role);
+  //   localStorage.setItem("selectedCompanyImageUrl", this.settingService.selectedCompanyInfo.companyImageUrl);
+  //   localStorage.setItem("isgsc", "1");
+  //   let connectYouTubeUrl = 'https://accounts.google.com/o/oauth2/v2/auth?scope=https://www.googleapis.com/auth/webmasters.readonly https://www.googleapis.com/auth/webmasters&access_type=offline&prompt=consent&include_granted_scopes=true&redirect_uri=' + environment.googleRedirectUrl + '&response_type=code&client_id=' + environment.googleClientId;
+  //   window.location.href = connectYouTubeUrl;
+  // }
+  // integrateGoogleAnalytics(): void {
+  //   ;
+  //   localStorage.setItem("selectedCompanyName", this.settingService.selectedCompanyInfo.companyId);
+  //   localStorage.setItem("selectedCompanyRole", this.settingService.selectedCompanyInfo.role);
+  //   localStorage.setItem("selectedCompanyImageUrl", this.settingService.selectedCompanyInfo.companyImageUrl);
+  //   localStorage.setItem("isga", "1");
+  //   let connectYouTubeUrl = 'https://accounts.google.com/o/oauth2/v2/auth?scope=https://www.googleapis.com/auth/analytics.readonly https://www.googleapis.com/auth/analytics&access_type=offline&prompt=consent&include_granted_scopes=true&redirect_uri=' + environment.googleRedirectUrl + '&response_type=code&client_id=' + environment.googleClientId;
+  //   window.location.href = connectYouTubeUrl;
+
+
+  // }
   //#################  GSC data end ###########################################
 
   generatePdf() {
