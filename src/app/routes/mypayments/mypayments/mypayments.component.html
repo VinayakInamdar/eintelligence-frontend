@@ -38,7 +38,7 @@
                                                     <td>{{p.paymentMode}}</td>
                                                     <td>{{p.paymentCycle}}</td>
                                                     <td>
-                                                        <button class="btn bg-primary"  *ngIf="p.isActive != false " 
+                                                        <button class="btn bg-danger"  *ngIf="p.isActive != false " 
                                                         (click)="cancleSubscription(p.stripeSubscriptionId);" type="button">Cancel Subscription</button>
                                                     </td>
 

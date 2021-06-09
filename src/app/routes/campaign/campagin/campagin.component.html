@@ -7,10 +7,12 @@
     <div class="col-md-2"> </div>
 </div>
 <app-submenu></app-submenu>
-<div *ngIf="settingActive == 1;" class="row w3-container w3-center w3-animate-right paddingtopdiv" style="height: 500px;">
+<div *ngIf="settingActive == 1;" class="row w3-container w3-center w3-animate-right paddingtopdiv"
+    style="height: 500px;">
     <div class="col-md-2"> </div>
     <div class="col-md-8">
-        <form [formGroup]="valForm" class="form-horizontal card formh cursor-default" (keydown.enter)="$event.preventDefault()" (submit)="submitForm(valForm.value)" novalidate="">
+        <form [formGroup]="valForm" class="form-horizontal card formh cursor-default"
+            (keydown.enter)="$event.preventDefault()" (submit)="submitForm(valForm.value)" novalidate="">
             <tabset [justified]="true" #staticTabs>
                 <tab class="tabh">
                     <ng-template tabHeading>
@@ -25,8 +27,10 @@
                             <hr>
                             <div class="row">
                                 <label>CAMPAIGN NAME</label>
-                                <input #name_field class="form-control campinputh" formControlName="name" placeholder="Name of your campaign">
-                                <span class="text-danger" *ngIf="valForm.controls['name'].hasError('required') && (valForm.controls['name'].dirty || valForm.controls['name'].touched)">
+                                <input #name_field class="form-control campinputh" formControlName="name"
+                                    placeholder="Name of your campaign">
+                                <span class="text-danger"
+                                    *ngIf="valForm.controls['name'].hasError('required') && (valForm.controls['name'].dirty || valForm.controls['name'].touched)">
                                     {{'validation.NAMEISREQUIRED' | translate}}</span>
                                 <br>
                                 <br>
@@ -37,7 +41,8 @@
 
                             <br>
                             <div class="text-center">
-                                <button class="mr-1 btn btn-danger btn-lg" type="submit" (click)="goToNextTab($event,name_field.value,'name',1)">Next </button>
+                                <button class="mr-1 btn btn-danger btn-lg" type="submit"
+                                    (click)="goToNextTab($event,name_field.value,'name',1)">Next </button>
                             </div>
                         </div>
                         <div class="col-md-1"></div>
@@ -56,30 +61,39 @@
                             <hr>
                             <label>WEBSITE URL</label>
                             <div class="form-group row">
-                                <input #webUrl_field class="form-control campinputh" type="url" formControlName="webUrl" placeholder="Ex. example.com (Without http:// and https:// ) " [formControl]="valForm.controls['webUrl']" />
-                                <span class="text-danger" *ngIf="valForm.controls['webUrl'].hasError('required') && (valForm.controls['webUrl'].dirty || valForm.controls['webUrl'].touched)">
+                                <input #webUrl_field class="form-control campinputh" type="url" formControlName="webUrl"
+                                    placeholder="Ex. example.com (Without http:// and https:// ) "
+                                    [formControl]="valForm.controls['webUrl']" />
+                                <span class="text-danger"
+                                    *ngIf="valForm.controls['webUrl'].hasError('required') && (valForm.controls['webUrl'].dirty || valForm.controls['webUrl'].touched)">
                                     {{'validation.URLREQUIRED' | translate}}</span>
-                                <span class="text-danger" *ngIf="valForm.controls['webUrl'].hasError('pattern') && (valForm.controls['webUrl'].dirty || valForm.controls['webUrl'].touched)">
+                                <span class="text-danger"
+                                    *ngIf="valForm.controls['webUrl'].hasError('pattern') && (valForm.controls['webUrl'].dirty || valForm.controls['webUrl'].touched)">
                                     {{'validation.URLVALIDATION' | translate}}</span>
                             </div>
 
                             <div class="row">
                                 <div class="col-md-3">
-                                    <button class="mr-1 btn btn-secondary btn-lg" type="submit" (click)="goToPreviousTab($event,0)">
+                                    <button class="mr-1 btn btn-secondary btn-lg" type="submit"
+                                        (click)="goToPreviousTab($event,0)">
                                         < Go Back</button>
                                 </div>
                                 <div class="col-md-6"></div>
                                 <div class="col-md-3">
                                     <p *ngIf="!isEditMode">
-                                        <button class="mr-1 btn btn-danger btn-lg" type="submit" (click)="successAlert()" [disabled]="!webUrl_field.value || (valForm.controls['webUrl'].hasError('pattern'))">Create
+                                        <button class="mr-1 btn btn-danger btn-lg" type="submit"
+                                            (click)="successAlert()"
+                                            [disabled]="!webUrl_field.value || (valForm.controls['webUrl'].hasError('pattern'))">Create
                                             campaign</button>
                                     </p>
                                     <p *ngIf="isEditMode">
-                                        <button class="mr-1 btn btn-danger btn-lg" type="submit" (click)="successAlert()">Update
+                                        <button class="mr-1 btn btn-danger btn-lg" type="submit"
+                                            (click)="successAlert()">Update
                                             campaign</button>
                                     </p>
                                     <p *ngIf="isEditMode">
-                                        <button class="mr-1 btn btn-danger btn-lg" type="submit" (click)="goToNextTab($event,name_field.value,'webUrl',2)">Integrations
+                                        <button class="mr-1 btn btn-danger btn-lg" type="submit"
+                                            (click)="goToNextTab($event,name_field.value,'webUrl',2)">Integrations
                                         </button>
                                     </p>
                                 </div>
@@ -98,27 +112,35 @@
 
 
                                 <div class="col-md-4">
-                                    <div class="card card-default shadow bg-white rounded cursor-default integration-box-hight">
+                                    <div
+                                        class="card card-default shadow bg-white rounded cursor-default integration-box-hight">
                                         <div class="card-body form-check-inline text-center">
                                             <div class="row-md-3">
                                                 <div class="col-md-11 setmargininlinestart">
                                                     <!-- <em class="fa-2x mr-2 fas fa-users"></em><br> -->
                                                     <p class="goalfonsize">
-                                                        <button class="mr-1 btn btn-danger btn-lg" type="button" (click)="integrateGoogleAnalytics()">Google
+                                                        <button class="mr-1 btn btn-danger btn-lg" type="button"
+                                                            (click)="integrateGoogleAnalytics()">Google
                                                             Analytics</button>
                                                     </p>
-                                                    <form [formGroup]="gaSelectForm" class="goalfonsize" *ngIf="hasGaSetup">
-                                                        <select id="gaSelect" style="width: 150px;" class="form-control" formControlName="gaSelect" (change)="onSelectGa($event.target.value)">
-                                                                <option [ngValue]="undefined" [disabled]="true">Please Select
-                                                                </option>
-                                                                <option *ngFor="let gaAccount of gaAccounts"  [value]="gaAccount" >{{ gaAccount }}</option>
-                                                            </select>
+                                                    <form [formGroup]="gaSelectForm" class="goalfonsize"
+                                                        *ngIf="hasGaSetup">
+                                                        <select id="gaSelect" style="width: 150px;" class="form-control"
+                                                            formControlName="gaSelect"
+                                                            (change)="onSelectGa($event.target.value)">
+                                                            <option [ngValue]="undefined" [disabled]="true">Please
+                                                                Select
+                                                            </option>
+                                                            <option *ngFor="let gaAccount of gaAccounts"
+                                                                [value]="gaAccount">{{ gaAccount }}</option>
+                                                        </select>
                                                     </form>
                                                     <p class="goalfonsize" *ngIf="hasGaSetup">
 
                                                     </p>
                                                     <p class="goalfonsize" *ngIf="hasGaSetup">
-                                                        <button type="button" class="btn btn-danger" (click)="saveGaAccount()" [disabled]="!gaSelectedName">Save
+                                                        <button type="button" class="btn btn-danger"
+                                                            (click)="saveGaAccount()" [disabled]="!isGaEdit">Save
                                                             Changes</button>
                                                     </p>
 
@@ -129,27 +151,35 @@
                                     </div>
                                 </div>
                                 <div class="col-md-4">
-                                    <div class="card card-default shadow bg-white rounded cursor-default integration-box-hight">
+                                    <div
+                                        class="card card-default shadow bg-white rounded cursor-default integration-box-hight">
                                         <div class="card-body form-check-inline text-center">
                                             <div class="row-md-3">
                                                 <div class="col-md-11 setdivpadding">
                                                     <!-- <em class="fa-2x mr-2 fas fa-globe"></em> -->
 
                                                     <p class="goalfonsize">
-                                                        <button class="mr-1 btn btn-danger btn-lg" type="button" (click)="integrateGSC()">Google Search Console</button>
+                                                        <button class="mr-1 btn btn-danger btn-lg" type="button"
+                                                            (click)="integrateGSC()">Google Search Console</button>
                                                     </p>
-                                                    <form [formGroup]="gaSelectForm" class="goalfonsize" *ngIf="hasGscSetup">
-                                                        <select id="gscSelect" class="form-control" formControlName="gscSelect" (change)="onSelectGsc($event.target.value)">
-                                                                <option [ngValue]="undefined" [disabled]="true">Please Select
-                                                                </option>
-                                                                <option *ngFor="let gscAccount of gscAccounts"   [value]="gscAccount" >{{ gscAccount }}</option>
-                                                            </select>
+                                                    <form [formGroup]="gaSelectForm" class="goalfonsize"
+                                                        *ngIf="hasGscSetup">
+                                                        <select id="gscSelect" class="form-control"
+                                                            formControlName="gscSelect"
+                                                            (change)="onSelectGsc($event.target.value)">
+                                                            <option [ngValue]="undefined" [disabled]="true">Please
+                                                                Select
+                                                            </option>
+                                                            <option *ngFor="let gscAccount of gscAccounts"
+                                                                [value]="gscAccount">{{ gscAccount }}</option>
+                                                        </select>
                                                     </form>
                                                     <p class="goalfonsize" *ngIf="hasGscSetup">
 
                                                     </p>
                                                     <p class="goalfonsize" *ngIf="hasGscSetup">
-                                                        <button type="button" class="btn btn-danger" (click)="saveGscAccount()" [disabled]="!gscSelectedName">Save
+                                                        <button type="button" class="btn btn-danger"
+                                                            (click)="saveGscAccount()" [disabled]="!isGscEdit">Save
                                                             Changes</button>
                                                     </p>
                                                 </div>
@@ -159,26 +189,35 @@
                                 </div>
                                 <!--Facebook hidden,to show it,remove "hidden"-->
                                 <div class="col-md-4" hidden>
-                                    <div class="card card-default shadow bg-white rounded cursor-default integration-box-hight">
+                                    <div
+                                        class="card card-default shadow bg-white rounded cursor-default integration-box-hight">
                                         <div class="card-body form-check-inline text-center">
                                             <div class="row-md-3">
                                                 <div class="col-md-11 setdivpadding setmargininlinestart">
                                                     <!-- <em class="fa-2x mr-2 fas fa-store"></em><br> -->
                                                     <p class="goalfonsize">
-                                                        <button class="mr-1 btn btn-danger btn-lg" type="button" (click)="loginWithOptions()">Facebook</button>
+                                                        <button class="mr-1 btn btn-danger btn-lg" type="button"
+                                                            (click)="loginWithOptions()">Facebook</button>
                                                     </p>
-                                                    <form [formGroup]="gaSelectForm" class="goalfonsize" *ngIf="hasFacebookSetup">
-                                                        <select id="facebookSelect" class="form-control" formControlName="facebookSelect" (change)="onSelectFacebook($event.target.value)">
-                                                            <option [ngValue]="undefined" [disabled]="true">Please Select
+                                                    <form [formGroup]="gaSelectForm" class="goalfonsize"
+                                                        *ngIf="hasFacebookSetup">
+                                                        <select id="facebookSelect" class="form-control"
+                                                            formControlName="facebookSelect"
+                                                            (change)="onSelectFacebook($event.target.value)">
+                                                            <option [ngValue]="undefined" [disabled]="true">Please
+                                                                Select
                                                             </option>
-                                                            <option *ngFor="let facebookAccount of facebookAccounts" >{{ facebookAccount }}</option>
+                                                            <option *ngFor="let facebookAccount of facebookAccounts">{{
+                                                                facebookAccount }}</option>
                                                         </select>
                                                     </form>
                                                     <p class="goalfonsize" *ngIf="hasFacebookSetup">
 
                                                     </p>
                                                     <p class="goalfonsize" *ngIf="hasFacebookSetup">
-                                                        <button type="button" class="btn btn-danger" (click)="saveFacebookAccount()" [disabled]="!facebookSelectedName">Save
+                                                        <button type="button" class="btn btn-danger"
+                                                            (click)="saveFacebookAccount()"
+                                                            [disabled]="!facebookSelectedName">Save
                                                             Changes</button>
                                                     </p>
                                                 </div>
@@ -191,25 +230,29 @@
                             <div class="row-md-12">
                                 <!--Google ads hidden-->
                                 <div class="col-md-3" hidden>
-                                    <div class="card card-default shadow bg-white rounded cursor-default integration-box-hight">
+                                    <div
+                                        class="card card-default shadow bg-white rounded cursor-default integration-box-hight">
                                         <div class="card-body form-check-inline text-center">
                                             <div class="row-md-3">
                                                 <div class="col-md-11 setdivpadding">
                                                     <!-- <em class="fa-2x mr-2 fas fa-store"></em><br> -->
                                                     <p class="goalfonsize">
-                                                        <button class="mr-1 btn btn-danger btn-lg" type="button" (click)="signOut()">Google
+                                                        <button class="mr-1 btn btn-danger btn-lg" type="button"
+                                                            (click)="signOut()">Google
                                                             Ads</button>
                                                     </p>
 
                                                     <p class="goalfonsize" *ngIf="hasGadsSetup">
-                                                        <select class="form-control" (change)="onSelectGads($event.target.value)">
+                                                        <select class="form-control"
+                                                            (change)="onSelectGads($event.target.value)">
                                                             <option value="0">--Select--</option>
                                                             <option *ngFor="let facebookAccount of facebookAccounts">
                                                                 {{facebookAccount}}</option>
                                                         </select>
                                                     </p>
                                                     <p class="goalfonsize">
-                                                        <button type="button" class="btn btn-danger" (click)="refreshGSCAccount()">Save
+                                                        <button type="button" class="btn btn-danger"
+                                                            (click)="refreshGSCAccount()">Save
                                                             Changes</button>
                                                     </p>
                                                 </div>
@@ -218,18 +261,21 @@
                                     </div>
                                 </div>
                                 <div class="col-md-3">
-                                    <div class="card card-default shadow bg-white rounded cursor-default integration-box-hight">
+                                    <div
+                                        class="card card-default shadow bg-white rounded cursor-default integration-box-hight">
                                         <div class="card-body form-check-inline text-center">
                                             <div class="row-md-3">
                                                 <div class="col-md-11">
                                                     <!-- <em class="fa-2x mr-2 fas fa-store"></em><br> -->
                                                     <p class="goalfonsize">
-                                                        <button class="mr-1 btn btn-danger btn-lg" type="button" (click)="goToAddKeywords()">Add Keywords
+                                                        <button class="mr-1 btn btn-danger btn-lg" type="button"
+                                                            (click)="goToAddKeywords()">Add Keywords
                                                         </button>
                                                     </p>
                                                     <p class="goalfonsize">
 
-                                                        <button class="mr-1 btn btn-danger btn-lg" type="button" (click)="goToKeywords()">Keywords
+                                                        <button class="mr-1 btn btn-danger btn-lg" type="button"
+                                                            (click)="goToKeywords()">Keywords
                                                         </button>
                                                     </p>
                                                 </div>
@@ -243,7 +289,8 @@
                     <br>
                     <div class="row-md-16">
                         <div class="col-md-10">
-                            <button class="mr-1 btn btn-secondary btn-lg" type="submit" (click)="goToPreviousTab($event,1)">
+                            <button class="mr-1 btn btn-secondary btn-lg" type="submit"
+                                (click)="goToPreviousTab($event,1)">
                                 Go Back</button>
                         </div>
                         <div class="col-md-5"></div>
@@ -268,7 +315,8 @@
         <div class="col-md-1"></div>
     </div>
     <div class="col-md-3 search-container paddingtop13px">
-        <input #search class="form-control ng-valid ng-dirty ng-valid-parse ng-touched ng-empty searchcampw" type="text" placeholder="Search for campaigns" (keyup)="onSearch(search.value)">
+        <input #search class="form-control ng-valid ng-dirty ng-valid-parse ng-touched ng-empty searchcampw" type="text"
+            placeholder="Search for campaigns" (keyup)="onSearch(search.value)">
         <div class="col-md-1"></div>
     </div>
 
@@ -279,7 +327,8 @@
     <div class="col-md-12">
         <div class="card card-default shadow p-3 mb-5 bg-white rounded cursor-default">
             <div class="table-responsive cursor-pointer">
-                <ng2-smart-table [settings]="settings" [source]="source" (userRowSelect)="userRowSelect($event)" (custom)="onCustomAction($event)">
+                <ng2-smart-table [settings]="settings" [source]="source" (userRowSelect)="userRowSelect($event)"
+                    (custom)="onCustomAction($event)">
                 </ng2-smart-table>
             </div>
         </div>
@@ -299,7 +348,8 @@
 <div *ngIf="settingActive == 4;" class="row w3-container w3-center w3-animate-right paddingtopdiv">
     <div class="col-md-2"> </div>
     <div class="col-md-8">
-        <form [formGroup]="valForm" class="form-horizontal card formh cursor-default" (keydown.enter)="$event.preventDefault()" (submit)="updateCampaignForm(campaignModel)" novalidate="">
+        <form [formGroup]="valForm" class="form-horizontal card formh cursor-default"
+            (keydown.enter)="$event.preventDefault()" (submit)="updateCampaignForm(campaignModel)" novalidate="">
             <tabset [justified]="true" #staticTabs>
                 <tab class="tabh">
                     <ng-template tabHeading>
@@ -313,12 +363,15 @@
                             <h3> Your client's campaign name</h3>
                             <hr>
                             <label>CAMPAIGN NAME</label>
-                            <input #name_field class="form-control campinputh" formControlName="name" placeholder="Name of your campaign" [(ngModel)]='campaignModel.name'>
-                            <span class="text-danger" *ngIf="valForm.controls['name'].hasError('required') && (valForm.controls['name'].dirty || valForm.controls['name'].touched)">
+                            <input #name_field class="form-control campinputh" formControlName="name"
+                                placeholder="Name of your campaign" [(ngModel)]='campaignModel.name'>
+                            <span class="text-danger"
+                                *ngIf="valForm.controls['name'].hasError('required') && (valForm.controls['name'].dirty || valForm.controls['name'].touched)">
                                 {{'validation.NAMEISREQUIRED' | translate}}</span>
                             <br>
                             <div class="text-center">
-                                <button class="mr-1 btn btn-danger btn-lg" type="submit" (click)="goToNextTabForEdit($event,name_field.value,'name',1)">Next </button>
+                                <button class="mr-1 btn btn-danger btn-lg" type="submit"
+                                    (click)="goToNextTabForEdit($event,name_field.value,'name',1)">Next </button>
                             </div>
                         </div>
                         <div class="col-md-1"></div>
@@ -337,21 +390,27 @@
                             <hr>
                             <label>WEBSITE URL</label>
                             <div class="form-group row">
-                                <input #webUrl_field class="form-control campinputh" type="url" placeholder="http:// or https://" formControlName="webUrl" [formControl]="valForm.controls['webUrl']" [(ngModel)]='campaignModel.webUrl' />
-                                <span class="text-danger" *ngIf="valForm.controls['webUrl'].hasError('required') && (valForm.controls['webUrl'].dirty || valForm.controls['webUrl'].touched)">
+                                <input #webUrl_field class="form-control campinputh" type="url"
+                                    placeholder="http:// or https://" formControlName="webUrl"
+                                    [formControl]="valForm.controls['webUrl']" [(ngModel)]='campaignModel.webUrl' />
+                                <span class="text-danger"
+                                    *ngIf="valForm.controls['webUrl'].hasError('required') && (valForm.controls['webUrl'].dirty || valForm.controls['webUrl'].touched)">
                                     {{'validation.URLREQUIRED' | translate}}</span>
-                                <span class="text-danger" *ngIf="valForm.controls['webUrl'].hasError('pattern') && (valForm.controls['webUrl'].dirty || valForm.controls['webUrl'].touched)">
+                                <span class="text-danger"
+                                    *ngIf="valForm.controls['webUrl'].hasError('pattern') && (valForm.controls['webUrl'].dirty || valForm.controls['webUrl'].touched)">
                                     {{'validation.URLVALIDATION' | translate}}</span>
                             </div>
 
                             <div class="row">
                                 <div class="col-md-3">
-                                    <button class="mr-1 btn btn-secondary btn-lg" type="submit" (click)="goToPreviousTab($event,0)">
+                                    <button class="mr-1 btn btn-secondary btn-lg" type="submit"
+                                        (click)="goToPreviousTab($event,0)">
                                         < Go Back</button>
                                 </div>
                                 <div class="col-md-6"></div>
                                 <div class="col-md-3">
-                                    <button class="mr-1 btn btn-danger btn-lg" type="submit" (click)="goToNextTabForEdit($event,webUrl_field.value,'webUrl',2)">Next
+                                    <button class="mr-1 btn btn-danger btn-lg" type="submit"
+                                        (click)="goToNextTabForEdit($event,webUrl_field.value,'webUrl',2)">Next
                                         ></button>
                                 </div>
                             </div>
@@ -370,10 +429,12 @@
                             <hr>
                             <div class="row">
                                 <div class="col-md-4">
-                                    <div class="card card-default shadow p-2 mb-2 bg-white rounded goalsubh cursor-default">
+                                    <div
+                                        class="card card-default shadow p-2 mb-2 bg-white rounded goalsubh cursor-default">
                                         <div class="card-body form-check-inline text-center">
                                             <div class="col-md-1">
-                                                <input formControlName="moreTraffic" class="form-check-input" type="checkbox" value="" [(ngModel)]='campaignModel.moreTraffic'>
+                                                <input formControlName="moreTraffic" class="form-check-input"
+                                                    type="checkbox" value="" [(ngModel)]='campaignModel.moreTraffic'>
                                             </div>
                                             <div class="col-md-11">
                                                 <em class="fa-2x mr-2 fas fa-globe"></em><br>
@@ -383,10 +444,12 @@
                                     </div>
                                 </div>
                                 <div class="col-md-4">
-                                    <div class="card card-default shadow p-2 mb-2 bg-white rounded goalsubh cursor-default">
+                                    <div
+                                        class="card card-default shadow p-2 mb-2 bg-white rounded goalsubh cursor-default">
                                         <div class="card-body form-check-inline text-center">
                                             <div class="col-md-1">
-                                                <input type="checkbox" formControlName="sales" class="form-check-input" value="" [(ngModel)]='campaignModel.sales'>
+                                                <input type="checkbox" formControlName="sales" class="form-check-input"
+                                                    value="" [(ngModel)]='campaignModel.sales'>
                                             </div>
                                             <div class="col-md-11">
                                                 <em class="fa-2x mr-2 fas fa-store"></em><br>
@@ -401,7 +464,9 @@
                                         <div class="card-body form-check-inline text-center">
 
                                             <div class="col-md-1">
-                                                <input type="checkbox" formControlName="leadGeneration" class="form-check-input" value="" [(ngModel)]='campaignModel.leadGeneration'>
+                                                <input type="checkbox" formControlName="leadGeneration"
+                                                    class="form-check-input" value=""
+                                                    [(ngModel)]='campaignModel.leadGeneration'>
                                             </div>
                                             <div class="col-md-11">
                                                 <em class="fa-2x mr-2 fas fa-users"></em><br>
@@ -413,13 +478,15 @@
                             </div><br>
                             <div class="row">
                                 <div class="col-md-3">
-                                    <button class="mr-1 btn btn-secondary btn-lg" type="submit" (click)="goToPreviousTab($event,1)">
+                                    <button class="mr-1 btn btn-secondary btn-lg" type="submit"
+                                        (click)="goToPreviousTab($event,1)">
                                         Go Back</button>
                                 </div>
                                 <div class="col-md-5"></div>
                                 <div class="col-md-4">
                                     <!-- <a routerLink="./home"> -->
-                                    <button class="mr-1 btn btn-danger btn-lg" type="submit" (click)="updateSuccessAlert();">Update
+                                    <button class="mr-1 btn btn-danger btn-lg" type="submit"
+                                        (click)="updateSuccessAlert();">Update
                                         campaign</button>
                                     <!-- </a> -->
                                 </div>
@@ -448,11 +515,14 @@
             </div>
             <div class="card-body row">
                 <div class="chart-wrapper mx-auto chart-container" *ngIf="hasActiveAccount && hasAuthorize">
-                    <canvas baseChart id="canvas" [chartType]="'bar'" [options]="barOptions" [datasets]="barData.datasets" [colors]="barColors" [labels]="barChartLabels" [legend]="true" height="50">
+                    <canvas baseChart id="canvas" [chartType]="'bar'" [options]="barOptions"
+                        [datasets]="barData.datasets" [colors]="barColors" [labels]="barChartLabels" [legend]="true"
+                        height="50">
                     </canvas>
                 </div>
                 <div class="btn-container footer-buttons text-center">
-                    <a href="javascript:void(0)" class="btn btn-link" (click)="goToKeywords($event)">All Rankings</a> &nbsp;&nbsp;&nbsp;
+                    <a href="javascript:void(0)" class="btn btn-link" (click)="goToKeywords($event)">All Rankings</a>
+                    &nbsp;&nbsp;&nbsp;
                     <button class="mr-1 btn btn-danger btn-sm" (click)="goToAddKeywords($event)">Add Keywords</button>
                 </div>
             </div>
@@ -480,7 +550,10 @@
                         <div style="background-color: #dc3545;"></div>
                         <div style="background-color: #dc3545;"></div>
                     </div>
-                    <canvas *ngIf="!showSpinnerBaseChart" baseChart [datasets]="lineChartData" [labels]="lineChartLabels" [options]="lineChartOptions" [colors]="lineChartColors" [legend]="lineChartLegend" [chartType]="lineChartType" [plugins]="lineChartPlugins" [fullWidth]="true">
+                    <canvas *ngIf="!showSpinnerBaseChart" baseChart [datasets]="lineChartData"
+                        [labels]="lineChartLabels" [options]="lineChartOptions" [colors]="lineChartColors"
+                        [legend]="lineChartLegend" [chartType]="lineChartType" [plugins]="lineChartPlugins"
+                        [fullWidth]="true">
                     </canvas>
                 </div>
 
@@ -490,7 +563,8 @@
                     <div class="widget-overlay-content text-center">
                         <h2 class="colorintegrateanalytics">Integrate Analytics</h2>
                         <div class="text-center btn-container">
-                            <a class="btn ganalyticsbackgcolor" (click)="goToOverview()"> <span></span> &nbsp;&nbsp;Integrate Google Analytics</a>
+                            <a class="btn ganalyticsbackgcolor" (click)="goToOverview()"> <span></span>
+                                &nbsp;&nbsp;Integrate Google Analytics</a>
                             <!-- <img src="assets/img/ga.png"> -->
                         </div>
                     </div>
