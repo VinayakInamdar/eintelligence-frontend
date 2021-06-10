@@ -25,7 +25,7 @@
 
         <div class="col">
 
-            <mat-form-field appearance="fill" class="pr-sm-4" fxFlex="20">
+            <mat-form-field appearance="fill" class="pr-sm-4" fxFlex="40">
                 <mat-label>Start date</mat-label>
                 <input matInput [matDatepicker]="startDatePicker" name="start" formControlName="fromDate" (dateChange)="onStartDateChange($event)">
                 <mat-datepicker-toggle matSuffix [for]="startDatePicker"></mat-datepicker-toggle>
@@ -34,7 +34,7 @@
             </mat-form-field>
 
 
-            <mat-form-field appearance="fill" class="pr-sm-4" fxFlex="0">
+            <mat-form-field appearance="fill" class="pr-sm-4" fxFlex="40">
                 <mat-label>End date</mat-label>
                 <input matInput [matDatepicker]="endDatePicker" name="end" [formControl]="toDate" (dateChange)="onEndDateChange($event)">
                 <mat-datepicker-toggle matSuffix [for]="endDatePicker"></mat-datepicker-toggle>

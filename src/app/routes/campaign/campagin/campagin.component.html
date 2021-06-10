@@ -110,131 +110,134 @@
                         <div class="col-md-12" class="goaldiv">
                             <div class="row-md-12">
 
-
-                                <div class="col-md-4">
-                                    <div
-                                        class="card card-default shadow bg-white rounded cursor-default integration-box-hight">
-                                        <div class="card-body form-check-inline text-center">
-                                            <div class="row-md-3">
-                                                <div class="col-md-11 setmargininlinestart">
-                                                    <!-- <em class="fa-2x mr-2 fas fa-users"></em><br> -->
-                                                    <p class="goalfonsize">
-                                                        <button class="mr-1 btn btn-danger btn-lg" type="button"
-                                                            (click)="integrateGoogleAnalytics()">Google
-                                                            Analytics</button>
-                                                    </p>
-                                                    <form [formGroup]="gaSelectForm" class="goalfonsize"
-                                                        *ngIf="hasGaSetup">
-                                                        <select id="gaSelect" style="width: 150px;" class="form-control"
-                                                            formControlName="gaSelect"
-                                                            (change)="onSelectGa($event.target.value)">
-                                                            <option [ngValue]="undefined" [disabled]="true">Please
-                                                                Select
-                                                            </option>
-                                                            <option *ngFor="let gaAccount of gaAccounts"
-                                                                [value]="gaAccount">{{ gaAccount }}</option>
-                                                        </select>
-                                                    </form>
-                                                    <p class="goalfonsize" *ngIf="hasGaSetup">
-
-                                                    </p>
-                                                    <p class="goalfonsize" *ngIf="hasGaSetup">
-                                                        <button type="button" class="btn btn-danger"
-                                                            (click)="saveGaAccount()" [disabled]="!isGaEdit">Save
-                                                            Changes</button>
-                                                    </p>
-
+                                 <div fxFlex="row" fxLayoutAlign="space-around center" fxFlex="100">
+                                    <div fxFlex="30">
+                                        <div
+                                            class="card card-default shadow bg-white rounded cursor-default integration-box-hight">
+                                            <div fxFlex="100" fxLayout="row" fxLayoutAlign="center center">
+                                                <div>
+                                                    <div fxLayout="column" fxLayoutALign="space-around center">
+                                                        <!-- <em class="fa-2x mr-2 fas fa-users"></em><br> -->
+                                                        <p class="goalfonsize">
+                                                            <button class="mr-1 btn btn-danger btn-lg" type="button"
+                                                                (click)="integrateGoogleAnalytics()">Google
+                                                                Analytics</button>
+                                                        </p>
+                                                        <form [formGroup]="gaSelectForm" class="goalfonsize"
+                                                            *ngIf="hasGaSetup">
+                                                            <select id="gaSelect" style="width: 150px;" class="form-control"
+                                                                formControlName="gaSelect"
+                                                                (change)="onSelectGa($event.target.value)">
+                                                                <option [ngValue]="undefined" [disabled]="true">Please
+                                                                    Select
+                                                                </option>
+                                                                <option *ngFor="let gaAccount of gaAccounts"
+                                                                    [value]="gaAccount">{{ gaAccount }}</option>
+                                                            </select>
+                                                        </form>
+                                                        <p class="goalfonsize" *ngIf="hasGaSetup">
+    
+                                                        </p>
+                                                        <p class="goalfonsize" *ngIf="hasGaSetup">
+                                                            <button type="button" class="btn btn-danger"
+                                                                (click)="saveGaAccount()" [disabled]="!isGaEdit">Save
+                                                                Changes</button>
+                                                        </p>
+    
+                                                    </div>
                                                 </div>
-                                            </div>
-
-                                        </div>
-                                    </div>
-                                </div>
-                                <div class="col-md-4">
-                                    <div
-                                        class="card card-default shadow bg-white rounded cursor-default integration-box-hight">
-                                        <div class="card-body form-check-inline text-center">
-                                            <div class="row-md-3">
-                                                <div class="col-md-11 setdivpadding">
-                                                    <!-- <em class="fa-2x mr-2 fas fa-globe"></em> -->
-
-                                                    <p class="goalfonsize">
-                                                        <button class="mr-1 btn btn-danger btn-lg" type="button"
-                                                            (click)="integrateGSC()">Google Search Console</button>
-                                                    </p>
-                                                    <form [formGroup]="gaSelectForm" class="goalfonsize"
-                                                        *ngIf="hasGscSetup">
-                                                        <select id="gscSelect" class="form-control"
-                                                            formControlName="gscSelect"
-                                                            (change)="onSelectGsc($event.target.value)">
-                                                            <option [ngValue]="undefined" [disabled]="true">Please
-                                                                Select
-                                                            </option>
-                                                            <option *ngFor="let gscAccount of gscAccounts"
-                                                                [value]="gscAccount">{{ gscAccount }}</option>
-                                                        </select>
-                                                    </form>
-                                                    <p class="goalfonsize" *ngIf="hasGscSetup">
-
-                                                    </p>
-                                                    <p class="goalfonsize" *ngIf="hasGscSetup">
-                                                        <button type="button" class="btn btn-danger"
-                                                            (click)="saveGscAccount()" [disabled]="!isGscEdit">Save
-                                                            Changes</button>
-                                                    </p>
-                                                </div>
+    
                                             </div>
                                         </div>
                                     </div>
-                                </div>
-                                <!--Facebook hidden,to show it,remove "hidden"-->
-                                <div class="col-md-4" hidden>
-                                    <div
-                                        class="card card-default shadow bg-white rounded cursor-default integration-box-hight">
-                                        <div class="card-body form-check-inline text-center">
-                                            <div class="row-md-3">
-                                                <div class="col-md-11 setdivpadding setmargininlinestart">
-                                                    <!-- <em class="fa-2x mr-2 fas fa-store"></em><br> -->
-                                                    <p class="goalfonsize">
-                                                        <button class="mr-1 btn btn-danger btn-lg" type="button"
-                                                            (click)="loginWithOptions()">Facebook</button>
-                                                    </p>
-                                                    <form [formGroup]="gaSelectForm" class="goalfonsize"
-                                                        *ngIf="hasFacebookSetup">
-                                                        <select id="facebookSelect" class="form-control"
-                                                            formControlName="facebookSelect"
-                                                            (change)="onSelectFacebook($event.target.value)">
-                                                            <option [ngValue]="undefined" [disabled]="true">Please
-                                                                Select
-                                                            </option>
-                                                            <option *ngFor="let facebookAccount of facebookAccounts">{{
-                                                                facebookAccount }}</option>
-                                                        </select>
-                                                    </form>
-                                                    <p class="goalfonsize" *ngIf="hasFacebookSetup">
-
-                                                    </p>
-                                                    <p class="goalfonsize" *ngIf="hasFacebookSetup">
-                                                        <button type="button" class="btn btn-danger"
-                                                            (click)="saveFacebookAccount()"
-                                                            [disabled]="!facebookSelectedName">Save
-                                                            Changes</button>
-                                                    </p>
+                                    <div fxFlex="30">
+                                        <div
+                                            class="card card-default shadow bg-white rounded cursor-default integration-box-hight">
+                                            <div fxFlex="100" fxLayout="row" fxLayoutAlign="center center">
+                                                <div>
+                                                    <div fxLayout="column" fxLayoutALign="space-around center">
+                                                        <!-- <em class="fa-2x mr-2 fas fa-globe"></em> -->
+    
+                                                        <p class="goalfonsize">
+                                                            <button class="mr-1 btn btn-danger btn-lg" type="button"
+                                                                (click)="integrateGSC()">Google Search Console</button>
+                                                        </p>
+                                                        <form [formGroup]="gaSelectForm" class="goalfonsize"
+                                                            *ngIf="hasGscSetup">
+                                                            <select id="gscSelect" class="form-control"
+                                                                formControlName="gscSelect"
+                                                                (change)="onSelectGsc($event.target.value)">
+                                                                <option [ngValue]="undefined" [disabled]="true">Please
+                                                                    Select
+                                                                </option>
+                                                                <option *ngFor="let gscAccount of gscAccounts"
+                                                                    [value]="gscAccount">{{ gscAccount }}</option>
+                                                            </select>
+                                                        </form>
+                                                        <p class="goalfonsize" *ngIf="hasGscSetup">
+    
+                                                        </p>
+                                                        <p class="goalfonsize" *ngIf="hasGscSetup">
+                                                            <button type="button" class="btn btn-danger"
+                                                                (click)="saveGscAccount()" [disabled]="!isGscEdit">Save
+                                                                Changes</button>
+                                                        </p>
+                                                    </div>
                                                 </div>
                                             </div>
                                         </div>
                                     </div>
-                                </div>
+                                    <!--Facebook hidden,to show it,remove "hidden"-->
+                                    <div fxFlex="30" hidden>
+                                        <div
+                                            class="card card-default shadow bg-white rounded cursor-default integration-box-hight">
+                                            <div fxFlex="100" fxLayout="row" fxLayoutAlign="center center">
+                                                <div>
+                                                    <div fxLayout="column" fxLayoutALign="space-around center">
+                                                        <!-- <em class="fa-2x mr-2 fas fa-store"></em><br> -->
+                                                        <p class="goalfonsize">
+                                                            <button class="mr-1 btn btn-danger btn-lg" type="button"
+                                                                (click)="loginWithOptions()">Facebook</button>
+                                                        </p>
+                                                        <form [formGroup]="gaSelectForm" class="goalfonsize"
+                                                            *ngIf="hasFacebookSetup">
+                                                            <select id="facebookSelect" class="form-control"
+                                                                formControlName="facebookSelect"
+                                                                (change)="onSelectFacebook($event.target.value)">
+                                                                <option [ngValue]="undefined" [disabled]="true">Please
+                                                                    Select
+                                                                </option>
+                                                                <option *ngFor="let facebookAccount of facebookAccounts">{{
+                                                                    facebookAccount }}</option>
+                                                            </select>
+                                                        </form>
+                                                        <p class="goalfonsize" *ngIf="hasFacebookSetup">
+    
+                                                        </p>
+                                                        <p class="goalfonsize" *ngIf="hasFacebookSetup">
+                                                            <button type="button" class="btn btn-danger"
+                                                                (click)="saveFacebookAccount()"
+                                                                [disabled]="!facebookSelectedName">Save
+                                                                Changes</button>
+                                                        </p>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                 </div>
+                               
 
                             </div>
                             <div class="row-md-12">
                                 <!--Google ads hidden-->
-                                <div class="col-md-3" hidden>
+                             <div fxFlex="row" fxLayoutAlign="space-around center" fxFlex="100">
+                                <div fxFlex="30" hidden>
                                     <div
                                         class="card card-default shadow bg-white rounded cursor-default integration-box-hight">
-                                        <div class="card-body form-check-inline text-center">
-                                            <div class="row-md-3">
-                                                <div class="col-md-11 setdivpadding">
+                                        <div fxFlex="100" fxLayout="row" fxLayoutAlign="center center">
+                                            <div>
+                                                <div fxLayout="column" fxLayoutALign="space-around center">
                                                     <!-- <em class="fa-2x mr-2 fas fa-store"></em><br> -->
                                                     <p class="goalfonsize">
                                                         <button class="mr-1 btn btn-danger btn-lg" type="button"
@@ -260,12 +263,12 @@
                                         </div>
                                     </div>
                                 </div>
-                                <div class="col-md-3">
+                                <div fxFlex="30">
                                     <div
                                         class="card card-default shadow bg-white rounded cursor-default integration-box-hight">
-                                        <div class="card-body form-check-inline text-center">
-                                            <div class="row-md-3">
-                                                <div class="col-md-11">
+                                        <div fxFlex="100" fxLayout="row" fxLayoutAlign="center center">
+                                            <div>
+                                                <div fxLayout="column" fxLayoutALign="center center">
                                                     <!-- <em class="fa-2x mr-2 fas fa-store"></em><br> -->
                                                     <p class="goalfonsize">
                                                         <button class="mr-1 btn btn-danger btn-lg" type="button"
@@ -283,6 +286,7 @@
                                         </div>
                                     </div>
                                 </div>
+                            </div>   
                             </div>
                         </div>
                     </div>
