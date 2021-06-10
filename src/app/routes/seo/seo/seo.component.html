@@ -25,7 +25,7 @@
 
         <div class="col">
 
-            <mat-form-field appearance="fill" class="pr-sm-4" fxFlex="20">
+            <mat-form-field appearance="fill" class="pr-sm-4" fxFlex="40">
                 <mat-label>Start date</mat-label>
                 <input matInput [matDatepicker]="startDatePicker" name="start" formControlName="fromDate" (dateChange)="onStartDateChange($event)">
                 <mat-datepicker-toggle matSuffix [for]="startDatePicker"></mat-datepicker-toggle>
@@ -34,7 +34,7 @@
             </mat-form-field>
 
 
-            <mat-form-field appearance="fill" class="pr-sm-4" fxFlex="0">
+            <mat-form-field appearance="fill" class="pr-sm-4" fxFlex="40">
                 <mat-label>End date</mat-label>
                 <input matInput [matDatepicker]="endDatePicker" name="end" [formControl]="toDate" (dateChange)="onEndDateChange($event)">
                 <mat-datepicker-toggle matSuffix [for]="endDatePicker"></mat-datepicker-toggle>
@@ -42,13 +42,12 @@
                 <mat-error>Please select End date!</mat-error>
             </mat-form-field>
         </div>
-
     </div>
 
     <div id="pdfGenerate" class="row overflow-hidden">
+
         <div class="container-fluid card-padding">
             <div class="col-md-12">
-
                 <div class="card card-default shadow bg-white rounded cursor-default">
                     <div class="card-header borderBtm">
                         <div class="col-md-2 search-container">
@@ -67,223 +66,249 @@
             </div>
         </div>
 
-        <!--div *ngIf="integrateGSCAccount">
-            <div class="container-fluid card-padding">
-                <button type="button" class="btn btn-danger btn-lg set-button-gsc" (click)="integrateGSC()">Integrate
-                    GSC Account to view MoM metrics & graphs</button>
+        <ng-container *ngIf="!ifGscChartShow">
+            <div class="container text-center p-3">
+                <button class="mr-1 btn btn-danger btn-lg" type="button" (click)="navigateToRoute()">Google Search
+                    Console</button>
             </div>
-            <br>
-        </div-->
+        </ng-container>
+
+        <ng-container *ngIf="ifGscChartShow">
+            <div class="container-fluid card-padding card-width">
+                <div class="card card-default shadow bg-white rounded cursor-default">
+                    <!-- this charts use Google Search Console Access Token  -->
+                    <div class="row card-margin">
+                        <div class="col-sm-1">
+                            <h3 class="colour-light"></h3>
+                            <h3 class="colour-light font-weight"> MoM Metrics</h3>
+                            <h3 class="fontxlrge"></h3>
+                            <!-- <h3 class="fontsizesmall">1</h3> -->
+
+                        </div>
+                        <div class="vl"></div>
+                        <div class="col-sm-1">
+                            <h3 class="colour-light">Clicks</h3>
+                            <h1 class="fontxxlrge">{{clicksThisYear}}</h1>
+                            <h3 class="fontsizesmall" [ngClass]="{'red-font': 0 > percentClicks}">{{this.percentClicks}}
+                                %
+                            </h3>
+
+                        </div>
+                        <div class="vl"></div>
+                        <div class="col-sm-2">
+                            <h3 class="colour-light">Impressions</h3>
+                            <h3 class="fontxxlrge">{{impressionsThisYear}}</h3>
+                            <h3 class="fontsizesmall" [ngClass]="{'red-font': 0 > percentImpressions}">
+                                {{percentImpressions}} %
+                            </h3>
 
 
-        <div class="container-fluid card-padding card-width">
-            <div class="card card-default shadow bg-white rounded cursor-default">
-                <div class="row card-margin">
-                    <div class="col-sm-1">
-                        <h3 class="colour-light"></h3>
-                        <h3 class="colour-light font-weight"> MoM Metrics</h3>
-                        <h3 class="fontxlrge"></h3>
-                        <!-- <h3 class="fontsizesmall">1</h3> -->
+                        </div>
+                        <div class="vl"></div>
+                        <div class="col-sm-2">
+                            <h3 class="colour-light">CTR</h3>
+                            <h3 class="fontxxlrge">{{cTRThisYear}}</h3>
+                            <h3 class="fontsizesmall" [ngClass]="{'red-font': 0 > percentCTR}">{{percentCTR}} %</h3>
 
-                    </div>
-                    <div class="vl"></div>
-                    <div class="col-sm-1">
-                        <h3 class="colour-light">Clicks</h3>
-                        <h1 class="fontxxlrge">{{clicksThisYear}}</h1>
-                        <h3 class="fontsizesmall" [ngClass]="{'red-font': 0 > percentClicks}">{{this.percentClicks}} %
-                        </h3>
-
-                    </div>
-                    <div class="vl"></div>
-                    <div class="col-sm-2">
-                        <h3 class="colour-light">Impressions</h3>
-                        <h3 class="fontxxlrge">{{impressionsThisYear}}</h3>
-                        <h3 class="fontsizesmall" [ngClass]="{'red-font': 0 > percentImpressions}">
-                            {{percentImpressions}} %
-                        </h3>
+                        </div>
+                        <div class="vl"></div>
+                        <div class="col-sm-2">
+                            <h3 class="colour-light">Position</h3>
+                            <h3 class="fontxxlrge">{{positionThisYear}}</h3>
+                            <h3 class="fontsizesmall" [ngClass]="{'red-font': 0 > percentPosition}">{{percentPosition}}
+                                %
+                            </h3>
 
 
-                    </div>
-                    <div class="vl"></div>
-                    <div class="col-sm-2">
-                        <h3 class="colour-light">CTR</h3>
-                        <h3 class="fontxxlrge">{{cTRThisYear}}</h3>
-                        <h3 class="fontsizesmall" [ngClass]="{'red-font': 0 > percentCTR}">{{percentCTR}} %</h3>
+                        </div>
+                        <div class="vl"></div>
+                        <div class="col-lg-4">
+                            <div
+                                class="card card-default shadow bg-white rounded mr-3 cursor-default impressionsCard-height">
+                                <div class="card-header borderBtm header-padding">
+                                    <h4 class="heading-margin font-weight">IMPRESSIONS BY DEVICE</h4>
+                                    <!-- <div class="row borderBtm padding5"> -->
+                                    <!-- <h2 class="col-xs-12 col-12 col-md-9">Impressions By Device</h2> -->
+                                    <!-- </div> -->
 
-                    </div>
-                    <div class="vl"></div>
-                    <div class="col-sm-2">
-                        <h3 class="colour-light">Position</h3>
-                        <h3 class="fontxxlrge">{{positionThisYear}}</h3>
-                        <h3 class="fontsizesmall" [ngClass]="{'red-font': 0 > percentPosition}">{{percentPosition}} %
-                        </h3>
-
-
-                    </div>
-                    <div class="vl"></div>
-                    <div class="col-lg-4">
-                        <div class="card card-default shadow bg-white rounded mr-3 cursor-default impressionsCard-height">
-                            <div class="card-header borderBtm header-padding">
-                                <h4 class="heading-margin font-weight">IMPRESSIONS BY DEVICE</h4>
-                                <!-- <div class="row borderBtm padding5"> -->
-                                <!-- <h2 class="col-xs-12 col-12 col-md-9">Impressions By Device</h2> -->
-                                <!-- </div> -->
-
-                            </div>
-                            <div class="card-body row">
-                                <div class="chart-wrapper mx-auto chart-container">
-                                    <canvas baseChart id="canvas1" [chartType]="'horizontalBar'" [options]="barOptions" [datasets]="barDataImpressionsDevice.datasets" [colors]="barColors" [labels]="barChartLabelsDevice" [legend]="true" height="85">
-                                    </canvas>
+                                </div>
+                                <div class="card-body row">
+                                    <div class="chart-wrapper mx-auto chart-container">
+                                        <canvas baseChart id="canvas1" [chartType]="'horizontalBar'"
+                                            [options]="barOptions" [datasets]="barDataImpressionsDevice.datasets"
+                                            [colors]="barColors" [labels]="barChartLabelsDevice" [legend]="true"
+                                            height="85">
+                                        </canvas>
+                                    </div>
                                 </div>
                             </div>
                         </div>
                     </div>
                 </div>
             </div>
-        </div>
-        <div class="container-fluid card-padding">
-            <div class="col-md-6">
-                <div class="card card-default shadow bg-white rounded cursor-default card-height">
-                    <div class="card-header borderBtm header-padding">
-                        <h4 class="heading-margin font-weight">CLICKS</h4>
-                    </div>
-                    <div class="card-body row">
-                        <div class="chart-wrapper mx-auto chart-container">
-                            <canvas baseChart id="canvas" [chartType]="'line'" [options]="barOptions" [datasets]="barDataClicks.datasets" [colors]="barColors" [labels]="barChartLabels" [legend]="true" height="100">
-                            </canvas>
-                        </div>
-                    </div>
-                </div>
-            </div>
-            <div class="col-md-6">
-
-                <div class="card card-default shadow bg-white rounded cursor-default card-height">
-                    <div class="card-header borderBtm header-padding">
-                        <h4 class="heading-margin font-weight">IMPRESSIONS</h4>
-                    </div>
-                    <div class="card-body row">
-                        <div class="chart-wrapper mx-auto chart-container">
-                            <canvas baseChart id="canvas1" [chartType]="'line'" [options]="barOptions" [datasets]="barDataImpressions.datasets" [colors]="barColors" [labels]="barChartLabels" [legend]="true" height="100">
-                            </canvas>
-                        </div>
-                    </div>
-                </div>
-            </div>
-        </div>
-        <div class="container-fluid card-padding">
-            <div class="col-md-6">
-                <div class="card card-default shadow bg-white rounded cursor-default card-height">
-                    <div class="card-header borderBtm header-padding">
-                        <h4 class="heading-margin font-weight">SITE CTR</h4>
-                    </div>
-                    <div class="card-body row">
-                        <div class="chart-wrapper mx-auto chart-container">
-                            <canvas baseChart id="canvas1" [chartType]="'line'" [options]="barOptions" [datasets]="barDataCTR.datasets" [colors]="barColors" [labels]="barChartLabels" [legend]="true" height="100">
-                            </canvas>
-                        </div>
-                    </div>
-                </div>
-            </div>
-            <div class="col-md-6">
-                <div class="card card-default shadow bg-white rounded cursor-default card-height">
-                    <div class="card-header borderBtm header-padding">
-                        <h4 class="heading-margin font-weight">POSITIONS</h4>
-                    </div>
-                    <div class="card-body row">
-                        <div class="chart-wrapper mx-auto chart-container">
-                            <canvas baseChart id="canvas1" [chartType]="'line'" [options]="barOptions" [datasets]="barDataPositions.datasets" [colors]="barColors" [labels]="barChartLabels" [legend]="true" height="100">
-                            </canvas>
-                        </div>
-                    </div>
-                </div>
-            </div>
-        </div>
-        <div class="container-fluid" *ngIf="settingActive == 3;">
-            <div class="row">
-                <div class="col-md-1"></div>
-                <div class="col-md-10">
-                    <div class="navbar navbar-default navbar-fixed-top bg-white cursor-default indicatorBoxShadow" role="navigation">
-                        <a class="navbar-brand matrics-padding" href="#">
-                            KEY PERFORMANCE INDICATOR - MOST IMPORTANT MATRICS
-                        </a>
-                    </div>
-                </div>
-                <div class="col-md-1"> </div>
-            </div>
             <div class="container-fluid card-padding">
+                <!-- this charts use Google Search Console Access Token  -->
                 <div class="col-md-6">
-
                     <div class="card card-default shadow bg-white rounded cursor-default card-height">
                         <div class="card-header borderBtm header-padding">
-                            <h4 class="heading-margin font-weight">WEB TRAFFIC BY CHANNEL</h4>
+                            <h4 class="heading-margin font-weight">CLICKS</h4>
                         </div>
-                        <div class="widget-content">
-                            <div *ngIf="showSpinnerSiteAnalysisContent" class="la-line-scale  linescaleloadercolortopleft">
-                                <div style="background-color: #dc3545;"></div>
-                                <div style="background-color: #dc3545;"></div>
-                                <div style="background-color: #dc3545;"></div>
-                                <div style="background-color: #dc3545;"></div>
-                                <div style="background-color: #dc3545;"></div>
+                        <div class="card-body row">
+                            <div class="chart-wrapper mx-auto chart-container">
+                                <canvas baseChart id="canvas" [chartType]="'line'" [options]="barOptions"
+                                    [datasets]="barDataClicks.datasets" [colors]="barColors" [labels]="barChartLabels"
+                                    [legend]="true" height="100">
+                                </canvas>
                             </div>
-                            <!--div *ngIf="integrateGAAccount">
-                                <div class="container-fluid card-padding">
-                                    <button type="button" class="btn btn-danger btn-lg set-button-gsc" (click)="integrateGoogleAnalytics()">Integrate Google Analytics
-                                        Account</button>
+                        </div>
+                    </div>
+                </div>
+                <!-- this charts use Google Search Console Access Token  -->
+                <div class="col-md-6">
+                    <div class="card card-default shadow bg-white rounded cursor-default card-height">
+                        <div class="card-header borderBtm header-padding">
+                            <h4 class="heading-margin font-weight">IMPRESSIONS</h4>
+                        </div>
+                        <div class="card-body row">
+                            <div class="chart-wrapper mx-auto chart-container">
+                                <canvas baseChart id="canvas1" [chartType]="'line'" [options]="barOptions"
+                                    [datasets]="barDataImpressions.datasets" [colors]="barColors"
+                                    [labels]="barChartLabels" [legend]="true" height="100">
+                                </canvas>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="container-fluid card-padding">
+                <!-- this charts use Google Search Console Access Token  -->
+                <div class="col-md-6">
+                    <div class="card card-default shadow bg-white rounded cursor-default card-height">
+                        <div class="card-header borderBtm header-padding">
+                            <h4 class="heading-margin font-weight">SITE CTR</h4>
+                        </div>
+                        <div class="card-body row">
+                            <div class="chart-wrapper mx-auto chart-container">
+                                <canvas baseChart id="canvas1" [chartType]="'line'" [options]="barOptions"
+                                    [datasets]="barDataCTR.datasets" [colors]="barColors" [labels]="barChartLabels"
+                                    [legend]="true" height="100">
+                                </canvas>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <!-- this charts use Google Search Console Access Token  -->
+                <div class="col-md-6">
+                    <div class="card card-default shadow bg-white rounded cursor-default card-height">
+                        <div class="card-header borderBtm header-padding">
+                            <h4 class="heading-margin font-weight">POSITIONS</h4>
+                        </div>
+                        <div class="card-body row">
+                            <div class="chart-wrapper mx-auto chart-container">
+                                <canvas baseChart id="canvas1" [chartType]="'line'" [options]="barOptions"
+                                    [datasets]="barDataPositions.datasets" [colors]="barColors"
+                                    [labels]="barChartLabels" [legend]="true" height="100">
+                                </canvas>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </ng-container>
+
+        <div class="container-fluid" *ngIf="settingActive == 3;">
+
+            <ng-container *ngIf="!ifGaChartShow">
+                <div class="container text-center p-3">
+                    <button class="mr-1 btn btn-danger btn-lg" type="button" (click)="navigateToRoute()">Google
+                        Analytics</button>
+                </div>
+            </ng-container>
+
+            <ng-container *ngIf="ifGaChartShow">
+                <div class="row">
+                    <div class="col-md-1"></div>
+                    <div class="col-md-10">
+                        <div class="navbar navbar-default navbar-fixed-top bg-white cursor-default indicatorBoxShadow"
+                            role="navigation">
+                            <a class="navbar-brand matrics-padding" href="#">
+                                KEY PERFORMANCE INDICATOR - MOST IMPORTANT MATRICS
+                            </a>
+                        </div>
+                    </div>
+                    <div class="col-md-1"> </div>
+                </div>
+                <div class="container-fluid card-padding">
+                    <!-- this charts use Google Analytics Access Token  -->
+                    <div class="col-md-6">
+                        <div class="card card-default shadow bg-white rounded cursor-default card-height">
+                            <div class="card-header borderBtm header-padding">
+                                <h4 class="heading-margin font-weight">WEB TRAFFIC BY CHANNEL</h4>
+                            </div>
+                            <div class="widget-content">
+                                <div *ngIf="showSpinnerSiteAnalysisContent"
+                                    class="la-line-scale  linescaleloadercolortopleft">
+                                    <div style="background-color: #dc3545;"></div>
+                                    <div style="background-color: #dc3545;"></div>
+                                    <div style="background-color: #dc3545;"></div>
+                                    <div style="background-color: #dc3545;"></div>
+                                    <div style="background-color: #dc3545;"></div>
                                 </div>
-                                <br>
-                            </div-->
-                            <div *ngIf=" !showSpinnerSiteAnalysisContent">
-                                <!-- <canvas *ngIf="!showSpinnerBaseChart" baseChart [datasets]="lineChartData1"
+                                <div *ngIf=" !showSpinnerSiteAnalysisContent">
+                                    <!-- <canvas *ngIf="!showSpinnerBaseChart" baseChart [datasets]="lineChartData1"
                                         [labels]="lineChartLabels1" [options]="lineChartOptions1" [colors]="lineChartColors1"
                                         [legend]="lineChartLegend1" [chartType]="pie" [plugins]="lineChartPlugins1"
                                         [fullWidth]="true">
                                     </canvas> -->
-                                <canvas id='dougnutChart' baseChart [chartType]="'pie'" [colors]="doughnutColors" [options]="doughnutOptions" [datasets]="doughnutData.datasets" [labels]="doughnutData.labels" [doughnut]="true" [legend]="true" height="100"></canvas>
-                                <!-- <div class="btn-container footer-buttonsabsolute text-center"> -->
-                                <!-- <a href="javascript:void(0)" class="btn btn-link"
+                                    <canvas id='dougnutChart' baseChart [chartType]="'pie'" [colors]="doughnutColors"
+                                        [options]="doughnutOptions" [datasets]="doughnutData.datasets"
+                                        [labels]="doughnutData.labels" [doughnut]="true" [legend]="true"
+                                        height="100"></canvas>
+                                    <!-- <div class="btn-container footer-buttonsabsolute text-center"> -->
+                                    <!-- <a href="javascript:void(0)" class="btn btn-link"
                                                 (click)="goToAcquisitonTrafficSources($event)">See More</a> -->
-                                <!-- &nbsp;&nbsp;&nbsp; -->
-                                <!-- </div> -->
+                                    <!-- &nbsp;&nbsp;&nbsp; -->
+                                    <!-- </div> -->
+                                </div>
                             </div>
 
                         </div>
                     </div>
-                </div>
-                <div class="col-md-6">
-                    <div class="card card-default shadow bg-white rounded cursor-default card-height">
-                        <div class="card-header borderBtm header-padding">
-                            <h4 class="heading-margin font-weight">WEB TRAFFIC BY DEVICE </h4>
-                        </div>
-                        <div class="widget-content">
-                            <div *ngIf="showSpinnerSiteAnalysisContent" class="la-line-scale  linescaleloadercolortopleft">
-                                <div style="background-color: #dc3545;"></div>
-                                <div style="background-color: #dc3545;"></div>
-                                <div style="background-color: #dc3545;"></div>
-                                <div style="background-color: #dc3545;"></div>
-                                <div style="background-color: #dc3545;"></div>
+                    <!-- this charts use Google Analytics Access Token  -->
+                    <div class="col-md-6">
+                        <div class="card card-default shadow bg-white rounded cursor-default card-height">
+                            <div class="card-header borderBtm header-padding">
+                                <h4 class="heading-margin font-weight">WEB TRAFFIC BY DEVICE </h4>
                             </div>
-                            <!--div *ngIf="integrateGAAccount">
-                                <div class="container-fluid card-padding">
-                                    <button type="button" class="btn btn-danger btn-lg set-button-gsc" (click)="integrateGoogleAnalytics()">Integrate Google Analytics
-                                        Account</button>
+                            <div class="widget-content">
+                                <div *ngIf="showSpinnerSiteAnalysisContent"
+                                    class="la-line-scale  linescaleloadercolortopleft">
+                                    <div style="background-color: #dc3545;"></div>
+                                    <div style="background-color: #dc3545;"></div>
+                                    <div style="background-color: #dc3545;"></div>
+                                    <div style="background-color: #dc3545;"></div>
+                                    <div style="background-color: #dc3545;"></div>
                                 </div>
-                                <br>
-                            </div-->
-                            <div *ngIf=" !showSpinnerSiteAnalysisContent">
-                                <div>
-                                    <canvas id='dougnutChart1' baseChart [chartType]="'bar'" [options]="doughnutOptions1" [datasets]="doughnutData1.datasets" [labels]="doughnutData1.labels" [legend]="true" height="100"></canvas>
-                                </div>
-                                <!-- <div class="btn-container footer-buttonsabsolute text-center"> -->
-                                <!-- <a href="javascript:void(0)" class="btn btn-link"
+                                <div *ngIf=" !showSpinnerSiteAnalysisContent">
+                                    <div>
+                                        <canvas id='dougnutChart1' baseChart [chartType]="'bar'"
+                                            [options]="doughnutOptions1" [datasets]="doughnutData1.datasets"
+                                            [labels]="doughnutData1.labels" [legend]="true" height="100"></canvas>
+                                    </div>
+                                    <!-- <div class="btn-container footer-buttonsabsolute text-center"> -->
+                                    <!-- <a href="javascript:void(0)" class="btn btn-link"
                                                 (click)="goToAudienceDeviceCategory($event)">See More</a> -->
-                                <!-- &nbsp;&nbsp;&nbsp; -->
-                                <!-- </div> -->
+                                    <!-- &nbsp;&nbsp;&nbsp; -->
+                                    <!-- </div> -->
+                                </div>
                             </div>
                         </div>
                     </div>
                 </div>
-            </div>
+            </ng-container>
+
             <div class="container-fluid card-padding">
+                <!-- this charts use campain url  -->
                 <div class="col-lg-12">
                     <div class="card card-default shadow bg-white rounded cursor-default card-height">
 
@@ -605,5 +630,6 @@
             </div>
 
         </div>
+
     </div>
 </div>

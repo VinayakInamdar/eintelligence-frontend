@@ -41,7 +41,7 @@ import { ContentEditDirective } from './directives/content-edit/content-edit.dir
 import { CardFilterPipe } from './pipes/card-filter.pipe';
 import { ConvertTohhmmssPipe } from './pipes/convert-tohhmmss.pipe';
 import {HasClaimDirective} from './directives/has-claim/has-claim-directive.directive';
-
+import { FlexLayoutModule } from '@angular/flex-layout';
 
 // https://angular.io/styleguide#!#04-10
 @NgModule({
@@ -68,7 +68,8 @@ import {HasClaimDirective} from './directives/has-claim/has-claim-directive.dire
         PopoverModule.forRoot(),
         TypeaheadModule.forRoot(),
         ToastrModule.forRoot(),
-        MaterialModule
+        MaterialModule,
+        FlexLayoutModule
     ],
     providers: [
         ColorsService
@@ -133,7 +134,8 @@ import {HasClaimDirective} from './directives/has-claim/has-claim-directive.dire
         MaterialModule,
         CardFilterPipe,      
         ConvertTohhmmssPipe,
-        HasClaimDirective
+        HasClaimDirective,
+        FlexLayoutModule
     ]
 })
 

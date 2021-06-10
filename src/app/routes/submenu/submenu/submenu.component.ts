@@ -103,13 +103,10 @@ export class SubmenuComponent implements OnInit {
       localStorage.setItem('gscid', gsc[0]['id']);
 
     }
-
-    ;
+    localStorage.setItem('editMasterId', selectedCampaign.id);
     localStorage.setItem('selectedCampId', selectedCampaign.id);
     localStorage.setItem('selectedCampName', selectedCampaign.name);
     localStorage.setItem('selectedCampUrl', selectedCampaign.webUrl);
-
-
     this.router.navigate([`../campaign/:id${selectedCampaign.id}/seo`]);
   }
   private getFilterOption() {

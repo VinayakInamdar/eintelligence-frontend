@@ -945,6 +945,10 @@ export class SeoComponent implements OnInit {
   settingActive: number = 3;
   isShowLoginButton = false;
   isAuthorized = false;
+
+  // to show GA & GSC Integration Button
+  ifGscChartShow: boolean = false;
+  ifGaChartShow: boolean = false;
   constructor(private translate: TranslateService, fb: FormBuilder,
     private campaignService: CampaignService, private openIdConnectService: OpenIdConnectService,
     public route: ActivatedRoute, public router: Router, private integrationsService: IntegrationsService
@@ -1075,13 +1079,10 @@ export class SeoComponent implements OnInit {
     };
     this.http.post(url, data).subscribe(res => {
       if (res) {
-
         this.gscaccesstoken = res['access_token'];
         this.getData();
       }
     }, error => {
-
-
       alert('Gsc : ' + JSON.stringify(error.error));
     });
   }
@@ -1098,15 +1099,12 @@ export class SeoComponent implements OnInit {
     };
     this.http.post(url, data).subscribe(res => {
       if (res) {
-
         this.gaaccesstoken = res['access_token'];
         this.getAnalyticsProfileIds();
         this.getSiteSpeedDataMobile();
         this.getSiteSpeedDataDesktop();
       }
     }, error => {
-
-
       alert('GA : ' + JSON.stringify(error.error));
     });
 
@@ -1127,22 +1125,20 @@ export class SeoComponent implements OnInit {
     this.selectedCampaignName = localStorage.getItem('selectedCampName');
     this.selectedCampIdWebUrl = localStorage.getItem('selectedCampUrl');
     if (this.gaurl != 'null' && this.gaurl != null && this.gaurl != undefined && this.gaurl != '') {
+      this.ifGaChartShow = true;
       this.refreshGoogleAnalyticsAccount();
-      ;
     }
     else {
-      this.integrateGAAccount = true;
+      this.ifGaChartShow = false;
     }
-
     if (this.gscurl != 'null' && this.gscurl != null && this.gscurl != undefined && this.gscurl != '') {
-      ;
+      this.ifGscChartShow = true;
       this.getDateSettings();
       this.refreshGSCAccount();
     }
     else {
-      this.integrateGSCAccount = true;
+      this.ifGscChartShow = false;
     }
-
     this.sub = this.route.params.subscribe(params => {
       this.id = params['id'];
     });
@@ -1291,7 +1287,6 @@ export class SeoComponent implements OnInit {
     });
   }
   getAnalyticsTrafficByChannelPrevious(profileid, startdate, endDate) {
-
     let currDate = new Date();
     let endDate1 = this.datepipe.transform(currDate, 'yyyy-MM-dd');
     let startDate1 = this.datepipe.transform(currDate.setDate(currDate.getDate() - 28), 'yyyy-MM-dd');
@@ -1608,7 +1603,7 @@ export class SeoComponent implements OnInit {
           text: this.translate.instant('sweetalert.OKBUTTON'),
           value: true,
           visible: true,
-          className: "bg-primary",
+          className: "bg-danger",
           closeModal: true,
         }
       }
@@ -2795,4 +2790,9 @@ export class SeoComponent implements OnInit {
       })
       .save();
   }
+
+  navigateToRoute() {
+    this.router.navigate(['/home/campaign']);
+  }
+
 }
