@@ -78,24 +78,26 @@
                                         (click)="goToPreviousTab($event,0)">
                                         < Go Back</button>
                                 </div>
-                                <div class="col-md-6"></div>
-                                <div class="col-md-3">
-                                    <p *ngIf="!isEditMode">
-                                        <button class="mr-1 btn btn-danger btn-lg" type="submit"
-                                            (click)="successAlert()"
-                                            [disabled]="!webUrl_field.value || (valForm.controls['webUrl'].hasError('pattern'))">Create
-                                            campaign</button>
-                                    </p>
-                                    <p *ngIf="isEditMode">
-                                        <button class="mr-1 btn btn-danger btn-lg" type="submit"
-                                            (click)="successAlert()">Update
-                                            campaign</button>
-                                    </p>
-                                    <p *ngIf="isEditMode">
-                                        <button class="mr-1 btn btn-danger btn-lg" type="submit"
-                                            (click)="goToNextTab($event,name_field.value,'webUrl',2)">Integrations
-                                        </button>
-                                    </p>
+                                <div class="col-md-3"></div>
+                                <div class="col-md-6">
+                                    <div fxFlex="100" fxLayout="row" fxLayoutAlign="space-around center">
+                                        <p fxFlex="20" *ngIf="!isEditMode">
+                                            <button class="mr-1 btn btn-danger btn-lg" type="submit"
+                                                (click)="successAlert()"
+                                                [disabled]="!webUrl_field.value || (valForm.controls['webUrl'].hasError('pattern'))">Create
+                                                campaign</button>
+                                        </p>
+                                        <p fxFlex="30" *ngIf="isEditMode">
+                                            <button class="mr-1 btn btn-danger btn-lg" type="submit"
+                                                (click)="successAlert()">Update
+                                                campaign</button>
+                                        </p>
+                                        <p fxFlex="30" *ngIf="isEditMode">
+                                            <button class="mr-1 btn btn-danger btn-lg" type="submit"
+                                                (click)="goToNextTab($event,name_field.value,'webUrl',2)">Integrations
+                                            </button>
+                                        </p>
+                                    </div>
                                 </div>
                             </div>
                         </div>
@@ -110,7 +112,7 @@
                         <div class="col-md-12" class="goaldiv">
                             <div class="row-md-12">
 
-                                 <div fxFlex="row" fxLayoutAlign="space-around center" fxFlex="100">
+                                 <div fxLayout="row" fxLayoutAlign="space-around center" fxFlex="100">
                                     <div fxFlex="30">
                                         <div
                                             class="card card-default shadow bg-white rounded cursor-default integration-box-hight">
@@ -125,7 +127,7 @@
                                                         </p>
                                                         <form [formGroup]="gaSelectForm" class="goalfonsize"
                                                             *ngIf="hasGaSetup">
-                                                            <select id="gaSelect" style="width: 150px;" class="form-control"
+                                                            <select id="gaSelect" style="width: 120px;" class="form-control"
                                                                 formControlName="gaSelect"
                                                                 (change)="onSelectGa($event.target.value)">
                                                                 <option [ngValue]="undefined" [disabled]="true">Please
@@ -157,14 +159,14 @@
                                                 <div>
                                                     <div fxLayout="column" fxLayoutALign="space-around center">
                                                         <!-- <em class="fa-2x mr-2 fas fa-globe"></em> -->
-    
+                                                        
                                                         <p class="goalfonsize">
                                                             <button class="mr-1 btn btn-danger btn-lg" type="button"
                                                                 (click)="integrateGSC()">Google Search Console</button>
                                                         </p>
                                                         <form [formGroup]="gaSelectForm" class="goalfonsize"
                                                             *ngIf="hasGscSetup">
-                                                            <select id="gscSelect" class="form-control"
+                                                            <select id="gscSelect" style="width: 120px;" class="form-control"
                                                                 formControlName="gscSelect"
                                                                 (change)="onSelectGsc($event.target.value)">
                                                                 <option [ngValue]="undefined" [disabled]="true">Please
@@ -188,7 +190,7 @@
                                         </div>
                                     </div>
                                     <!--Facebook hidden,to show it,remove "hidden"-->
-                                    <div fxFlex="30" hidden>
+                                    <div fxFlex="30">
                                         <div
                                             class="card card-default shadow bg-white rounded cursor-default integration-box-hight">
                                             <div fxFlex="100" fxLayout="row" fxLayoutAlign="center center">
@@ -201,7 +203,7 @@
                                                         </p>
                                                         <form [formGroup]="gaSelectForm" class="goalfonsize"
                                                             *ngIf="hasFacebookSetup">
-                                                            <select id="facebookSelect" class="form-control"
+                                                            <select id="facebookSelect" style="width: 120px;" class="form-control"
                                                                 formControlName="facebookSelect"
                                                                 (change)="onSelectFacebook($event.target.value)">
                                                                 <option [ngValue]="undefined" [disabled]="true">Please
@@ -232,7 +234,7 @@
                             <div class="row-md-12">
                                 <!--Google ads hidden-->
                              <div fxFlex="row" fxLayoutAlign="space-around center" fxFlex="100">
-                                <div fxFlex="30" hidden>
+                                <div fxFlex="30">
                                     <div
                                         class="card card-default shadow bg-white rounded cursor-default integration-box-hight">
                                         <div fxFlex="100" fxLayout="row" fxLayoutAlign="center center">
@@ -246,7 +248,7 @@
                                                     </p>
 
                                                     <p class="goalfonsize" *ngIf="hasGadsSetup">
-                                                        <select class="form-control"
+                                                        <select class="form-control" style="width: 120px;"
                                                             (change)="onSelectGads($event.target.value)">
                                                             <option value="0">--Select--</option>
                                                             <option *ngFor="let facebookAccount of facebookAccounts">
@@ -290,12 +292,11 @@
                             </div>
                         </div>
                     </div>
-                    <br>
                     <div class="row-md-16">
                         <div class="col-md-10">
                             <button class="mr-1 btn btn-secondary btn-lg" type="submit"
                                 (click)="goToPreviousTab($event,1)">
-                                Go Back</button>
+                                < Go Back</button>
                         </div>
                         <div class="col-md-5"></div>
                     </div>

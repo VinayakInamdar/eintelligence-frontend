@@ -54,16 +54,20 @@
                                 </div>
                             </div>
 
-                            <div class="form-group">
-                                <div class="row">
+                            <div style="padding-left: 10px;" class="form-group">
+                                <div fxLayout="column">
+                                <div>
                                     <label class="labelcss">ROLE</label>
-
-                                    <div class="col-md-3">
-                                        <input type="radio" formControlName="CompanyRole" value="Client User" name="CompanyRole"> CLIENT USER
-                                    </div>
-                                    <div class="col-md-2"> </div>
-                                    <div class="col-md-3">
-                                        <input type="radio" formControlName="CompanyRole" value="Normal User" name="CompanyRole"> NORMAL USER
+                                </div>
+                                    <div fxFlex="100" fxLayout="100">
+                                        <div fxFlex="10"></div>
+                                        <div fxFlex="30">
+                                            <input type="radio" formControlName="CompanyRole" value="Client User" name="CompanyRole"> CLIENT USER
+                                        </div>
+                                        <div fxFlex="10"> </div>
+                                        <div fxFlex="30">
+                                            <input type="radio" formControlName="CompanyRole" value="Normal User" name="CompanyRole"> NORMAL USER
+                                        </div>
                                     </div>
                                 </div>
                             </div>
