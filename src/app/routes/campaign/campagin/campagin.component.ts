@@ -625,17 +625,17 @@ export class CampaginComponent implements OnInit, AfterViewInit {
 
   // using to  create new campaign in db
   submitForm(value: any) {
-
-    if (this.isEditMode == false) {
+    if (this.masterCampaignId == null || this.masterCampaignId == undefined || this.masterCampaignId == 'null' || this.masterCampaignId == '') {
       var result: Campaign = Object.assign({}, value);
       result.id = "00000000-0000-0000-0000-000000000000";
+      result.companyID = this.companyId;
       result.userId = this.openIdConnectService.user.profile.sub;
       //  result.profilePicture = this.fileToUpload.name
 
       this.campaignService.createCampaign(result).subscribe((res: Campaign) => {
         this.campaignModel = res;
 
-        localStorage.setItem('masterCampaignId', res['id']);
+        localStorage.setItem('editMasterId', res['id']);
         this.masterCampaignId = res['id'];
         this.staticTabs.tabs[2].disabled = false;
         this.staticTabs.tabs[2].active = true;
@@ -648,14 +648,12 @@ export class CampaginComponent implements OnInit, AfterViewInit {
           return;
         }
       });
-    } else if (this.isEditMode == true) {
-      ;
+    } else {
 
       var result: Campaign = Object.assign({}, value);
       result.companyID = this.companyId;
       result.id = this.masterCampaignId;
       this.campaignService.updatecampaign(this.masterCampaignId, result).subscribe((res: Campaign) => {
-        ;
         this.isEditMode = false;
         this.staticTabs.tabs[2].disabled = false;
         this.staticTabs.tabs[2].active = true;
