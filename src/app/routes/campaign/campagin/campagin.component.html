@@ -129,7 +129,7 @@
                                                         </p>
                                                         <form [formGroup]="gaSelectForm" class="goalfonsize"
                                                             *ngIf="hasGaSetup">
-                                                            <select id="gaSelect" style="width: 150px;" class="form-control"
+                                                            <select id="gaSelect" style="width: 120px;" class="form-control"
                                                                 formControlName="gaSelect"
                                                                 (change)="onSelectGa($event.target.value)">
                                                                 <option [ngValue]="undefined" [disabled]="true">Please
@@ -168,7 +168,7 @@
                                                         </p>
                                                         <form [formGroup]="gaSelectForm" class="goalfonsize"
                                                             *ngIf="hasGscSetup">
-                                                            <select id="gscSelect" style="width: 150px;" class="form-control"
+                                                            <select id="gscSelect" style="width: 120px;" class="form-control"
                                                                 formControlName="gscSelect"
                                                                 (change)="onSelectGsc($event.target.value)">
                                                                 <option [ngValue]="undefined" [disabled]="true">Please
@@ -205,7 +205,7 @@
                                                         </p>
                                                         <form [formGroup]="gaSelectForm" class="goalfonsize"
                                                             *ngIf="hasFacebookSetup">
-                                                            <select id="facebookSelect" style="width: 150px;" class="form-control"
+                                                            <select id="facebookSelect" style="width: 120px;" class="form-control"
                                                                 formControlName="facebookSelect"
                                                                 (change)="onSelectFacebook($event.target.value)">
                                                                 <option [ngValue]="undefined" [disabled]="true">Please
@@ -250,7 +250,7 @@
                                                     </p>
 
                                                     <p class="goalfonsize" *ngIf="hasGadsSetup">
-                                                        <select class="form-control" style="width: 150px;"
+                                                        <select class="form-control" style="width: 120px;"
                                                             (change)="onSelectGads($event.target.value)">
                                                             <option value="0">--Select--</option>
                                                             <option *ngFor="let facebookAccount of facebookAccounts">

@@ -50,7 +50,7 @@
             <div class="col-md-12">
                 <div class="card card-default shadow bg-white rounded cursor-default">
                     <div class="card-header borderBtm">
-                        <div class="col-md-2 search-container">
+                        <div class="col-md-3 search-container">
                             <input #search class="form-control ng-valid ng-dirty ng-valid-parse ng-touched ng-empty keywordinputwidth searchheight" type="text" placeholder="Search keywords" (keyup)="onSearch(search.value)">
                         </div>
                         <div class="col-md-2">
@@ -137,7 +137,7 @@
                                         <canvas baseChart id="canvas1" [chartType]="'horizontalBar'"
                                             [options]="barOptions" [datasets]="barDataImpressionsDevice.datasets"
                                             [colors]="barColors" [labels]="barChartLabelsDevice" [legend]="true"
-                                            height="85">
+                                           >
                                         </canvas>
                                     </div>
                                 </div>
