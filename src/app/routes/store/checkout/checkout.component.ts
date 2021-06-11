@@ -28,6 +28,9 @@ const success = require('sweetalert');
 })
 export class CheckoutComponent implements OnInit {
 
+  shippingEmail: any; shippingName: any; shippingAddress: any; shippingPostalCode: any;
+  shippingCity: any; shippingState: any; shippingCountry: any; shipping = [];
+  shippingAddressCountries = []; shippingCountries = [];
   email = new FormControl('', [Validators.required]);
   name = new FormControl('', [Validators.required]);
   address = new FormControl('', [Validators.required]);
@@ -378,8 +381,7 @@ export class CheckoutComponent implements OnInit {
 
 
   //For stripe Detroja End
-  shippingEmail: any; shippingName: any; shippingAddress: any; shippingPostalCode: any;
-  shippingCity: any; shippingState: any; shippingCountry: any; shipping = [];
+ 
   submitForm(value: any) {
     ;
     this.shippingEmail = value.email;
@@ -399,7 +401,7 @@ export class CheckoutComponent implements OnInit {
       this.shippingCountry
     ]
   }
-  shippingAddressCountries = []; shippingCountries = [];
+ 
   //for getting shipping locations
   getShippingAddressLocations() {
     ;

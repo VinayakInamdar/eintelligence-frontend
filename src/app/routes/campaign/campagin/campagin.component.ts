@@ -496,8 +496,11 @@ export class CampaginComponent implements OnInit, AfterViewInit {
         this.getGSCSiteList();
       }
     }, error => {
+      if(error){
       this.integrateGSCAccount = true;
-      alert('eeee : ' + JSON.stringify(error.error));
+     // alert('eeee : ' + JSON.stringify(error.error));
+      this.snackbarService.show(" " + this.gscurl + " : Please re-integrate!! The access token has expired. ");
+      }
     });
   }
   refreshGoogleAnalyticsAccount() {
@@ -518,7 +521,10 @@ export class CampaginComponent implements OnInit, AfterViewInit {
         this.getAnalyticsProfileIds2();
       }
     }, error => {
-      alert('eeee : ' + JSON.stringify(error.error));
+     // alert('eeee : ' + JSON.stringify(error.error));
+     if(error){
+      this.snackbarService.show(" " + this.gaurl + " : Please re-integrate!! The access token has expired. ");
+     }
     });
 
   }

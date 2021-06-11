@@ -22,6 +22,7 @@ import { env } from 'process';
 import { SettingsService } from 'src/app/core/settings/settings.service';
 import { MenuService } from '../../../core/menu/menu.service';
 import { menu } from '../../../routes/menu';
+import { SnackbarService } from '../../../shared/services/snackbar/snackbar.service';
 const success = require('sweetalert');
 @Component({
   selector: 'app-home',
@@ -397,7 +398,8 @@ export class HomeComponent implements OnInit {
     private openIdConnectService: OpenIdConnectService,
     private accountService: AccountService,
     public settingsservice: SettingsService,
-    public menuService: MenuService) {
+    public menuService: MenuService,
+    private snackbarService: SnackbarService) {
     //  this.facebookPageToken = localStorage.getItem('FacebookAccessToken');
     //Ranking
     this.getCompany();
@@ -606,6 +608,7 @@ export class HomeComponent implements OnInit {
 
   // using to view analytics report of selected campaign Id
   userRowSelect(campaign: any): void {
+    ;
     localStorage.setItem('gaurl', '');
     localStorage.setItem('gaaccesstoken', '');
     localStorage.setItem('gadsaccesstoken', '');
@@ -761,7 +764,10 @@ export class HomeComponent implements OnInit {
         this.getData(campaignIndex, gscurl);
       }
     }, error => {
-      alert('eeee : ' + JSON.stringify(error.error));
+     // alert('eeee : ' + JSON.stringify(error.error));
+     if(error){
+      this.snackbarService.show(" " + gscurl + " : Please re-integrate!! The access token has expired. ");
+     }
     });
   }
   //###############################################Facebook data
@@ -918,6 +924,7 @@ export class HomeComponent implements OnInit {
   //###############################################Google Analytics
 
   refreshGoogleAnalyticsAccount(campaignIndex, refreshToken, gaUrl) {
+    ;
     const url = "https://www.googleapis.com/oauth2/v4/token";
     let data = {};
     data = {
@@ -934,7 +941,11 @@ export class HomeComponent implements OnInit {
         this.getAnalyticsProfileIds(campaignIndex, gaUrl);
       }
     }, error => {
-      alert('eeee : ' + JSON.stringify(error.error));
+      ;
+      //alert('eeee : ' + JSON.stringify(error.error));
+      if(error){
+      this.snackbarService.show(" "+ gaUrl +" : Please re-integrate!! The access token has expired. ");
+      }
     });
 
   }

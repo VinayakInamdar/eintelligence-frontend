@@ -4,7 +4,7 @@
             <div class="container mt-4 storeproductdivheight">
                 <div class="row pad-18">
                     <div class="col-md-12 item" *ngFor="let plan of plans">
-                        <div class="card item-card card-block" [style.height.px]="maxHeight/1.2">
+                        <div class="card item-card card-block give-heightcard">
                             <h3 class="card-title font-weight-bold text-left">{{plan.name}}</h3>
                             <p class="">{{plan.name}}</p>
                             <p class="service-link">
@@ -16,21 +16,90 @@
                                     <li class="text-left storelistyle">{{plan.features}}</li>
                                 </ul>
                             </div>
-                            <hr>
-                            <div class="product-attributes-box card-body storesubdivpaddinginitial">
-                                <h3 class="card-title font-weight-bold text-left">Select Campaign</h3>
-                                <select class="form-control" [(ngModel)]="campaignDrp" #mySelect
-                                    (change)="onChange(mySelect.value)">
-                                    <option value="00000000-0000-0000-0000-000000000000"> Select Campaign</option>
-                                    <option *ngFor="let campaign of campaignList" [value]="campaign.id">
-                                        {{campaign.name}} </option>
-                                </select>
-                            </div>
+
+
                         </div>
                     </div>
                 </div>
             </div>
 
+        </div>
+        <div class="card b" style="height: 37rem;margin-left: 0.3rem;margin-right: 0.3rem;">
+
+            <h3 class="card-title font-weight-bold text-left" style="padding: 3%;">Shipping Address</h3>
+            <div class="card-body">
+                <form [formGroup]="valForm" class="form-horizontal" (change)="submitForm(valForm.value)" novalidate="">
+                    <div class="form-group row">
+                        <label class="col-xl-2 col-form-label">Email</label>
+                        <div class="col-xl-10">
+                            <input formControlName="email" class="form-control" type="email" placeholder="Email" />
+                            <span class="text-danger" *ngIf="valForm.controls['email'].hasError('required') && (valForm.controls['email'].dirty || valForm.controls['email'].touched)">
+                                {{'validation.EMAIL' | translate}}</span>
+                        </div>
+                    </div>
+                    <div class="form-group row">
+                        <label class="col-xl-2 col-form-label">Name</label>
+                        <div class="col-xl-10">
+                            <input formControlName="name" class="form-control" type="text" placeholder="Name" />
+                            <span class="text-danger" *ngIf="valForm.controls['name'].hasError('required') && (valForm.controls['name'].dirty || valForm.controls['name'].touched)">
+                                {{'validation.NAMEISREQUIRED' | translate}}</span>
+                        </div>
+                    </div>
+                    <div class="form-group row">
+                        <label class="col-xl-2 col-form-label">Address</label>
+                        <div class="col-xl-10">
+                            <textarea formControlName="address" class="form-control" placeholder="Address"></textarea>
+                            <span class="text-danger" *ngIf="valForm.controls['address'].hasError('required') && (valForm.controls['address'].dirty || valForm.controls['address'].touched)">
+                                {{'Address is required' | translate}}</span>
+                        </div>
+                    </div>
+                    <div class="form-group row">
+                        <label class="col-xl-2 col-form-label">Postal code</label>
+                        <div class="col-xl-10">
+                            <input formControlName="postalCode" class="form-control" type="text" placeholder="Postal code" />
+                            <span class="text-danger" *ngIf="valForm.controls['postalCode'].hasError('required') && (valForm.controls['postalCode'].dirty || valForm.controls['postalCode'].touched)">
+                                {{'Postal code is required' | translate}}</span>
+                        </div>
+                    </div>
+                    <div class="form-group row">
+                        <label class="col-xl-2 col-form-label">City</label>
+                        <div class="col-xl-10">
+                            <input formControlName="city" class="form-control" type="text" placeholder="city" />
+                            <span class="text-danger" *ngIf="valForm.controls['city'].hasError('required') && (valForm.controls['city'].dirty || valForm.controls['city'].touched)">
+                                {{'City is required' | translate}}</span>
+                        </div>
+                    </div>
+                    <div class="form-group row">
+                        <label class="col-xl-2 col-form-label">State</label>
+                        <div class="col-xl-10">
+                            <input formControlName="state" class="form-control" type="text" placeholder="state" />
+                            <span class="text-danger" *ngIf="valForm.controls['state'].hasError('required') && (valForm.controls['state'].dirty || valForm.controls['state'].touched)">
+                                {{'State is required' | translate}}</span>
+                        </div>
+                    </div>
+                    <div class="form-group row">
+                        <label class="col-xl-2 col-form-label">Country</label>
+                        <div class="col-xl-10">
+                            <mat-form-field appearance="outline" class="setdropdownwidth">
+                                <mat-label></mat-label>
+                                <mat-select formControlName="country" (selectionChange)="setSelectedLocation($event)" placeholder="Country" title="Country Id">
+                                    <mat-form-field class="setdropdownwidth setdropdownpadding">
+                                        <input matInput (keyup)="onKey($event.target.value)" placeholder="Search Country Id">
+                                    </mat-form-field>
+
+                                    <mat-option value={{a.id}} *ngFor="let a of  shippingAddressCountries">
+                                        {{a.id}}</mat-option>
+                                </mat-select>
+
+                            </mat-form-field>
+                            <span class="text-danger" *ngIf="valForm.controls['country'].hasError('required') && (valForm.controls['country'].dirty || valForm.controls['country'].touched)">
+                                {{'Country is required' | translate}}</span>
+                        </div>
+
+
+                    </div>
+                </form>
+            </div>
         </div>
     </div>
     <div class="col-md-5 checkoutdiv">
@@ -74,7 +143,16 @@
                     </div>
                 </div>
             </div>
-
+            <div class="card b" style="height: 10rem;">
+                <div class="product-attributes-box card-body storesubdivpaddinginitial">
+                    <h3 class="card-title font-weight-bold text-left givepadding-header">Select Campaign</h3>
+                    <select class="form-control  givewidth-dropdown" [(ngModel)]="campaignDrp" #mySelect (change)="onChange(mySelect.value)">
+                        <option value="00000000-0000-0000-0000-000000000000"> Select Campaign</option>
+                        <option *ngFor="let campaign of campaignList" [value]="campaign.id">
+                            {{campaign.name}} </option>
+                    </select>
+                </div>
+            </div>
             <div class="card b" style="height: 256px;">
 
                 <form id="subscription-form" class="mb-1">
