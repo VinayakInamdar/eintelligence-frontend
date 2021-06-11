@@ -79,7 +79,7 @@ const Campaign = {
 // };
 
 const Reports = {
-    text: 'Reports coming soon',     // text: 'Reports',
+    text: 'Reports (coming soon)',     // text: 'Reports',
     link: '/reports',
     icon: "fas fa-list-alt",
     role: "role:Normal User:Admin:Super Admin"

@@ -9,7 +9,7 @@ import { OpenIdConnectService } from '../../../shared/services/open-id-connect.s
 import { Campaign } from '../../campaign/campaign.model';
 import { CampaignService } from '../../campaign/campaign.service';
 import { HttpClient, HttpHeaders } from '@angular/common/http';
-import { FormGroup } from '@angular/forms';
+import { FormBuilder, FormControl, FormGroup, Validators } from '@angular/forms';
 import { SnackbarService } from '../../../shared/services/snackbar/snackbar.service';
 import { StripeService } from "ngx-stripe";
 import { AccountService } from '../../account/account.service';
@@ -25,6 +25,24 @@ declare var Stripe;
   styleUrls: ['./checkoutsubscribe.component.scss']
 })
 export class CheckoutSubscribeComponent implements OnInit {
+  shippingEmail: any;
+  shippingName: any;
+  shippingAddress: any;
+  shippingPostalCode: any;
+  shippingCity: any;
+  shippingState: any;
+
+  shippingAddressCountries = [];
+  shippingCountries = [];
+  shippingCountry: any; shipping = [];
+  email = new FormControl('', [Validators.required]);
+  name = new FormControl('', [Validators.required]);
+  address = new FormControl('', [Validators.required]);
+  postalCode = new FormControl('', [Validators.required]);
+  city = new FormControl('', [Validators.required]);
+  state = new FormControl('', [Validators.required]);
+  country = new FormControl('', [Validators.required]);
+  valForm: FormGroup;
   //For stripe
   httpOptionJSON = {
     headers: new HttpHeaders({
@@ -43,7 +61,19 @@ export class CheckoutSubscribeComponent implements OnInit {
   plans = [];
   constructor(private http: HttpClient, public campaignService: CampaignService, public openIdConnectService: OpenIdConnectService,
     public route: ActivatedRoute, public router: Router, public productService: StoreService, private snackbarService: SnackbarService,
-    public productsService: ProductsService, private accountService: AccountService) { }
+    public productsService: ProductsService, private accountService: AccountService, public fb: FormBuilder) {
+
+    this.valForm = fb.group({
+
+      'email': [this.email.value, Validators.required],
+      'name': [this.name.value, Validators.required],
+      'address': [this.address.value, Validators.required],
+      'postalCode': [this.postalCode.value, Validators.required],
+      'city': [this.city.value, Validators.required],
+      'state': [this.state.value, Validators.required],
+      'country': [this.country.value, Validators.required]
+    })
+  }
   errorMessage = '';
   settingActive = 1;
   maxHeight = window.innerHeight;
@@ -75,11 +105,13 @@ export class CheckoutSubscribeComponent implements OnInit {
     this.getCampaignList();
     this.planid = this.route.snapshot.paramMap.get('planid');
     this.productId = this.route.snapshot.paramMap.get('productid');
+
+    this.getShippingAddressLocations();
   }
 
   getUser() {
-    
-     var userId = this.openIdConnectService.user.profile.sub;
+
+    var userId = this.openIdConnectService.user.profile.sub;
     // this.accountService.getUser(userId).subscribe(
     //   res1 => {
     //     console.log(res1);
@@ -89,7 +121,7 @@ export class CheckoutSubscribeComponent implements OnInit {
     const filterOptionModel = this.getFilterOptionPlans();
     this.accountService.getFilteredUsers(filterOptionModel).subscribe((response: any) => {
       if (response) {
-        
+
         this.companyDetail = response.body
         this.companyDetail = this.companyDetail.filter(x => x.id == userId);
         this.companyDetail = this.companyDetail[0].company;
@@ -97,7 +129,7 @@ export class CheckoutSubscribeComponent implements OnInit {
     })
   }
   onChange(cid) {
-    
+
     this.campaignid = cid;
     this.campaignError = false;
   }
@@ -123,21 +155,21 @@ export class CheckoutSubscribeComponent implements OnInit {
     const filterOptionModel = this.getFilterOptionPlans();
     this.productsService.getFilteredPlan(filterOptionModel).subscribe((response: any) => {
       if (response) {
-        
+
         this.plans = response.body
         this.plans = this.plans.filter(x => x.id == this.planid);
         this.amount = this.plans[0].price;
         this.priceId = this.plans[0].priceId;
         this.paymentMode = this.plans[0].paymentType;
         this.paymentCycle = this.plans[0].paymentCycle;
-        
+
         this.stripeSubInit();
 
       }
     })
   }
   makePayment2() {
-    
+
     const url = "https://api.stripe.com/v1/subscriptions";
     const body = new URLSearchParams();
     body.set('customer', 'cus_Ig2Fs0xb9PWEWr');
@@ -145,7 +177,7 @@ export class CheckoutSubscribeComponent implements OnInit {
 
     this.http.post(url, body.toString(), this.httpOptionJSON).subscribe(res => {
       if (res) {
-        
+
 
       }
     }, error => {
@@ -154,7 +186,7 @@ export class CheckoutSubscribeComponent implements OnInit {
     });
   }
   makePayment() {
-    
+
     // if (this.campaignid = '00000000-0000-0000-0000-000000000000') {
     //   this.campaignError = true;
     // } else {
@@ -164,7 +196,7 @@ export class CheckoutSubscribeComponent implements OnInit {
     // Call your backend to create the CheckoutSubscribe session.
     this.productService.CreateStripePaymentCheckout(data).subscribe(
       products => {
-        
+
         this.sessionid = products.sessionId
 
         this.checkout(this.sessionid);
@@ -186,7 +218,7 @@ export class CheckoutSubscribeComponent implements OnInit {
       cancelUrl: `https://localhost:4200/paymentfailure`,
     }).then((response) => response)
       .then((data) => {
-        
+
         window.location.href = 'https://www.google.com';
       });
 
@@ -198,6 +230,7 @@ export class CheckoutSubscribeComponent implements OnInit {
 
   }
   addToPaymentTable(StripeSubscriptionId) {
+    ;
     let data = {
       amount: this.amount,
       userId: this.userId,
@@ -211,6 +244,7 @@ export class CheckoutSubscribeComponent implements OnInit {
     }
     this.productService.createStripePayment(data).subscribe(response => {
       if (response) {
+        ;
         this.loading(false);
         this.snackbarService.show('Checkout Done');
       }
@@ -220,7 +254,7 @@ export class CheckoutSubscribeComponent implements OnInit {
   //################StripeFuncation###################
 
   showError(errorMsgText) {
-    
+
     this.loading(false);
     var errorMsg = document.querySelector("#card-errors");
     errorMsg.textContent = errorMsgText;
@@ -242,7 +276,7 @@ export class CheckoutSubscribeComponent implements OnInit {
   }
   //################StripeSubscriptionFuncation##########
   stripeSubInit() {
-    
+
     var stripe = Stripe(environment.stripe_key);
     document.querySelector("#submit")['disabled'] = true;
     var elements = stripe.elements();
@@ -280,7 +314,7 @@ export class CheckoutSubscribeComponent implements OnInit {
     });
   }
   createPaymentMethod(stripe, cardElement) {
-    
+
     this.loading(true);
     // const url = "https://api.stripe.com/v1/payment_methods";
     // const body = new URLSearchParams();
@@ -300,7 +334,7 @@ export class CheckoutSubscribeComponent implements OnInit {
     //   alert(error.message);
     // });
     this.campaignError = false;
-    
+
     if (this.campaignid == '00000000-0000-0000-0000-000000000000') {
       this.campaignError = true;
       this.loading(false);
@@ -310,17 +344,18 @@ export class CheckoutSubscribeComponent implements OnInit {
         type: 'card',
         card: cardElement,
         billing_details: {
-          name: 'rubina123@gmail.com'//this.cardEmail
+          //name: 'rubina123@gmail.com'//this.cardEmail
+          name: this.shipping[0]
         }
       }).then((res) => {
-        
+
         this.paymentMethodId = res.paymentMethod.id;
         this.createCustomer();
       });
     }
   }
   createSubscription() {
-    
+    ;
     const url = "https://api.stripe.com/v1/subscriptions";
     const body = new URLSearchParams();
     body.set('customer', this.customerId);
@@ -329,7 +364,7 @@ export class CheckoutSubscribeComponent implements OnInit {
 
     this.http.post(url, body.toString(), this.httpOptionJSON).subscribe(res => {
       if (res) {
-        
+
         this.subscriptionId = res['id'];
         this.downloadInvoice(res['latest_invoice'])
         this.addToPaymentTable(this.subscriptionId);
@@ -342,39 +377,39 @@ export class CheckoutSubscribeComponent implements OnInit {
 
   }
   createCustomer() {
-    
+    ;
     const url = "https://api.stripe.com/v1/customers";
     const body = new URLSearchParams();
-    body.set('description', this.companyDetail.name);
-    body.set('address[line1]', this.companyDetail.address);
-    body.set('address[city]', this.companyDetail.city);
-    body.set('address[country]', this.companyDetail.country);
-    body.set('address[postal_code]', this.companyDetail.zipCode);
-    body.set('address[state]', this.companyDetail.state);
-    body.set('email', this.companyDetail.email);
-    body.set('name', this.companyDetail.name);
+    body.set('description', this.shipping[1]);
+    body.set('address[line1]', this.shipping[2]);
+    body.set('address[city]', this.shipping[4]);
+    body.set('address[country]', this.shipping[6]);
+    body.set('address[postal_code]', this.shipping[3]);
+    body.set('address[state]', this.shipping[5]);
+    body.set('email', this.shipping[0]);
+    body.set('name', this.shipping[1]);
 
     this.http.post(url, body.toString(), this.httpOptionJSON).subscribe(res => {
       if (res) {
-        
+
         this.customerId = res['id'];
         this.attachCustomerWithPaymentMethod();
       }
     }, error => {
       this.loading(false);
-      
+
       this.snackbarService.show('Checkout Failed  For Create Customer: ' + JSON.stringify(error.error));
     });
   }
   attachCustomerWithPaymentMethod() {
-    
+
     const url = "https://api.stripe.com/v1/payment_methods/" + this.paymentMethodId + "/attach";
     const body = new URLSearchParams();
     body.set('customer', this.customerId);
 
     this.http.post(url, body.toString(), this.httpOptionJSON).subscribe(res => {
       if (res) {
-        
+
         this.createSubscription();
       }
     }, error => {
@@ -384,10 +419,10 @@ export class CheckoutSubscribeComponent implements OnInit {
 
   }
   public downloadInvoice(invoiceId): any {
-    const url = "https://api.stripe.com/v1/invoices/" +invoiceId;
+    const url = "https://api.stripe.com/v1/invoices/" + invoiceId;
     this.http.get(url, this.httpOptionJSON).subscribe(res => {
       if (res) {
-        
+
         //download invoice
         this.download(res['invoice_pdf'])
       }
@@ -397,7 +432,55 @@ export class CheckoutSubscribeComponent implements OnInit {
   }
   //For stripe Detroja End
   public download(downloadUrl: string): void {
-    
+
     window.open(downloadUrl, '_blank');
+  }
+
+  getShippingAddressLocations() {
+    ;
+    const url = "https://api.stripe.com/v1/country_specs?limit=100";
+    this.http.get(url, this.httpOptionJSON).subscribe((res) => {
+      ;
+      this.shippingAddressCountries = res['data'];
+      this.shippingCountries = res['data'];
+    })
+  }
+  setSelectedLocation(event: any) {
+    ;
+    this.shipping[6] = event.value;
+    this.shippingCountry = event.value;
+  }
+  onKey(value) {
+    ;
+    if (value === '' || value == null || value == undefined) {
+      this.shippingAddressCountries = this.shippingCountries;
+    }
+    else {
+      this.shippingAddressCountries = this.search(value);
+    }
+  }
+  search(value: string) {
+    ;
+    let filter = value.toLowerCase();
+    return this.shippingAddressCountries.filter(option => option.id.toLowerCase().startsWith(filter));
+  }
+  submitForm(value: any) {
+    ;
+    this.shippingEmail = value.email;
+    this.shippingName = value.name;
+    this.shippingAddress = value.address;
+    this.shippingPostalCode = value.postalCode;
+    this.shippingCity = value.city;
+    this.shippingState = value.state;
+    this.shippingCountry = value.country;
+    this.shipping = [
+      this.shippingEmail,
+      this.shippingName,
+      this.shippingAddress,
+      this.shippingPostalCode,
+      this.shippingCity,
+      this.shippingState,
+      this.shippingCountry
+    ]
   }
 }

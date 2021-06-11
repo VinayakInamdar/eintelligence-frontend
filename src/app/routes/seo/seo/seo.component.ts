@@ -25,6 +25,7 @@ import { environment } from '../../../../environments/environment';
 import html2canvas from 'html2canvas';
 import * as html2pdf from 'html2pdf.js';
 import { SettingsService } from 'src/app/core/settings/settings.service';
+import { SnackbarService } from '../../../shared/services/snackbar/snackbar.service';
 
 const success = require('sweetalert');
 @Component({
@@ -953,7 +954,8 @@ export class SeoComponent implements OnInit {
     private campaignService: CampaignService, private openIdConnectService: OpenIdConnectService,
     public route: ActivatedRoute, public router: Router, private integrationsService: IntegrationsService
     , private overvieswService: OverviewService, location: PlatformLocation,
-    public auditsService: AuditsService, private http: HttpClient, public datepipe: DatePipe, private authService: SocialAuthService, private settingService: SettingsService) {
+    public auditsService: AuditsService, private http: HttpClient, public datepipe: DatePipe, private authService: SocialAuthService, private settingService: SettingsService,
+    private snackbarService: SnackbarService) {
 
 
 
@@ -1083,7 +1085,10 @@ export class SeoComponent implements OnInit {
         this.getData();
       }
     }, error => {
-      alert('Gsc : ' + JSON.stringify(error.error));
+     // alert('Gsc : ' + JSON.stringify(error.error));
+     if(error){
+      this.snackbarService.show(" " + this.gscurl + " : Please re-integrate!! The access token has expired. ");
+     }
     });
   }
   refreshGoogleAnalyticsAccount() {
@@ -1105,7 +1110,10 @@ export class SeoComponent implements OnInit {
         this.getSiteSpeedDataDesktop();
       }
     }, error => {
-      alert('GA : ' + JSON.stringify(error.error));
+     // alert('GA : ' + JSON.stringify(error.error));
+     if(error){
+      this.snackbarService.show(" " + this.gaurl + " : Please re-integrate!! The access token has expired. ");
+     }
     });
 
   }
