@@ -493,7 +493,7 @@ export class SiteSpeedComponent implements OnInit {
           text: this.translate.instant('sweetalert.OKBUTTON'),
           value: true,
           visible: true,
-          className: "bg-primary",
+          className: "bg-danger",
           closeModal: true,
         }
       }

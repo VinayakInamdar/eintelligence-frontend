@@ -37,6 +37,8 @@ export class CampaginComponent implements OnInit, AfterViewInit {
   profiles: any;
   selectedProfile: any;
   isEditMode: boolean = false;
+  isGaEdit: boolean = false;
+  isGscEdit: boolean = false;
   //#############################################
   //Ranking
   serpList;
@@ -78,7 +80,8 @@ export class CampaginComponent implements OnInit, AfterViewInit {
     gaSelect: this.gaSelect,
     gscSelect: this.gscSelect
   });
- 
+  integrateGSCAccount: boolean = false;
+
   //Traffic
   thisMonthTraffic = 0;
   lastMonthTraffic = 0;
@@ -291,10 +294,10 @@ export class CampaginComponent implements OnInit, AfterViewInit {
   selctedLabelName1: string = 'Select Matrix';
   selectedLabelValue1: string;
   httpOptionJSON1 = {
-		headers: new HttpHeaders({
-			'Content-Type': 'application/x-www-form-urlencoded',
-		})
-	};
+    headers: new HttpHeaders({
+      'Content-Type': 'application/x-www-form-urlencoded',
+    })
+  };
 
   showdiv: boolean = false;
   show: string = 'undefine';
@@ -312,13 +315,13 @@ export class CampaginComponent implements OnInit, AfterViewInit {
   facebookid;
   gacode;
   gsccode;
-  webUrlReg:string='([^https://www.]|[^www.]|[^http://www.])[a-zA-Z]{4,}(([\.][a-z]{3})|([\.][a-z]{2}[\.][a-z]{2}))';
+  webUrlReg: string = '([^https://www.]|[^www.]|[^http://www.])[a-zA-Z]{4,}(([\.][a-z]{3})|([\.][a-z]{2}[\.][a-z]{2}))';
   constructor(private translate: TranslateService, fb: FormBuilder, private facebook: FacebookService,
     private campaignService: CampaignService, private authService: SocialAuthService,
     public route: ActivatedRoute, public http: HttpClient, public datepipe: DatePipe, public router: Router, private openIdConnectService: OpenIdConnectService, private integrationsService: IntegrationsService
     , private overvieswService: OverviewService, location: PlatformLocation, private snackbarService: SnackbarService,
-    public auditsService: AuditsService, private settingService:SettingsService) {
-     
+    public auditsService: AuditsService, private settingService: SettingsService) {
+
     facebook.init({
       appId: '200487178533939',//environment.facebook_appid,//3574916862576976
       version: 'v9.0'
@@ -340,7 +343,7 @@ export class CampaginComponent implements OnInit, AfterViewInit {
 
     });
 
-    
+
     this.valForm = fb.group({
       'name': [this.campaignModel.name, Validators.required],
       'campaignType': [''],
@@ -352,39 +355,38 @@ export class CampaginComponent implements OnInit, AfterViewInit {
       'leadGeneration': [true],
     })
     this.gacode = localStorage.getItem("gacode");
-    if(this.gacode != 'null' && this.gacode != null && this.gacode != undefined && this.gacode != ''){
+    if (this.gacode != 'null' && this.gacode != null && this.gacode != undefined && this.gacode != '') {
       this.getToken(this.gacode);
     }
     this.gsccode = localStorage.getItem("gsccode");
-    if(this.gsccode != 'null' && this.gsccode != null && this.gsccode != undefined && this.gsccode != ''){
+    if (this.gsccode != 'null' && this.gsccode != null && this.gsccode != undefined && this.gsccode != '') {
       this.getToken(this.gsccode);
     }
-   
+
   }
- 	getToken(code) {
-     
-		const url = "https://oauth2.googleapis.com/token";
-     
-		//const url = "https://www.googleapis.com/oauth2/v4/token";
-		const body = new URLSearchParams();
-		body.set('client_id', environment.googleClientId);
-		body.set('client_secret', environment.googleClientSecret);
-		body.set('code', code);
-		body.set('grant_type', 'authorization_code');
-		body.set('redirect_uri', environment.googleRedirectUrl);
-		this.http.post(url, body.toString(), this.httpOptionJSON1).subscribe(res => {
-			if (res) {
-        
-        if(this.gacode != 'null' && this.gacode != null && this.gacode != undefined && this.gacode != ''){
-        this.staticTabs.tabs[2].disabled = false;
-        this.staticTabs.tabs[2].active = true;
-         this.gaAccaessToken = res['access_token'];
-         this.gaRefreshToken = res['refresh_token'];
-         this.getAnalyticsProfileIds2();
-        localStorage.setItem("gacode",'');
-        this.gacode ='';
+  getToken(code) {
+
+    const url = "https://oauth2.googleapis.com/token";
+
+    //const url = "https://www.googleapis.com/oauth2/v4/token";
+    const body = new URLSearchParams();
+    body.set('client_id', environment.googleClientId);
+    body.set('client_secret', environment.googleClientSecret);
+    body.set('code', code);
+    body.set('grant_type', 'authorization_code');
+    body.set('redirect_uri', environment.googleRedirectUrl);
+    this.http.post(url, body.toString(), this.httpOptionJSON1).subscribe(res => {
+      if (res) {
+        if (this.gacode != 'null' && this.gacode != null && this.gacode != undefined && this.gacode != '') {
+          this.staticTabs.tabs[2].disabled = false;
+          this.staticTabs.tabs[2].active = true;
+          this.gaAccaessToken = res['access_token'];
+          this.gaRefreshToken = res['refresh_token'];
+          this.getAnalyticsProfileIds2();
+          localStorage.setItem("gacode", '');
+          this.gacode = '';
         }
-        if(this.gsccode != 'null' && this.gsccode != null && this.gsccode != undefined && this.gsccode != ''){
+        if (this.gsccode != 'null' && this.gsccode != null && this.gsccode != undefined && this.gsccode != '') {
           this.staticTabs.tabs[2].disabled = false;
           this.staticTabs.tabs[2].active = true;
           this.gscAccounts = [];
@@ -392,16 +394,16 @@ export class CampaginComponent implements OnInit, AfterViewInit {
           this.gscAccessToken = res['access_token'];
           this.gscRefreshToken = res['refresh_token'];
           this.getGSCSiteList();
-          localStorage.setItem("gsccode",'');
-          this.gsccode ='';
-          }
-			}
-		}, error => {
-			console.log(error.message, 'Error');
-		});
-	}
-  callInstagramApi(){
-    
+          localStorage.setItem("gsccode", '');
+          this.gsccode = '';
+        }
+      }
+    }, error => {
+      console.log(error.message, 'Error');
+    });
+  }
+  callInstagramApi() {
+
   }
   checkqueryparams() {
     var params = { ...this.route.snapshot.queryParams };
@@ -424,13 +426,13 @@ export class CampaginComponent implements OnInit, AfterViewInit {
 
 
   ngOnInit(): void {
-  
+
     // this.masterCampaignId = localStorage.getItem('masterCampaignId');
     // if (this.masterCampaignId != null && this.masterCampaignId != undefined) {
     //   this.settingActive = 1;
     // }
     let editMasterId = localStorage.getItem('editMasterId')
-    if (editMasterId != "null" && editMasterId != undefined  && editMasterId != '') {
+    if (editMasterId != "null" && editMasterId != undefined && editMasterId != '') {
       this.isEditMode = true;
       this.masterCampaignId = editMasterId;
       this.valForm.controls['name'].setValue(localStorage.getItem('selectedCampName'));
@@ -440,25 +442,25 @@ export class CampaginComponent implements OnInit, AfterViewInit {
       this.gaAccaessToken = localStorage.getItem('gaaccesstoken')
       this.gaRefreshToken = localStorage.getItem('garefreshtoken')
       this.gscRefreshToken = localStorage.getItem('gscrefreshtoken')
-      this.gaid =  localStorage.getItem('gaid')
+      this.gaid = localStorage.getItem('gaid')
       this.gaurl = localStorage.getItem('gaurl');
-      this.gscid =  localStorage.getItem('gscid')
-      this.facebookid =  localStorage.getItem('facebookid')
+      this.gscid = localStorage.getItem('gscid')
+      this.facebookid = localStorage.getItem('facebookid')
       this.facebookpagename = localStorage.getItem('facebookpagename');
       this.gscurl = localStorage.getItem('gscurl');
       if (this.gaurl != 'null' && this.gaurl != null && this.gaurl != undefined && this.gaurl != '') {
         this.refreshGoogleAnalyticsAccount();
-      //if(this.gaAccaessToken != 'null' && this.gaAccaessToken != null && this.gaAccaessToken != undefined && this.gaAccaessToken != ''){
+        //if(this.gaAccaessToken != 'null' && this.gaAccaessToken != null && this.gaAccaessToken != undefined && this.gaAccaessToken != ''){
         this.hasGaSetup = true;
-       // this.getAnalyticsProfileIds2();
+        // this.getAnalyticsProfileIds2();
       }
       if (this.gscurl != 'null' && this.gscurl != null && this.gscurl != undefined && this.gscurl != '') {
-     // if(this.gscAccessToken != 'null' && this.gscAccessToken != null && this.gscAccessToken != undefined && this.gscAccessToken != ''){
-      this.refreshGSCAccount();
-        this.hasGscSetup=true;
+        // if(this.gscAccessToken != 'null' && this.gscAccessToken != null && this.gscAccessToken != undefined && this.gscAccessToken != ''){
+        this.refreshGSCAccount();
+        this.hasGscSetup = true;
         //this.getGSCSiteList();
       }
-      if(this.facebookAccessToken != 'null' && this.facebookAccessToken != null && this.facebookAccessToken != undefined && this.facebookAccessToken != ''){
+      if (this.facebookAccessToken != 'null' && this.facebookAccessToken != null && this.facebookAccessToken != undefined && this.facebookAccessToken != '') {
         this.hasFacebookSetup = true;
         this.getFacebookPagesList();
       }
@@ -477,7 +479,7 @@ export class CampaginComponent implements OnInit, AfterViewInit {
     this.trafficNut = 0;
   }
   refreshGSCAccount() {
-    
+
     const url = "https://www.googleapis.com/oauth2/v4/token";
     let data = {};
     data = {
@@ -489,16 +491,20 @@ export class CampaginComponent implements OnInit, AfterViewInit {
     };
     this.http.post(url, data).subscribe(res => {
       if (res) {
-        
+
         this.gscAccessToken = res['access_token'];
         this.getGSCSiteList();
       }
     }, error => {
-      alert('eeee : ' + JSON.stringify(error.error));
+      if(error){
+      this.integrateGSCAccount = true;
+     // alert('eeee : ' + JSON.stringify(error.error));
+      this.snackbarService.show(" " + this.gscurl + " : Please re-integrate!! The access token has expired. ");
+      }
     });
   }
   refreshGoogleAnalyticsAccount() {
-    
+
     const url = "https://www.googleapis.com/oauth2/v4/token";
     let data = {};
     data = {
@@ -510,12 +516,15 @@ export class CampaginComponent implements OnInit, AfterViewInit {
     };
     this.http.post(url, data).subscribe(res => {
       if (res) {
-        
+
         this.gaAccaessToken = res['access_token'];
         this.getAnalyticsProfileIds2();
       }
     }, error => {
-      alert('eeee : ' + JSON.stringify(error.error));
+     // alert('eeee : ' + JSON.stringify(error.error));
+     if(error){
+      this.snackbarService.show(" " + this.gaurl + " : Please re-integrate!! The access token has expired. ");
+     }
     });
 
   }
@@ -542,7 +551,7 @@ export class CampaginComponent implements OnInit, AfterViewInit {
     this.router.navigate(['/integrations', this.selectedCampId]);
   }
 
- 
+
   // using to get list of campaigns
   public getCampaignList(): void {
     var userid = localStorage.getItem("userID");
@@ -610,7 +619,7 @@ export class CampaginComponent implements OnInit, AfterViewInit {
 
   }
 
- 
+
   // using to get list of keyword list
   public getSerpList(): void {
     this.campaignService.getSerp("&tbs=qdr:m").subscribe(res => {
@@ -622,17 +631,17 @@ export class CampaginComponent implements OnInit, AfterViewInit {
 
   // using to  create new campaign in db
   submitForm(value: any) {
-    
-    if (this.isEditMode == false) {
+    if (this.masterCampaignId == null || this.masterCampaignId == undefined || this.masterCampaignId == 'null' || this.masterCampaignId == '') {
       var result: Campaign = Object.assign({}, value);
       result.id = "00000000-0000-0000-0000-000000000000";
+      result.companyID = this.companyId;
       result.userId = this.openIdConnectService.user.profile.sub;
       //  result.profilePicture = this.fileToUpload.name
-      
+
       this.campaignService.createCampaign(result).subscribe((res: Campaign) => {
         this.campaignModel = res;
-        
-        localStorage.setItem('masterCampaignId', res['id']);
+
+        localStorage.setItem('editMasterId', res['id']);
         this.masterCampaignId = res['id'];
         this.staticTabs.tabs[2].disabled = false;
         this.staticTabs.tabs[2].active = true;
@@ -645,18 +654,16 @@ export class CampaginComponent implements OnInit, AfterViewInit {
           return;
         }
       });
-    } else if (this.isEditMode == true) {
-      ;
+    } else {
 
       var result: Campaign = Object.assign({}, value);
       result.companyID = this.companyId;
       result.id = this.masterCampaignId;
       this.campaignService.updatecampaign(this.masterCampaignId, result).subscribe((res: Campaign) => {
-        ;
         this.isEditMode = false;
         this.staticTabs.tabs[2].disabled = false;
         this.staticTabs.tabs[2].active = true;
-        localStorage.setItem('editMasterId',null);
+        localStorage.setItem('editMasterId', null);
         this.valForm.reset();
 
       });
@@ -666,15 +673,15 @@ export class CampaginComponent implements OnInit, AfterViewInit {
   // using to select nect tab
   goToNextTab(event, inputvalue, fieldName, tabid) {
     event.preventDefault()
-    
+
     var value = this.validateForm(fieldName)
-      this.staticTabs.tabs[tabid].disabled = false;
-      this.staticTabs.tabs[tabid].active = true;
+    this.staticTabs.tabs[tabid].disabled = false;
+    this.staticTabs.tabs[tabid].active = true;
   }
   //using to go to next tab while edit
   goToNextTabForEdit(event, inputvalue, fieldName, tabid) {
     event.preventDefault()
-    
+
     var value = this.validateForm(fieldName);
     this.staticTabs.tabs[tabid].disabled = false;
     this.staticTabs.tabs[tabid].active = true;
@@ -714,7 +721,7 @@ export class CampaginComponent implements OnInit, AfterViewInit {
                 text: this.translate.instant('sweetalert.OKBUTTON'),
                 value: true,
                 visible: true,
-                className: "bg-primary",
+                className: "bg-danger",
                 closeModal: true,
               }
             }
@@ -733,7 +740,7 @@ export class CampaginComponent implements OnInit, AfterViewInit {
               text: this.translate.instant('sweetalert.OKBUTTON'),
               value: true,
               visible: true,
-              className: "bg-primary",
+              className: "bg-danger",
               closeModal: true,
             }
           }
@@ -746,7 +753,7 @@ export class CampaginComponent implements OnInit, AfterViewInit {
 
   // using to validate from 
   validateForm(fieldName) {
-    
+
     if (this.valForm.invalid) {
       this.valForm.get(fieldName).markAsTouched();
       var value1 = this.valForm.controls[fieldName].status
@@ -777,7 +784,7 @@ export class CampaginComponent implements OnInit, AfterViewInit {
           text: this.translate.instant('sweetalert.OKBUTTON'),
           value: true,
           visible: true,
-          className: "bg-primary",
+          className: "bg-danger",
           closeModal: true,
         }
       }
@@ -798,13 +805,13 @@ export class CampaginComponent implements OnInit, AfterViewInit {
           text: this.translate.instant('sweetalert.OKBUTTON'),
           value: true,
           visible: true,
-          className: "bg-primary",
+          className: "bg-danger",
           closeModal: true,
         }
       }
     }).then((isConfirm: any) => {
       if (isConfirm) {
-        this.router.navigate(['/home']);
+        //this.router.navigate(['/home']);
       }
     });
   }
@@ -855,7 +862,7 @@ export class CampaginComponent implements OnInit, AfterViewInit {
   }
 
   public goToAddKeywords(): void {
-    
+
     this.router.navigate([`/campaign/:id${this.masterCampaignId}/seo/keywords`], {
       queryParams: {
         view: 'addKeyword'
@@ -901,15 +908,15 @@ export class CampaginComponent implements OnInit, AfterViewInit {
   //using to close create campaign  component
   public closeCreateCampaignComponent(event) {
     event.preventDefault()
-    this.settingActive = 3;
+    //this.settingActive = 3;
     this.valForm.reset()
-    if (this.url.includes('/home/campaign')) {
-      this.url = undefined;
-      this.router.navigate(['home'])
+    // if (this.url.includes('/home/campaign')) {
+    //   this.url = undefined;
+    //   this.router.navigate(['home'])
 
-    }
+    // }
 
-
+    this.router.navigate(['/campaign']);
   }
 
   // using to change color of circulr progrss bar outerstroke accroding value
@@ -955,51 +962,47 @@ export class CampaginComponent implements OnInit, AfterViewInit {
   }
 
   integrateGoogleAnalytics(): void {
+    ;
     localStorage.setItem("selectedCompanyName", this.settingService.selectedCompanyInfo.companyId);
     localStorage.setItem("selectedCompanyRole", this.settingService.selectedCompanyInfo.role);
-    localStorage.setItem("isga","1");
-    let connectYouTubeUrl = 'https://accounts.google.com/o/oauth2/v2/auth?scope=https://www.googleapis.com/auth/analytics.readonly https://www.googleapis.com/auth/analytics&access_type=offline&prompt=consent&include_granted_scopes=true&redirect_uri='+environment.googleRedirectUrl+'&response_type=code&client_id=' + environment.googleClientId;
+    localStorage.setItem("selectedCompanyImageUrl", this.settingService.selectedCompanyInfo.companyImageUrl);
+    localStorage.setItem("isga", "1");
+    let connectYouTubeUrl = 'https://accounts.google.com/o/oauth2/v2/auth?scope=https://www.googleapis.com/auth/analytics.readonly https://www.googleapis.com/auth/analytics&access_type=offline&prompt=consent&include_granted_scopes=true&redirect_uri=' + environment.googleRedirectUrl + '&response_type=code&client_id=' + environment.googleClientId;
     window.location.href = connectYouTubeUrl;
-    
-    
+
+
   }
 
 
   onSelectGa(id) {
-    
+    if (this.gaurl == id) {
+      this.isGaEdit = false;
+    }
+    else {
+      this.isGaEdit = true;
+    }
     this.gaSelectedName = id;
   }
   saveGaAccount() {
-  
-    if(!this.isEditMode){
-    let data = {
-      id: "00000000-0000-0000-0000-000000000000",
-      urlOrName: this.gaSelectedName,
-      isActive: true,
-      CampaignID: this.masterCampaignId,
-      accessToken: this.gaAccaessToken,
-      refreshToken: this.gaRefreshToken
-    }
-    this.campaignService.createGA(data).subscribe(
-      res => {
-        this.successAlert()
-      });
-    }
-    if(this.isEditMode){
-      if(this.gaid == null || this.gaid ==undefined ||this.gaid =='null' ||this.gaid ==''){
-        let data = {
-          id: "00000000-0000-0000-0000-000000000000",
-          urlOrName: this.gaSelectedName,
-          isActive: true,
-          CampaignID: this.masterCampaignId,
-          accessToken: this.gaAccaessToken,
-          refreshToken: this.gaRefreshToken
-        }
-        this.campaignService.createGA(data).subscribe(
-          res => {
-            this.successAlert()
-          });
-    }else{
+    if (this.gaid == null || this.gaid == undefined || this.gaid == 'null' || this.gaid == '') {
+      let data = {
+        id: "00000000-0000-0000-0000-000000000000",
+        urlOrName: this.gaSelectedName,
+        isActive: true,
+        CampaignID: this.masterCampaignId,
+        accessToken: this.gaAccaessToken,
+        refreshToken: this.gaRefreshToken
+      }
+      this.campaignService.createGA(data).subscribe(
+        res => {
+          this.isGaEdit = false;
+          this.gaid = res.id;
+          this.gaurl = res.urlOrName;
+          localStorage.setItem('gaid', res.id);
+          localStorage.setItem('gaurl', res.urlOrName);
+          this.successAlert()
+        });
+    } else {
       let data = {
         id: this.gaid,
         urlOrName: this.gaSelectedName,
@@ -1009,15 +1012,16 @@ export class CampaginComponent implements OnInit, AfterViewInit {
         refreshToken: this.gaRefreshToken
       }
       this.campaignService.updateGA(this.gaid, data).subscribe(response => {
-        
-        this.successAlert();
+        this.isGaEdit = false;
+        this.gaurl = this.gaSelectedName;
+        localStorage.setItem('gaurl', this.gaSelectedName);
+        this.updateSuccessAlert();
       });
     }
   }
-  }
-  
+
   getAnalyticsProfileIds2() {
-    
+
     this.gaAccounts = [];
     this.hasGaSetup = true;
     let currDate = new Date();
@@ -1032,7 +1036,8 @@ export class CampaginComponent implements OnInit, AfterViewInit {
     const url = "https://www.googleapis.com/analytics/v3/management/accountSummaries";
     this.http.get(url, this.httpOptionJSON).subscribe(res => {
       if (res) {
-        
+        this.gaSelectForm.controls['gaSelect'].setValue(this.gaurl, { onlySelf: true });
+        this.gaSelectedName = this.gaurl;
         let rows = res['items'];
         //let accountSummaryIds=[];
         for (let i = 0; i < rows.length; i++) {
@@ -1042,9 +1047,6 @@ export class CampaginComponent implements OnInit, AfterViewInit {
           this.gaAccounts.push(q);
           // accountSummaryIds.push(rows[i].webProperties[0].profiles[0].id);
         }
-        
-        this.gaSelectForm.controls['gaSelect'].setValue(this.gaurl, {onlySelf: true});
-        this.gaSelectedName = this.gaurl;
       }
     }, error => {
 
@@ -1053,69 +1055,65 @@ export class CampaginComponent implements OnInit, AfterViewInit {
   }
 
   integrateGSC(): void {
-    localStorage.setItem("isgsc","1");
-    let connectYouTubeUrl = 'https://accounts.google.com/o/oauth2/v2/auth?scope=https://www.googleapis.com/auth/webmasters.readonly https://www.googleapis.com/auth/webmasters&access_type=offline&prompt=consent&include_granted_scopes=true&redirect_uri='+environment.googleRedirectUrl+'&response_type=code&client_id=' + environment.googleClientId;
+    localStorage.setItem("selectedCompanyName", this.settingService.selectedCompanyInfo.companyId);
+    localStorage.setItem("selectedCompanyRole", this.settingService.selectedCompanyInfo.role);
+    localStorage.setItem("selectedCompanyImageUrl", this.settingService.selectedCompanyInfo.companyImageUrl);
+    localStorage.setItem("isgsc", "1");
+    let connectYouTubeUrl = 'https://accounts.google.com/o/oauth2/v2/auth?scope=https://www.googleapis.com/auth/webmasters.readonly https://www.googleapis.com/auth/webmasters&access_type=offline&prompt=consent&include_granted_scopes=true&redirect_uri=' + environment.googleRedirectUrl + '&response_type=code&client_id=' + environment.googleClientId;
     window.location.href = connectYouTubeUrl;
   }
   onSelectGsc(id) {
-    
+    if (this.gscurl == id) {
+      this.isGscEdit = false;
+    }
+    else {
+      this.isGscEdit = true;
+    }
     this.gscSelectedName = id;
   }
 
   saveGscAccount() {
-    
-    if(!this.isEditMode){
-    let data = {
-      id: "00000000-0000-0000-0000-000000000000",
-      urlOrName: this.gscSelectedName,
-      isActive: true,
-      CampaignID: this.masterCampaignId,
-      accessToken: this.gscAccessToken,
-      refreshToken: this.gscRefreshToken
-    }
-    this.campaignService.createGSC(data).subscribe(
-      res => {
-        this.successAlert()
-      });
-    }
-    if(this.isEditMode){
-      if(this.gscid = null || this.gscid ==undefined ||this.gscid =='null' ||this.gscid ==''){
-        let data = {
-          id: "00000000-0000-0000-0000-000000000000",
-          urlOrName: this.gscSelectedName,
-          isActive: true,
-          CampaignID: this.masterCampaignId,
-          accessToken: this.gscAccessToken,
-          refreshToken: this.gscRefreshToken
-        }
-        this.campaignService.createGSC(data).subscribe(
-          res => {
-            this.successAlert()
-          });
-      }else{
+    if (this.gscid == null || this.gscid == undefined || this.gscid == 'null' || this.gscid == '') {
       let data = {
-        id: this.gaid,
-        urlOrName: this.gaSelectedName,
+        id: "00000000-0000-0000-0000-000000000000",
+        urlOrName: this.gscSelectedName,
         isActive: true,
         CampaignID: this.masterCampaignId,
-        accessToken: this.gaAccaessToken,
-        refreshToken: this.gaRefreshToken
+        accessToken: this.gscAccessToken,
+        refreshToken: this.gscRefreshToken
+      }
+      this.campaignService.createGSC(data).subscribe(
+        res => {
+          this.isGscEdit = false;
+          this.gscid = res.id;
+          this.gscurl = res.urlOrName;
+          localStorage.setItem('gscid', res.id);
+          localStorage.setItem('gscurl', res.urlOrName);
+          this.successAlert()
+        });
+    } else {
+      let data = {
+        id: this.gscid,
+        urlOrName: this.gscSelectedName,
+        isActive: true,
+        CampaignID: this.masterCampaignId,
+        accessToken: this.gscAccessToken,
+        refreshToken: this.gscRefreshToken
       }
       this.campaignService.updateGSC(this.gscid, data).subscribe(response => {
-        
-        this.successAlert();
+        this.isGscEdit = false;
+        this.gscurl = this.gscSelectedName;
+        localStorage.setItem('gscurl', this.gscSelectedName);
+        this.updateSuccessAlert();
       });
-    }
-
-
     }
   }
   onSelectGads(id) {
-    
+
     this.gadsSelectedName = id;
   }
   saveGadsAccount() {
-    
+
     let data = {
       id: "00000000-0000-0000-0000-000000000000",
       urlOrName: this.gadsSelectedName,
@@ -1126,33 +1124,33 @@ export class CampaginComponent implements OnInit, AfterViewInit {
     }
     this.campaignService.createGAds(data).subscribe(
       res => {
-        
+
         this.successAlert()
       });
   }
   onSelectFacebook(id) {
-    
+
     this.facebookSelectedName = id;
   }
 
   saveFacebookAccount() {
-    if(!this.isEditMode){
-    let data = {
-      id: "00000000-0000-0000-0000-000000000000",
-      urlOrName: this.facebookSelectedName,
-      isActive: true,
-      CampaignID: this.masterCampaignId,
-      accessToken: this.facebookAccessToken,
-      refreshToken: '1111'
+    if (!this.isEditMode) {
+      let data = {
+        id: "00000000-0000-0000-0000-000000000000",
+        urlOrName: this.facebookSelectedName,
+        isActive: true,
+        CampaignID: this.masterCampaignId,
+        accessToken: this.facebookAccessToken,
+        refreshToken: '1111'
+      }
+      this.campaignService.createFacebook(data).subscribe(
+        res => {
+
+          this.successAlert()
+        });
     }
-    this.campaignService.createFacebook(data).subscribe(
-      res => {
-        
-        this.successAlert()
-      });
-    }
-    if(this.isEditMode){
-      if(this.facebookid == null || this.facebookid ==undefined ||this.facebookid =='null' ||this.facebookid ==''){
+    if (this.isEditMode) {
+      if (this.facebookid == null || this.facebookid == undefined || this.facebookid == 'null' || this.facebookid == '') {
         let data = {
           id: "00000000-0000-0000-0000-000000000000",
           urlOrName: this.facebookSelectedName,
@@ -1163,27 +1161,27 @@ export class CampaginComponent implements OnInit, AfterViewInit {
         }
         this.campaignService.createFacebook(data).subscribe(
           res => {
-            
+
             this.successAlert()
           });
-      }else{
-      let data = {
-        id: this.facebookid,
-        urlOrName: this.facebookSelectedName,
-        isActive: true,
-        CampaignID: this.masterCampaignId,
-        accessToken: this.facebookAccessToken,
-        refreshToken:  '1111'
+      } else {
+        let data = {
+          id: this.facebookid,
+          urlOrName: this.facebookSelectedName,
+          isActive: true,
+          CampaignID: this.masterCampaignId,
+          accessToken: this.facebookAccessToken,
+          refreshToken: '1111'
+        }
+        this.campaignService.updateFacebook(this.facebookid, data).subscribe(response => {
+
+          this.successAlert();
+        });
       }
-      this.campaignService.updateFacebook(this.facebookid, data).subscribe(response => {
-        
-        this.successAlert();
-      });
     }
   }
-  }
   getGSCSiteList() {
-    
+
     this.httpOptionJSON = {
       headers: new HttpHeaders({
         'Accept': 'application/json',
@@ -1194,7 +1192,8 @@ export class CampaginComponent implements OnInit, AfterViewInit {
     let data = {};
     this.http.get(url, this.httpOptionJSON).subscribe(res => {
       if (res) {
-        
+        this.gaSelectForm.controls['gscSelect'].setValue(this.gscurl, { onlySelf: true });
+        this.gscSelectedName = this.gscurl;
         let rows = res['siteEntry'];
         //let accountSummaryIds=[];
         for (let i = 0; i < rows.length; i++) {
@@ -1202,7 +1201,6 @@ export class CampaginComponent implements OnInit, AfterViewInit {
           let q = p.siteUrl.toString();
           this.gscAccounts.push(q);
         }
-        this.gaSelectForm.controls['gscSelect'].setValue(this.gscurl, {onlySelf: true});
       }
     }, error => {
       //alert('Data fetch failed for current year for URL : ' + this.selectedCampIdWebUrl + " --Error : - " + JSON.stringify(error.error));
@@ -1227,7 +1225,7 @@ export class CampaginComponent implements OnInit, AfterViewInit {
 
     this.facebook.login(loginOptions)
       .then((res: LoginResponse) => {
-        
+
         this.hasFacebookSetup = true;
         this.facebookAccessToken = res['authResponse'].accessToken;
         localStorage.setItem('FacebookAccessToken', this.accessToken);
@@ -1237,18 +1235,18 @@ export class CampaginComponent implements OnInit, AfterViewInit {
       .catch();
   }
   getFacebookPagesList() {
-    
+
     const url = "https://graph.facebook.com/me/accounts?&access_token=" + this.facebookAccessToken;
     this.http.get(url).subscribe(res => {
       if (res) {
-        
+
         let rows = res['data'];
         for (let i = 0; i < rows.length; i++) {
           let p = rows[i]
           let q = p.name.toString();
           this.facebookAccounts.push(q);
         }
-        this.gaSelectForm.controls['facebookSelect'].setValue(this.facebookpagename, {onlySelf: true});
+        this.gaSelectForm.controls['facebookSelect'].setValue(this.facebookpagename, { onlySelf: true });
       }
     }, error => {
       this.snackbarService.show('Fetch New Likes Count Failed : ' + JSON.stringify(error.error));

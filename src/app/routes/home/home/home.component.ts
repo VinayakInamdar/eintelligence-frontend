@@ -22,6 +22,7 @@ import { env } from 'process';
 import { SettingsService } from 'src/app/core/settings/settings.service';
 import { MenuService } from '../../../core/menu/menu.service';
 import { menu } from '../../../routes/menu';
+import { SnackbarService } from '../../../shared/services/snackbar/snackbar.service';
 const success = require('sweetalert');
 @Component({
   selector: 'app-home',
@@ -209,8 +210,8 @@ export class HomeComponent implements OnInit {
     actions: {
       columnTitle: '',
       custom: [{ name: 'editCampaign', title: '<span><i class="fas fa-edit"></i>&nbsp;&nbsp;&nbsp;</span>' },
-        { name: 'deleteCampaign', title: '<i class="fas fa-trash-alt text-danger"></i>' },
-        { name: 'onCampaignSelect', title: '<span>&nbsp;&nbsp;&nbsp;<i class="fas fa-user"></i></span>' }
+      { name: 'deleteCampaign', title: '<i class="fas fa-trash-alt text-danger"></i>' },
+      { name: 'onCampaignSelect', title: '<span>&nbsp;&nbsp;&nbsp;<i class="fas fa-user"></i></span>' }
       ],
       add: false, edit: false, delete: false, position: 'right'
     },
@@ -397,7 +398,8 @@ export class HomeComponent implements OnInit {
     private openIdConnectService: OpenIdConnectService,
     private accountService: AccountService,
     public settingsservice: SettingsService,
-    public menuService: MenuService) {
+    public menuService: MenuService,
+    private snackbarService: SnackbarService) {
     //  this.facebookPageToken = localStorage.getItem('FacebookAccessToken');
     //Ranking
     this.getCompany();
@@ -470,7 +472,7 @@ export class HomeComponent implements OnInit {
     this.getCampaignFacebook();
     this.getCampaignGSC();
     this.getCampaignList();
-    this.menuService.menuCreation(this.settingsservice.selectedCompanyInfo.companyId, menu);
+    this.menuService.menuCreation(menu);
   }
   getInstaToken() {
 
@@ -596,7 +598,6 @@ export class HomeComponent implements OnInit {
     localStorage.setItem('selectedCampName', '');
     localStorage.setItem('selectedCampUrl', '');
     localStorage.setItem('editMasterId', '');
-    localStorage.setItem('editMasterId', '');
     localStorage.setItem('gaid', '');
     localStorage.setItem('gadsid', '');
     localStorage.setItem('facebookid', '');
@@ -607,6 +608,7 @@ export class HomeComponent implements OnInit {
 
   // using to view analytics report of selected campaign Id
   userRowSelect(campaign: any): void {
+    ;
     localStorage.setItem('gaurl', '');
     localStorage.setItem('gaaccesstoken', '');
     localStorage.setItem('gadsaccesstoken', '');
@@ -638,7 +640,6 @@ export class HomeComponent implements OnInit {
       localStorage.setItem('facebookid', facebook[0]['id']);
 
     }
-    ;
     let gsc = this.CampaignGSCList.filter(x => x.campaignID == this.SelectedCampaignId);
     if (gsc != null && gsc != undefined && gsc.length > 0) {
       localStorage.setItem('gscurl', gsc[0]['urlOrName']);
@@ -647,12 +648,11 @@ export class HomeComponent implements OnInit {
       localStorage.setItem('gscid', gsc[0]['id']);
 
     }
+    localStorage.setItem('editMasterId', campaign.data.id);
     localStorage.setItem('selectedCampId', campaign.data.id);
     localStorage.setItem('selectedCampName', campaign.data.name);
     localStorage.setItem('selectedCampUrl', campaign.data.webUrl);
     this.router.navigate([`../campaign/:id${campaign.data.id}/seo`]);
-
-
   }
 
 
@@ -711,7 +711,7 @@ export class HomeComponent implements OnInit {
     this.http.post(url, data, this.httpOptionJSON).subscribe(res => {
       if (res) {
         let rows = res['rows'];
-        
+
         this.clicksPreviousYear = rows[0].clicks;
         this.impressionsPreviousYear = rows[0].impressions;
         this.cTRPreviousYear = parseFloat(rows[0].ctr).toFixed(2).toString();
@@ -764,7 +764,10 @@ export class HomeComponent implements OnInit {
         this.getData(campaignIndex, gscurl);
       }
     }, error => {
-      alert('eeee : ' + JSON.stringify(error.error));
+     // alert('eeee : ' + JSON.stringify(error.error));
+     if(error){
+      this.snackbarService.show(" " + gscurl + " : Please re-integrate!! The access token has expired. ");
+     }
     });
   }
   //###############################################Facebook data
@@ -921,6 +924,7 @@ export class HomeComponent implements OnInit {
   //###############################################Google Analytics
 
   refreshGoogleAnalyticsAccount(campaignIndex, refreshToken, gaUrl) {
+    ;
     const url = "https://www.googleapis.com/oauth2/v4/token";
     let data = {};
     data = {
@@ -937,7 +941,11 @@ export class HomeComponent implements OnInit {
         this.getAnalyticsProfileIds(campaignIndex, gaUrl);
       }
     }, error => {
-      alert('eeee : ' + JSON.stringify(error.error));
+      ;
+      //alert('eeee : ' + JSON.stringify(error.error));
+      if(error){
+      this.snackbarService.show(" "+ gaUrl +" : Please re-integrate!! The access token has expired. ");
+      }
     });
 
   }
@@ -1134,20 +1142,20 @@ export class HomeComponent implements OnInit {
     var userid = this.openIdConnectService.user.profile.sub;
     this.campaignService.getCampaign(userid).subscribe(res => {
       this.campaignList = res;
-      
+
       for (let i = 0; i < res.length; i++) {
         let ga = this.CampaignGAList.filter(x => x.campaignID == res[i].id);
         if (ga != null && ga != undefined && ga.length > 0) {
-          
-        // this.refreshGoogleAnalyticsAccount(i, ga[0]['refreshToken'], ga[0]['urlOrName']);
+
+          this.refreshGoogleAnalyticsAccount(i, ga[0]['refreshToken'], ga[0]['urlOrName']);
         }
         let gsc = this.CampaignGSCList.filter(x => x.campaignID == res[i].id);
         if (gsc != null && gsc != undefined && gsc.length > 0) {
-         // this.refreshGSCAccount(i, gsc[0]['refreshToken'], gsc[0]['urlOrName']);
+          this.refreshGSCAccount(i, gsc[0]['refreshToken'], gsc[0]['urlOrName']);
         }
         let facebook = this.CampaignFacebookList.filter(x => x.campaignID == res[i].id);
         if (facebook != null && facebook != undefined && facebook.length > 0) {
-         // this.refreshFacebookAccount(facebook[0]['urlOrName'], facebook[0]['accessToken']);
+          // this.refreshFacebookAccount(facebook[0]['urlOrName'], facebook[0]['accessToken']);
         }
       }
       this.source = new LocalDataSource(this.campaignList);
@@ -1241,34 +1249,59 @@ export class HomeComponent implements OnInit {
     this.settingsservice.selectedCampaignId = campaign.id;
     this.router.navigate(['/campaignuser-list']);
   }
-  editCampaign(campaign: any) {
 
-    localStorage.setItem('editMasterId', campaign.id);
-    localStorage.setItem('selectedCampName', campaign.name);
-    localStorage.setItem('selectedCampUrl', campaign.webUrl);
+  editCampaign(campaign: any) {
+    localStorage.setItem('gaurl', '');
+    localStorage.setItem('gaaccesstoken', '');
+    localStorage.setItem('gadsaccesstoken', '');
+    localStorage.setItem('facebookurl', '');
+    localStorage.setItem('facebookaccesstoken', '');
+    localStorage.setItem('gscurl', '');
+    localStorage.setItem('gscaccesstoken', '');
+    localStorage.setItem('selectedCampName', '');
+    localStorage.setItem('selectedCampUrl', '');
+    localStorage.setItem('editMasterId', '');
+    localStorage.setItem('gaid', '');
+    localStorage.setItem('gadsid', '');
+    localStorage.setItem('facebookid', '');
+    localStorage.setItem('gscid', '');
     this.SelectedCampaignId = campaign.id;
     let ga = this.CampaignGAList.filter(x => x.campaignID == this.SelectedCampaignId);
     if (ga != null && ga != undefined && ga.length > 0) {
       localStorage.setItem('gaurl', ga[0]['urlOrName']);
       localStorage.setItem('gaaccesstoken', ga[0]['accessToken']);
+      localStorage.setItem('garefreshtoken', ga[0]['refreshToken']);
+      localStorage.setItem('gaid', ga[0]['id']);
     }
     let gads = this.CampaignGAdsList.filter(x => x.campaignID == this.SelectedCampaignId);
     if (gads != null && gads != undefined && gads.length > 0) {
       localStorage.setItem('gadsurl', gads[0]['urlOrName']);
       localStorage.setItem('gadsaccesstoken', gads[0]['accessToken']);
+      localStorage.setItem('gadsid', gads[0]['id']);
+
     }
     let facebook = this.CampaignFacebookList.filter(x => x.campaignID == this.SelectedCampaignId);
     if (facebook != null && facebook != undefined && facebook.length > 0) {
       localStorage.setItem('facebookpagename', facebook[0]['urlOrName']);
       localStorage.setItem('facebookaccesstoken', facebook[0]['accessToken']);
+      localStorage.setItem('facebookid', facebook[0]['id']);
+
     }
     let gsc = this.CampaignGSCList.filter(x => x.campaignID == this.SelectedCampaignId);
     if (gsc != null && gsc != undefined && gsc.length > 0) {
       localStorage.setItem('gscurl', gsc[0]['urlOrName']);
       localStorage.setItem('gscaccesstoken', gsc[0]['accessToken']);
+      localStorage.setItem('gscrefreshtoken', gsc[0]['refreshToken']);
+      localStorage.setItem('gscid', gsc[0]['id']);
+
     }
+    localStorage.setItem('editMasterId', campaign.id);
+    localStorage.setItem('selectedCampId', campaign.id);
+    localStorage.setItem('selectedCampName', campaign.name);
+    localStorage.setItem('selectedCampUrl', campaign.webUrl);
     this.router.navigate(['/home/campaign']);
   }
+
   deleteCampaign(event) {
     success({
       icon: this.translate.instant('sweetalert.WARNINGICON'),
@@ -1301,7 +1334,7 @@ export class HomeComponent implements OnInit {
                 text: this.translate.instant('sweetalert.OKBUTTON'),
                 value: true,
                 visible: true,
-                className: "bg-primary",
+                className: "bg-danger",
                 closeModal: true,
               }
             }
@@ -1320,7 +1353,7 @@ export class HomeComponent implements OnInit {
               text: this.translate.instant('sweetalert.OKBUTTON'),
               value: true,
               visible: true,
-              className: "bg-primary",
+              className: "bg-danger",
               closeModal: true,
             }
           }

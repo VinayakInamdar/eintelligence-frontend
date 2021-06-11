@@ -56,7 +56,7 @@
                             </div>
 
 
-                            <div class="form-group">
+                            <!--div class="form-group">
                                 <div class="row">
                                     <label class="labelcss">PASSWORD</label>
                                     <p class="pcolorred">*</p>
@@ -64,7 +64,7 @@
                                     <span class="text-danger" *ngIf="valForm.controls['password'].hasError('required') && (valForm.controls['password'].dirty || valForm.controls['password'].touched)">
                                         {{'validation.PASSWORDISREQUIRED' | translate}}</span>
                                 </div>
-                            </div>
+                            </div-->
 
 
                             <div class="form-group">
@@ -101,26 +101,14 @@
                                 </div>
                             </div>
 
-                            <div class="form-group">
-                                <div class="row">
-                                    <label class="labelcss">COMPANY TYPE</label>
-                                    <p class="pcolorred">*</p>
-                                    <div class="col-md-3">
-                                        <input type="radio" formControlName="companytype" value="agency" name="companytype"> AGENCY
-                                    </div>
-                                    <div class="col-md-2"> </div>
-                                    <div class="col-md-3">
-                                        <input type="radio" formControlName="companytype" value="business" name="companytype"> BUSINESS
-                                    </div>
-                                </div>
-                            </div>
+
 
                             <div class="form-group">
                                 <div class="row">
                                     <label class="labelcss">COMPANY LOGO</label>
                                     <p class="pcolorred">*</p>
                                     <input class="form-control inputheight3rem" type="file" placeholder="Choose your company logo" formControlName="companyImageUrl" (change)="getBase64($event)">
-                                    <p>( Please upload your image file in 45 x 45 )</p>
+                                    <p>( Please upload your image file in 100 x 45 )</p>
                                     <span class="text-danger" *ngIf="valForm.controls['companyImageUrl'].hasError('required') && (valForm.controls['companyImageUrl'].dirty || valForm.controls['companyImageUrl'].touched)">
                                         {{'No File Choosen' | translate}}</span>
                                 </div>

@@ -23,7 +23,6 @@ export class AppComponent implements OnInit {
     constructor(public settings: SettingsService) { }
 
     ngOnInit() {
-       ;
         let gacode = localStorage.getItem("isga");
         if (gacode == "1") {
             if (window.location.href.includes("/signin-oidc#id_token=") == false) {
@@ -31,11 +30,11 @@ export class AppComponent implements OnInit {
                     window.location.search.lastIndexOf("code=") + 1,
                     window.location.search.lastIndexOf("&scope")
                 );
-                if(ycode!=""){
-                ycode = ycode.replace("ode=", "");
-                localStorage.setItem('gacode', ycode);
+                if (ycode != "") {
+                    ycode = ycode.replace("ode=", "");
+                    localStorage.setItem('gacode', ycode);
+                    localStorage.setItem("isga", '');
                 }
-                localStorage.setItem("isga",'');
             }
         }
         let gsccode = localStorage.getItem("isgsc");
@@ -45,11 +44,11 @@ export class AppComponent implements OnInit {
                     window.location.search.lastIndexOf("code=") + 1,
                     window.location.search.lastIndexOf("&scope")
                 );
-                if(ycode!=""){
-                ycode = ycode.replace("ode=", "");
-                localStorage.setItem('gsccode', ycode);
+                if (ycode != "") {
+                    ycode = ycode.replace("ode=", "");
+                    localStorage.setItem('gsccode', ycode);
+                    localStorage.setItem("isgsc", '');
                 }
-                localStorage.setItem("isgsc",'');
             }
         }
         let instacode = localStorage.getItem("isinsta");
@@ -59,11 +58,11 @@ export class AppComponent implements OnInit {
                     window.location.search.lastIndexOf("code=") + 1,
                     window.location.search.length
                 );
-                if(ycode!=""){
-                ycode = ycode.replace("ode=", "");
-                localStorage.setItem('instacode', ycode);
+                if (ycode != "") {
+                    ycode = ycode.replace("ode=", "");
+                    localStorage.setItem('instacode', ycode);
+                    localStorage.setItem("isinsta", '');
                 }
-                localStorage.setItem("isinsta",'');
             }
         }
         // prevent empty links to reload the page
