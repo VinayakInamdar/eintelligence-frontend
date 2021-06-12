@@ -17,7 +17,7 @@ export class SubmenuComponent implements OnInit {
   CampaignGSCList = [];
   CampaignGAdsList = [];
   CampaignFacebookList = [];
- 
+
   SelectedCampaignId;
   selectedCampaignName: string;
   selectedCampName;
@@ -40,7 +40,7 @@ export class SubmenuComponent implements OnInit {
   public goToSocialMedia(event) {
     this.router.navigate([`/socialmedia`])
   }
-  
+
   public goToTest(event) {
     this.router.navigate(['/campaign', { id: this.selectedCampId }], {
       queryParams: {
@@ -50,15 +50,17 @@ export class SubmenuComponent implements OnInit {
 
     //this.router.navigate([`/campaign/:id${this.selectedCampId}`])
   }
-  goToGoogleAdsOverview(event){
+  goToGoogleAdsOverview(event) {
     this.router.navigate([`/google-ads`])
   }
-  
+
   onCampaignSelect(event, selectedCampaign) {
+    ;
 
     this.selectedCampaignName = selectedCampaign.name;
 
     this.selectedCampId = selectedCampaign.id
+      ;
     ;
     localStorage.setItem('gaurl', '');
     localStorage.setItem('gaaccesstoken', '');
@@ -71,6 +73,7 @@ export class SubmenuComponent implements OnInit {
     localStorage.setItem('selectedCampUrl', '');
     this.SelectedCampaignId = selectedCampaign.id;
     let ga = this.CampaignGAList.filter(x => x.campaignID == this.SelectedCampaignId);
+    ;
     ;
     if (ga != null && ga != undefined && ga.length > 0) {
       localStorage.setItem('gaurl', ga[0]['urlOrName']);
@@ -107,7 +110,14 @@ export class SubmenuComponent implements OnInit {
     localStorage.setItem('selectedCampId', selectedCampaign.id);
     localStorage.setItem('selectedCampName', selectedCampaign.name);
     localStorage.setItem('selectedCampUrl', selectedCampaign.webUrl);
-    this.router.navigate([`../campaign/:id${selectedCampaign.id}/seo`]);
+
+    //this.router.navigate([`../campaign/:id${selectedCampaign.id}/seo`]);
+    //window.location.reload();
+    this.redirectTo(`../campaign/:id${selectedCampaign.id}/seo`);
+  }
+  redirectTo(uri: string) {
+    this.router.navigateByUrl('/', { skipLocationChange: true }).then(() =>
+      this.router.navigate([uri]));
   }
   private getFilterOption() {
     return {
@@ -120,10 +130,10 @@ export class SubmenuComponent implements OnInit {
 
   }
   public getCampaignList(): void {
-    
+
     var userid = this._openIdConnectService.user.profile.sub;
     this.campaignService.getCampaign(userid).subscribe(res => {
-      
+
       this.campaignList = res;
       var name = "";
       if (this.selectedCampId == ":id") {
