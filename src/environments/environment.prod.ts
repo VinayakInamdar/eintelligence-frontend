@@ -22,10 +22,10 @@ export const environment = {
   //client id secret for abhisihelpdesk@gmail.com
  googleClientId:'959505317275-v8294ho5b3prni9rqi4l6nnb8463uiig.apps.googleusercontent.com',
  googleClientSecret : 'JNCBlNi2j-o5sob6qL6Q8Ead',
-googleRedirectUrl : 'https://eintelligence.azurewebsites.net/home/campaign',
+googleRedirectUrl : 'https://app.whitelabelboard.com/home/campaign',
 insta_appid:'1381661432190657',
 insta_appsecret:'8ea9a028b1769762186b048705755b6b',
-insta_redirecturl:'https://eintelligence.azurewebsites.net/home',
+insta_redirecturl:'https://app.whitelabelboard.com/home',
 production: true,
 stripe_key: 'pk_test_L4apfqRUqsnf9DlZceFAy4Wx',
 stripe_secreTkey: 'sk_test_K75p6KZMy95Lm1Ojt9ZW3Nsu00wxom9G1z',
@@ -40,10 +40,10 @@ facebook_pageid : '102988865108273',//my
 apiUrl: 'https://eintelligencebackend.azurewebsites.net/api/',
 openIdConnectSettings: {
   authority: 'https://eintelligenceidentity.azurewebsites.net/',
-  client_id: 'tourmanagementclient',
-  redirect_uri: 'https://eintelligence.azurewebsites.net/signin-oidc',
+  client_id: 'whitelabelboardlive',
+  redirect_uri: 'https://app.whitelabelboard.com/signin-oidc',
   scope: 'openid profile roles tourmanagementapi',
   response_type: 'id_token token',
-  post_logout_redirect_uri: 'https://eintelligence.azurewebsites.net/',
+  post_logout_redirect_uri: 'https://app.whitelabelboard.com/',
 },
 };
