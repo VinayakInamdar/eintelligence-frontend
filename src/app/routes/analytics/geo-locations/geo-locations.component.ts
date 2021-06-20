@@ -23,7 +23,8 @@ export class GeoLocationsComponent implements OnInit {
   @ViewChild('staticTabs', { static: false }) staticTabs: TabsetComponent;
   @ViewChild(BaseChartDirective)
   public chart: BaseChartDirective;
-
+  hovered: any;
+  conversionsubmenu: any;
   campaignName: String;
   selectedCampId: string;
   gaAccounts: any;
@@ -226,7 +227,7 @@ export class GeoLocationsComponent implements OnInit {
   bsInlineRangeValue: Date[];
   acqusitionsubmenu: boolean = false;
   public myreg = '(https?://)?([\\da-z.-]+)\\.([a-z.]{2,6})[/\\w .-]*/?';
-
+  showSpinner: any;
 
 
   constructor(private translate: TranslateService, private route: ActivatedRoute, fb: FormBuilder, private router: Router, private integrationsService: IntegrationsService,
@@ -250,6 +251,10 @@ export class GeoLocationsComponent implements OnInit {
   ngAfterViewChecked(): void {
     // this.rFactor()
   }
+
+  userRowSelect(event) {}
+
+  goToAddNewKeywords(event) { }
 
   ngOnInit(): void {
 
@@ -293,7 +298,7 @@ export class GeoLocationsComponent implements OnInit {
           geolocationres => {
             this.reportsData = res;
             this.source = new LocalDataSource(geolocationres['geoLocation']);
-            
+
             this.convertToLineChartsLabels(this.reportsData.gaPreparedDataDto.date)
             this.convertToLineChartsData(this.reportsData.gaPreparedDataDto.sessions)
             this.showSpinnerBaseChart = false;
@@ -449,7 +454,7 @@ export class GeoLocationsComponent implements OnInit {
     }
   }
 
-  // using to validate from 
+  // using to validate from
   validateForm(fieldName) {
     if (this.valForm.invalid) {
       this.valForm.get(fieldName).markAsTouched();
@@ -464,7 +469,7 @@ export class GeoLocationsComponent implements OnInit {
     this.staticTabs.tabs[tabid].active = true;
   }
 
-  // using to disable tab , user have to go step by step 
+  // using to disable tab , user have to go step by step
   disableTab() {
     this.staticTabs.tabs[1].disabled = !this.staticTabs.tabs[1].disabled;
     this.staticTabs.tabs[2].disabled = !this.staticTabs.tabs[2].disabled;

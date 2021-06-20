@@ -32,7 +32,7 @@ export class GscdataComponent implements OnInit {
     fromDate: this.fromDate,
     toDate: this.toDate,
   });
-
+  settingActive;
   startDate;
   endDate;
   clicksThisYear: string = "0";
@@ -271,7 +271,7 @@ export class GscdataComponent implements OnInit {
       if (this.selectedCampId == ":id") {
         this.selectedCampId = this.campaignList[0].id
       }
-      
+
       this.campaignList.map((s, i) => {
         if (s.id == this.selectedCampId) {
           name = s.name
@@ -297,7 +297,7 @@ export class GscdataComponent implements OnInit {
     this.router.navigate([`./instagram/instagram`, { id: this.selectedCampId }])
   }
   public goToGSC(event) {
-    
+
     this.router.navigate([`./gsc/gsc`, { id: this.selectedCampId }])
   }
   public goToAnalyticsOverview(event) {
@@ -325,7 +325,7 @@ export class GscdataComponent implements OnInit {
     };
     this.authService.signIn(GoogleLoginProvider.PROVIDER_ID, googleLoginOptions)
       .then((res) => {
-        
+
         this.accessToken = res['authToken'];
         localStorage.setItem('googleGscAccessToken', this.accessToken );
         this.getData();
@@ -354,7 +354,7 @@ export class GscdataComponent implements OnInit {
     };
     this.http.post(url, data, this.httpOptionJSON).subscribe(res => {
       if (res) {
-        
+
         let rows = res['rows'];
         this.barDataImpressionsDevice.datasets[0].data = [];
         this.barChartLabelsDevice = [];
@@ -462,7 +462,7 @@ export class GscdataComponent implements OnInit {
           this.positionPreviousYear = parseFloat(rows[0].position).toFixed(2).toString();
 
           //pecentgage calculate
-          
+
           this.percentClicks = this.getYearwiseDifference(this.clicksPreviousYear, this.clicksThisYear);
           this.percentImpressions = this.getYearwiseDifference(this.impressionsPreviousYear, this.impressionsThisYear);
           this.percentPosition = this.getYearwiseDifference(this.positionPreviousYear, this.positionThisYear);
@@ -518,7 +518,7 @@ export class GscdataComponent implements OnInit {
       alert("Start Date can not be grater then End Date");
     }
     else {
-      
+
       this.getDataCurrentYear(this.startDate, this.endDate, 0);
       this.getDataPreviousYear(this.previousStartDate, this.previousEndDate, 0);
       this.getDataCurrentYear(this.startDate, this.endDate, 1);
@@ -539,7 +539,7 @@ export class GscdataComponent implements OnInit {
   }
 
   getYearwiseDifference(previous, current) {
-    
+
     let diff = ((parseFloat(previous) - parseFloat(current)) * 100) / parseFloat(previous)
     return parseFloat(diff.toString()).toFixed(2)
 
@@ -564,7 +564,7 @@ export class GscdataComponent implements OnInit {
   //   customer.campaigns.list()
   // }
   getAdsData(){
-    
+
     this.httpOptionJSON = {
       headers: new HttpHeaders({
         'Accept': 'application/json',
@@ -584,8 +584,8 @@ export class GscdataComponent implements OnInit {
     };
     this.http.post(url, data, this.httpOptionJSON).subscribe(res => {
       if (res) {
-        
-       
+
+
       }
     }, error => {
       alert('Data fetch failed by device : ' + JSON.stringify(error.error));

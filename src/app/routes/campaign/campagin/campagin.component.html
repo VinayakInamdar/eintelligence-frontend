@@ -6,7 +6,7 @@
     </div>
     <div class="col-md-2"> </div>
 </div>
-<app-submenu></app-submenu>
+<!-- <app-submenu></app-submenu> -->
 <div *ngIf="settingActive == 1;" class="row w3-container w3-center w3-animate-right paddingtopdiv"
     style="height: 500px;">
     <div class="col-md-2"> </div>
@@ -140,17 +140,17 @@
                                                             </select>
                                                         </form>
                                                         <p class="goalfonsize" *ngIf="hasGaSetup">
-    
+
                                                         </p>
                                                         <p class="goalfonsize" *ngIf="hasGaSetup">
                                                             <button type="button" class="btn btn-danger"
                                                                 (click)="saveGaAccount()" [disabled]="!isGaEdit">Save
                                                                 Changes</button>
                                                         </p>
-    
+
                                                     </div>
                                                 </div>
-    
+
                                             </div>
                                         </div>
                                     </div>
@@ -161,7 +161,7 @@
                                                 <div>
                                                     <div fxLayout="column" fxLayoutALign="space-around center">
                                                         <!-- <em class="fa-2x mr-2 fas fa-globe"></em> -->
-                                                        
+
                                                         <p class="goalfonsize">
                                                             <button class="mr-1 btn btn-danger btn-lg" type="button"
                                                                 (click)="integrateGSC()">Google Search Console</button>
@@ -179,7 +179,7 @@
                                                             </select>
                                                         </form>
                                                         <p class="goalfonsize" *ngIf="hasGscSetup">
-    
+
                                                         </p>
                                                         <p class="goalfonsize" *ngIf="hasGscSetup">
                                                             <button type="button" class="btn btn-danger"
@@ -191,82 +191,15 @@
                                             </div>
                                         </div>
                                     </div>
-                                    <!--Facebook hidden,to show it,remove "hidden"-->
-                                    <div fxFlex="30">
-                                        <div
-                                            class="card card-default shadow bg-white rounded cursor-default integration-box-hight">
-                                            <div fxFlex="100" fxLayout="row" fxLayoutAlign="center center">
-                                                <div>
-                                                    <div fxLayout="column" fxLayoutALign="space-around center">
-                                                        <!-- <em class="fa-2x mr-2 fas fa-store"></em><br> -->
-                                                        <p class="goalfonsize">
-                                                            <button class="mr-1 btn btn-danger btn-lg" type="button"
-                                                                (click)="loginWithOptions()">Facebook</button>
-                                                        </p>
-                                                        <form [formGroup]="gaSelectForm" class="goalfonsize"
-                                                            *ngIf="hasFacebookSetup">
-                                                            <select id="facebookSelect" style="width: 120px;" class="form-control"
-                                                                formControlName="facebookSelect"
-                                                                (change)="onSelectFacebook($event.target.value)">
-                                                                <option [ngValue]="undefined" [disabled]="true">Please
-                                                                    Select
-                                                                </option>
-                                                                <option *ngFor="let facebookAccount of facebookAccounts">{{
-                                                                    facebookAccount }}</option>
-                                                            </select>
-                                                        </form>
-                                                        <p class="goalfonsize" *ngIf="hasFacebookSetup">
-    
-                                                        </p>
-                                                        <p class="goalfonsize" *ngIf="hasFacebookSetup">
-                                                            <button type="button" class="btn btn-danger"
-                                                                (click)="saveFacebookAccount()"
-                                                                [disabled]="!facebookSelectedName">Save
-                                                                Changes</button>
-                                                        </p>
-                                                    </div>
-                                                </div>
-                                            </div>
-                                        </div>
-                                    </div>
+
                                  </div>
-                               
+
 
                             </div>
                             <div class="row-md-12">
                                 <!--Google ads hidden-->
                              <div fxFlex="row" fxLayoutAlign="space-around center" fxFlex="100">
-                                <div fxFlex="30">
-                                    <div
-                                        class="card card-default shadow bg-white rounded cursor-default integration-box-hight">
-                                        <div fxFlex="100" fxLayout="row" fxLayoutAlign="center center">
-                                            <div>
-                                                <div fxLayout="column" fxLayoutALign="space-around center">
-                                                    <!-- <em class="fa-2x mr-2 fas fa-store"></em><br> -->
-                                                    <p class="goalfonsize">
-                                                        <button class="mr-1 btn btn-danger btn-lg" type="button"
-                                                            (click)="signOut()">Google
-                                                            Ads</button>
-                                                    </p>
 
-                                                    <p class="goalfonsize" *ngIf="hasGadsSetup">
-                                                        <select class="form-control" style="width: 120px;"
-                                                            (change)="onSelectGads($event.target.value)">
-                                                            <option value="0">--Select--</option>
-                                                            <option *ngFor="let facebookAccount of facebookAccounts">
-                                                                {{facebookAccount}}</option>
-                                                        </select>
-                                                    </p>
-                                                    <p class="goalfonsize">
-                                                        <button type="button" class="btn btn-danger"
-                                                            (click)="refreshGSCAccount()">Save
-                                                            Changes</button>
-                                                    </p>
-                                                </div>
-                                            </div>
-                                        </div>
-                                    </div>
-                                </div>
                                 <div fxFlex="30">
                                     <div
                                         class="card card-default shadow bg-white rounded cursor-default integration-box-hight">
@@ -290,7 +223,7 @@
                                         </div>
                                     </div>
                                 </div>
-                            </div>   
+                            </div>
                             </div>
                         </div>
                     </div>
@@ -528,9 +461,9 @@
                     </canvas>
                 </div>
                 <div class="btn-container footer-buttons text-center">
-                    <a href="javascript:void(0)" class="btn btn-link" (click)="goToKeywords($event)">All Rankings</a>
+                    <a href="javascript:void(0)" class="btn btn-link" (click)="goToKeywords()">All Rankings</a>
                     &nbsp;&nbsp;&nbsp;
-                    <button class="mr-1 btn btn-danger btn-sm" (click)="goToAddKeywords($event)">Add Keywords</button>
+                    <button class="mr-1 btn btn-danger btn-sm" (click)="goToAddKeywords()">Add Keywords</button>
                 </div>
             </div>
         </div>
@@ -560,7 +493,7 @@
                     <canvas *ngIf="!showSpinnerBaseChart" baseChart [datasets]="lineChartData"
                         [labels]="lineChartLabels" [options]="lineChartOptions" [colors]="lineChartColors"
                         [legend]="lineChartLegend" [chartType]="lineChartType" [plugins]="lineChartPlugins"
-                        [fullWidth]="true">
+                        >
                     </canvas>
                 </div>
 

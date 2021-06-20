@@ -13,27 +13,27 @@ import {Location} from '@angular/common';
 })
 export class AuditreportComponent implements OnInit {
   progressbartype : string = 'success';
-  securitySection : object;
+  securitySection : any;
   selectedTaskId: string;
   organicTrafficSection: [object];
   showSpinner:boolean = false;
-  technical_seo : object;
-  on_page_seo : object;
+  technical_seo : any;
+  on_page_seo : any;
   summary = 'summary';
   pages = 'pages';
   domain: string;
   looking
-  critical : object = {
+  critical : any = {
     organic_traffic : '',
     security : '',
 
   };
-  for_improvement : object = {
+  for_improvement : any = {
     organic_traffic : '',
     security : '',
 
   };;
-  looking_good : object  = {
+  looking_good : any  = {
     organic_traffic : '',
     security : '',
 
@@ -68,7 +68,7 @@ export class AuditreportComponent implements OnInit {
             have_robots : s.have_robots
            }
           //  this.organicTrafficSection.push(this.technical_seo)
-         
+
       })
       res[this.pages].map((s,i)=>{
         if(i==0) {
@@ -117,6 +117,6 @@ export class AuditreportComponent implements OnInit {
     this.critical['organic_traffic'] = this.on_page_seo['h1_count'] + this.on_page_seo['h2_count'] + this.on_page_seo['h3_count'] < 5 ? this.critical['organic_traffic'] + 1 : this.critical['organic_traffic'];
 
    }
-   
+
 
 }

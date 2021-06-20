@@ -79,7 +79,7 @@ export class ProposalComponent implements OnInit {
     this.settingActive = value
   }
 
-  // using to open dialogue modal 
+  // using to open dialogue modal
   openModalWithComponent(event) {
     event.preventDefault()
     const dialogRef = this.dialog.open(DialogContentExampleDialog);
@@ -87,6 +87,18 @@ export class ProposalComponent implements OnInit {
     dialogRef.afterClosed().subscribe(result => {
 
     });
+  }
+
+  userRowSelect(event) {
+
+  }
+
+  onSearch(value) {
+
+  }
+
+  submitForm(value, formName) {
+
   }
 
 }
@@ -108,6 +120,10 @@ export class DialogContentExampleDialog {
   onClose(event): void {
     event.preventDefault()
     this.dialogRef.close();
+  }
+
+  submitForm(value) {
+
   }
 }
 

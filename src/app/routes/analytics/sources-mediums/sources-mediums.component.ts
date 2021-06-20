@@ -227,8 +227,9 @@ export class SourcesMediumsComponent implements OnInit {
   acqusitionsubmenu: boolean = false;
   audiencesubmenu: boolean;
   public myreg = '(https?://)?([\\da-z.-]+)\\.([a-z.]{2,6})[/\\w .-]*/?';
-
-
+  hovered: any;
+  conversionsubmenu: any;
+  showSpinner: any;
 
   constructor(private translate: TranslateService, private route: ActivatedRoute, fb: FormBuilder, private router: Router, private integrationsService: IntegrationsService,
     private overvieswService: OverviewService, public campaignService: CampaignService,private openIdConnectService: OpenIdConnectService, ) {
@@ -278,6 +279,8 @@ export class SourcesMediumsComponent implements OnInit {
     this.router.navigate([`/campaign/:id${this.selectedCampId}/seo/keywords`,])
   }
 
+  goToAddNewKeywords(event) {}
+
   public goToAddKeywords(): void {
     this.router.navigate([`/campaign/:id${this.selectedCampId}/seo/keywords`], {
       queryParams: {
@@ -285,6 +288,9 @@ export class SourcesMediumsComponent implements OnInit {
       },
     })
   }
+
+  userRowSelect(event) {}
+
   // using to get analytics data of selected campaign Id
   getAnalyticsData(): void {
 
@@ -444,7 +450,7 @@ export class SourcesMediumsComponent implements OnInit {
     }
   }
 
-  // using to validate from 
+  // using to validate from
   validateForm(fieldName) {
     if (this.valForm.invalid) {
       this.valForm.get(fieldName).markAsTouched();
@@ -459,7 +465,7 @@ export class SourcesMediumsComponent implements OnInit {
     this.staticTabs.tabs[tabid].active = true;
   }
 
-  // using to disable tab , user have to go step by step 
+  // using to disable tab , user have to go step by step
   disableTab() {
     this.staticTabs.tabs[1].disabled = !this.staticTabs.tabs[1].disabled;
     this.staticTabs.tabs[2].disabled = !this.staticTabs.tabs[2].disabled;

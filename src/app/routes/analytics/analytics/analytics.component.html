@@ -224,7 +224,7 @@
 </div>
 
 <div class="row overviewmaindiv" *ngIf="settingActive == 3;">
-   
+
     <br>
     <hr>
     <br>
@@ -416,7 +416,7 @@
                     </div>
                     <div *ngIf=" !showSpinnerSiteAnalysisContent">
                         <canvas id='dougnutChart' baseChart [chartType]="'pie'" [options]="doughnutOptions"
-                            [datasets]="doughnutData.datasets" [labels]="doughnutData.labels" [doughnut]="false"
+                            [datasets]="doughnutData.datasets" [labels]="doughnutData.labels"
                             [legend]="true" height="250"></canvas>
                         <div class="btn-container footer-buttonsabsolute text-center">
                             <!-- <a href="javascript:void(0)" class="btn btn-link"
@@ -466,7 +466,7 @@
         </div>
         <div class="col-lg-4">
             <!-- <highcharts-chart
-			id="container" 
+			id="container"
 			[Highcharts]="Highcharts"
 			[constructorType]="chartConstructor"
 			[options]="chartOptions"

@@ -56,6 +56,7 @@ export class CheckoutComponent implements OnInit {
   products = [];
   productsOld = [];
   plans = [];
+  campaignDrp;
   constructor(private http: HttpClient, public campaignService: CampaignService,
     private openIdConnectService: OpenIdConnectService, public route: ActivatedRoute,
     public router: Router, public productService: StoreService, public productsService: ProductsService,
@@ -186,11 +187,11 @@ export class CheckoutComponent implements OnInit {
     // const stripe = this.stripePromise;
     // (await stripe).redirectToCheckout({sessionId:  products.sessionId})
     // .then(res => {
-    //   
+    //
     //    console.log(res);
     // })
     // .catch(error => {
-    //   
+    //
     //    console.log(error);
     // });
     //this.addToPaymentTable('sub_IfLOtHsAIYo2i3');
@@ -331,7 +332,7 @@ export class CheckoutComponent implements OnInit {
 
       // https://localhost:4200/checkout/1a0cece8-1171-41ab-c4f7-08d924dd8f86/c0039b84-d226-4da2-7fc4-08d924ddd4a0
       ;
-      
+
       const body = new URLSearchParams();
       body.set('payment_method', 'pm_card_visa');
       body.set('receipt_email', this.shipping[0]);
@@ -381,7 +382,7 @@ export class CheckoutComponent implements OnInit {
 
 
   //For stripe Detroja End
- 
+
   submitForm(value: any) {
     ;
     this.shippingEmail = value.email;
@@ -401,7 +402,7 @@ export class CheckoutComponent implements OnInit {
       this.shippingCountry
     ]
   }
- 
+
   //for getting shipping locations
   getShippingAddressLocations() {
     ;
@@ -415,7 +416,7 @@ export class CheckoutComponent implements OnInit {
 
 
   }
- 
+
   setSelectedLocation(event: any) {
     ;
     this.shipping[6]=event.value;

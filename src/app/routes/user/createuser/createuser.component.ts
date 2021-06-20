@@ -19,9 +19,7 @@ const sweetAlert = require('sweetalert');
     selector: 'app-user',
     templateUrl: './createuser.component.html',
     styleUrls: ['./createuser.component.scss'],
-
 })
-@Directive({ selector: '[ng2FileSelect]' })
 
 export class CreateUserComponent implements OnInit {
 
@@ -34,9 +32,9 @@ export class CreateUserComponent implements OnInit {
 
     sub: Subscription;
     id: number;
-    
+
     textvalue: string = "";
-    
+
     toaster: any;
     toasterConfig: any;
     toasterconfig: ToasterConfig = new ToasterConfig({
@@ -57,23 +55,23 @@ export class CreateUserComponent implements OnInit {
         this.valForm = fb.group({
             'fName': [this.userModel.fName, Validators.required],
             'lName': [this.userModel.lName, Validators.required],
-            'email': [this.userModel.email, Validators.required],            
-        })             
+            'email': [this.userModel.email, Validators.required],
+        })
     }
 
     public ngOnInit(): void {
-    
+
         this.sub = this.route.params.subscribe(params => {
             this.id = params['id'];
         });
-       
+
     }
 
     submitForm(value: any) {
-     
+
         var result: User = Object.assign({}, value);
         //  result.profilePicture = this.fileToUpload.name
-        
+
         this.userService.createUser(result).subscribe((res: User) => {
             this.userModel = res;
 
@@ -82,7 +80,7 @@ export class CreateUserComponent implements OnInit {
             for (let c in this.valForm.controls) {
                 this.valForm.controls[c].markAsTouched();
             }
-            if (!this.valForm.valid) { 
+            if (!this.valForm.valid) {
                 return;
             }
             //Toaster
@@ -95,7 +93,7 @@ export class CreateUserComponent implements OnInit {
             this.SuccessAlert();
         });
 
-    }    
+    }
 
     SuccessAlert() {
         sweetAlert({

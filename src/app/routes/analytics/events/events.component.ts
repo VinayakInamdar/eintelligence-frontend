@@ -227,8 +227,9 @@ export class EventsComponent implements OnInit {
   bsInlineRangeValue: Date[];
   acqusitionsubmenu: boolean = false;
   public myreg = '(https?://)?([\\da-z.-]+)\\.([a-z.]{2,6})[/\\w .-]*/?';
-
-
+  hovered: any;
+  conversionsubmenu: any;
+  showSpinner: any;
 
   constructor(private translate: TranslateService, private route: ActivatedRoute, fb: FormBuilder, private router: Router, private integrationsService: IntegrationsService,
     private overvieswService: OverviewService, private openIdConnectService: OpenIdConnectService, public campaignService: CampaignService) {
@@ -265,6 +266,9 @@ export class EventsComponent implements OnInit {
     // }, 1000);
 
   }
+
+  userRowSelect(event) {}
+
   // using to check Integration Status of selected campaign Id
   goToOverview(): void {
     // let id = this.route.snapshot.paramMap.get('id');
@@ -451,7 +455,7 @@ export class EventsComponent implements OnInit {
     }
   }
 
-  // using to validate from 
+  // using to validate from
   validateForm(fieldName) {
     if (this.valForm.invalid) {
       this.valForm.get(fieldName).markAsTouched();
@@ -466,7 +470,7 @@ export class EventsComponent implements OnInit {
     this.staticTabs.tabs[tabid].active = true;
   }
 
-  // using to disable tab , user have to go step by step 
+  // using to disable tab , user have to go step by step
   disableTab() {
     this.staticTabs.tabs[1].disabled = !this.staticTabs.tabs[1].disabled;
     this.staticTabs.tabs[2].disabled = !this.staticTabs.tabs[2].disabled;
@@ -613,6 +617,8 @@ export class EventsComponent implements OnInit {
   public goToAudienceGeoLocations(event) {
     this.router.navigate([`/campaign/:id${this.selectedCampId}/analytics/audience/geolocation`])
   }
+
+  goToAddNewKeywords(event) {}
 
   // using to navigate to analytics audience languages page
   public goToAudienceLanguages(event) {

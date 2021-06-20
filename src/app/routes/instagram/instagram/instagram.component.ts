@@ -9,6 +9,7 @@ import { Observable } from 'rxjs';
 })
 export class InstagramComponent implements OnInit {
   clientId;
+  settingActive;
   constructor(private http: HttpClient) { }
 
   ngOnInit(): void {
@@ -30,17 +31,17 @@ export class InstagramComponent implements OnInit {
   //   );
   // getAccessToken() {
   //   const api = 'https://www.instagram.com/oauth/authorize/';
-  
+
   //   const params: HttpParams = new HttpParams()
   //     .set('client_id', this.clientId)
   //     .set('redirect_uri', 'http://localhost:4200/instagram/')
   //     .set('response_type', 'code');
-  
+
   //   return this.http.get<any[]>(api, {params})
   //   .map((response) => response)
   // }
 //     authInstagramAccount() {
-//       
+//
 //     const url = "https://www.instagram.com/oauth/authorize";
 //     const body = new URLSearchParams();
 //     body.set('client_id', environment.facebook_appid);
@@ -50,7 +51,7 @@ export class InstagramComponent implements OnInit {
 
 //     this.http.post(url, body.toString()).subscribe(res => {
 //       if (res) {
-// 
+//
 //       }
 //     }, error => {
 //       alert(JSON.stringify(error.error));
@@ -58,4 +59,5 @@ export class InstagramComponent implements OnInit {
 //     });
 //   }
   //----------------------------------------------
+  loginWithOptions() {}
 }

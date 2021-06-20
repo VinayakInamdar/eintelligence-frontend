@@ -110,14 +110,15 @@ chartMap: Highcharts.Options = {
   clientSecret = 'sk_test_51I0iLaEKoP0zJ89QzP2qwrKaIC8vjEfoVim8j4S0Y3FsRx0T3UEkvqiaEayt1AzAcP7Na5xzZcb7aN2K7aMrtcMf00CizHVXeg';
   card: StripeElement;
   stripeTest: FormGroup;
- 
-  
+  chartOptions= {};
+  chartConstructor;
+  Highcharts;
   constructor(public router :Router, public productService : StoreService,private http: HttpClient,
 		private stripeService: StripeService,) { }
 
   ngOnInit(): void {
     this.stripeInit();
-    
+
   }
 
 //################StripeFuncation###################
@@ -171,7 +172,7 @@ paymentIntentCall() {
 
   this.http.post(url, body.toString(), this.httpOptionJSON).subscribe(res => {
     if (res) {
-      
+
       this.clientSecret = res['id'];
     }
   }, error => {
@@ -179,7 +180,7 @@ paymentIntentCall() {
   });
 }
 payWithCard(stripe, card, clientSecret) {
-  
+
   this.loading(true);
   const url = "https://api.stripe.com/v1/payment_intents/"+this.clientSecret+"/confirm";
   const body = new URLSearchParams();
@@ -187,7 +188,7 @@ payWithCard(stripe, card, clientSecret) {
 
   this.http.post(url, body.toString(), this.httpOptionJSON).subscribe(res => {
     if (res) {
-      
+
       this.loading(false);
       this.clientSecret = res['client_secret'];
     }
@@ -221,13 +222,13 @@ payWithCard(stripe, card, clientSecret) {
   //   });
 }
 orderComplete(paymentIntentId) {
-  
+
   this.loading(false);
   document.querySelector(".result-message").classList.remove("hidden");
   document.querySelector("#submit")['disabled'] = true;
 }
 showError(errorMsgText) {
-  
+
   this.loading(false);
   var errorMsg = document.querySelector("#card-errors");
   errorMsg.textContent = errorMsgText;
@@ -286,7 +287,7 @@ stripeSubInit() {
   });
 }
 createPaymentMethod(stripe, cardElement) {
-  
+
   stripe.createPaymentMethod({
     type: 'card',
     card: cardElement,

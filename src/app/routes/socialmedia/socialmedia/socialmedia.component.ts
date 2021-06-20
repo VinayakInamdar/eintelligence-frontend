@@ -120,6 +120,7 @@ export class SocialmediaComponent implements OnInit {
     fromDate: this.fromDate,
     toDate: this.toDate,
   });
+  settingActive;
   constructor(private http: HttpClient, private snackbarService: SnackbarService, public datepipe: DatePipe, public router: Router,
     private campaignService: CampaignService, public openIdConnectService: OpenIdConnectService, public route: ActivatedRoute) {
     //let id = this.route.snapshot.paramMap.get('id');
@@ -216,6 +217,7 @@ export class SocialmediaComponent implements OnInit {
     this.unixpreviousStartDate = this.convertDateToUnixTimeStamp(this.previousStartDate);
 
   }
+
   refreshToken() {
     //const url = "https://graph.facebook.com/oauth/access_token?grant_type=fb_exchange_token&client_id="+environment.facebook_appid+"&client_secret="+environment.facebook_appSecret+"&fb_exchange_token=" + this.accessToken + "";
     const url = "https://graph.facebook.com/oauth/access_token?grant_type=fb_exchange_token&client_id=200487178533939&client_secret=e2b6565db23b735aff9f7c5536dbb217&fb_exchange_token=" + this.accessToken + "";
@@ -413,7 +415,7 @@ export class SocialmediaComponent implements OnInit {
     );
     // forkJoin(...multiPutsPageLikes).subscribe(
     //   data => { // Note: data is an array now
-    //     
+    //
     //     this.CalculatePageLikes(data[0], 0);
     //   }, err => console.log('error ' + err),
     //   () => console.log('Ok ')
@@ -606,7 +608,7 @@ export class SocialmediaComponent implements OnInit {
         //   this.profileViewTotal = parseInt(this.profileViewTotal) + parseInt(l[k].value)
         // }
       }
-      //Page Unlike 
+      //Page Unlike
       if (p.name == 'page_fans_by_unlike_source_unique') {
         let l = p['values'];
 
@@ -912,7 +914,7 @@ export class SocialmediaComponent implements OnInit {
             //   this.profileViewTotal = parseInt(this.profileViewTotal) + parseInt(l[k].value)
             // }
           }
-          //Page Unlike 
+          //Page Unlike
           if (p.name == 'page_fans_by_unlike_source_unique') {
             let l = p['values'];
 

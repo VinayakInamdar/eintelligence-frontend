@@ -23,7 +23,7 @@ export class EcommerceComponent implements OnInit {
   @ViewChild('staticTabs', { static: false }) staticTabs: TabsetComponent;
   @ViewChild(BaseChartDirective)
   public chart: BaseChartDirective;
-
+  showSpinner: any;
   campaignName: String;
   selectedCampId: string;
   gaAccounts: any;
@@ -187,7 +187,7 @@ export class EcommerceComponent implements OnInit {
   bsInlineRangeValue: Date[];
   acqusitionsubmenu: boolean = false;
   public myreg = '(https?://)?([\\da-z.-]+)\\.([a-z.]{2,6})[/\\w .-]*/?';
-
+  hovered: any;
 
 
   constructor(private translate: TranslateService, private route: ActivatedRoute, fb: FormBuilder, private router: Router, private integrationsService: IntegrationsService,
@@ -225,6 +225,9 @@ export class EcommerceComponent implements OnInit {
     // }, 1000);
 
   }
+
+  goToAddNewKeywords(event) {}
+
   // using to check Integration Status of selected campaign Id
   goToOverview(): void {
     // let id = this.route.snapshot.paramMap.get('id');
@@ -237,6 +240,8 @@ export class EcommerceComponent implements OnInit {
   goToKeywords(): void {
     this.router.navigate([`/campaign/:id${this.selectedCampId}/seo/keywords`,])
   }
+
+  userRowSelect(event) { }
 
   public goToAddKeywords(): void {
     this.router.navigate([`/campaign/:id${this.selectedCampId}/seo/keywords`], {
@@ -413,7 +418,7 @@ export class EcommerceComponent implements OnInit {
     }
   }
 
-  // using to validate from 
+  // using to validate from
   validateForm(fieldName) {
     if (this.valForm.invalid) {
       this.valForm.get(fieldName).markAsTouched();
@@ -428,7 +433,7 @@ export class EcommerceComponent implements OnInit {
     this.staticTabs.tabs[tabid].active = true;
   }
 
-  // using to disable tab , user have to go step by step 
+  // using to disable tab , user have to go step by step
   disableTab() {
     this.staticTabs.tabs[1].disabled = !this.staticTabs.tabs[1].disabled;
     this.staticTabs.tabs[2].disabled = !this.staticTabs.tabs[2].disabled;

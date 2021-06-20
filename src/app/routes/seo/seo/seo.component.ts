@@ -964,7 +964,7 @@ export class SeoComponent implements OnInit {
     // this.getGaSetupByCampaignId();
     let id = this.route.snapshot.paramMap.get('id');
     this.selectedCampId = `${id.substring(3)}`;
-    ;
+
     // this.getGaSetupByCampaignId();
     //this.getAnalyticsData();
     // this.getCampaignList();
@@ -1085,10 +1085,10 @@ export class SeoComponent implements OnInit {
         this.getData();
       }
     }, error => {
-      // alert('Gsc : ' + JSON.stringify(error.error));
-      if (error) {
-        this.snackbarService.show(" " + this.gscurl + " : Please re-integrate!! The access token has expired. ");
-      }
+     // alert('Gsc : ' + JSON.stringify(error.error));
+     if(error){
+      this.snackbarService.show(" " + this.gscurl + " : Please re-integrate!! The access token has expired. ");
+     }
     });
   }
   refreshGoogleAnalyticsAccount() {
@@ -1110,22 +1110,18 @@ export class SeoComponent implements OnInit {
         this.getSiteSpeedDataDesktop();
       }
     }, error => {
-      // alert('GA : ' + JSON.stringify(error.error));
-      if (error) {
-        this.snackbarService.show(" " + this.gaurl + " : Please re-integrate!! The access token has expired. ");
-      }
+     // alert('GA : ' + JSON.stringify(error.error));
+     if(error){
+      this.snackbarService.show(" " + this.gaurl + " : Please re-integrate!! The access token has expired. ");
+     }
     });
 
   }
 
   ngOnInit(): void {
-
+    // this.lineChartData1=[];
+    // this.lineChartLabels1 = [];
     ;
-
-    this.loadSeoPage();
-
-  }
-  loadSeoPage() {
     this.gaurl = localStorage.getItem('gaurl');
     this.gaaccesstoken = localStorage.getItem('gaaccesstoken');
     this.garefreshtoken = localStorage.getItem('garefreshtoken');
@@ -1155,6 +1151,7 @@ export class SeoComponent implements OnInit {
       this.id = params['id'];
     });
   }
+
   // using to check Integration Status of selected campaign Id
   goToOverview(): void {
     let id = this.route.snapshot.paramMap.get('id');
@@ -2110,7 +2107,6 @@ export class SeoComponent implements OnInit {
   //   });
   // }
   public getSerpList(): void {
-    ;
     const filterOptionModel = this.getFilterOptionPlans();
     let id = this.route.snapshot.paramMap.get('id');
     this.selectedCampId = `${id.substring(3)}`;

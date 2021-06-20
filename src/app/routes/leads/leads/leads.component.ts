@@ -72,9 +72,15 @@ export class LeadsComponent implements OnInit {
     this.source = new LocalDataSource(userList)
   }
 
-  // using to change view according to setting active 
+  // using to change view according to setting active
   public changeSettingActive(value) {
     this.settingActive = value
   }
+
+  userRowSelect(event) {}
+
+  onSearch(value) {}
+
+  submitForm(value, formName) {}
 
 }
