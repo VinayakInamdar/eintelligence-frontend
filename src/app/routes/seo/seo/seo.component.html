@@ -50,7 +50,7 @@
             <div class="col-md-12">
                 <div class="card card-default shadow bg-white rounded cursor-default">
                     <div class="card-header borderBtm">
-                        <div class="col-md-2 search-container">
+                        <div class="col-md-3 search-container">
                             <input #search class="form-control ng-valid ng-dirty ng-valid-parse ng-touched ng-empty keywordinputwidth searchheight" type="text" placeholder="Search keywords" (keyup)="onSearch(search.value)">
                         </div>
                         <div class="col-md-2">
@@ -137,7 +137,7 @@
                                         <canvas baseChart id="canvas1" [chartType]="'horizontalBar'"
                                             [options]="barOptions" [datasets]="barDataImpressionsDevice.datasets"
                                             [colors]="barColors" [labels]="barChartLabelsDevice" [legend]="true"
-                                            height="85">
+                                           >
                                         </canvas>
                                     </div>
                                 </div>
@@ -314,16 +314,16 @@
 
                         <div class="card-header borderBtm header-padding">
                             <div class="col-md-14">
-                                <span class="row">
-                                    <h4 class="heading-margin font-weight">SITE SPEED</h4>
+                                <span fxFlex="100" fxLayout="row">
+                                    <h4 fxFlex="30" class="heading-margin font-weight">SITE SPEED</h4>
                                     &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
-                                    <div class="col-md-4"></div>
+                                    <!-- <div class="col-md-4"></div> -->
                                     &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
-                                    <h4 class="reportmarginbottom font-weight">
+                                    <h4 fxFlex="30" fxLayoutAlign="center top" class="reportmarginbottom font-weight">
                                         Lighthouse Result</h4>&nbsp;
                                     &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
-                                    <div class="col-md-3"></div>
-
+                                    <div fxFlex="5"></div>
+                                    <div fxFlex="30" fxLayout="row" fxLayoutAlign="end">
                                     <img src="../../../../assets/img/triangle.png" alt="triangle-img"
                                         class="set-staticiconsize">
                                     <h5 class="set-statictitle">0&nbsp;-&nbsp;49</h5>
@@ -334,7 +334,7 @@
                                     <img src="../../../../assets/img/green-circle-icon.png " alt="orange-img "
                                         class="set-staticiconsize">
                                     <h5 class="set-statictitle">90&nbsp;-&nbsp;100</h5>
-
+                                </div>
                                 </span>
 
                             </div>
