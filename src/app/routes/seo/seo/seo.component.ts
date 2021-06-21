@@ -1085,10 +1085,10 @@ export class SeoComponent implements OnInit {
         this.getData();
       }
     }, error => {
-     // alert('Gsc : ' + JSON.stringify(error.error));
-     if(error){
-      this.snackbarService.show(" " + this.gscurl + " : Please re-integrate!! The access token has expired. ");
-     }
+      // alert('Gsc : ' + JSON.stringify(error.error));
+      if (error) {
+        this.snackbarService.show(" " + this.gscurl + " : Please re-integrate!! The access token has expired. ");
+      }
     });
   }
   refreshGoogleAnalyticsAccount() {
@@ -1110,10 +1110,10 @@ export class SeoComponent implements OnInit {
         this.getSiteSpeedDataDesktop();
       }
     }, error => {
-     // alert('GA : ' + JSON.stringify(error.error));
-     if(error){
-      this.snackbarService.show(" " + this.gaurl + " : Please re-integrate!! The access token has expired. ");
-     }
+      // alert('GA : ' + JSON.stringify(error.error));
+      if (error) {
+        this.snackbarService.show(" " + this.gaurl + " : Please re-integrate!! The access token has expired. ");
+      }
     });
 
   }
@@ -1121,7 +1121,11 @@ export class SeoComponent implements OnInit {
   ngOnInit(): void {
     // this.lineChartData1=[];
     // this.lineChartLabels1 = [];
-    ;
+    this.loadSeoPageData();
+   
+  }
+
+  loadSeoPageData() {
     this.gaurl = localStorage.getItem('gaurl');
     this.gaaccesstoken = localStorage.getItem('gaaccesstoken');
     this.garefreshtoken = localStorage.getItem('garefreshtoken');
@@ -1151,7 +1155,6 @@ export class SeoComponent implements OnInit {
       this.id = params['id'];
     });
   }
-
   // using to check Integration Status of selected campaign Id
   goToOverview(): void {
     let id = this.route.snapshot.paramMap.get('id');

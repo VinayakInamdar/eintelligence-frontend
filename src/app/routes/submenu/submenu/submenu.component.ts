@@ -107,7 +107,13 @@ export class SubmenuComponent implements OnInit {
     localStorage.setItem('selectedCampId', selectedCampaign.id);
     localStorage.setItem('selectedCampName', selectedCampaign.name);
     localStorage.setItem('selectedCampUrl', selectedCampaign.webUrl);
-    this.router.navigate([`../campaign/:id${selectedCampaign.id}/seo`]);
+    //this.router.navigate([`../campaign/:id${selectedCampaign.id}/seo`]);
+    this.redirectTo(`../campaign/:id${selectedCampaign.id}/seo`);
+  }
+  redirectTo(uri:string){
+    this.router.navigateByUrl('/',{skipLocationChange:true}).then(()=>{
+      this.router.navigate([uri]);
+    })
   }
   private getFilterOption() {
     return {

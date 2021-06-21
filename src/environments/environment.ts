@@ -38,7 +38,7 @@ export const environment = {
     post_logout_redirect_uri: 'https://localhost:4200/',
   },
 
-
+}
 /*
 
 * For easier debugging in development mode, you can import the following file
