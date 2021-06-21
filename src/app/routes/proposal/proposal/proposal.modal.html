@@ -9,7 +9,7 @@
     <div>
 <!-- <div class="form-group row"> -->
     <form class="form-horizontal" [formGroup]="passwordform"  (submit)="submitForm(passwordform.value)">
-        <div class="form-group col-md-12" style="display: flex;flex-direction: column;"> 
+        <div class="form-group col-md-12" style="display: flex;flex-direction: column;">
             <div class="col-md-12" style="display: flex;flex-direction: column;">
                 <label for="user_password" class="col-sm-4 col-form-label"><span class="accountspancolor">*</span>Related</label>
                 <!-- <div class="col-md-10">
@@ -36,9 +36,9 @@
                     <option>Choose oppo suit</option>
                   </select>
             </div>
-            
+
         </div>
-    
+
     </form>
 <!-- </div> -->
 
@@ -49,8 +49,9 @@
     <div class="col-md-4">
         <button class="mr-1 btn btn-sm float-right" (click)="onClose($event)"
         style="background-color:#5D9CEC;color: white;">Close</button>
-        <button class="mr-1 btn btn-sm float-right" type="submit" (click)="submitForm(passwordform.value)"
-                                                style="background-color:#5D9CEC;color: white;">Save</button>
+        <button class="mr-1 btn btn-sm float-right" type="submit"
+              (click)="submitForm(passwordform.value)"
+              style="background-color:#5D9CEC;color: white;">Save</button>
 
     </div>
   </div>

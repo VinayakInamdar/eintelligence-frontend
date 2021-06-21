@@ -17,7 +17,7 @@ import { SubmenuModule } from '../submenu/submenu.module';
     SubmenuModule
   ],
   exports :[
-    Router
+    // Router
   ]
 })
 export class OverviewModule { }

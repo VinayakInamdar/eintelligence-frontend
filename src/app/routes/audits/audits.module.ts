@@ -5,13 +5,13 @@ import { Ng2SmartTableModule } from 'ng2-smart-table';
 import { CommonModule } from '@angular/common';
 import { AuditreportComponent } from '../auditreport/auditreport/auditreport.component';
 import { ToastrModule } from 'ngx-toastr';
+import { AuditBadge } from './audits/auditbadge.component';
 const routes: Routes = [
   { path: '', component: AuditreportComponent },
 ];
 
-
 @NgModule({
-  declarations: [],
+  declarations: [AuditBadge],
   imports: [
     CommonModule,
     Ng2SmartTableModule,

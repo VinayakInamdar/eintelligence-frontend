@@ -31,10 +31,19 @@ const success = require('sweetalert');
   templateUrl: './campagin.component.html',
   styleUrls: ['./campagin.component.scss']
 })
-@Directive({ selector: '[ng2FileSelect]' })
-
 export class CampaginComponent implements OnInit, AfterViewInit {
   profiles: any;
+  lineChartPlugins: any;
+  lineChartType: any;
+  lineChartData: any;
+  barData: any;
+  barOptions: any;
+  barColors: any;
+  barChartLabels: any;
+  lineChartOptions: any;
+  lineChartLabels: any;
+  lineChartLegend: any;
+  lineChartColors: any;
   selectedProfile: any;
   isEditMode: boolean = false;
   isGaEdit: boolean = false;
@@ -259,7 +268,7 @@ export class CampaginComponent implements OnInit, AfterViewInit {
   source: LocalDataSource;
   bsValue = new Date();
   date = new Date();
-  //startDate = new Date(new Date().setDate(new Date().getDate() - 31)).toISOString().split("T")[0]; 
+  //startDate = new Date(new Date().setDate(new Date().getDate() - 31)).toISOString().split("T")[0];
   queryParams: any;
   setCurrentSettingActive: number;
   selectedCampaignTaskId: string;
@@ -420,7 +429,7 @@ export class CampaginComponent implements OnInit, AfterViewInit {
         this.disableTab()
       }, 500);
     }
-    // using to disable tab , user have to go step by step 
+    // using to disable tab , user have to go step by step
     // this.disableTab()
   }
 
@@ -478,6 +487,11 @@ export class CampaginComponent implements OnInit, AfterViewInit {
     this.trafficNve = 0;
     this.trafficNut = 0;
   }
+
+  onSearch(value) {}
+
+  updateCampaignForm(campaignModel) {}
+
   refreshGSCAccount() {
 
     const url = "https://www.googleapis.com/oauth2/v4/token";
@@ -751,7 +765,7 @@ export class CampaginComponent implements OnInit, AfterViewInit {
     });
   }
 
-  // using to validate from 
+  // using to validate from
   validateForm(fieldName) {
 
     if (this.valForm.invalid) {
@@ -767,7 +781,7 @@ export class CampaginComponent implements OnInit, AfterViewInit {
     this.staticTabs.tabs[tabid].active = true;
   }
 
-  // using to disable tab , user have to go step by step 
+  // using to disable tab , user have to go step by step
   disableTab() {
     this.staticTabs.tabs[1].disabled = !this.staticTabs.tabs[1].disabled;
     this.staticTabs.tabs[2].disabled = !this.staticTabs.tabs[2].disabled;
@@ -795,7 +809,7 @@ export class CampaginComponent implements OnInit, AfterViewInit {
       }
     });
   }
-  //Campaign Update 
+  //Campaign Update
   updateSuccessAlert() {
     success({
       icon: this.translate.instant('sweetalert.SUCCESSICON'),

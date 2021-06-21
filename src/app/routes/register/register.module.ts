@@ -49,6 +49,6 @@ const routes: Routes = [
   exports: [
     RouterModule,
   ],
-  declarations: [Agency1Component, Agency2Component, Agency3Component, Agency4Component, HomeComponent]
+  declarations: [Agency1Component, Agency2Component, Agency3Component]
 })
 export class RegisterModule { }

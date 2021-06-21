@@ -1,5 +1,5 @@
 <div class="row overviewmaindiv">
-    <app-submenu></app-submenu>111111
+    <!-- <app-submenu></app-submenu>111111 -->
     <div class="grey-container">
         <div class="pagewidth clearfix ">
             <div class="campaign-selector-container ">
@@ -23,7 +23,7 @@
                 </div>
 
             </div>
-      
+
             <ul id="page_menu" class="campaign-menu pull-right overviewcamppadding">
                 <li id="overview_menu" class="no-third-nav paddingclass" data-third-menu="">
                     <a href="javascript:void(0);" class="btn" (mouseenter)="showDiv($event,'false','undefined')">
@@ -99,7 +99,7 @@
 
                 </li>
                 <li id="seo_menu" class="" data-third-menu="seo_menu_index">
-                    <a href="javascript:void(0);" class="btn" (click)="goToKeywords($event)">
+                    <a href="javascript:void(0);" class="btn" (click)="goToKeywords()">
                         <span class="fontsizesmall">Keyword Rankings</span>
                     </a>
 
@@ -274,21 +274,21 @@
             </div>
             <div class="card-body row">
                 <div class="chart-wrapper mx-auto chart-container" *ngIf="hasActiveAccount && hasAuthorize">
-                    <canvas baseChart 
+                    <canvas baseChart
                     id="canvas"
-                    [chartType]="'bar'" 
-                    [options]="barOptions" 
+                    [chartType]="'bar'"
+                    [options]="barOptions"
                     [datasets]="barData.datasets"
-                    [colors]="barColors" 
-                    [labels]="barData.labels" 
-                    [legend]="true" 
+                    [colors]="barColors"
+                    [labels]="barData.labels"
+                    [legend]="true"
                     height="50">
                 </canvas>
                 </div>
                 <div class="btn-container footer-buttons text-center">
-                    <a href="javascript:void(0)" class="btn btn-link" (click)="goToKeywords($event)">All Rankings</a>
+                    <a href="javascript:void(0)" class="btn btn-link" (click)="goToKeywords()">All Rankings</a>
                     &nbsp;&nbsp;&nbsp;
-                    <button class="mr-1 btn btn-danger btn-sm" (click)="goToAddKeywords($event)">Add Keywords</button>
+                    <button class="mr-1 btn btn-danger btn-sm" (click)="goToAddKeywords()">Add Keywords</button>
                 </div>
             </div>
         </div>
@@ -353,7 +353,7 @@
                     </div>
                     <canvas *ngIf="!showSpinnerBaseChart" baseChart [datasets]="lineChartData" [labels]="lineChartLabels" [options]="lineChartOptions"
                         [colors]="lineChartColors" [legend]="lineChartLegend" [chartType]="lineChartType"
-                        [plugins]="lineChartPlugins" [fullWidth]="true">
+                        [plugins]="lineChartPlugins" >
                     </canvas>
                 </div>
 

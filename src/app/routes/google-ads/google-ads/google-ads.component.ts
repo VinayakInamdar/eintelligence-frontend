@@ -26,7 +26,7 @@ export class GoogleAdsComponent implements OnInit {
   campaignList: Campaign[];
   selectedCampId: string;
   selectedCampaignName: string;
-
+  settingActive;
   constructor(private translate: TranslateService, fb: FormBuilder,
     public route: ActivatedRoute, public http: HttpClient, public datepipe: DatePipe,
     public router: Router, private openIdConnectService: OpenIdConnectService,

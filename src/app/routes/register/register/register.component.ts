@@ -16,8 +16,6 @@ import { SettingsService } from 'src/app/core/settings/settings.service';
   templateUrl: './register.component.html',
   styleUrls: ['./register.component.scss']
 })
-@Directive({ selector: '[ng2FileSelect]' })
-
 export class RegisterComponent implements OnInit {
   companytype = new FormControl('', [Validators.required]);
   cName = new FormControl(null, [Validators.required]);
@@ -33,7 +31,7 @@ export class RegisterComponent implements OnInit {
 
   sub: Subscription;
   id: number;
- 
+
   textvalue: string = "";
 
   constructor(private translate: TranslateService, fb: FormBuilder, private registerService: RegisterService,
@@ -68,7 +66,7 @@ export class RegisterComponent implements OnInit {
     this.selectedCompanyImageUrl = localStorage.getItem('companyImageUrl');
     localStorage.removeItem('companyImageUrl');
     value.companyImageUrl = this.selectedCompanyImageUrl;
-    
+
     var result: User = Object.assign({}, value);
     this.userService.createUser(result).subscribe((res: User) => {
       ;
@@ -86,7 +84,7 @@ export class RegisterComponent implements OnInit {
       this.accountService.updateCompany(res.companyID, company).subscribe(
         res => {
           console.log(res)
-          
+
         }
       )
 
@@ -95,15 +93,15 @@ export class RegisterComponent implements OnInit {
   public onClick(): any {
     this.router.navigate(['/success']);
   }
-  public goToPrivacyPolicy() {
+  public goToPrivacyPolicy(event) {
     this.router.navigate(['/privacy-policy'])
   }
-  public goToTermsAndConditions() {
+  public goToTermsAndConditions(event) {
     this.router.navigate(['/terms-and-conditions'])
   }
- 
+
   getBase64(event:any){
-    
+
     let companyImageUrl: string
     let me = this;
     let file = event.target.files[0];
@@ -112,13 +110,13 @@ export class RegisterComponent implements OnInit {
     reader.onload = function () {
       companyImageUrl=reader.result.toString();
     localStorage.setItem('companyImageUrl',companyImageUrl);
-      
-     
+
+
     };
-    
+
     reader.onerror = function (error) {
       console.log('Error: ', error);
     };
   }
-  
+
 }

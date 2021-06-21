@@ -16,7 +16,7 @@ import { ChartsModule } from 'ng2-charts';
     ChartsModule
   ],
   exports :[
-    Router
+    // Router
   ]
 })
 export class AuditreportModule { }

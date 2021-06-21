@@ -27,7 +27,7 @@ Object.prototype.toString = function() {
   styleUrls: ['./account.component.scss']
 })
 export class AccountComponent implements OnInit {
- 
+
   @ViewChild('ngxintlbil', { static: false }) ngxintlbil: NgxIntlTelInputComponent;
   @ViewChild('ngxintlcom', { static: false }) ngxintlcom: NgxIntlTelInputComponent;
   separateDialCode = true;
@@ -37,7 +37,7 @@ export class AccountComponent implements OnInit {
   maxHeight = window.innerHeight/1;
   isCollapsed = true;
   preferredCountries: CountryISO[] = [CountryISO.UnitedStates, CountryISO.UnitedKingdom];
-  
+
   companyInfoForm = new FormGroup({
     name: new FormControl(undefined, [Validators.required]),
     website: new FormControl(undefined, [Validators.required]),
@@ -50,7 +50,7 @@ export class AccountComponent implements OnInit {
     state: new FormControl(undefined, [Validators.required]),
     country: new FormControl(undefined, [Validators.required]),
     description: new FormControl(undefined, [Validators.required]),
-    
+
   });
   profileInfo = new FormGroup({
     fName: new FormControl(undefined, [Validators.required]),
@@ -155,11 +155,11 @@ emailSettingsForm = new FormGroup({
     'Montenegro', 'Congo Democratic'];
 
 
-  constructor(private translate: TranslateService,public router: Router,public dialog: MatDialog,private accountService: AccountService, private openIdConnectService: OpenIdConnectService) { 
+  constructor(private translate: TranslateService,public router: Router,public dialog: MatDialog,private accountService: AccountService, private openIdConnectService: OpenIdConnectService) {
     this.changeText = false;
     this.getCompany();
     this.getUser();
-    
+
   }
 
   public itemsCategories: Array<string> = ['coding', 'less', 'sass', 'angularjs', 'node', 'expressJS'];
@@ -179,7 +179,7 @@ emailSettingsForm = new FormGroup({
   valueReview;
   contents: string;
   CompanyID : string;
-
+  disabled: boolean;
   ngOnInit(): void {
     $('#summernote').summernote({
       height: 280,
@@ -191,7 +191,7 @@ emailSettingsForm = new FormGroup({
           }
       }
   });
-  
+
 
    // Hide the initial popovers that display
    $('.note-popover').css({
@@ -202,7 +202,9 @@ emailSettingsForm = new FormGroup({
 
   }
 
+  removed(event) {}
 
+  selectedstate(event) {}
 
   getUser() {
 
@@ -213,8 +215,8 @@ emailSettingsForm = new FormGroup({
         for (let c in this.profileInfo.controls) {
           this.profileInfo.controls[c].setValue(res1[c])
       }
-                      
-        
+
+
       }
     )
   }
@@ -225,20 +227,20 @@ emailSettingsForm = new FormGroup({
     this.accountService.getCompany(userId).subscribe(
       res=>{
         console.log(res)
-        
+
         for (let c in this.companyInfoForm.controls) {
           this.companyInfoForm.controls[c].setValue(res[c])
       }
       for (let c in this.brandingInfoForm.controls) {
         this.brandingInfoForm.controls[c].setValue(res[c])
     }
-        
+
         this.companyinformation = res
         this.CompanyID = this.companyinformation.companyID;
       }
     )
   }
-  
+
   openFile(){
 
     document.querySelector('input').click()
@@ -273,7 +275,7 @@ emailSettingsForm = new FormGroup({
         if(c == "phone"){
           var value = this.companyInfoForm.controls.phone.value.number
           this.ngxintlbil.selectedCountry = this.ngxintlcom.selectedCountry
-          this.billingInfo.controls.phone.setValue(value)  
+          this.billingInfo.controls.phone.setValue(value)
         }
         else {
           this.billingInfo.controls[c].setValue(this.companyInfoForm.controls[c].value);
@@ -286,20 +288,20 @@ emailSettingsForm = new FormGroup({
         if(c == "phone"){
           var value = null;
           this.ngxintlbil.selectedCountry = this.ngxintlcom.selectedCountry
-          this.billingInfo.controls.phone.setValue(value)  
+          this.billingInfo.controls.phone.setValue(value)
         }
         this.billingInfo.controls[c].setValue(undefined);
     }
     }
-  
+
   }
   submitForm(value: any,formtype: string) {
-    
+
     var result = Object.assign({}, value);
      if(this.settingActive == 1){
       if(formtype == "companyInfoForm"){
         //if(this.companyInfoForm.valid){
-          
+
           result['id'] = this.CompanyID;
           result['name'] = result.name
           result['description'] = result.description
@@ -318,19 +320,19 @@ emailSettingsForm = new FormGroup({
         //     this.companyInfoForm.controls[c].markAsTouched();
         // }
         // }
-      
-   
+
+
       }
       else if (formtype == "profileinfoform") {
         if(this.companyInfoForm.valid){
-          
+
           var userid = this.openIdConnectService.user.profile.sub;
           result['fName'] = result.fName
           result['lName'] = result.lName
           result['email'] = result.email
           result['phoneNumber'] = result.phoneNumber['internationalNumber']
           this.user = result
-         
+
           this.accountService.updateUser(userid,this.user).subscribe(
             res=>{
               console.log(res)
@@ -342,7 +344,7 @@ emailSettingsForm = new FormGroup({
             this.profileInfo.controls[c].markAsTouched();
         }
         }
-       
+
       }
       else {
         for (let c in this.billingInfo.controls) {
@@ -353,7 +355,7 @@ emailSettingsForm = new FormGroup({
     else if(this.settingActive == 2){
       if(formtype == "brandingInfoForm"){
         if(this.brandingInfoForm.valid){
-        
+
           this.companyinformation['branding'] = value.branding
           this.accountService.updateCompany(this.CompanyID,this.companyinformation).subscribe(
             res=>{
@@ -367,8 +369,8 @@ emailSettingsForm = new FormGroup({
             this.companyInfoForm.controls[c].markAsTouched();
         }
         }
-      
-   
+
+
       }
       else if (formtype == "profileinfoform") {
         for (let c in this.profileInfo.controls) {
@@ -384,7 +386,7 @@ emailSettingsForm = new FormGroup({
     else if(this.settingActive == 3){
       if(formtype == "emailSettingsForm"){
         if(this.emailSettingsForm.valid){
-          
+
           result['Id'] = this.CompanyID;
           result['email'] = value.emailAdd
           // this.accountService.updateCompany(companyId,result).subscribe(
@@ -399,8 +401,8 @@ emailSettingsForm = new FormGroup({
             this.companyInfoForm.controls[c].markAsTouched();
         }
         }
-      
-   
+
+
       }
       else if (formtype == "profileinfoform") {
         for (let c in this.profileInfo.controls) {
@@ -416,7 +418,7 @@ emailSettingsForm = new FormGroup({
     else if(this.settingActive == 4){
       if(formtype == "companyInfoForm"){
         if(this.companyInfoForm.valid){
-      
+
           result['Id'] = this.CompanyID;
           result['name'] = result.name
           result['description'] = result.description
@@ -433,8 +435,8 @@ emailSettingsForm = new FormGroup({
             this.companyInfoForm.controls[c].markAsTouched();
         }
         }
-      
-   
+
+
       }
       else if (formtype == "profileinfoform") {
         for (let c in this.profileInfo.controls) {
@@ -447,7 +449,7 @@ emailSettingsForm = new FormGroup({
       }
       }
     }
-    
+
   }
     // using to open sweetalert to show success dialog
     successAlert() {
@@ -474,7 +476,7 @@ emailSettingsForm = new FormGroup({
     const dialogRef = this.dialog.open(DialogContentExampleDialog);
 
     dialogRef.afterClosed().subscribe(result => {
-      
+
     });
   }
 
@@ -485,7 +487,7 @@ emailSettingsForm = new FormGroup({
   }
   }
 
-  
+
 
 }
 @Component({

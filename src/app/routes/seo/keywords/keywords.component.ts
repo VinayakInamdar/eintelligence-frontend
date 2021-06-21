@@ -195,7 +195,7 @@ export class KeywordsComponent implements OnInit {
     })
   }
   ngAfterViewInit(): void {
-    // // using to disable tab , user have to go step by step 
+    // // using to disable tab , user have to go step by step
     // this.disableTab()
   }
 
@@ -210,6 +210,8 @@ export class KeywordsComponent implements OnInit {
     }
 
   }
+
+  userRowSelect(event) {}
 
   deleteQueryParameterFromCurrentRoute() {
     var params = { ...this.route.snapshot.queryParams };
@@ -280,7 +282,7 @@ export class KeywordsComponent implements OnInit {
           search: query
         },
       ], false);
-      // second parameter specifying whether to perform 'AND' or 'OR' search 
+      // second parameter specifying whether to perform 'AND' or 'OR' search
       // (meaning all columns should contain search query or at least one)
       // 'AND' by default, so changing to 'OR' by setting false here
     }
@@ -330,7 +332,7 @@ export class KeywordsComponent implements OnInit {
     }
   }
 
-  // using to validate from 
+  // using to validate from
 
   validateForm(fieldName) {
     if (this.valForm.invalid) {
@@ -345,7 +347,7 @@ export class KeywordsComponent implements OnInit {
     this.staticTabs.tabs[tabid].active = true;
   }
 
-  // using to disable tab , user have to go step by step 
+  // using to disable tab , user have to go step by step
   disableTab() {
     this.staticTabs.tabs[1].disabled = !this.staticTabs.tabs[1].disabled;
     this.staticTabs.tabs[2].disabled = !this.staticTabs.tabs[2].disabled;
@@ -452,7 +454,7 @@ export class KeywordsComponent implements OnInit {
     this.tagInputRef.nativeElement.focus();
   }
 
-  // using to catch event from tag input 
+  // using to catch event from tag input
   onKeyUp(event: KeyboardEvent): void {
     const inputValue: string = this.valForm.controls.tag.value;
     if (event.code === 'Backspace' && !inputValue) {
@@ -547,7 +549,7 @@ export class KeywordsComponent implements OnInit {
     return Math.abs(Number(labelValue)) >= 1.0e+9
 
       ? Math.abs(Number(labelValue)) / 1.0e+9 + "B"
-      // Six Zeroes for Millions 
+      // Six Zeroes for Millions
       : Math.abs(Number(labelValue)) >= 1.0e+6
 
         ? Math.abs(Number(labelValue)) / 1.0e+6 + "M"

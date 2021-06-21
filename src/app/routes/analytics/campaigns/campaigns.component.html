@@ -185,63 +185,63 @@
                 </div>
                 <ul id="page_menu" class="campaign-menu pull-right keyworddiv1paddingtop">
                     <li id="overview_menu" class="no-third-nav" data-third-menu="">
-                        <a href="javascript:void(0);" class="btn" (mouseenter)="showDiv($event,'false','undefined')">
+                        <a href="javascript:void(0);" class="btn" (mouseenter)="showDiv($event,'','false','undefined')">
                             <span class="fontsizesmall">Overview</span>
                         </a>
 
                     </li>
                     <li id="seo_menu" class="" data-third-menu="seo_menu_index">
-                        <a href="javascript:void(0);" class="btn" (mouseenter)="showDiv($event,'true','seo')"
+                        <a href="javascript:void(0);" class="btn" (mouseenter)="showDiv($event,'','true','seo')"
                             (click)="goToSeoOverview($event)">
                             <span class="fontsizesmall">SEO</span>
                         </a>
 
                     </li>
                     <li id="local_seo_menu" class="active-link" data-third-menu="location_menu_index">
-                        <a href="javascript:void(0);" class="btn" (mouseenter)="showDiv($event,'true','gmb')">
+                        <a href="javascript:void(0);" class="btn" (mouseenter)="showDiv($event,'','true','gmb')">
                             <span class="fontsizesmall">GMB</span>
                         </a>
 
                     </li>
                     <li id="reputation_menu" class="" data-third-menu="repman_menu_index">
-                        <a href="javascript:void(0);" class="btn" (mouseenter)="showDiv($event,'false','undefined')">
+                        <a href="javascript:void(0);" class="btn" (mouseenter)="showDiv($event,'','false','undefined')">
                             <span class="fontsizesmall">Reputation</span>
                         </a>
 
                     </li>
                     <li id="analytics_menu" class="" data-third-menu="analytics_menu_index">
-                        <a href="javascript:void(0);" class="btn" (mouseenter)="showDiv($event,'true','analytics')"
+                        <a href="javascript:void(0);" class="btn" (mouseenter)="showDiv($event,'','true','analytics')"
                             (click)="goToAnalyticsOverview($event)">
                             <span class="fontsizesmall">Analytics</span>
                         </a>
 
                     </li>
                     <li id="contacts_menu" class="" data-third-menu="">
-                        <a href="javascript:void(0);" class="btn" (mouseenter)="showDiv($event,'false','undefined')">
+                        <a href="javascript:void(0);" class="btn" (mouseenter)="showDiv($event,'','false','undefined')">
                             <span class="fontsizesmall">Contacts</span>
                         </a>
 
                     </li>
                     <li id="ppc_menu" class="" data-third-menu="ppc_menu_index">
-                        <a href="javascript:void(0);" class="btn" (mouseenter)="showDiv($event,'true','ppc')">
+                        <a href="javascript:void(0);" class="btn" (mouseenter)="showDiv($event,'','true','ppc')">
                             <span class="fontsizesmall">PPC</span>
                         </a>
 
                     </li>
                     <li id="report_builder_menu" class="" data-third-menu="">
-                        <a href="javascript:void(0);" class="btn" (mouseenter)="showDiv($event,'false','undefined')">
+                        <a href="javascript:void(0);" class="btn" (mouseenter)="showDiv($event,'','false','undefined')">
                             <span class="fontsizesmall">Reports</span>
                         </a>
 
                     </li>
                     <li id="projects_menu" class="" data-third-menu="">
-                        <a href="javascript:void(0);" class="btn" (mouseenter)="showDiv($event,'false','undefined')">
+                        <a href="javascript:void(0);" class="btn" (mouseenter)="showDiv($event,'','false','undefined')">
                             <span class="fontsizesmall">Projects</span>
                         </a>
 
                     </li>
                     <li id="settings_menu" class="" data-third-menu="campaign_settings_menu_index">
-                        <a href="javascript:void(0);" class="btn" (mouseenter)="showDiv($event,'true','settings')">
+                        <a href="javascript:void(0);" class="btn" (mouseenter)="showDiv($event,'','true','settings')">
                             <span class="fontsizesmall">Settings</span>
                         </a>
 
@@ -613,7 +613,7 @@
                     <canvas *ngIf="!showSpinnerBaseChart" baseChart [datasets]="lineChartData"
                         [labels]="lineChartLabels" [options]="lineChartOptions" [colors]="lineChartColors"
                         [legend]="lineChartLegend" [chartType]="lineChartType" [plugins]="lineChartPlugins"
-                        [fullWidth]="true">
+                        >
                     </canvas>
                 </div>
 

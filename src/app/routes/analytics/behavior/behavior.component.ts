@@ -23,7 +23,7 @@ export class BehaviorComponent implements OnInit {
   @ViewChild('staticTabs', { static: false }) staticTabs: TabsetComponent;
   @ViewChild(BaseChartDirective)
   public chart: BaseChartDirective;
-
+  hovered: any;
   campaignName: String;
   selectedCampId: string;
   gaAccounts: any;
@@ -44,6 +44,8 @@ export class BehaviorComponent implements OnInit {
   audiencesubmenu: boolean;
   behaviorsubmenu: boolean;
   ;
+  showSpinner: any;
+  conversionsubmenu: any;
   endDate = new Date().toISOString().split("T")[0];;
   firstDay = new Date(this.date.getFullYear(), this.date.getMonth(), 1);
   lastDay = new Date(this.date.getFullYear(), this.date.getMonth() + 1, 0);
@@ -273,6 +275,9 @@ export class BehaviorComponent implements OnInit {
     // }, 1000);
 
   }
+
+  userRowSelect(event) {}
+
   // using to check Integration Status of selected campaign Id
   goToOverview(): void {
     // let id = this.route.snapshot.paramMap.get('id');
@@ -459,7 +464,7 @@ export class BehaviorComponent implements OnInit {
     }
   }
 
-  // using to validate from 
+  // using to validate from
   validateForm(fieldName) {
     if (this.valForm.invalid) {
       this.valForm.get(fieldName).markAsTouched();
@@ -474,7 +479,7 @@ export class BehaviorComponent implements OnInit {
     this.staticTabs.tabs[tabid].active = true;
   }
 
-  // using to disable tab , user have to go step by step 
+  // using to disable tab , user have to go step by step
   disableTab() {
     this.staticTabs.tabs[1].disabled = !this.staticTabs.tabs[1].disabled;
     this.staticTabs.tabs[2].disabled = !this.staticTabs.tabs[2].disabled;
@@ -620,6 +625,8 @@ export class BehaviorComponent implements OnInit {
   public goToAudienceGeoLocations(event) {
     this.router.navigate([`/campaign/:id${this.selectedCampId}/analytics/audience/geolocation`])
   }
+
+  goToAddNewKeywords(event) {}
 
   // using to navigate to analytics audience languages page
   public goToAudienceLanguages(event) {

@@ -30,6 +30,7 @@ import { SocialLoginModule, SocialAuthServiceConfig } from 'angularx-social-logi
 import { GoogleLoginProvider } from 'angularx-social-login';
 import { CampaignlistComponent } from './campaignlist/campaignlist.component';
 import { environment } from 'src/environments/environment';
+import { GoogleChartsModule } from 'angular-google-charts';
 
 const routes: Routes = [
   { path: 'home/campaign:/code', component: CampaginComponent },
@@ -66,7 +67,8 @@ const routes: Routes = [
     Ng2SmartTableModule,
     ChartsModule,
     SubmenuModule,
-    SocialLoginModule
+    SocialLoginModule,
+    GoogleChartsModule.forRoot({ version: 'chart-version' })
   ],
   providers: [
     {
@@ -86,10 +88,8 @@ const routes: Routes = [
     }
   ],
   declarations: [KeywordsComponent, AnalyticsComponent, AcquisitionComponent,
-    TrafficSourcesComponent, SourcesMediumsComponent, CampaignsComponent,
-    AudienceComponent, DeviceCategoryComponent, GeoLocationsComponent, LanguagesComponent
-    , BehaviorComponent, LandingPagesComponent, EventsComponent,
-    SiteSpeedComponent, ConversionsComponent, SeoComponent, EcommerceComponent, GoalsComponent, CampaignlistComponent],
+    TrafficSourcesComponent, CampaignsComponent,
+    SeoComponent, CampaignlistComponent],
   exports: [
     RouterModule
   ]

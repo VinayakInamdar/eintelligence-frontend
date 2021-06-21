@@ -29,10 +29,10 @@ export class AuditsComponent implements OnInit {
     });
 
   constructor(public http: HttpClient, public campaignService: CampaignService, private router: Router,
-    public auditsService: AuditsService,fb: FormBuilder,public toastr : ToastrService) { 
+    public auditsService: AuditsService,fb: FormBuilder,public toastr : ToastrService) {
 
       this.valForm = fb.group({
-        'webUrl': [undefined,[Validators.required,Validators.pattern(this.myreg)]],     
+        'webUrl': [undefined,[Validators.required,Validators.pattern(this.myreg)]],
     })
     }
 
@@ -93,7 +93,9 @@ export class AuditsComponent implements OnInit {
     return [year, month, day].join('-');
   }
 
-  // using to run audit of entered url 
+  onSearch(value) {}
+
+  // using to run audit of entered url
   public runAudit(event,value) {
     if (this.valForm.invalid) {
       this.valForm.get('webUrl').markAsTouched();
