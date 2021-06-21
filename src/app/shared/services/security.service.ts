@@ -33,13 +33,14 @@ export class SecurityService {
       var isSuperAdmin = this.isSuperAdmin();
 
       var isAdmin = this.isAdmin();
-
+      
       // Is Claim present
       var isClaimPresent: boolean = false;
-      
+
       // One of the conditions in matching. 
       if (Claim != undefined) {
         Claim.forEach(element => {
+          ;
           // if the claim value is set to all it means that everyone has access to this element and it
           // should always be displayed. 
           if (element == role || element == 'All') {

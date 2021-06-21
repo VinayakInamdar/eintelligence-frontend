@@ -30,6 +30,18 @@ const success = require('sweetalert');
   styleUrls: ['./home.component.scss']
 })
 export class HomeComponent implements OnInit {
+  //agency score variables
+  sdate: any; edate: any;
+  seImpressionScore: number;
+  organicTrafficScore: number;
+  seoConversionsScore:number;
+  totalProjectScore:number=0;
+  projectSeImpressionScore :number= 0; 
+  projectScore:number=0;
+  campaignsCount = 0; agencyScore=0;
+  projectOrganicTrafficScore:number=0;
+  projectSeoConversionsScore:number=0;
+
   hasGaSetup: boolean;
   campaignList = [];
   CampaignGAList = [];
@@ -310,6 +322,7 @@ export class HomeComponent implements OnInit {
         filter: false,
         type: 'html',
         valuePrepareFunction: (value) => {
+          ;
           this.tempStr = value;
 
           let st = this.tempStr.split("--");
@@ -471,9 +484,17 @@ export class HomeComponent implements OnInit {
     this.getCampaignGAds();
     this.getCampaignFacebook();
     this.getCampaignGSC();
+    ;
+    this.getDateDiff();
     this.getCampaignList();
     this.menuService.menuCreation(menu);
   }
+
+  redirectTo(uri: string) {
+    this.router.navigateByUrl('/', { skipLocationChange: true }).then(() =>
+      this.router.navigate([uri]));
+  }
+
   getInstaToken() {
 
   }
@@ -658,6 +679,7 @@ export class HomeComponent implements OnInit {
 
   //############################################### GSC data
   getDataCurrentYear(startDate, endDate, url, campaignIndex) {
+    ;
     this.httpOptionJSON = {
       headers: new HttpHeaders({
         'Accept': 'application/json',
@@ -674,6 +696,7 @@ export class HomeComponent implements OnInit {
     };
 
     this.http.post(url, data, this.httpOptionJSON).subscribe(res => {
+      ;
       if (res) {
         let rows = res['rows'];
         this.clicksThisYear = rows[0].clicks;
@@ -681,6 +704,8 @@ export class HomeComponent implements OnInit {
         this.cTRThisYear = parseFloat(rows[0].ctr).toFixed(2).toString();
         this.positionThisYear = parseFloat(rows[0].position).toFixed(2).toString();
         this.getDataPreviousYear(this.previousStartDate, this.previousEndDate, campaignIndex, url);
+
+
       }
     }, error => {
       this.IsError = true;
@@ -690,7 +715,7 @@ export class HomeComponent implements OnInit {
 
   }
   getDataPreviousYear(startDate, endDate, campaignIndex, url) {
-
+    ;
     this.httpOptionJSON = {
       headers: new HttpHeaders({
         'Accept': 'application/json',
@@ -709,6 +734,7 @@ export class HomeComponent implements OnInit {
       ]
     };
     this.http.post(url, data, this.httpOptionJSON).subscribe(res => {
+      ;
       if (res) {
         let rows = res['rows'];
 
@@ -724,6 +750,7 @@ export class HomeComponent implements OnInit {
         this.campaignList[campaignIndex].gsc = this.impressionsPreviousYear + "--" + this.impressionsThisYear;
         this.tableData = this.campaignList;
         this.source = new LocalDataSource(this.campaignList)
+        this.assignSeImpressionScore();
 
       }
     }, error => {
@@ -732,7 +759,98 @@ export class HomeComponent implements OnInit {
     });
   }
 
+  assignSeImpressionScore() {
+    ;
+    this.sdate = new Date(this.startDate);
+    this.edate = new Date(this.endDate);
+    var Difference_In_Time = this.edate.getTime() - this.sdate.getTime();
+
+    // for previous 30 days
+    var Difference_In_Days = Difference_In_Time / (1000 * 3600 * 24);
+    if (Difference_In_Days <= 30 && this.impressionsThisYear != this.impressionsPreviousYear) {
+      this.seImpressionScore = 1;
+    }
+    //for 3 months back
+    else if (Difference_In_Days >= 90 && Difference_In_Days <= 120 && this.impressionsThisYear != this.impressionsPreviousYear) {
+      this.seImpressionScore = 0.75;
+    }
+    //for 6 months back
+    else if (Difference_In_Days >= 180 && Difference_In_Days <= 210 && this.impressionsThisYear != this.impressionsPreviousYear) {
+      this.seImpressionScore = 0.5;
+    }
+    //for 12 months back
+    else if (Difference_In_Days >= 360 && Difference_In_Days <= 390 && this.impressionsThisYear != this.impressionsPreviousYear) {
+      this.seImpressionScore = 0.25;
+    }
+    else {
+      this.seImpressionScore = 0;
+    }
+    ;
+    this.projectSeImpressionScore += this.seImpressionScore;
+   
+  }
+  
+  calculatetotalProjectScore(){
+    ;
+    this.projectScore = this.projectSeImpressionScore + this.projectOrganicTrafficScore+
+      this.projectSeoConversionsScore;
+     
+        //this.totalProjectScore = this.totalProjectScore + this.projectScore[campaignIndex];
+      
+   this.agencyScore=(this.projectScore/this.campaignsCount)*100;
+  }
+  assignOrganicTrafficScore() {
+   ;
+    var Difference_In_Time = this.edate.getTime() - this.sdate.getTime();
+    var Difference_In_Days = Difference_In_Time / (1000 * 3600 * 24);
+    // for previous 30 days
+    if (Difference_In_Days <= 30 && this.thisMonthTraffic != this.lastMonthTraffic) {
+      this.organicTrafficScore = 1;
+    }
+    //for 3 months back
+    else if (Difference_In_Days >= 90 && Difference_In_Days <= 120 && this.thisMonthTraffic != this.lastMonthTraffic) {
+      this.organicTrafficScore = 0.75;
+    }
+    //for 6 months back
+    else if (Difference_In_Days >= 180 && Difference_In_Days <= 210 && this.thisMonthTraffic != this.lastMonthTraffic) {
+      this.organicTrafficScore = 0.5;
+    }
+    //for 12 months back
+    else if (Difference_In_Days >= 360 && Difference_In_Days <= 390 && this.thisMonthTraffic != this.lastMonthTraffic) {
+      this.organicTrafficScore = 0.25;
+    }
+    else{
+      this.organicTrafficScore=0;
+    }
+    this.projectOrganicTrafficScore+=this.organicTrafficScore;
+  }
+  assignSeoConversionsScore(){
+    ;
+    var Difference_In_Time = this.edate.getTime() - this.sdate.getTime();
+    var Difference_In_Days = Difference_In_Time / (1000 * 3600 * 24);
+    // for previous 30 days
+    if (Difference_In_Days <= 30 && this.thisMonthConversions != this.lastMonthConversions) {
+      this.seoConversionsScore = 1;
+    }
+    //for 3 months back
+    else if (Difference_In_Days >= 90 && Difference_In_Days <= 120 && this.thisMonthConversions != this.lastMonthConversions) {
+      this.seoConversionsScore = 0.75;
+    }
+    //for 6 months back
+    else if (Difference_In_Days >= 180 && Difference_In_Days <= 210 && this.thisMonthConversions != this.lastMonthConversions) {
+      this.seoConversionsScore = 0.5;
+    }
+    //for 12 months back
+    else if (Difference_In_Days >= 360 && Difference_In_Days <= 390 && this.thisMonthConversions != this.lastMonthConversions) {
+      this.seoConversionsScore = 0.25;
+    }
+    else{
+      this.seoConversionsScore=0;
+    }
+    this.projectSeoConversionsScore+=this.seoConversionsScore;
+  }
   getData(campaignIndex, gscurl) {
+    ;
     if (this.gaaccesstoken == '' || this.gaaccesstoken == undefined || this.gaaccesstoken == null) {
       console.log("Please, Login with Google to fetch data");
     } else if (parseDate(this.endDate) < parseDate(this.startDate)) {
@@ -747,7 +865,7 @@ export class HomeComponent implements OnInit {
     }
   }
   refreshGSCAccount(campaignIndex, refreshToken, gscurl) {
-
+    ;
     const url = "https://www.googleapis.com/oauth2/v4/token";
     let data = {};
     data = {
@@ -764,10 +882,10 @@ export class HomeComponent implements OnInit {
         this.getData(campaignIndex, gscurl);
       }
     }, error => {
-     // alert('eeee : ' + JSON.stringify(error.error));
-     if(error){
-      this.snackbarService.show(" " + gscurl + " : Please re-integrate!! The access token has expired. ");
-     }
+      // alert('eeee : ' + JSON.stringify(error.error));
+      if (error) {
+        this.snackbarService.show(" " + gscurl + " : Please re-integrate!! The access token has expired. ");
+      }
     });
   }
   //###############################################Facebook data
@@ -924,6 +1042,7 @@ export class HomeComponent implements OnInit {
   //###############################################Google Analytics
 
   refreshGoogleAnalyticsAccount(campaignIndex, refreshToken, gaUrl) {
+   
     ;
     const url = "https://www.googleapis.com/oauth2/v4/token";
     let data = {};
@@ -936,21 +1055,21 @@ export class HomeComponent implements OnInit {
     };
     this.http.post(url, data).subscribe(res => {
       if (res) {
-
+       
         this.gaaccesstoken = res['access_token'];
         this.getAnalyticsProfileIds(campaignIndex, gaUrl);
       }
     }, error => {
       ;
       //alert('eeee : ' + JSON.stringify(error.error));
-      if(error){
-      this.snackbarService.show(" "+ gaUrl +" : Please re-integrate!! The access token has expired. ");
+      if (error) {
+        this.snackbarService.show(" " + gaUrl + " : Please re-integrate!! The access token has expired. ");
       }
     });
 
   }
   getAnalyticsProfileIds(campaignIndex, url) {
-
+   
 
     let currDate = new Date();
     let endDate1 = this.datepipe.transform(currDate, 'yyyy-MM-dd');
@@ -988,7 +1107,7 @@ export class HomeComponent implements OnInit {
 
   }
   getAnalyticsOrganicTrafficThisMonth(profileid, campaignIndex) {
-
+   
     this.httpOptionJSON = {
       headers: new HttpHeaders({
         'Accept': 'application/json',
@@ -998,7 +1117,7 @@ export class HomeComponent implements OnInit {
     const url = "https://www.googleapis.com/analytics/v3/data/ga?ids=ga:" + profileid + "&start-date=" + this.startDate + "&end-date=" + this.endDate + "&metrics=ga%3AorganicSearches%2Cga%3AgoalConversionRateAll";
     this.http.get(url, this.httpOptionJSON).subscribe(res => {
       if (res) {
-
+        
         let rows = res['rows'];
         this.thisMonthTraffic = rows[0]["0"];
         this.thisMonthConversions = rows[0]["1"];
@@ -1009,7 +1128,7 @@ export class HomeComponent implements OnInit {
     });
   }
   getAnalyticsOrganicTrafficLastMonth(profileid, campaignIndex) {
-
+    ;
     this.httpOptionJSON = {
       headers: new HttpHeaders({
         'Accept': 'application/json',
@@ -1019,6 +1138,7 @@ export class HomeComponent implements OnInit {
     const url = "https://www.googleapis.com/analytics/v3/data/ga?ids=ga:" + profileid + "&start-date=" + this.previousStartDate + "&end-date=" + this.previousEndDate + "&metrics=ga%3AorganicSearches%2Cga%3AgoalConversionRateAll";
     this.http.get(url, this.httpOptionJSON).subscribe(res => {
       if (res) {
+        ;
         let rows = res['rows'];
         //Traffic Calculation
         this.lastMonthTraffic = rows[0]["0"];
@@ -1052,7 +1172,11 @@ export class HomeComponent implements OnInit {
 
         this.campaignList[campaignIndex].traffic = this.lastMonthTraffic + "--" + this.thisMonthTraffic;
         this.tableData = this.campaignList;
-        this.source = new LocalDataSource(this.campaignList)
+        this.source = new LocalDataSource(this.campaignList);
+        ;
+        this.assignOrganicTrafficScore();
+        this.assignSeoConversionsScore();
+        this.calculatetotalProjectScore();
       }
     }, error => {
 
@@ -1137,18 +1261,19 @@ export class HomeComponent implements OnInit {
     return ((100 * num) / total)
   }
   public getCampaignList(): void {
-
+    ;
     this.resetChartVariables();
     var userid = this.openIdConnectService.user.profile.sub;
     this.campaignService.getCampaign(userid).subscribe(res => {
       this.campaignList = res;
-
+this.campaignsCount=res.length;
       for (let i = 0; i < res.length; i++) {
         let ga = this.CampaignGAList.filter(x => x.campaignID == res[i].id);
         if (ga != null && ga != undefined && ga.length > 0) {
 
           this.refreshGoogleAnalyticsAccount(i, ga[0]['refreshToken'], ga[0]['urlOrName']);
         }
+        ;
         let gsc = this.CampaignGSCList.filter(x => x.campaignID == res[i].id);
         if (gsc != null && gsc != undefined && gsc.length > 0) {
           this.refreshGSCAccount(i, gsc[0]['refreshToken'], gsc[0]['urlOrName']);

@@ -5,6 +5,8 @@ import { ActivatedRoute, Router, ParamMap } from '@angular/router';
 import { TranslateService } from '@ngx-translate/core';
 import { SettingsService } from 'src/app/core/settings/settings.service';
 const success = require('sweetalert');
+import { MenuService } from '../../../core/menu/menu.service';
+import { menu } from '../../../routes/menu';
 @Component({
   selector: 'app-campaignlist',
   templateUrl: './campaignlist.component.html',
@@ -18,7 +20,8 @@ export class CampaignlistComponent implements OnInit {
   CampaignFacebookList = [];
   SelectedCampaignId;
 
-  constructor(private translate: TranslateService, public campaignService: CampaignService, public router: Router, public route: ActivatedRoute, public settingsservice: SettingsService) { }
+  constructor(private translate: TranslateService, public campaignService: CampaignService, public router: Router, public route: ActivatedRoute, public settingsservice: SettingsService
+    , public menuService:MenuService) { }
 
   ngOnInit() {
     this.getCampaignList();
@@ -26,6 +29,9 @@ export class CampaignlistComponent implements OnInit {
     this.getCampaignGAds();
     this.getCampaignFacebook();
     this.getCampaignGSC();
+    if (this.settingsservice.selectedCompanyInfo.role == "Client User") {
+    this.menuService.menuCreation(menu);
+    }
   }
   settings = {
     defaultStyle: false,
