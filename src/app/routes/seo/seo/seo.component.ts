@@ -43,6 +43,10 @@ export class SeoComponent implements OnInit {
   integrateGAAccount: boolean = false;
   //for keyword listing
   source: LocalDataSource;
+
+  tempKeyword: any;
+  tempList = [];
+  tempListId: any;
   //variable passed from campaign list
   tempDate = new Date();
   gaurl;
@@ -986,9 +990,12 @@ export class SeoComponent implements OnInit {
       'leadGeneration': [this.campaignModel.leadGeneration, Validators.required],
     })
   }
+
   GetRankingPosition(selectedCampId) {
+    ;
     this.tempSerpList = this.serpList;
     let p;
+
     //this slab
     p = this.tempSerpList.filter(x => x.campaignID.toString() === selectedCampId.toLowerCase());
     if (p.length > 0) {
@@ -997,6 +1004,16 @@ export class SeoComponent implements OnInit {
       if (p.length > 0) {
         let maxDate = p[0].createdOn;
         p = p.filter(x => this.datepipe.transform(x.createdOn, 'yyyy-MM-dd') == this.datepipe.transform(maxDate, 'yyyy-MM-dd'));
+
+        const removeById = (arr, id) => {
+          const requiredIndex = arr.findIndex(el => {
+            return el.id === String(id);
+          });
+          if (requiredIndex === -1) {
+            return false;
+          };
+          return !!arr.splice(requiredIndex, 1);
+        };
 
         if (p != null && p != undefined && p.length > 0) {
           this.keywordTableList = p;
@@ -1012,7 +1029,23 @@ export class SeoComponent implements OnInit {
             // this.keywordTableList.push("position",p[i].position);
             // this.keywordTableList.push("searches",p[i].searches);
             // this.keywordTableList.push("location",p[i].location);
+
+            this.tempKeyword = p[i].keywords;
+            this.tempList = this.keywordTableList.filter((a) => a.keywords == this.tempKeyword);
+            if (this.tempList.length > 1) {
+              while (this.tempList.length != 1) {
+                this.tempListId = this.tempList[this.tempList.length - 1].id;
+                this.tempList.pop();
+                removeById(this.keywordTableList, this.tempListId);
+              }
+            }
+            this.keywordTableList[i].prevposition = this.tempList[this.tempList.length - 1].position;
+
+
+            //this.latestPositionOfKeyword=this.keywordTableList[i].position;
           }
+
+
         }
       } else {
       }
@@ -1122,7 +1155,7 @@ export class SeoComponent implements OnInit {
     // this.lineChartData1=[];
     // this.lineChartLabels1 = [];
     this.loadSeoPageData();
-   
+
   }
 
   loadSeoPageData() {
@@ -2110,6 +2143,7 @@ export class SeoComponent implements OnInit {
   //   });
   // }
   public getSerpList(): void {
+    ;
     const filterOptionModel = this.getFilterOptionPlans();
     let id = this.route.snapshot.paramMap.get('id');
     this.selectedCampId = `${id.substring(3)}`;
@@ -2687,6 +2721,7 @@ export class SeoComponent implements OnInit {
   }
 
   onStartDateChange(event) {
+    ;
     this.getDateDiff();
     this.getData();
     this.getAnalyticsProfileIds();

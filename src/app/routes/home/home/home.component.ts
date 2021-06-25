@@ -34,13 +34,22 @@ export class HomeComponent implements OnInit {
   sdate: any; edate: any;
   seImpressionScore: number;
   organicTrafficScore: number;
-  seoConversionsScore:number;
-  totalProjectScore:number=0;
-  projectSeImpressionScore :number= 0; 
-  projectScore:number=0;
-  campaignsCount = 0; agencyScore=0;
-  projectOrganicTrafficScore:number=0;
-  projectSeoConversionsScore:number=0;
+  seoConversionsScore: number;
+  totalProjectScore: number = 0;
+  projectSeImpressionScore: number = 0;
+  projectScore: number = 0;
+  campaignsCount = 0; agencyScore = 0;
+  projectOrganicTrafficScore: number = 0;
+  projectSeoConversionsScore: number = 0;
+  keywordTableList = [];
+  projectSeRankingScore: number = 0;
+  tempKeyword: any;
+  seRankingScore: number = 0; arrayOfKeywordsPosition = [];
+  tempList = []; filteredKeywordNameList = [];
+  latestPositionOfKeywordBefore28Days: any;
+  tempListId: any; campaignsList = [];
+  latestPositionOfKeyword: any;
+  filteredKeywordList = [];
 
   hasGaSetup: boolean;
   campaignList = [];
@@ -352,44 +361,44 @@ export class HomeComponent implements OnInit {
 
 
       },
-      socialMedia: {
-        title: 'SM Engagement',
-        filter: false,
-        type: 'html',
-        valuePrepareFunction: (value) => {
-          this.tempStr = value;
+      // socialMedia: {
+      //   title: 'SM Engagement',
+      //   filter: false,
+      //   type: 'html',
+      //   valuePrepareFunction: (value) => {
+      //     this.tempStr = value;
 
-          let st = this.tempStr.split("--");
-          if (this.tempStr != '' && this.tempStr != undefined && this.tempStr != null) {
-            if (this.tempStr.toString().includes("--")) {
-              let diff = parseInt(st[0]) - parseInt(st[1])
-              diff = parseInt(diff.toString().replace('-', ''));
-              if (parseInt(st[0]) > parseInt(st[1])) {
-                this.tempRes = st[0] + ` <span class="text-danger"><i class='fas fa-arrow-alt-circle-down'></i></span>` + diff
-              }
-              if (parseInt(st[0]) < parseInt(st[1])) {
-                this.tempRes = st[0] + ` <span class="text-success"> <i class='fas fa-arrow-alt-circle-up' ></i></span> ` + diff
-              }
-              if (parseInt(st[0]) == parseInt(st[1])) {
-                this.tempRes = st[0] + " - " + diff;
-              }
-            }
-          } else {
-            this.tempRes = st[0] + " - " + st[1];
-          }
-          if (this.tempRes.includes('undefined')) {
-            this.tempRes = '';
-          }
-          return this.tempRes;
-        }
+      //     let st = this.tempStr.split("--");
+      //     if (this.tempStr != '' && this.tempStr != undefined && this.tempStr != null) {
+      //       if (this.tempStr.toString().includes("--")) {
+      //         let diff = parseInt(st[0]) - parseInt(st[1])
+      //         diff = parseInt(diff.toString().replace('-', ''));
+      //         if (parseInt(st[0]) > parseInt(st[1])) {
+      //           this.tempRes = st[0] + ` <span class="text-danger"><i class='fas fa-arrow-alt-circle-down'></i></span>` + diff
+      //         }
+      //         if (parseInt(st[0]) < parseInt(st[1])) {
+      //           this.tempRes = st[0] + ` <span class="text-success"> <i class='fas fa-arrow-alt-circle-up' ></i></span> ` + diff
+      //         }
+      //         if (parseInt(st[0]) == parseInt(st[1])) {
+      //           this.tempRes = st[0] + " - " + diff;
+      //         }
+      //       }
+      //     } else {
+      //       this.tempRes = st[0] + " - " + st[1];
+      //     }
+      //     if (this.tempRes.includes('undefined')) {
+      //       this.tempRes = '';
+      //     }
+      //     return this.tempRes;
+      //   }
 
 
 
-      },
-      googleLeads: {
-        title: 'Google Ads Conversions',
-        filter: false
-      },
+      // },
+      // googleLeads: {
+      //   title: 'Google Ads Conversions',
+      //   filter: false
+      // },
     }
   };
   source: LocalDataSource;
@@ -479,6 +488,7 @@ export class HomeComponent implements OnInit {
 
   ngOnInit() {
     this.resetChartVariables();
+    ;
     this.getSerpList();
     this.getCampaignGA();
     this.getCampaignGAds();
@@ -487,6 +497,7 @@ export class HomeComponent implements OnInit {
     ;
     this.getDateDiff();
     this.getCampaignList();
+    
     this.menuService.menuCreation(menu);
   }
 
@@ -768,86 +779,87 @@ export class HomeComponent implements OnInit {
     // for previous 30 days
     var Difference_In_Days = Difference_In_Time / (1000 * 3600 * 24);
     if (Difference_In_Days <= 30 && this.impressionsThisYear != this.impressionsPreviousYear) {
-      this.seImpressionScore = 1;
+      this.seImpressionScore = 1 * 0.1;
     }
     //for 3 months back
     else if (Difference_In_Days >= 90 && Difference_In_Days <= 120 && this.impressionsThisYear != this.impressionsPreviousYear) {
-      this.seImpressionScore = 0.75;
+      this.seImpressionScore = 0.75 * 0.1;
     }
     //for 6 months back
     else if (Difference_In_Days >= 180 && Difference_In_Days <= 210 && this.impressionsThisYear != this.impressionsPreviousYear) {
-      this.seImpressionScore = 0.5;
+      this.seImpressionScore = 0.5 * 0.1;
     }
     //for 12 months back
     else if (Difference_In_Days >= 360 && Difference_In_Days <= 390 && this.impressionsThisYear != this.impressionsPreviousYear) {
-      this.seImpressionScore = 0.25;
+      this.seImpressionScore = 0.25 * 0.1;
     }
     else {
-      this.seImpressionScore = 0;
+      this.seImpressionScore = 0 * 0.1;
     }
     ;
     this.projectSeImpressionScore += this.seImpressionScore;
-   
+
   }
-  
-  calculatetotalProjectScore(){
+
+  calculatetotalProjectScore() {
     ;
-    this.projectScore = this.projectSeImpressionScore + this.projectOrganicTrafficScore+
-      this.projectSeoConversionsScore;
-     
-        //this.totalProjectScore = this.totalProjectScore + this.projectScore[campaignIndex];
-      
-   this.agencyScore=(this.projectScore/this.campaignsCount)*100;
+    this.projectScore = this.projectSeImpressionScore + this.projectOrganicTrafficScore +
+      this.projectSeoConversionsScore + this.projectSeRankingScore;
+
+    //this.totalProjectScore = this.totalProjectScore + this.projectScore[campaignIndex];
+
+    this.agencyScore = Math.round((this.projectScore / this.campaignsCount) * 100);
+
   }
   assignOrganicTrafficScore() {
-   ;
+    ;
     var Difference_In_Time = this.edate.getTime() - this.sdate.getTime();
     var Difference_In_Days = Difference_In_Time / (1000 * 3600 * 24);
     // for previous 30 days
     if (Difference_In_Days <= 30 && this.thisMonthTraffic != this.lastMonthTraffic) {
-      this.organicTrafficScore = 1;
+      this.organicTrafficScore = 1 * 0.2;
     }
     //for 3 months back
     else if (Difference_In_Days >= 90 && Difference_In_Days <= 120 && this.thisMonthTraffic != this.lastMonthTraffic) {
-      this.organicTrafficScore = 0.75;
+      this.organicTrafficScore = 0.75 * 0.2;
     }
     //for 6 months back
     else if (Difference_In_Days >= 180 && Difference_In_Days <= 210 && this.thisMonthTraffic != this.lastMonthTraffic) {
-      this.organicTrafficScore = 0.5;
+      this.organicTrafficScore = 0.5 * 0.2;
     }
     //for 12 months back
     else if (Difference_In_Days >= 360 && Difference_In_Days <= 390 && this.thisMonthTraffic != this.lastMonthTraffic) {
-      this.organicTrafficScore = 0.25;
+      this.organicTrafficScore = 0.25 * 0.2;
     }
-    else{
-      this.organicTrafficScore=0;
+    else {
+      this.organicTrafficScore = 0 * 0.2;
     }
-    this.projectOrganicTrafficScore+=this.organicTrafficScore;
+    this.projectOrganicTrafficScore += this.organicTrafficScore;
   }
-  assignSeoConversionsScore(){
+  assignSeoConversionsScore() {
     ;
     var Difference_In_Time = this.edate.getTime() - this.sdate.getTime();
     var Difference_In_Days = Difference_In_Time / (1000 * 3600 * 24);
     // for previous 30 days
     if (Difference_In_Days <= 30 && this.thisMonthConversions != this.lastMonthConversions) {
-      this.seoConversionsScore = 1;
+      this.seoConversionsScore = 1 * 0.2;
     }
     //for 3 months back
     else if (Difference_In_Days >= 90 && Difference_In_Days <= 120 && this.thisMonthConversions != this.lastMonthConversions) {
-      this.seoConversionsScore = 0.75;
+      this.seoConversionsScore = 0.75 * 0.2;
     }
     //for 6 months back
     else if (Difference_In_Days >= 180 && Difference_In_Days <= 210 && this.thisMonthConversions != this.lastMonthConversions) {
-      this.seoConversionsScore = 0.5;
+      this.seoConversionsScore = 0.5 * 0.2;
     }
     //for 12 months back
     else if (Difference_In_Days >= 360 && Difference_In_Days <= 390 && this.thisMonthConversions != this.lastMonthConversions) {
-      this.seoConversionsScore = 0.25;
+      this.seoConversionsScore = 0.25 * 0.2;
     }
-    else{
-      this.seoConversionsScore=0;
+    else {
+      this.seoConversionsScore = 0 * 0.2;
     }
-    this.projectSeoConversionsScore+=this.seoConversionsScore;
+    this.projectSeoConversionsScore += this.seoConversionsScore;
   }
   getData(campaignIndex, gscurl) {
     ;
@@ -1042,7 +1054,7 @@ export class HomeComponent implements OnInit {
   //###############################################Google Analytics
 
   refreshGoogleAnalyticsAccount(campaignIndex, refreshToken, gaUrl) {
-   
+
     ;
     const url = "https://www.googleapis.com/oauth2/v4/token";
     let data = {};
@@ -1055,7 +1067,7 @@ export class HomeComponent implements OnInit {
     };
     this.http.post(url, data).subscribe(res => {
       if (res) {
-       
+
         this.gaaccesstoken = res['access_token'];
         this.getAnalyticsProfileIds(campaignIndex, gaUrl);
       }
@@ -1069,7 +1081,7 @@ export class HomeComponent implements OnInit {
 
   }
   getAnalyticsProfileIds(campaignIndex, url) {
-   
+
 
     let currDate = new Date();
     let endDate1 = this.datepipe.transform(currDate, 'yyyy-MM-dd');
@@ -1107,7 +1119,7 @@ export class HomeComponent implements OnInit {
 
   }
   getAnalyticsOrganicTrafficThisMonth(profileid, campaignIndex) {
-   
+
     this.httpOptionJSON = {
       headers: new HttpHeaders({
         'Accept': 'application/json',
@@ -1117,7 +1129,7 @@ export class HomeComponent implements OnInit {
     const url = "https://www.googleapis.com/analytics/v3/data/ga?ids=ga:" + profileid + "&start-date=" + this.startDate + "&end-date=" + this.endDate + "&metrics=ga%3AorganicSearches%2Cga%3AgoalConversionRateAll";
     this.http.get(url, this.httpOptionJSON).subscribe(res => {
       if (res) {
-        
+
         let rows = res['rows'];
         this.thisMonthTraffic = rows[0]["0"];
         this.thisMonthConversions = rows[0]["1"];
@@ -1266,7 +1278,9 @@ export class HomeComponent implements OnInit {
     var userid = this.openIdConnectService.user.profile.sub;
     this.campaignService.getCampaign(userid).subscribe(res => {
       this.campaignList = res;
-this.campaignsCount=res.length;
+      this.campaignsCount = res.length;
+
+
       for (let i = 0; i < res.length; i++) {
         let ga = this.CampaignGAList.filter(x => x.campaignID == res[i].id);
         if (ga != null && ga != undefined && ga.length > 0) {
@@ -1320,14 +1334,139 @@ this.campaignsCount=res.length;
     return parseFloat(diff.toString()).toFixed(2)
 
   }
+ 
   //Ranking Data
   public getSerpList(): void {
-    this.campaignService.getSerp("&tbs=qdr:m").subscribe(res => {
-      this.serpList = res;
-      this.tempSerpList = this.serpList;
+    ;
+    const filterOptionModel = this.getFilterOptionPlans();
+    this.campaignService.getCampaign(this.openIdConnectService.user.profile.sub).subscribe(res => {
+      this.campaignsList = res;
+      for (let n = 0; n < this.campaignsList.length; n++) {
+        filterOptionModel.searchQuery = 'CampaignID=="' + this.campaignsList[n].id + '"'
+        this.campaignService.getSerpForKeyword(filterOptionModel, "&tbs=qdr:m").subscribe(res => {
+
+          this.serpList = res;
+          this.tempSerpList = this.serpList;
+          this.getNewRankingPosition(this.campaignsList[n].id);
+        });
+      }
     });
+    // this.campaignService.getSerp("&tbs=qdr:m").subscribe(res => {
+
+    //   this.serpList = res;
+    //   this.tempSerpList = this.serpList;
+    //   ;
+    //   this.getNewRankingPosition();
+
+    // });
+
   }
 
+
+
+  getNewRankingPosition(Id) {
+    let p;
+    //
+    p = this.tempSerpList.filter(x => x.campaignID.toString() === Id.toLowerCase());
+    //
+    if (p.length > 0) {
+      p = p.filter(x => (new Date(x.createdOn) <= new Date(this.toDate.value) && new Date(x.createdOn) >= new Date(this.fromDate.value)));
+      ;
+      p = this.sortData(p);
+      const removeById = (arr, id) => {
+        const requiredIndex = arr.findIndex(el => {
+          return el.id === String(id);
+        });
+        if (requiredIndex === -1) {
+          return false;
+        };
+        return !!arr.splice(requiredIndex, 1);
+      };
+      if (p.length > 0) {
+        let maxDate = p[0].createdOn;
+        p = p.filter(x => this.datepipe.transform(x.createdOn, 'yyyy-MM-dd') == this.datepipe.transform(maxDate, 'yyyy-MM-dd'));
+
+        if (p != null && p != undefined && p.length > 0) {
+          this.keywordTableList = p;
+
+          for (let i = 0; i < p.length; i++) {
+            this.tempKeyword = p[i].keywords;
+            this.tempList = this.keywordTableList.filter((a) => a.keywords == this.tempKeyword);
+            if (this.tempList.length > 1) {
+              while (this.tempList.length != 1) {
+                this.tempListId = this.tempList[this.tempList.length - 1].id;
+                this.tempList.pop();
+                removeById(this.keywordTableList, this.tempListId);
+              }
+            }
+            this.keywordTableList[i].prevposition = this.tempList[this.tempList.length - 1].position;
+
+            ;
+            this.latestPositionOfKeyword = this.keywordTableList[i].position;
+            this.arrayOfKeywordsPosition.push(this.latestPositionOfKeyword);
+            let dt = new Date(this.keywordTableList[i].createdOn);
+
+            dt.setDate(dt.getDate() - 28);
+            // alert(this.datepipe.transform(this.keywordTableList[i].createdOn, 'yyyy-MM-dd'));
+            //alert(this.datepipe.transform(dt, 'yyyy-MM-dd'));
+            this.filteredKeywordList = this.serpList.filter((b) => (this.datepipe.transform(b.createdOn, 'yyyy-MM-dd')) == this.datepipe.transform(dt, 'yyyy-MM-dd'));
+            this.filteredKeywordNameList = this.filteredKeywordList.filter((c) => c.keywords == this.tempKeyword);
+            if (this.filteredKeywordNameList.length > 0) {
+              this.latestPositionOfKeywordBefore28Days = this.filteredKeywordNameList[0].position;
+            }
+            if (this.latestPositionOfKeyword >= this.latestPositionOfKeywordBefore28Days || this.filteredKeywordNameList.length == 0) {
+              this.seRankingScore = 1 * 0.2;
+            }
+          }
+          if (this.seRankingScore != 0.2) {
+            let countOfKeywordsList = this.keywordTableList.length;
+            let keywordsinNumber = Math.round(countOfKeywordsList * 0.75);
+            let count = 0;
+            for (let m = 0; m < keywordsinNumber; m++) {
+              if (this.arrayOfKeywordsPosition[m] == 30 || this.arrayOfKeywordsPosition[m] > 30) {
+                count = count + 1;
+              }
+
+            }
+            if (count == keywordsinNumber) {
+              this.seRankingScore = 0.75 * 0.2;
+            }
+            else {
+              keywordsinNumber = 0; count = 0;
+              keywordsinNumber = Math.round(countOfKeywordsList * 0.5);
+              for (let m = 0; m < keywordsinNumber; m++) {
+                if (this.arrayOfKeywordsPosition[m] == 30 || this.arrayOfKeywordsPosition[m] > 30) {
+                  count = count + 1;
+                }
+
+              }
+              if (count == keywordsinNumber) {
+                this.seRankingScore = 0.5 * 0.2;
+              }
+              else {
+                keywordsinNumber = 0; count = 0;
+                keywordsinNumber = Math.round(countOfKeywordsList * 0.25);
+                for (let m = 0; m < keywordsinNumber; m++) {
+                  if (this.arrayOfKeywordsPosition[m] == 30 || this.arrayOfKeywordsPosition[m] > 30) {
+                    count = count + 1;
+                  }
+
+                }
+                if (count == keywordsinNumber) {
+                  this.seRankingScore = 0.25 * 0.2;
+                }
+                else {
+                  this.seRankingScore = 0 * 0.2;
+                }
+              }
+            }
+          }
+
+        }
+        this.projectSeRankingScore += this.seRankingScore;
+      }
+    }
+  }
   private getFilterOptionPlans() {
     return {
       pageNumber: 1,
