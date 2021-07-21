@@ -115,7 +115,7 @@ export class ProductsComponent implements OnInit {
     private fb: FormBuilder,
     private stripeService: StripeService,
     private snackbarService: SnackbarService,
-    private settingService:SettingsService
+    private settingService: SettingsService
     //private snackbarService: SnackbarService
   ) { }
 
@@ -283,6 +283,7 @@ export class ProductsComponent implements OnInit {
   }
 
   createProductOnStripe() {
+
     this.productService.createProductOnStripe(this.planName.value, this.planSubTitle.value).subscribe((response: any) => {
       if (response) {
 
@@ -307,7 +308,7 @@ export class ProductsComponent implements OnInit {
   createStripePrice() {
     let data;
     data = {
-      UnitAmount: this.price.value,
+      UnitAmount: this.price.value * 100,
       Currency: this.currency.value,
       Interval: this.paymentCycle.value,
       ProductId: this.stripeProductId,//"prod_IdaudQUPYxm2BV",

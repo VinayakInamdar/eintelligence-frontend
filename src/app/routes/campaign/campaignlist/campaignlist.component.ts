@@ -41,10 +41,11 @@ export class CampaignlistComponent implements OnInit {
     },
 
     actions: {
-      columnTitle: '',
-      custom: [{ name: 'editCampaign', title: '<i class="fas fa-edit"></i>' },
+      columnTitle: '', 
+      custom: [{ name: 'editCampaign', title: '<span class="col-md-6"></span><i class="fas fa-edit"></i>' },
       { name: 'deleteCampaign', title: '<span class="text-danger col" style="padding-left:1rem"><i class="fas fa-trash-alt"></i></span>' },
-      { name: 'onCampaignSelect', title: '<i class="fas fa-user"></i>' }
+      { name: 'onCampaignSelect', title: '<i class="fas fa-user"></i>' },
+        { name: 'showCampaignFulfillment', title:'<span class="col"><i class="fas fa-store"></i></span>'}
         // { name: 'viewReports', title: '<i class="fas fa-chart-bar"></i>' }  
       ],
       add: false, edit: false, delete: false, position: 'right'
@@ -66,26 +67,31 @@ export class CampaignlistComponent implements OnInit {
           return `<a href=` + c + `  target="_blank" rel="noopener noreferrer">` + a + `</a>`;
         }
       },
-      ranking: {
-        title: 'RANKING',
-        filter: false
-      },
-      traffic: {
-        title: 'TRAFFIC',
-        filter: false
-      },
-      gsc: {
-        title: 'GSC',
-        filter: false
-      },
-      socialMedia: {
-        title: 'SOCIAL MEDIA',
-        filter: false
-      },
-      googleLeads: {
-        title: 'GOOGLE ADS',
-        filter: false
-      }
+      // ranking: {
+      //   title: 'RANKING',
+      //   filter: false,
+      //   hide:true
+      // },
+      // traffic: {
+      //   title: 'TRAFFIC',
+      //   filter: false,
+      //   hide: true
+      // },
+      // gsc: {
+      //   title: 'GSC',
+      //   filter: false,
+      //   hide: true
+      // },
+      // socialMedia: {
+      //   title: 'SOCIAL MEDIA',
+      //   filter: false,
+      //   hide: true
+      // },
+      // googleLeads: {
+      //   title: 'GOOGLE ADS',
+      //   filter: false,
+      //   hide: true
+      // }
 
 
     }
@@ -270,6 +276,9 @@ export class CampaignlistComponent implements OnInit {
         break;
       case 'onCampaignSelect':
         this.onCampaignSelect(event.data);
+        break;
+      case 'showCampaignFulfillment':
+        this.goToCampaignFulfillment(event.data);
     }
   }
   onCampaignSelect(campaign: any) {
@@ -277,6 +286,10 @@ export class CampaignlistComponent implements OnInit {
     this.router.navigate(['/campaignuser-list']);
   }
 
+  goToCampaignFulfillment(campaign: any){
+    this.settingsservice.selectedCampaignId = campaign.id;
+    this.router.navigate(['/campaignfulfillment-list']);
+  }
   editCampaign(campaign: any) {
     localStorage.setItem('gaurl', '');
     localStorage.setItem('gaaccesstoken', '');

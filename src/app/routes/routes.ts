@@ -232,6 +232,11 @@ export const routes: Routes = [
                 component: LayoutComponent,
                 loadChildren: () => import('./campaign-user/campaign-user.module').then(m => m.CampaignUserModule)
             },
+            {
+                path: 'campaignfulfillment-list',
+                component: LayoutComponent,
+                loadChildren: () => import('./campaign-fulfillment/campaign-fulfillment.module').then(m => m.CampaignFulfillmentModule)
+            },
         ]
     },
     

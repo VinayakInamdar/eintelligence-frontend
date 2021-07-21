@@ -232,7 +232,8 @@ export class HomeComponent implements OnInit {
       columnTitle: '',
       custom: [{ name: 'editCampaign', title: '<span><i class="fas fa-edit"></i>&nbsp;&nbsp;&nbsp;</span>' },
       { name: 'deleteCampaign', title: '<i class="fas fa-trash-alt text-danger"></i>' },
-      { name: 'onCampaignSelect', title: '<span>&nbsp;&nbsp;&nbsp;<i class="fas fa-user"></i></span>' }
+      { name: 'onCampaignSelect', title: '<span>&nbsp;&nbsp;&nbsp;<i class="fas fa-user"></i></span>' },
+      { name: 'showCampaignFulfillment', title: '<span class="col"><i class="fas fa-store"></i></span>' }
       ],
       add: false, edit: false, delete: false, position: 'right'
     },
@@ -267,30 +268,34 @@ export class HomeComponent implements OnInit {
         filter: false,
         type: 'html',
         valuePrepareFunction: (value) => {
-          this.tempStr = value;
+          let rank=value;
+         if(rank=='NaN'){
+           rank=0;
+         }
+          //this.tempRes = value;
 
-          let st = this.tempStr.split("--");
-          if (this.tempStr != '' && this.tempStr != undefined && this.tempStr != null) {
-            if (this.tempStr.toString().includes("--")) {
-              let diff = parseInt(st[0]) - parseInt(st[1])
-              diff = parseInt(diff.toString().replace('-', ''));
-              if (parseInt(st[0]) == 0) {
-                this.tempRes = st[0] + ` <span class="text-success"><i class='fas fa-arrow-alt-circle-up'></i></span> ` + diff
-              } else if (parseInt(st[0]) > parseInt(st[1])) {
-                this.tempRes = st[0] + ` <span class="text-success"><i class='fas fa-arrow-alt-circle-up'></i></span> ` + diff
-              } else if (parseInt(st[0]) < parseInt(st[1])) {
-                this.tempRes = st[0] + ` <span class="text-danger"><i class='fas fa-arrow-alt-circle-down'></i></span> ` + diff
-              } else if (parseInt(st[0]) == parseInt(st[1])) {
-                this.tempRes = st[0] + " - " + diff;
-              }
-            }
-          } else {
-            this.tempRes = st[0] + " - " + st[1];
-          }
-          if (this.tempRes.includes('undefined')) {
-            this.tempRes = '';
-          }
-          return this.tempRes;
+          // let st = this.tempStr.split("--");
+          // if (this.tempStr != '' && this.tempStr != undefined && this.tempStr != null) {
+          //   if (this.tempStr.toString().includes("--")) {
+          //     let diff = parseInt(st[0]) - parseInt(st[1])
+          //     diff = parseInt(diff.toString().replace('-', ''));
+          //     if (parseInt(st[0]) == 0) {
+          //       this.tempRes = st[0] + ` <span class="text-success"><i class='fas fa-arrow-alt-circle-up'></i></span> ` + diff
+          //     } else if (parseInt(st[0]) > parseInt(st[1])) {
+          //       this.tempRes = st[0] + ` <span class="text-success"><i class='fas fa-arrow-alt-circle-up'></i></span> ` + diff
+          //     } else if (parseInt(st[0]) < parseInt(st[1])) {
+          //       this.tempRes = st[0] + ` <span class="text-danger"><i class='fas fa-arrow-alt-circle-down'></i></span> ` + diff
+          //     } else if (parseInt(st[0]) == parseInt(st[1])) {
+          //       this.tempRes = st[0] + " - " + diff;
+          //     }
+          //   }
+          // } else {
+          //   this.tempRes = st[0] + " - " + st[1];
+          // }
+          // if (this.tempRes.includes('undefined')) {
+          //   this.tempRes = '';
+          // }
+          return rank;
         }
 
       },
@@ -299,6 +304,7 @@ export class HomeComponent implements OnInit {
         filter: false,
         type: 'html',
         valuePrepareFunction: (value) => {
+
           this.tempStr = value;
 
           let st = this.tempStr.split("--");
@@ -307,13 +313,13 @@ export class HomeComponent implements OnInit {
               let diff = parseInt(st[0]) - parseInt(st[1])
               diff = parseInt(diff.toString().replace('-', ''));
               if (parseInt(st[0]) > parseInt(st[1])) {
-                this.tempRes = st[0] + ` <span class="text-danger"><i class='fas fa-arrow-alt-circle-down'></i></span> ` + diff
+                this.tempRes = st[1] + ` <span class="text-danger"><i class='fas fa-arrow-alt-circle-down'></i></span> ` + diff
               }
               if (parseInt(st[0]) < parseInt(st[1])) {
-                this.tempRes = st[0] + ` <span class="text-success"><i class='fas fa-arrow-alt-circle-up'></i></span> ` + diff
+                this.tempRes = st[1] + ` <span class="text-success"><i class='fas fa-arrow-alt-circle-up'></i></span> ` + diff
               }
               if (parseInt(st[0]) == parseInt(st[1])) {
-                this.tempRes = st[0] + " - " + diff;
+                this.tempRes = st[1] + " - " + diff;
               }
             }
           } else {
@@ -321,6 +327,9 @@ export class HomeComponent implements OnInit {
           }
           if (this.tempRes.includes('undefined')) {
             this.tempRes = '';
+          }
+          if (value == "") {
+            this.tempRes = 'NA';
           }
           return this.tempRes;
         }
@@ -340,13 +349,13 @@ export class HomeComponent implements OnInit {
               let diff = parseInt(st[0]) - parseInt(st[1])
               diff = parseInt(diff.toString().replace('-', ''));
               if (parseInt(st[0]) > parseInt(st[1])) {
-                this.tempRes = st[0] + ` <span class="text-danger"><i class='fas fa-arrow-alt-circle-down' ></i></span> ` + diff
+                this.tempRes = st[1] + ` <span class="text-danger"><i class='fas fa-arrow-alt-circle-down' ></i></span> ` + diff
               }
               if (parseInt(st[0]) < parseInt(st[1])) {
-                this.tempRes = st[0] + `<span class="text-success"> <i class='fas fa-arrow-alt-circle-up' ></i></span> ` + diff
+                this.tempRes = st[1] + `<span class="text-success"> <i class='fas fa-arrow-alt-circle-up' ></i></span> ` + diff
               }
               if (parseInt(st[0]) == parseInt(st[1])) {
-                this.tempRes = st[0] + " - " + diff;
+                this.tempRes = st[1] + " - " + diff;
               }
             }
           } else {
@@ -354,6 +363,9 @@ export class HomeComponent implements OnInit {
           }
           if (this.tempRes.includes('undefined')) {
             this.tempRes = '';
+          }
+          if (value == "") {
+            this.tempRes = 'NA';
           }
           return this.tempRes;
         }
@@ -494,10 +506,11 @@ export class HomeComponent implements OnInit {
     this.getCampaignGAds();
     this.getCampaignFacebook();
     this.getCampaignGSC();
-    ;
+
     this.getDateDiff();
+
     this.getCampaignList();
-    
+
     this.menuService.menuCreation(menu);
   }
 
@@ -640,7 +653,7 @@ export class HomeComponent implements OnInit {
 
   // using to view analytics report of selected campaign Id
   userRowSelect(campaign: any): void {
-    ;
+
     localStorage.setItem('gaurl', '');
     localStorage.setItem('gaaccesstoken', '');
     localStorage.setItem('gadsaccesstoken', '');
@@ -653,6 +666,7 @@ export class HomeComponent implements OnInit {
     this.SelectedCampaignId = campaign.data.id;
     let ga = this.CampaignGAList.filter(x => x.campaignID == this.SelectedCampaignId);
     if (ga != null && ga != undefined && ga.length > 0) {
+
       localStorage.setItem('gaurl', ga[0]['urlOrName']);
       localStorage.setItem('gaaccesstoken', ga[0]['accessToken']);
       localStorage.setItem('garefreshtoken', ga[0]['refreshToken']);
@@ -892,12 +906,30 @@ export class HomeComponent implements OnInit {
 
         this.gscaccesstoken = res['access_token'];
         this.getData(campaignIndex, gscurl);
+
+        this.modifyGscToken(gscurl, refreshToken);
+
       }
     }, error => {
       // alert('eeee : ' + JSON.stringify(error.error));
       if (error) {
         this.snackbarService.show(" " + gscurl + " : Please re-integrate!! The access token has expired. ");
       }
+    });
+  }
+
+  modifyGscToken(gscurl, refreshToken) {
+    let data = {
+      id: this.gscid,
+      urlOrName: gscurl,
+      isActive: true,
+      CampaignID: this.masterCampaignId,
+      accessToken: this.gscaccesstoken,
+      refreshToken: refreshToken
+    }
+    this.campaignService.updateGSC(this.gscid, data).subscribe(response => {
+
+      this.getCampaignGSC();
     });
   }
   //###############################################Facebook data
@@ -1070,6 +1102,9 @@ export class HomeComponent implements OnInit {
 
         this.gaaccesstoken = res['access_token'];
         this.getAnalyticsProfileIds(campaignIndex, gaUrl);
+
+        this.modifyGaToken(gaUrl, refreshToken);
+
       }
     }, error => {
       ;
@@ -1079,6 +1114,22 @@ export class HomeComponent implements OnInit {
       }
     });
 
+  }
+
+  modifyGaToken(gaUrl, refreshToken) {
+    let data = {
+      id: this.gaid,
+      urlOrName: gaUrl,
+      isActive: true,
+      CampaignID: this.gamasterCampaignId,
+      accessToken: this.gaaccesstoken,
+      refreshToken: refreshToken
+    }
+    this.campaignService.updateGA(this.gaid, data).subscribe(response => {
+
+      ;
+      this.getCampaignGA();
+    });
   }
   getAnalyticsProfileIds(campaignIndex, url) {
 
@@ -1272,6 +1323,7 @@ export class HomeComponent implements OnInit {
   getPercentage(num, total) {
     return ((100 * num) / total)
   }
+  gaid; masterCampaignId; gscid; gamasterCampaignId;
   public getCampaignList(): void {
     ;
     this.resetChartVariables();
@@ -1284,12 +1336,15 @@ export class HomeComponent implements OnInit {
       for (let i = 0; i < res.length; i++) {
         let ga = this.CampaignGAList.filter(x => x.campaignID == res[i].id);
         if (ga != null && ga != undefined && ga.length > 0) {
-
+          this.gaid = ga[0]['id'];
+          this.gamasterCampaignId = ga[0]['campaignID'];
           this.refreshGoogleAnalyticsAccount(i, ga[0]['refreshToken'], ga[0]['urlOrName']);
         }
         ;
         let gsc = this.CampaignGSCList.filter(x => x.campaignID == res[i].id);
         if (gsc != null && gsc != undefined && gsc.length > 0) {
+          this.gscid = gsc[0]['id'];
+          this.masterCampaignId = gsc[0]['campaignID'];
           this.refreshGSCAccount(i, gsc[0]['refreshToken'], gsc[0]['urlOrName']);
         }
         let facebook = this.CampaignFacebookList.filter(x => x.campaignID == res[i].id);
@@ -1304,6 +1359,22 @@ export class HomeComponent implements OnInit {
     return p.sort((a, b) => {
       return <any>new Date(b.createdOn) - <any>new Date(a.createdOn);
     });
+  }
+  averagePosition:any;
+  showSeAveragePosition(campaignIndex,serpList){
+
+    debugger
+    this.averagePosition=0;
+    for(let i=0;i<serpList.length;i++){
+      this.averagePosition+=((serpList[i].position+serpList[i].prevposition)/2);
+     
+    }
+    if(this.averagePosition==null||this.averagePosition==NaN||this.averagePosition==undefined||this.averagePosition=='undefined'){
+      this.averagePosition='';
+    }
+    this.campaignList[campaignIndex].ranking = this.averagePosition;
+    this.tableData = this.campaignList;
+    this.source = new LocalDataSource(this.campaignList);
   }
   onStartDateChange(event) {
 
@@ -1334,7 +1405,7 @@ export class HomeComponent implements OnInit {
     return parseFloat(diff.toString()).toFixed(2)
 
   }
- 
+
   //Ranking Data
   public getSerpList(): void {
     ;
@@ -1348,6 +1419,8 @@ export class HomeComponent implements OnInit {
           this.serpList = res;
           this.tempSerpList = this.serpList;
           this.getNewRankingPosition(this.campaignsList[n].id);
+
+          this.showSeAveragePosition(n,this.serpList)
         });
       }
     });
@@ -1384,13 +1457,14 @@ export class HomeComponent implements OnInit {
       };
       if (p.length > 0) {
         let maxDate = p[0].createdOn;
-        p = p.filter(x => this.datepipe.transform(x.createdOn, 'yyyy-MM-dd') == this.datepipe.transform(maxDate, 'yyyy-MM-dd'));
+        p = p.filter(x => this.datepipe.transform(x.createdOn, 'yyyy-MM-dd') <= this.datepipe.transform(maxDate, 'yyyy-MM-dd'));
 
         if (p != null && p != undefined && p.length > 0) {
           this.keywordTableList = p;
 
           for (let i = 0; i < p.length; i++) {
             this.tempKeyword = p[i].keywords;
+            debugger
             this.tempList = this.keywordTableList.filter((a) => a.keywords == this.tempKeyword);
             if (this.tempList.length > 1) {
               while (this.tempList.length != 1) {
@@ -1400,8 +1474,7 @@ export class HomeComponent implements OnInit {
               }
             }
             this.keywordTableList[i].prevposition = this.tempList[this.tempList.length - 1].position;
-
-            ;
+debugger
             this.latestPositionOfKeyword = this.keywordTableList[i].position;
             this.arrayOfKeywordsPosition.push(this.latestPositionOfKeyword);
             let dt = new Date(this.keywordTableList[i].createdOn);
@@ -1507,11 +1580,19 @@ export class HomeComponent implements OnInit {
         break;
       case 'onCampaignSelect':
         this.onCampaignSelect(event.data);
+        break;
+      case 'showCampaignFulfillment':
+        this.goToCampaignFulfillment(event.data);
     }
   }
   onCampaignSelect(campaign: any) {
     this.settingsservice.selectedCampaignId = campaign.id;
     this.router.navigate(['/campaignuser-list']);
+  }
+
+  goToCampaignFulfillment(campaign: any) {
+    this.settingsservice.selectedCampaignId = campaign.id;
+    this.router.navigate(['/campaignfulfillment-list']);
   }
 
   editCampaign(campaign: any) {

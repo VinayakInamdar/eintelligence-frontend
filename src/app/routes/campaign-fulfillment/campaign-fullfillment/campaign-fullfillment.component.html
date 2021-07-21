@@ -1,0 +1,46 @@
+<div class="row">
+    <div class="container-fluid">
+        <div class="col-md-12">
+            <div class="card b bg-white rounded row cursor-set setplancard" style="margin-top: 1rem;">
+                <div class="card-header storepfontsize" style="padding: 0px !important;"></div>
+                <div class="container-fluid">
+                    <div class="row m-4">
+
+                        <div class="col-md-3 col-sm-6 item" *ngFor="let plan of filteredPlans">
+                            <div>
+                                <div class="card item-card card-block pricing-table" style="height: 350px;border-radius: 5%; box-shadow: 0 3px 10px 0 rgb(0 0 0 / 10%), 0 3px 10px 0 rgb(0 0 0 / 10%);">
+
+                                    <h3 class="card-title font-weight-bold text-left">{{plan.plan.name}}</h3>
+                                    <p class="givefontsize">
+                                        Purchased On : {{plan.purchasedDate}}, {{plan.purchasedTime}}</p>
+                                    <p>
+
+                                        <p class="">{{plan.plan.title}}</p>
+                                        <p class="service-link">
+                                            {{plan.plan.subtitle}}
+                                        </p>
+                                        <hr>
+                                        <div class="product-attributes-box card-body storesubdivpaddinginitial">
+                                            <ul class="list-group list-group-flush storeulpaddingtop">
+                                                <li class="text-left storelistyle">{{plan.plan.features}}</li>
+                                            </ul>
+                                        </div>
+                                        <div class="product-buttons-box">
+                                            <button class="btn btn-success btn-block btn-lg checkout-btn">
+                                            PURCHASED for {{plan.plan.price}}
+                                            <span data-toggle="popover">
+                                                <i class="fa fa-info-circle"></i>
+                                            </span>
+                                        </button>
+                                        </div>
+                                </div>
+                            </div>
+                        </div>
+
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+</div>

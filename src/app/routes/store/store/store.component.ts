@@ -52,6 +52,7 @@ export class StoreComponent implements OnInit {
   }
 
   getAllPlans() {
+    
     this.productsService.getAllPlanByCompanyId(this.companyId).subscribe((response: any) => {
       if (response) {
         this.plans = response

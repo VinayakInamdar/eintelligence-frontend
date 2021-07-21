@@ -298,7 +298,7 @@ export class CheckoutComponent implements OnInit {
     });
   }
   payWithCard(stripe, card, clientSecret) {
-    ;
+    
     this.campaignError = false;
     var form = document.getElementById("payment-form");
 
@@ -384,7 +384,7 @@ export class CheckoutComponent implements OnInit {
   //For stripe Detroja End
 
   submitForm(value: any) {
-    ;
+    
     this.shippingEmail = value.email;
     this.shippingName = value.name;
     this.shippingAddress = value.address;

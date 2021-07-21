@@ -1124,8 +1124,19 @@ export class SeoComponent implements OnInit {
       }
     });
   }
+  refreshGSCAccount2() {
+    ;
+    this.getData();
+  }
+  refreshGoogleAnalyticsAccount2() {
+    
+    //this.gaaccesstoken = this.currentGaAccessToken;
+    this.getAnalyticsProfileIds();
+    this.getSiteSpeedDataMobile();
+    this.getSiteSpeedDataDesktop();
+  }
   refreshGoogleAnalyticsAccount() {
-
+    //;
     const url = "https://www.googleapis.com/oauth2/v4/token";
     let data = {};
     data = {
@@ -1157,7 +1168,7 @@ export class SeoComponent implements OnInit {
     this.loadSeoPageData();
 
   }
-
+  //currentGaAccessToken;
   loadSeoPageData() {
     this.gaurl = localStorage.getItem('gaurl');
     this.gaaccesstoken = localStorage.getItem('gaaccesstoken');
@@ -1171,15 +1182,26 @@ export class SeoComponent implements OnInit {
     this.selectedCampIdWebUrl = localStorage.getItem('selectedCampUrl');
     if (this.gaurl != 'null' && this.gaurl != null && this.gaurl != undefined && this.gaurl != '') {
       this.ifGaChartShow = true;
-      this.refreshGoogleAnalyticsAccount();
+      
+      if (this.gaaccesstoken != '' || this.gaaccesstoken != undefined) {
+        this.refreshGoogleAnalyticsAccount2();
+      }
+      //  this.refreshGoogleAnalyticsAccount();
+
+
     }
     else {
       this.ifGaChartShow = false;
     }
     if (this.gscurl != 'null' && this.gscurl != null && this.gscurl != undefined && this.gscurl != '') {
+      //
       this.ifGscChartShow = true;
       this.getDateSettings();
-      this.refreshGSCAccount();
+      if (this.gscaccesstoken != '' || this.gscaccesstoken != undefined) {
+        this.refreshGSCAccount2();
+      }
+      // this.refreshGSCAccount();
+
     }
     else {
       this.ifGscChartShow = false;
@@ -1294,7 +1316,11 @@ export class SeoComponent implements OnInit {
 
       }
     }, error => {
-      ;
+      if (error) {
+        
+        this.snackbarService.show(" " + this.gaurl + " : Please re-integrate!! The access token has expired. ");
+        this.router.navigate(['/home/campaign']);
+      }
       //alert('Analytics Data Fetch failed : ' + JSON.stringify(error.error));
     });
   }
@@ -2560,6 +2586,7 @@ export class SeoComponent implements OnInit {
     });
   }
   getDataCurrentYear(startDate, endDate, url) {
+    
     this.httpOptionJSON = {
       headers: new HttpHeaders({
         'Accept': 'application/json',
@@ -2587,7 +2614,11 @@ export class SeoComponent implements OnInit {
         this.getDataPreviousYear(this.previousStartDate, this.previousEndDate, url);
       }
     }, error => {
-
+      if (error) {
+        
+        this.snackbarService.show(" " + this.gscurl + " : Please re-integrate!! The access token has expired. ");
+        this.router.navigate(['/home/campaign']);
+      }
       // alert('Data fetch failed for current year : ' + JSON.stringify(error.error));
     });
 

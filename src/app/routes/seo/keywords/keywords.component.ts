@@ -211,7 +211,7 @@ export class KeywordsComponent implements OnInit {
 
   }
 
-  userRowSelect(event) {}
+  userRowSelect(event) { }
 
   deleteQueryParameterFromCurrentRoute() {
     var params = { ...this.route.snapshot.queryParams };
@@ -292,7 +292,7 @@ export class KeywordsComponent implements OnInit {
   // using to add new keyword in db
 
   submitForm(value: any) {
-    ; ;
+    ;;
     value.location_name = this.current_loc_name;
     value.location = this.current_loc_code;
     var keywordDto = {
@@ -420,8 +420,8 @@ export class KeywordsComponent implements OnInit {
     this.tags = []
     if (this.queryParams != undefined) {
       this.queryParams = undefined;
-      this.router.navigate(['home/overview/', { id: this.selectedCampId }])
-
+      // this.router.navigate(['home/overview/', { id: this.selectedCampId }])
+      this.getSerpList();
     }
 
 
