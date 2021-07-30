@@ -16,11 +16,11 @@ export class CampaignFullfillmentComponent implements OnInit {
   constructor(public myPaymentsService: MyPaymentsService, public settingsService: SettingsService) { }
 
   ngOnInit(): void {
-debugger
+
     const filterOptionModel = this.getFilterOptionPlans();
     this.myPaymentsService.getFilteredStripepayments(filterOptionModel).subscribe((response: any) => {
       if (response) {
-debugger
+
         this.filteredPlans = response.body.filter((a) => a.campaignId == this.settingsService.selectedCampaignId);
         let p = this.filteredPlans;
 
@@ -51,7 +51,7 @@ debugger
   }
 
   showPurchasedDatenTime(){
-debugger
+
     let purchasedDate;
     for(let i=0;i<this.filteredPlans.length;i++){
       purchasedDate=this.filteredPlans[i].createdOn.split("T");

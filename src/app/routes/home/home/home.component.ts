@@ -1363,7 +1363,7 @@ export class HomeComponent implements OnInit {
   averagePosition:any;
   showSeAveragePosition(campaignIndex,serpList){
 
-    debugger
+    
     this.averagePosition=0;
     for(let i=0;i<serpList.length;i++){
       this.averagePosition+=((serpList[i].position+serpList[i].prevposition)/2);
@@ -1464,7 +1464,7 @@ export class HomeComponent implements OnInit {
 
           for (let i = 0; i < p.length; i++) {
             this.tempKeyword = p[i].keywords;
-            debugger
+            
             this.tempList = this.keywordTableList.filter((a) => a.keywords == this.tempKeyword);
             if (this.tempList.length > 1) {
               while (this.tempList.length != 1) {
@@ -1474,7 +1474,7 @@ export class HomeComponent implements OnInit {
               }
             }
             this.keywordTableList[i].prevposition = this.tempList[this.tempList.length - 1].position;
-debugger
+
             this.latestPositionOfKeyword = this.keywordTableList[i].position;
             this.arrayOfKeywordsPosition.push(this.latestPositionOfKeyword);
             let dt = new Date(this.keywordTableList[i].createdOn);
