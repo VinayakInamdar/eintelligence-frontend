@@ -8,6 +8,8 @@ const success = require('sweetalert');
 import { MenuService } from '../../../core/menu/menu.service';
 import { menu } from '../../../routes/menu';
 import { OpenIdConnectService } from 'src/app/shared/services/open-id-connect.service';
+import { environment } from 'src/environments/environment';
+import { HttpClient } from '@angular/common/http';
 @Component({
   selector: 'app-campaignlist',
   templateUrl: './campaignlist.component.html',
@@ -20,28 +22,36 @@ export class CampaignlistComponent implements OnInit {
   CampaignGAdsList = [];
   CampaignFacebookList = [];
   SelectedCampaignId;
-  ableToAddNewProject:boolean=true;
+  ableToAddNewProject: boolean = true;
+  gaid;
+  gamasterCampaignId;
+  gscid;
+  masterCampaignId;
+  gaaccesstoken;
+  gscaccesstoken;
 
   constructor(private translate: TranslateService, public campaignService: CampaignService, public router: Router, public route: ActivatedRoute, public settingsservice: SettingsService
-    , public menuService:MenuService, private openIdConnectService: OpenIdConnectService) { }
+    , public menuService: MenuService, private openIdConnectService: OpenIdConnectService, public http: HttpClient) { }
 
   ngOnInit() {
-    this.getCampaignList();
     this.getCampaignGA();
+    this.getCampaignGSC();
+    this.getCampaignList();
+
     this.getCampaignGAds();
     this.getCampaignFacebook();
-    this.getCampaignGSC();
-    if (this.settingsservice.selectedCompanyInfo.role == "Client User") {
-    this.menuService.menuCreation(menu);
 
-    this.ableToAddNewProject=false;
+    if (this.settingsservice.selectedCompanyInfo.role == "Client User") {
+      this.menuService.menuCreation(menu);
+
+      this.ableToAddNewProject = false;
     }
 
-    if(this.settingsservice.selectedCompanyInfo.role=="Normal User"||this.settingsservice.selectedCompanyInfo.role=="Client User"){
-      this.settings.actions.custom[3].name="";
-      this.settings.actions.custom[3].title="";
+    if (this.settingsservice.selectedCompanyInfo.role == "Normal User" || this.settingsservice.selectedCompanyInfo.role == "Client User") {
+      this.settings.actions.custom[3].name = "";
+      this.settings.actions.custom[3].title = "";
 
-      
+
     }
   }
   settings = {
@@ -52,11 +62,11 @@ export class CampaignlistComponent implements OnInit {
     },
 
     actions: {
-      columnTitle: '', 
+      columnTitle: '',
       custom: [{ name: 'editCampaign', title: '<span class="col-md-6"></span><i class="fas fa-edit"></i>' },
       { name: 'deleteCampaign', title: '<span class="text-danger col" style="padding-left:1rem"><i class="fas fa-trash-alt"></i></span>' },
       { name: 'onCampaignSelect', title: '<i class="fas fa-user"></i>' },
-        { name: 'showCampaignFulfillment', title:'<span class="col"><i class="fas fa-store"></i></span>'}
+      { name: 'showCampaignFulfillment', title: '<span class="col"><i class="fas fa-store"></i></span>' }
         // { name: 'viewReports', title: '<i class="fas fa-chart-bar"></i>' }  
       ],
       add: false, edit: false, delete: false, position: 'right'
@@ -108,14 +118,107 @@ export class CampaignlistComponent implements OnInit {
     }
   }
   source: LocalDataSource;
+
   // using to get list of campaigns
   public getCampaignList(): void {
-    
+
     var userid = this.openIdConnectService.user.profile.sub;
     //var userid = localStorage.getItem("userID");
     this.campaignService.getCampaign(userid).subscribe(res => {
       this.campaignList = res;
+
+      if (this.settingsservice.selectedCompanyInfo.role == "Client User") {
+        //generate new access token and update it in ssms
+        for (let i = 0; i < this.campaignList.length; i++) {
+          let ga = this.CampaignGAList.filter(x => x.campaignID == res[i].id);
+          if (ga != null && ga != undefined && ga.length > 0) {
+
+            this.gaid = ga[0]['id'];
+            this.gamasterCampaignId = ga[0]['campaignID'];
+            this.refreshGoogleAnalyticsAccount(i, ga[0]['refreshToken'], ga[0]['urlOrName']);
+          }
+          ;
+          let gsc = this.CampaignGSCList.filter(x => x.campaignID == res[i].id);
+          if (gsc != null && gsc != undefined && gsc.length > 0) {
+
+            this.gscid = gsc[0]['id'];
+            this.masterCampaignId = gsc[0]['campaignID'];
+            this.refreshGSCAccount(i, gsc[0]['refreshToken'], gsc[0]['urlOrName']);
+          }
+        }
+      }
+
       this.source = new LocalDataSource(this.campaignList)
+    });
+  }
+  refreshGoogleAnalyticsAccount(campaignIndex, refreshToken, gaUrl) {
+
+    const url = "https://www.googleapis.com/oauth2/v4/token";
+    let data = {};
+    data = {
+      client_id: environment.googleClientId,
+      client_secret: environment.googleClientSecret,
+      refresh_token: refreshToken,// 'ya29.a0AfH6SMCszj8kAk7Q4lV43Q0vsJWDKmmmYkSYnwPclmY1La7BesHF7-5KuwdX1s4MlllQafsCGCjmQ9oO3K4jtFB6wMvDiuWjRsYpGQxkKzpwoUvph8e5OWG_Fy0bCUYAe_NiJ0x8gUkhM98seOhBPvNE1znZ',
+      grant_type: 'refresh_token',
+      access_type: 'offline'
+    };
+    this.http.post(url, data).subscribe(res => {
+      if (res) {
+
+        this.gaaccesstoken = res['access_token'];
+        this.modifyGaToken(gaUrl, refreshToken);
+
+      }
+    }, error => {
+
+    });
+  }
+  modifyGaToken(gaUrl, refreshToken) {
+    let data = {
+      id: this.gaid,
+      urlOrName: gaUrl,
+      isActive: true,
+      CampaignID: this.gamasterCampaignId,
+      accessToken: this.gaaccesstoken,
+      refreshToken: refreshToken
+    }
+    this.campaignService.updateGA(this.gaid, data).subscribe(response => {
+
+      this.getCampaignGA();
+    });
+  }
+  refreshGSCAccount(campaignIndex, refreshToken, gscurl) {
+    ;
+    const url = "https://www.googleapis.com/oauth2/v4/token";
+    let data = {};
+    data = {
+      client_id: environment.googleClientId,
+      client_secret: environment.googleClientSecret,
+      refresh_token: refreshToken,
+      grant_type: 'refresh_token',
+      access_type: 'offline'
+    };
+    this.http.post(url, data).subscribe(res => {
+      if (res) {
+        this.gscaccesstoken = res['access_token'];
+        this.modifyGscToken(gscurl, refreshToken);
+      }
+    }, error => {
+
+    });
+  }
+  modifyGscToken(gscurl, refreshToken) {
+    let data = {
+      id: this.gscid,
+      urlOrName: gscurl,
+      isActive: true,
+      CampaignID: this.masterCampaignId,
+      accessToken: this.gscaccesstoken,
+      refreshToken: refreshToken
+    }
+    this.campaignService.updateGSC(this.gscid, data).subscribe(response => {
+
+      this.getCampaignGSC();
     });
   }
   //using to check setup and get analytics data with selected campaign Id
@@ -299,7 +402,7 @@ export class CampaignlistComponent implements OnInit {
     this.router.navigate(['/campaignuser-list']);
   }
 
-  goToCampaignFulfillment(campaign: any){
+  goToCampaignFulfillment(campaign: any) {
     this.settingsservice.selectedCampaignId = campaign.id;
     this.router.navigate(['/campaignfulfillment-list']);
   }
