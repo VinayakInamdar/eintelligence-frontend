@@ -7,6 +7,7 @@ import { SettingsService } from 'src/app/core/settings/settings.service';
 const success = require('sweetalert');
 import { MenuService } from '../../../core/menu/menu.service';
 import { menu } from '../../../routes/menu';
+import { OpenIdConnectService } from 'src/app/shared/services/open-id-connect.service';
 @Component({
   selector: 'app-campaignlist',
   templateUrl: './campaignlist.component.html',
@@ -19,9 +20,10 @@ export class CampaignlistComponent implements OnInit {
   CampaignGAdsList = [];
   CampaignFacebookList = [];
   SelectedCampaignId;
+  ableToAddNewProject:boolean=true;
 
   constructor(private translate: TranslateService, public campaignService: CampaignService, public router: Router, public route: ActivatedRoute, public settingsservice: SettingsService
-    , public menuService:MenuService) { }
+    , public menuService:MenuService, private openIdConnectService: OpenIdConnectService) { }
 
   ngOnInit() {
     this.getCampaignList();
@@ -31,6 +33,15 @@ export class CampaignlistComponent implements OnInit {
     this.getCampaignGSC();
     if (this.settingsservice.selectedCompanyInfo.role == "Client User") {
     this.menuService.menuCreation(menu);
+
+    this.ableToAddNewProject=false;
+    }
+
+    if(this.settingsservice.selectedCompanyInfo.role=="Normal User"||this.settingsservice.selectedCompanyInfo.role=="Client User"){
+      this.settings.actions.custom[3].name="";
+      this.settings.actions.custom[3].title="";
+
+      
     }
   }
   settings = {
@@ -99,7 +110,9 @@ export class CampaignlistComponent implements OnInit {
   source: LocalDataSource;
   // using to get list of campaigns
   public getCampaignList(): void {
-    var userid = localStorage.getItem("userID");
+    
+    var userid = this.openIdConnectService.user.profile.sub;
+    //var userid = localStorage.getItem("userID");
     this.campaignService.getCampaign(userid).subscribe(res => {
       this.campaignList = res;
       this.source = new LocalDataSource(this.campaignList)

@@ -2,7 +2,7 @@
 
 
 <div class="col-md-12 give-padding">
-    <button class="mr-1 btn btn-danger btn-lg" type="button" (click)="AddCampaign()" style="float: right;">Add
+    <button *ngIf="ableToAddNewProject" class="mr-1 btn btn-danger btn-lg" type="button" (click)="AddCampaign()" style="float: right;">Add
         Project</button>
 
 </div>

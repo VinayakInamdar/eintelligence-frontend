@@ -43,23 +43,29 @@
                         <li class="sidebar-subnav-header">{{(item.translate | translate) || item.text}}</li>
                         <li *ngFor='let subitem of item.submenu' [routerLinkActive]="['active']">
                             <!-- sublevel: external links -->
+                            <ng-container *appHasClaim="item.role">
                             <a href *ngIf="!subitem.heading && !subitem.submenu && subitem.elink" [attr.target]="subitem.target" [attr.href]="subitem.elink" title="{{subitem.text}}">
                                 <span class="float-right" *ngIf="subitem.alert" [ngClass]="subitem.label || 'badge badge-success'">{{subitem.alert}}</span>
                                 <em class="{{subitem.icon}}" *ngIf="subitem.icon"></em>
                                 <span>{{(subitem.translate | translate) || subitem.text}}</span>
                             </a>
+                            </ng-container>
                             <!-- sublevel: single menu item  -->
+                            <ng-container *appHasClaim="item.role">
                             <a *ngIf="!subitem.submenu && !subitem.elink" [routerLink]="subitem.link" [attr.route]="subitem.link" title="{{subitem.text}}" (click)="callAddProject(subitem.text)">
                                 <span class="float-right" *ngIf="subitem.alert" [ngClass]="subitem.label || 'badge badge-success'">{{subitem.alert}}</span>
                                 <em class="{{subitem.icon}}" *ngIf="subitem.icon"></em>
                                 <span>{{(subitem.translate | translate) || subitem.text}}</span>
                             </a>
+                            </ng-container>
                             <!-- sublevel: has submenu -->
+                            <ng-container *appHasClaim="item.role">
                             <a href *ngIf="subitem.submenu" title="{{subitem.text}}" (click)="toggleSubmenuClick($event)" (mouseenter)="toggleSubmenuHover($event)">
                                 <span class="float-right" *ngIf="subitem.alert" [ngClass]="subitem.label || 'badge badge-success'">{{subitem.alert}}</span>
                                 <em class="{{subitem.icon}}" *ngIf="subitem.icon"></em>
                                 <span>{{(subitem.translate | translate) || subitem.text}}</span>
                             </a>
+                            </ng-container>
                             <!-- SUBLEVEL 2 -->
                             <ul *ngIf="subitem.submenu" class="sidebar-nav sidebar-subnav level2" [routerLinkActive]="['opening']">
                                 <li *ngFor='let subitem2 of subitem.submenu' [routerLinkActive]="['active']">

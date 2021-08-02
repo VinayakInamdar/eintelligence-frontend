@@ -1129,7 +1129,7 @@ export class SeoComponent implements OnInit {
     this.getData();
   }
   refreshGoogleAnalyticsAccount2() {
-    
+
     //this.gaaccesstoken = this.currentGaAccessToken;
     this.getAnalyticsProfileIds();
     this.getSiteSpeedDataMobile();
@@ -1182,7 +1182,7 @@ export class SeoComponent implements OnInit {
     this.selectedCampIdWebUrl = localStorage.getItem('selectedCampUrl');
     if (this.gaurl != 'null' && this.gaurl != null && this.gaurl != undefined && this.gaurl != '') {
       this.ifGaChartShow = true;
-      
+
       if (this.gaaccesstoken != '' || this.gaaccesstoken != undefined) {
         this.refreshGoogleAnalyticsAccount2();
       }
@@ -1317,7 +1317,7 @@ export class SeoComponent implements OnInit {
       }
     }, error => {
       if (error) {
-        
+
         this.snackbarService.show(" " + this.gaurl + " : Please re-integrate!! The access token has expired. ");
         this.router.navigate(['/home/campaign']);
       }
@@ -2586,7 +2586,7 @@ export class SeoComponent implements OnInit {
     });
   }
   getDataCurrentYear(startDate, endDate, url) {
-    
+
     this.httpOptionJSON = {
       headers: new HttpHeaders({
         'Accept': 'application/json',
@@ -2615,7 +2615,7 @@ export class SeoComponent implements OnInit {
       }
     }, error => {
       if (error) {
-        
+
         this.snackbarService.show(" " + this.gscurl + " : Please re-integrate!! The access token has expired. ");
         this.router.navigate(['/home/campaign']);
       }
@@ -2725,13 +2725,13 @@ export class SeoComponent implements OnInit {
     };
     this.http.post(url, data, this.httpOptionJSON).subscribe(res => {
       if (res) {
-
+ 
         let rows = res['rows'];
-
+ 
         this.dateListData = [];
         this.barDataClicks.datasets[1].data = [];
         this.barDataImpressions.datasets[1].data = [];
-        this.barChartLabels = [];
+        //this.barChartLabels = [];
         for (let i = 0; i < rows.length; i++) {
           this.currDate = rows[i].keys[0]
           this.currDate = this.currDate.substring(5, 10);
@@ -2739,13 +2739,13 @@ export class SeoComponent implements OnInit {
           this.barDataImpressions.datasets[1].data.push(rows[i].impressions);
           this.barDataCTR.datasets[1].data.push(rows[i].ctr);
           this.barDataPositions.datasets[1].data.push(rows[i].position);
-
-          this.barChartLabels.push(this.currDate);
+ 
+          //this.barChartLabels.push(this.currDate);
         }
-
+ 
       }
     }, error => {
-
+ 
       //alert('Data fetch failed for previous year : ' + JSON.stringify(error.error));
     });
 

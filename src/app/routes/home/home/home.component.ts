@@ -512,6 +512,12 @@ export class HomeComponent implements OnInit {
     this.getCampaignList();
 
     this.menuService.menuCreation(menu);
+    if(this.settingsservice.selectedCompanyInfo.role=="Normal User"||this.settingsservice.selectedCompanyInfo.role=="Client User"){
+      this.settings.actions.custom[3].name="";
+      this.settings.actions.custom[3].title="";
+
+      
+    }
   }
 
   redirectTo(uri: string) {
