@@ -30,6 +30,7 @@ const success = require('sweetalert');
   styleUrls: ['./home.component.scss']
 })
 export class HomeComponent implements OnInit {
+  showSpinnertoLoadDashboard: boolean = true;
   //agency score variables
   sdate: any; edate: any;
   seImpressionScore: number;
@@ -268,10 +269,10 @@ export class HomeComponent implements OnInit {
         filter: false,
         type: 'html',
         valuePrepareFunction: (value) => {
-          let rank=value;
-         if(rank=='NaN'){
-           rank=0;
-         }
+          let rank = value;
+          if (rank == 'NaN') {
+            rank = 0;
+          }
           //this.tempRes = value;
 
           // let st = this.tempStr.split("--");
@@ -499,6 +500,7 @@ export class HomeComponent implements OnInit {
   }
 
   ngOnInit() {
+    
     this.resetChartVariables();
     ;
     this.getSerpList();
@@ -512,11 +514,11 @@ export class HomeComponent implements OnInit {
     this.getCampaignList();
 
     this.menuService.menuCreation(menu);
-    if(this.settingsservice.selectedCompanyInfo.role=="Normal User"||this.settingsservice.selectedCompanyInfo.role=="Client User"){
-      this.settings.actions.custom[3].name="";
-      this.settings.actions.custom[3].title="";
+    if (this.settingsservice.selectedCompanyInfo.role == "Normal User" || this.settingsservice.selectedCompanyInfo.role == "Client User") {
+      this.settings.actions.custom[3].name = "";
+      this.settings.actions.custom[3].title = "";
 
-      
+
     }
   }
 
@@ -1359,24 +1361,26 @@ export class HomeComponent implements OnInit {
         }
       }
       this.source = new LocalDataSource(this.campaignList);
+      this.showSpinnertoLoadDashboard = false;
     });
+
   }
   sortData(p) {
     return p.sort((a, b) => {
       return <any>new Date(b.createdOn) - <any>new Date(a.createdOn);
     });
   }
-  averagePosition:any;
-  showSeAveragePosition(campaignIndex,serpList){
+  averagePosition: any;
+  showSeAveragePosition(campaignIndex, serpList) {
 
-    
-    this.averagePosition=0;
-    for(let i=0;i<serpList.length;i++){
-      this.averagePosition+=((serpList[i].position+serpList[i].prevposition)/2);
-     
+
+    this.averagePosition = 0;
+    for (let i = 0; i < serpList.length; i++) {
+      this.averagePosition += ((serpList[i].position + serpList[i].prevposition) / 2);
+
     }
-    if(this.averagePosition==null||this.averagePosition==NaN||this.averagePosition==undefined||this.averagePosition=='undefined'){
-      this.averagePosition='';
+    if (this.averagePosition == null || this.averagePosition == NaN || this.averagePosition == undefined || this.averagePosition == 'undefined') {
+      this.averagePosition = '';
     }
     this.campaignList[campaignIndex].ranking = this.averagePosition;
     this.tableData = this.campaignList;
@@ -1426,7 +1430,7 @@ export class HomeComponent implements OnInit {
           this.tempSerpList = this.serpList;
           this.getNewRankingPosition(this.campaignsList[n].id);
 
-          this.showSeAveragePosition(n,this.serpList)
+          this.showSeAveragePosition(n, this.serpList)
         });
       }
     });
@@ -1470,7 +1474,7 @@ export class HomeComponent implements OnInit {
 
           for (let i = 0; i < p.length; i++) {
             this.tempKeyword = p[i].keywords;
-            
+
             this.tempList = this.keywordTableList.filter((a) => a.keywords == this.tempKeyword);
             if (this.tempList.length > 1) {
               while (this.tempList.length != 1) {
