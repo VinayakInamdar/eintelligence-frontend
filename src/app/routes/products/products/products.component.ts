@@ -15,6 +15,8 @@ import {
   StripeElement
 } from '@stripe/stripe-js';
 import { SettingsService } from '../../../core/settings/settings.service';
+import { MenuService } from 'src/app/core/menu/menu.service';
+import { menu } from '../../../routes/menu';
 declare var Stripe;
 
 
@@ -115,7 +117,8 @@ export class ProductsComponent implements OnInit {
     private fb: FormBuilder,
     private stripeService: StripeService,
     private snackbarService: SnackbarService,
-    private settingService: SettingsService
+    private settingService: SettingsService,
+    public menuService: MenuService
     //private snackbarService: SnackbarService
   ) { }
 
@@ -125,18 +128,28 @@ export class ProductsComponent implements OnInit {
     this.companyId = this.settingService.selectedCompanyInfo.companyId;
     this.getProductsList();
   }
+
   getProductsList() {
-
-    this.productService.getProductsByCompanyId(this.companyId).subscribe((response: any) => {
+    var filterOptionModel = {
+      pageNumber: 1,
+      pageSize: 1000,
+      fields: '',
+      searchQuery: '',
+      orderBy: ''
+    }
+    this.productService.getFilteredProduct(filterOptionModel).subscribe((response: any) => {
+      
+      // this.productService.getProductsByCompanyId(this.companyId).subscribe((response: any) => {
       if (response) {
-
-        this.productList = response;
+        
+        this.productList = response.body;
         //this.productList = this.productList.filter(x => x.companyID == this.companyId);
         this.source = new LocalDataSource(this.productList)
         this.planForm.reset();
       }
     })
   }
+
   getPlan(planId) {
     this.planForm.reset();
     this.productService.getPlan(planId).subscribe((response: any) => {
@@ -168,7 +181,7 @@ export class ProductsComponent implements OnInit {
   }
 
   addProduct() {
-
+    
     if (this.productId == undefined || this.productId == null) {
       let data = {
         id: "00000000-0000-0000-0000-000000000000",
@@ -178,6 +191,8 @@ export class ProductsComponent implements OnInit {
       }
       this.productService.createProducts(data).subscribe(response => {
         if (response) {
+          
+          this.menuService.menuCreation(menu);
           this.snackbarService.show('Product Added');
           this.productId = response.id;;
           this.getProductsList();
@@ -192,11 +207,14 @@ export class ProductsComponent implements OnInit {
       }
       this.productService.updateProducts(this.productId, data).subscribe(response => {
         //if (response) {
+        
+        this.menuService.menuCreation(menu);
         this.snackbarService.show('Product Updated');
         this.getProductsList();
         //}
       });
     }
+
   }
   addPlan() {
 

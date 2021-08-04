@@ -56,14 +56,8 @@ export class MenuService {
         this.productsService.getFilteredProduct(filterOptionModel).subscribe((response: any) => {
             var ProductList = [];
 
-            const addCampaign = {
-                text: "Add Project",
-
-                link: "/home/campaign"
-            }
-            ProductList.push(addCampaign);
-
             if (response) {
+                
                 if (response.body != undefined && response.body != null && response.body.length > 0) {
                     const products = {
                         text: "All",

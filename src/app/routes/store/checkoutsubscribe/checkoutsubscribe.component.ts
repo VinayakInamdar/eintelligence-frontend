@@ -133,6 +133,9 @@ export class CheckoutSubscribeComponent implements OnInit {
 
     this.campaignid = cid;
     this.campaignError = false;
+    if(cid=="AddProject"){
+      this.callAddProject();
+    }
   }
   public getCampaignList(): void {
     var userid = this.openIdConnectService.user.profile.sub;
@@ -484,4 +487,25 @@ export class CheckoutSubscribeComponent implements OnInit {
       this.shippingCountry
     ]
   }
+
+  callAddProject() {
+
+    
+        localStorage.setItem('gaurl', '');
+        localStorage.setItem('gaaccesstoken', '');
+        localStorage.setItem('gadsaccesstoken', '');
+        localStorage.setItem('facebookurl', '');
+        localStorage.setItem('facebookaccesstoken', '');
+        localStorage.setItem('gscurl', '');
+        localStorage.setItem('gscaccesstoken', '');
+        localStorage.setItem('selectedCampName', '');
+        localStorage.setItem('selectedCampUrl', '');
+        localStorage.setItem('editMasterId', '');
+        localStorage.setItem('gaid', '');
+        localStorage.setItem('gadsid', '');
+        localStorage.setItem('facebookid', '');
+        localStorage.setItem('gscid', '');
+        this.router.navigate(['/home/campaign']);
+    
+}
 }

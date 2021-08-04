@@ -52,7 +52,7 @@
                             </ng-container>
                             <!-- sublevel: single menu item  -->
                             <ng-container *appHasClaim="item.role">
-                            <a *ngIf="!subitem.submenu && !subitem.elink" [routerLink]="subitem.link" [attr.route]="subitem.link" title="{{subitem.text}}" (click)="callAddProject(subitem.text)">
+                            <a *ngIf="!subitem.submenu && !subitem.elink" [routerLink]="subitem.link" [attr.route]="subitem.link" title="{{subitem.text}}">
                                 <span class="float-right" *ngIf="subitem.alert" [ngClass]="subitem.label || 'badge badge-success'">{{subitem.alert}}</span>
                                 <em class="{{subitem.icon}}" *ngIf="subitem.icon"></em>
                                 <span>{{(subitem.translate | translate) || subitem.text}}</span>

@@ -191,24 +191,5 @@ export class SidebarComponent implements OnInit, OnDestroy {
     isEnabledHover() {
         return this.settings.getLayoutSetting('asideHover');
     }
-    callAddProject(value: any) {
-
-        if (value == "Add Project") {
-            localStorage.setItem('gaurl', '');
-            localStorage.setItem('gaaccesstoken', '');
-            localStorage.setItem('gadsaccesstoken', '');
-            localStorage.setItem('facebookurl', '');
-            localStorage.setItem('facebookaccesstoken', '');
-            localStorage.setItem('gscurl', '');
-            localStorage.setItem('gscaccesstoken', '');
-            localStorage.setItem('selectedCampName', '');
-            localStorage.setItem('selectedCampUrl', '');
-            localStorage.setItem('editMasterId', '');
-            localStorage.setItem('gaid', '');
-            localStorage.setItem('gadsid', '');
-            localStorage.setItem('facebookid', '');
-            localStorage.setItem('gscid', '');
-            this.router.navigate(['/home/campaign']);
-        }
-    }
+    
 }

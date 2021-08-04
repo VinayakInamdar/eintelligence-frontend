@@ -147,7 +147,8 @@
                 <div class="product-attributes-box card-body storesubdivpaddinginitial">
                     <h3 class="card-title font-weight-bold text-left givepadding-header">Select Campaign</h3>
                     <select class="form-control  givewidth-dropdown" [(ngModel)]="campaignDrp" #mySelect (change)="onChange(mySelect.value)">
-                        <option value="00000000-0000-0000-0000-000000000000"> Select Campaign</option>
+                        <option value="00000000-0000-0000-0000-000000000000" selected> Select Campaign</option>
+                        <option value="AddProject">Add Project</option>
                         <option *ngFor="let campaign of campaignList" [value]="campaign.id">
                             {{campaign.name}} </option>
                     </select>
