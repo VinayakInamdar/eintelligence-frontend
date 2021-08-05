@@ -111,6 +111,9 @@ export class CheckoutComponent implements OnInit {
 
     this.campaignid = cid;
     this.campaignError = false;
+    if (cid == "AddProject") {
+      this.callAddProject();
+    }
   }
   public getCampaignList(): void {
     var userid = localStorage.getItem("userID");
@@ -298,7 +301,7 @@ export class CheckoutComponent implements OnInit {
     });
   }
   payWithCard(stripe, card, clientSecret) {
-    
+
     this.campaignError = false;
     var form = document.getElementById("payment-form");
 
@@ -384,7 +387,7 @@ export class CheckoutComponent implements OnInit {
   //For stripe Detroja End
 
   submitForm(value: any) {
-    
+
     this.shippingEmail = value.email;
     this.shippingName = value.name;
     this.shippingAddress = value.address;
@@ -419,8 +422,8 @@ export class CheckoutComponent implements OnInit {
 
   setSelectedLocation(event: any) {
     ;
-    this.shipping[6]=event.value;
-    this.shippingCountry=event.value;
+    this.shipping[6] = event.value;
+    this.shippingCountry = event.value;
   }
   onKey(value) {
     ;
@@ -435,5 +438,26 @@ export class CheckoutComponent implements OnInit {
     ;
     let filter = value.toLowerCase();
     return this.shippingAddressCountries.filter(option => option.id.toLowerCase().startsWith(filter));
+  }
+
+  callAddProject() {
+
+
+    localStorage.setItem('gaurl', '');
+    localStorage.setItem('gaaccesstoken', '');
+    localStorage.setItem('gadsaccesstoken', '');
+    localStorage.setItem('facebookurl', '');
+    localStorage.setItem('facebookaccesstoken', '');
+    localStorage.setItem('gscurl', '');
+    localStorage.setItem('gscaccesstoken', '');
+    localStorage.setItem('selectedCampName', '');
+    localStorage.setItem('selectedCampUrl', '');
+    localStorage.setItem('editMasterId', '');
+    localStorage.setItem('gaid', '');
+    localStorage.setItem('gadsid', '');
+    localStorage.setItem('facebookid', '');
+    localStorage.setItem('gscid', '');
+    this.router.navigate(['/home/campaign']);
+
   }
 }
