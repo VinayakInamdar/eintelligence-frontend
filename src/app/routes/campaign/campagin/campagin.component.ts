@@ -81,13 +81,15 @@ export class CampaginComponent implements OnInit, AfterViewInit {
   currYear: number;
   gaSelect = new FormControl();
   gscSelect = new FormControl();
+  facebookSelect = new FormControl();
   myForm = new FormGroup({
     fromDate: this.fromDate,
     toDate: this.toDate
   });
   gaSelectForm = new FormGroup({
     gaSelect: this.gaSelect,
-    gscSelect: this.gscSelect
+    gscSelect: this.gscSelect,
+    facebookSelect: this.facebookSelect
   });
   integrateGSCAccount: boolean = false;
 
@@ -470,8 +472,9 @@ export class CampaginComponent implements OnInit, AfterViewInit {
         //this.getGSCSiteList();
       }
       if (this.facebookAccessToken != 'null' && this.facebookAccessToken != null && this.facebookAccessToken != undefined && this.facebookAccessToken != '') {
-        this.hasFacebookSetup = true;
+
         this.getFacebookPagesList();
+        this.hasFacebookSetup = true;
       }
     }
 
@@ -488,9 +491,9 @@ export class CampaginComponent implements OnInit, AfterViewInit {
     this.trafficNut = 0;
   }
 
-  onSearch(value) {}
+  onSearch(value) { }
 
-  updateCampaignForm(campaignModel) {}
+  updateCampaignForm(campaignModel) { }
 
   refreshGSCAccount() {
 
@@ -510,10 +513,10 @@ export class CampaginComponent implements OnInit, AfterViewInit {
         this.getGSCSiteList();
       }
     }, error => {
-      if(error){
-      this.integrateGSCAccount = true;
-     // alert('eeee : ' + JSON.stringify(error.error));
-      this.snackbarService.show(" " + this.gscurl + " : Please re-integrate!! The access token has expired. ");
+      if (error) {
+        this.integrateGSCAccount = true;
+        // alert('eeee : ' + JSON.stringify(error.error));
+        this.snackbarService.show(" " + this.gscurl + " : Please re-integrate!! The access token has expired. ");
       }
     });
   }
@@ -535,10 +538,10 @@ export class CampaginComponent implements OnInit, AfterViewInit {
         this.getAnalyticsProfileIds2();
       }
     }, error => {
-     // alert('eeee : ' + JSON.stringify(error.error));
-     if(error){
-      this.snackbarService.show(" " + this.gaurl + " : Please re-integrate!! The access token has expired. ");
-     }
+      // alert('eeee : ' + JSON.stringify(error.error));
+      if (error) {
+        this.snackbarService.show(" " + this.gaurl + " : Please re-integrate!! The access token has expired. ");
+      }
     });
 
   }
@@ -1142,8 +1145,14 @@ export class CampaginComponent implements OnInit, AfterViewInit {
         this.successAlert()
       });
   }
+  isFacebookEdit: boolean = false;
   onSelectFacebook(id) {
-
+    if (this.facebookSelectedName !== id) {
+      this.isFacebookEdit = true;
+    }
+    else {
+      this.isFacebookEdit = false;
+    }
     this.facebookSelectedName = id;
   }
 
@@ -1159,7 +1168,7 @@ export class CampaginComponent implements OnInit, AfterViewInit {
       }
       this.campaignService.createFacebook(data).subscribe(
         res => {
-
+          this.isFacebookEdit = false;
           this.successAlert()
         });
     }
@@ -1175,7 +1184,7 @@ export class CampaginComponent implements OnInit, AfterViewInit {
         }
         this.campaignService.createFacebook(data).subscribe(
           res => {
-
+            this.isFacebookEdit = false;
             this.successAlert()
           });
       } else {
@@ -1188,7 +1197,7 @@ export class CampaginComponent implements OnInit, AfterViewInit {
           refreshToken: '1111'
         }
         this.campaignService.updateFacebook(this.facebookid, data).subscribe(response => {
-
+          this.isFacebookEdit = false;
           this.successAlert();
         });
       }
@@ -1228,7 +1237,28 @@ export class CampaginComponent implements OnInit, AfterViewInit {
       this.getAnalyticsProfileIds2();
     });
   }
+  // loginWithOptions() {
+  //   const loginOptions: LoginOptions = {
+  //     enable_profile_selector: true,
+  //     return_scopes: true,
+  //     // scope: 'public_profile,user_friends,email,pages_show_list'
+  //     //scope: 'pages_show_list'
+  //     scope: 'pages_show_list,read_insights,pages_read_engagement'
+  //   };
+
+  //   this.facebook.login(loginOptions)
+  //     .then((res: LoginResponse) => {
+
+  //       this.hasFacebookSetup = true;
+  //       this.facebookAccessToken = res['authResponse'].accessToken;
+  //       localStorage.setItem('FacebookAccessToken', this.accessToken);
+  //       this.facebookAccounts = [];
+  //       this.getFacebookPagesList();
+  //     })
+  //     .catch();
+  // }
   loginWithOptions() {
+    
     const loginOptions: LoginOptions = {
       enable_profile_selector: true,
       return_scopes: true,
@@ -1239,7 +1269,7 @@ export class CampaginComponent implements OnInit, AfterViewInit {
 
     this.facebook.login(loginOptions)
       .then((res: LoginResponse) => {
-
+        
         this.hasFacebookSetup = true;
         this.facebookAccessToken = res['authResponse'].accessToken;
         localStorage.setItem('FacebookAccessToken', this.accessToken);
@@ -1248,6 +1278,25 @@ export class CampaginComponent implements OnInit, AfterViewInit {
       })
       .catch();
   }
+  // getFacebookPagesList() {
+
+  //   const url = "https://graph.facebook.com/me/accounts?&access_token=" + this.facebookAccessToken;
+  //   this.http.get(url).subscribe(res => {
+  //     if (res) {
+
+  //       let rows = res['data'];
+  //       for (let i = 0; i < rows.length; i++) {
+  //         let p = rows[i]
+  //         let q = p.name.toString();
+  //         this.facebookAccounts.push(q);
+  //       }
+  //       this.gaSelectForm.controls['facebookSelect'].setValue(this.facebookpagename, { onlySelf: true });
+  //     }
+  //   }, error => {
+  //     this.snackbarService.show('Fetch New Likes Count Failed : ' + JSON.stringify(error.error));
+  //   });
+  // }
+
   getFacebookPagesList() {
 
     const url = "https://graph.facebook.com/me/accounts?&access_token=" + this.facebookAccessToken;
@@ -1266,6 +1315,7 @@ export class CampaginComponent implements OnInit, AfterViewInit {
       this.snackbarService.show('Fetch New Likes Count Failed : ' + JSON.stringify(error.error));
     });
   }
+
 
 
 }

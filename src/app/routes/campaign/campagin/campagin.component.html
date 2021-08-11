@@ -41,8 +41,7 @@
 
                             <br>
                             <div class="text-center">
-                                <button class="mr-1 btn btn-danger btn-lg" type="submit"
-                                [disabled]="!name_field.value"
+                                <button class="mr-1 btn btn-danger btn-lg" type="submit" [disabled]="!name_field.value"
                                     (click)="goToNextTab($event,name_field.value,'name',1)">Next </button>
                             </div>
                         </div>
@@ -114,7 +113,7 @@
                         <div class="col-md-12" class="goaldiv">
                             <div class="row-md-12">
 
-                                 <div fxLayout="row" fxLayoutAlign="space-around center" fxFlex="100">
+                                <div fxLayout="row" fxLayoutAlign="space-around center" fxFlex="100">
                                     <div fxFlex="30">
                                         <div
                                             class="card card-default shadow bg-white rounded cursor-default integration-box-hight">
@@ -129,8 +128,8 @@
                                                         </p>
                                                         <form [formGroup]="gaSelectForm" class="goalfonsize"
                                                             *ngIf="hasGaSetup">
-                                                            <select id="gaSelect" style="width: 120px;" class="form-control"
-                                                                formControlName="gaSelect"
+                                                            <select id="gaSelect" style="width: 120px;"
+                                                                class="form-control" formControlName="gaSelect"
                                                                 (change)="onSelectGa($event.target.value)">
                                                                 <option [ngValue]="undefined" [disabled]="true">Please
                                                                     Select
@@ -168,8 +167,8 @@
                                                         </p>
                                                         <form [formGroup]="gaSelectForm" class="goalfonsize"
                                                             *ngIf="hasGscSetup">
-                                                            <select id="gscSelect" style="width: 120px;" class="form-control"
-                                                                formControlName="gscSelect"
+                                                            <select id="gscSelect" style="width: 120px;"
+                                                                class="form-control" formControlName="gscSelect"
                                                                 (change)="onSelectGsc($event.target.value)">
                                                                 <option [ngValue]="undefined" [disabled]="true">Please
                                                                     Select
@@ -192,38 +191,78 @@
                                         </div>
                                     </div>
 
-                                 </div>
+                                    <div fxFlex="30">
+                                        <div
+                                            class="card card-default shadow bg-white rounded cursor-default integration-box-hight">
+                                            <div fxFlex="100" fxLayout="row" fxLayoutAlign="center center">
+                                                <div>
+                                                    <div fxLayout="column" fxLayoutALign="space-around center">
+                                                        <!-- <em class="fa-2x mr-2 fas fa-store"></em><br> -->
+                                                        <p class="goalfonsize">
+                                                            <button class="mr-1 btn btn-danger btn-lg" type="button"
+                                                                (click)="loginWithOptions()">Facebook</button>
+                                                        </p>
+                                                        <form [formGroup]="gaSelectForm" class="goalfonsize"
+                                                            *ngIf="hasFacebookSetup">
+                                                            <select id="facebookSelect" class="form-control"
+                                                                formControlName="facebookSelect"
+                                                                (change)="onSelectFacebook($event.target.value)">
+                                                                <option [ngValue]="undefined" [disabled]="true">Please
+                                                                    Select
+                                                                </option>
+                                                                <option
+                                                                    *ngFor="let facebookAccount of facebookAccounts"  [value]="facebookAccount">{{
+                                                                    facebookAccount }}</option>
+                                                            </select>
+                                                        </form>
+                                                        <p class="goalfonsize" *ngIf="hasFacebookSetup">
+
+                                                        </p>
+                                                        <p class="goalfonsize" *ngIf="hasFacebookSetup">
+                                                            <button type="button" class="btn btn-danger"
+                                                                (click)="saveFacebookAccount()"
+                                                                [disabled]="!isFacebookEdit">Save
+                                                                Changes</button>
+                                                        </p>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+
+
+                                </div>
 
 
                             </div>
                             <div class="row-md-12">
                                 <!--Google ads hidden-->
-                             <div fxFlex="row" fxLayoutAlign="space-around center" fxFlex="100">
+                                <div fxFlex="row" fxLayoutAlign="space-around center" fxFlex="100">
 
-                                <div fxFlex="30">
-                                    <div
-                                        class="card card-default shadow bg-white rounded cursor-default integration-box-hight">
-                                        <div fxFlex="100" fxLayout="row" fxLayoutAlign="center center">
-                                            <div>
-                                                <div fxLayout="column" fxLayoutALign="center center">
-                                                    <!-- <em class="fa-2x mr-2 fas fa-store"></em><br> -->
-                                                    <p class="goalfonsize">
-                                                        <button class="mr-1 btn btn-danger btn-lg" type="button"
-                                                            (click)="goToAddKeywords()">Add Keywords
-                                                        </button>
-                                                    </p>
-                                                    <p class="goalfonsize">
+                                    <div fxFlex="30">
+                                        <div
+                                            class="card card-default shadow bg-white rounded cursor-default integration-box-hight">
+                                            <div fxFlex="100" fxLayout="row" fxLayoutAlign="center center">
+                                                <div>
+                                                    <div fxLayout="column" fxLayoutALign="center center">
+                                                        <!-- <em class="fa-2x mr-2 fas fa-store"></em><br> -->
+                                                        <p class="goalfonsize">
+                                                            <button class="mr-1 btn btn-danger btn-lg" type="button"
+                                                                (click)="goToAddKeywords()">Add Keywords
+                                                            </button>
+                                                        </p>
+                                                        <p class="goalfonsize">
 
-                                                        <button class="mr-1 btn btn-danger btn-lg" type="button"
-                                                            (click)="goToKeywords()">Keywords
-                                                        </button>
-                                                    </p>
+                                                            <button class="mr-1 btn btn-danger btn-lg" type="button"
+                                                                (click)="goToKeywords()">Keywords
+                                                            </button>
+                                                        </p>
+                                                    </div>
                                                 </div>
                                             </div>
                                         </div>
                                     </div>
                                 </div>
-                            </div>
                             </div>
                         </div>
                     </div>
@@ -492,8 +531,7 @@
                     </div>
                     <canvas *ngIf="!showSpinnerBaseChart" baseChart [datasets]="lineChartData"
                         [labels]="lineChartLabels" [options]="lineChartOptions" [colors]="lineChartColors"
-                        [legend]="lineChartLegend" [chartType]="lineChartType" [plugins]="lineChartPlugins"
-                        >
+                        [legend]="lineChartLegend" [chartType]="lineChartType" [plugins]="lineChartPlugins">
                     </canvas>
                 </div>
 

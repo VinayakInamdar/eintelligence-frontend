@@ -36,14 +36,14 @@
                     </mat-form-field>
 
 
-                    <mat-form-field appearance="fill" class="pr-sm-4" fxFlex="0">
+                    <mat-form-field appearance="fill" class="pr-sm-4" fxFlex="20">
                         <mat-label>End date</mat-label>
                         <input matInput [matDatepicker]="endDatePicker" name="end" [formControl]="toDate" (dateChange)="onEndDateChange($event)">
                         <mat-datepicker-toggle matSuffix [for]="endDatePicker"></mat-datepicker-toggle>
                         <mat-datepicker #endDatePicker></mat-datepicker>
                         <mat-error>Please select End date!</mat-error>
                     </mat-form-field>
-                    <button class="mr-1 btn btn-danger btn-lg" type="button" (click)="testDateSlab('', '', false)">Test</button>
+                    <button class="mr-1 btn btn-danger btn-sm" type="button" (click)="testDateSlab('', '', false)" hidden>Test</button>
                 </div>
             </div>
             <!-- <button class="mr-1 btn btn-danger btn-lg" type="button" (click)="loginWithOptions()">
@@ -63,17 +63,17 @@
         </div> -->
     </div>
 </div>
-<div class="row  justify-content-center">
+<!--div class="row  justify-content-center">
 
     <div class="col-md-4  justify-content-center">
     </div>
-</div>
+</div-->
 <div class="row overviewmaindiv">
     <div class="col-lg-12">
 
         <div class="card card-default shadow bg-white rounded height200pxfit-content cursor-set">
             <div class="card-header">
-                <div class="row borderBtm padding5">
+                <div class="row borderBtm">
                     <h2 class="col-xs-12 col-12page col-md-10 fontsize15px colour-set">Facebook: Performance Summary
                     </h2>
 
@@ -184,7 +184,7 @@
 
         <div class="card card-default shadow bg-white rounded height200pxfit-content cursor-set">
             <div class="card-header">
-                <div class="row borderBtm padding5">
+                <div class="row borderBtm">
                     <h2 class="col-xs-12 col-12 col-md-10 fontsize15px colour-set">Facebook: Audience Summary</h2>
 
                 </div>
@@ -260,7 +260,7 @@
         <div class="col-lg-6">
             <div class="card card-default shadow bg-white rounded height200pxfit-content cursor-set">
                 <div class="card-header">
-                    <div class="row borderBtm padding5">
+                    <div class="row borderBtm">
                         <h2 class="col-xs-12 col-12 col-md-10 fontsize15px colour-set">Facebook: Page Views Via External Referrers
                         </h2>
 
@@ -309,7 +309,7 @@
         <div class="col-lg-6">
             <div class="card card-default shadow bg-white rounded height200pxfit-content cursor-set">
                 <div class="card-header">
-                    <div class="row borderBtm padding5">
+                    <div class="row borderBtm">
                         <h2 class="col-xs-12 col-12 col-md-10 fontsize15px colour-set">Facebook: Page Unlikes by Source
                         </h2>
 
@@ -361,7 +361,7 @@
     <div class="col-lg-12">
         <div class="card card-default shadow bg-white rounded height200pxfit-content cursor-set">
             <div class="card-header">
-                <div class="row borderBtm padding5">
+                <div class="row borderBtm">
                     <h2 class="col-xs-12 col-12 col-md-10 fontsize15px colour-set">Facebook: Impression Summary</h2>
 
                 </div>
