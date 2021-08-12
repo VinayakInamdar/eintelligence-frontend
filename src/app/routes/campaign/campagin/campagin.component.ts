@@ -1147,6 +1147,7 @@ export class CampaginComponent implements OnInit, AfterViewInit {
   }
   isFacebookEdit: boolean = false;
   onSelectFacebook(id) {
+    
     if (this.facebookSelectedName !== id) {
       this.isFacebookEdit = true;
     }
@@ -1157,6 +1158,7 @@ export class CampaginComponent implements OnInit, AfterViewInit {
   }
 
   saveFacebookAccount() {
+    
     if (!this.isEditMode) {
       let data = {
         id: "00000000-0000-0000-0000-000000000000",
@@ -1168,11 +1170,13 @@ export class CampaginComponent implements OnInit, AfterViewInit {
       }
       this.campaignService.createFacebook(data).subscribe(
         res => {
+          
           this.isFacebookEdit = false;
           this.successAlert()
         });
     }
     if (this.isEditMode) {
+      
       if (this.facebookid == null || this.facebookid == undefined || this.facebookid == 'null' || this.facebookid == '') {
         let data = {
           id: "00000000-0000-0000-0000-000000000000",
@@ -1184,6 +1188,7 @@ export class CampaginComponent implements OnInit, AfterViewInit {
         }
         this.campaignService.createFacebook(data).subscribe(
           res => {
+            
             this.isFacebookEdit = false;
             this.successAlert()
           });
@@ -1275,6 +1280,7 @@ export class CampaginComponent implements OnInit, AfterViewInit {
         localStorage.setItem('FacebookAccessToken', this.accessToken);
         this.facebookAccounts = [];
         this.getFacebookPagesList();
+        
       })
       .catch();
   }

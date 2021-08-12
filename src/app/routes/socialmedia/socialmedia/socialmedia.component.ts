@@ -171,9 +171,11 @@ export class SocialmediaComponent implements OnInit {
   }
 
   ngOnInit(): void {
+    
     this.resetVariables();
     this.pagename = localStorage.getItem('facebookpagename');
     this.accessToken = localStorage.getItem('facebookaccesstoken');
+    
     this.refreshToken();
     this.pageUnlikeList = [];// [{ "source": "1", "count": "2", "percent": "3" }, { "source": "4", "count": "5", "percent": "6" }];
     this.externalReferrerList = []// [{ "url": "1", "count": "2", "percent": "3" }, { "url": "4", "count": "5", "percent": "6" }];
@@ -274,6 +276,7 @@ export class SocialmediaComponent implements OnInit {
   }
 
   testDateSlab(sdate, edate, isPrev) {
+    
     //   sdate = "2020-9-02";
     // edate = "2021-04-13";
     const multiPuts = [];
