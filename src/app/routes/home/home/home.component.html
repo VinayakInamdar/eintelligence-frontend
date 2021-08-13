@@ -18,7 +18,15 @@
 
             <div class="card card-default shadow p-3 bg-white rounded  cursor-default">
                 <div class="col-lg-12">
-                    <h2 class="healthscorecard">Agency Health Score: {{agencyScore}}&nbsp;%</h2>
+                  
+                    <h2 *ngIf="showSpinnerToLoadScore" class="healthscorecard">Agency Health Score:   <div class="la-line-scale  linescaleloadercolortopleft1">
+                        <div style="background-color: #dc3545;"></div>
+                        <div style="background-color: #dc3545;"></div>
+                        <div style="background-color: #dc3545;"></div>
+                        <div style="background-color: #dc3545;"></div>
+                        <div style="background-color: #dc3545;"></div>
+                    </div></h2>
+                    <h2 *ngIf="!showSpinnerToLoadScore" class="healthscorecard">Agency Health Score: {{agencyScore}}&nbsp;%</h2>
                 </div>
             </div>
             <div class="row setbuttonpadding">

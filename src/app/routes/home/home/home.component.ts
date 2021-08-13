@@ -30,6 +30,7 @@ const success = require('sweetalert');
   styleUrls: ['./home.component.scss']
 })
 export class HomeComponent implements OnInit {
+  showSpinnerToLoadScore: boolean = true;
   showSpinnertoLoadDashboard: boolean = true;
   //agency score variables
   sdate: any; edate: any;
@@ -39,7 +40,7 @@ export class HomeComponent implements OnInit {
   totalProjectScore: number = 0;
   projectSeImpressionScore: number = 0;
   projectScore: number = 0;
-  campaignsCount = 0; agencyScore = 0;
+  campaignsCount = 0; agencyScore: any;
   projectOrganicTrafficScore: number = 0;
   projectSeoConversionsScore: number = 0;
   keywordTableList = [];
@@ -270,7 +271,7 @@ export class HomeComponent implements OnInit {
         type: 'html',
         valuePrepareFunction: (value) => {
           let rank = value;
-          if (rank == 'NaN') {
+          if (rank == 'NaN'||rank==NaN||rank=="") {
             rank = 0;
           }
           //this.tempRes = value;
@@ -325,13 +326,13 @@ export class HomeComponent implements OnInit {
             }
           } else {
             this.tempRes = st[0] + " - " + st[1];
+            if (value == "" || value == undefined || value == "undefined") {
+              this.tempRes = 'NA';
+            }
           }
-          if (this.tempRes.includes('undefined')) {
-            this.tempRes = '';
-          }
-          if (value == "") {
-            this.tempRes = 'NA';
-          }
+          // if (this.tempRes.includes('undefined')) {
+          //   this.tempRes = '';
+          // }
           return this.tempRes;
         }
 
@@ -361,18 +362,16 @@ export class HomeComponent implements OnInit {
             }
           } else {
             this.tempRes = st[0] + " - " + st[1];
+            if (value == "" || value == undefined || value == "undefined") {
+              this.tempRes = 'NA';
+            }
           }
-          if (this.tempRes.includes('undefined')) {
-            this.tempRes = '';
-          }
-          if (value == "") {
-            this.tempRes = 'NA';
-          }
+          // if (this.tempRes.includes('undefined')) {
+          //   this.tempRes = '';
+          // }
+
           return this.tempRes;
         }
-
-
-
       },
       // socialMedia: {
       //   title: 'SM Engagement',
@@ -500,7 +499,7 @@ export class HomeComponent implements OnInit {
   }
 
   ngOnInit() {
-    
+
     this.resetChartVariables();
     ;
     this.getSerpList();
@@ -822,16 +821,21 @@ export class HomeComponent implements OnInit {
     this.projectSeImpressionScore += this.seImpressionScore;
 
   }
-
+ 
   calculatetotalProjectScore() {
     ;
     this.projectScore = this.projectSeImpressionScore + this.projectOrganicTrafficScore +
       this.projectSeoConversionsScore + this.projectSeRankingScore;
 
     //this.totalProjectScore = this.totalProjectScore + this.projectScore[campaignIndex];
-
-    this.agencyScore = Math.round((this.projectScore / this.campaignsCount) * 100);
-
+    if (this.projectScore === 0) {
+      this.showSpinnerToLoadScore = false;
+      this.agencyScore = "NA"
+    }
+    else {
+      this.showSpinnerToLoadScore = false;
+      this.agencyScore = Math.round((this.projectScore / this.campaignsCount) * 100);
+    }
   }
   assignOrganicTrafficScore() {
     ;
@@ -1379,8 +1383,8 @@ export class HomeComponent implements OnInit {
       this.averagePosition += ((serpList[i].position + serpList[i].prevposition) / 2);
 
     }
-    if (this.averagePosition == null || this.averagePosition == NaN || this.averagePosition == undefined || this.averagePosition == 'undefined') {
-      this.averagePosition = '';
+    if (this.averagePosition == null || this.averagePosition == NaN || this.averagePosition == undefined || this.averagePosition == 'undefined'||this.averagePosition == '') {
+      this.averagePosition = 0;
     }
     this.campaignList[campaignIndex].ranking = this.averagePosition;
     this.tableData = this.campaignList;
