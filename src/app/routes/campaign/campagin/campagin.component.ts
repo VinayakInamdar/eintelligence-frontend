@@ -1322,6 +1322,216 @@ export class CampaginComponent implements OnInit, AfterViewInit {
     });
   }
 
+  removeGaIntegration(){
+    
+    let id=localStorage.getItem("gaid");
+    success({
+      icon: this.translate.instant('sweetalert.WARNINGICON'),
+      title: this.translate.instant('message.DELETEMSG'),
+      buttons: {
+        cancel: {
+          text: this.translate.instant('sweetalert.CANCELBUTTON'),
+          value: null,
+          visible: true,
+          className: "",
+          closeModal: false
+        },
+        confirm: {
+          text: this.translate.instant('sweetalert.CONFIRMBUTTON'),
+          value: true,
+          visible: true,
+          className: "bg-danger",
+          closeModal: false
+        }
+      }
+    }).then((isConfirm: any) => {
+      if (isConfirm) {
+        ;
+        this.campaignService.deleteCampaignGAById(id).subscribe(res => {
+          ;
+          success({
+            icon: this.translate.instant('sweetalert.WARNINGICON'),
+            title: this.translate.instant('message.DELETEMSG'),
+            buttons: {
+              confirm: {
+                text: this.translate.instant('sweetalert.OKBUTTON'),
+                value: true,
+                visible: true,
+                className: "bg-danger",
+                closeModal: true,
+              }
+            }
+          }).then((isConfirm) => {
+            if (isConfirm) {
+              //this.router.navigate(['/campaign']);
+              this.hasGaSetup=false;
+              localStorage.setItem("gaurl","");
+              localStorage.setItem("gaid","");
+              
+             
+            }
+          })
+        });
+      } else {
+        success({
+          icon: this.translate.instant('sweetalert.WARNINGICON'),
+          title: this.translate.instant('message.CANCLEMSG'),
+          buttons: {
+            confirm: {
+              text: this.translate.instant('sweetalert.OKBUTTON'),
+              value: true,
+              visible: true,
+              className: "bg-danger",
+              closeModal: true,
+            }
+          }
+        }).then((isConfirm) => {
+          
+         
+        })
+      }
+    });
+  }
 
+  removeGscIntegration(){
+    
+    let id=localStorage.getItem("gscid");
+    success({
+      icon: this.translate.instant('sweetalert.WARNINGICON'),
+      title: this.translate.instant('message.DELETEMSG'),
+      buttons: {
+        cancel: {
+          text: this.translate.instant('sweetalert.CANCELBUTTON'),
+          value: null,
+          visible: true,
+          className: "",
+          closeModal: false
+        },
+        confirm: {
+          text: this.translate.instant('sweetalert.CONFIRMBUTTON'),
+          value: true,
+          visible: true,
+          className: "bg-danger",
+          closeModal: false
+        }
+      }
+    }).then((isConfirm: any) => {
+      if (isConfirm) {
+        ;
+        this.campaignService.deleteCampaignGSCById(id).subscribe(res => {
+          ;
+          success({
+            icon: this.translate.instant('sweetalert.WARNINGICON'),
+            title: this.translate.instant('message.DELETEMSG'),
+            buttons: {
+              confirm: {
+                text: this.translate.instant('sweetalert.OKBUTTON'),
+                value: true,
+                visible: true,
+                className: "bg-danger",
+                closeModal: true,
+              }
+            }
+          }).then((isConfirm) => {
+            if (isConfirm) {
+              //this.router.navigate(['home/campaign']);
+              
+              this.hasGscSetup=false;
+              localStorage.setItem("gscurl","");
+              localStorage.setItem("gscid","");
+             
+            }
+          })
+        });
+      } else {
+        success({
+          icon: this.translate.instant('sweetalert.WARNINGICON'),
+          title: this.translate.instant('message.CANCLEMSG'),
+          buttons: {
+            confirm: {
+              text: this.translate.instant('sweetalert.OKBUTTON'),
+              value: true,
+              visible: true,
+              className: "bg-danger",
+              closeModal: true,
+            }
+          }
+        }).then((isConfirm) => {
+          
+         
+        })
+      }
+    });
+  }
 
+  removeFacebookIntegration(){
+    
+    let id=localStorage.getItem("facebookid");
+    success({
+      icon: this.translate.instant('sweetalert.WARNINGICON'),
+      title: this.translate.instant('message.DELETEMSG'),
+      buttons: {
+        cancel: {
+          text: this.translate.instant('sweetalert.CANCELBUTTON'),
+          value: null,
+          visible: true,
+          className: "",
+          closeModal: false
+        },
+        confirm: {
+          text: this.translate.instant('sweetalert.CONFIRMBUTTON'),
+          value: true,
+          visible: true,
+          className: "bg-danger",
+          closeModal: false
+        }
+      }
+    }).then((isConfirm: any) => {
+      if (isConfirm) {
+        ;
+        this.campaignService.deleteCampaignFacebookById(id).subscribe(res => {
+          ;
+          success({
+            icon: this.translate.instant('sweetalert.WARNINGICON'),
+            title: this.translate.instant('message.DELETEMSG'),
+            buttons: {
+              confirm: {
+                text: this.translate.instant('sweetalert.OKBUTTON'),
+                value: true,
+                visible: true,
+                className: "bg-danger",
+                closeModal: true,
+              }
+            }
+          }).then((isConfirm) => {
+            if (isConfirm) {
+              //this.router.navigate(['home/campaign']);
+              this.hasFacebookSetup=false;
+              localStorage.setItem("facebookpagename","");
+              localStorage.setItem("facebookid","");
+              
+             
+            }
+          })
+        });
+      } else {
+        success({
+          icon: this.translate.instant('sweetalert.WARNINGICON'),
+          title: this.translate.instant('message.CANCLEMSG'),
+          buttons: {
+            confirm: {
+              text: this.translate.instant('sweetalert.OKBUTTON'),
+              value: true,
+              visible: true,
+              className: "bg-danger",
+              closeModal: true,
+            }
+          }
+        }).then((isConfirm) => {
+          
+         
+        })
+      }
+    });
+  }
 }

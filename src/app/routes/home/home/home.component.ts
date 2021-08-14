@@ -271,7 +271,7 @@ export class HomeComponent implements OnInit {
         type: 'html',
         valuePrepareFunction: (value) => {
           let rank = value;
-          if (rank == 'NaN'||rank==NaN||rank=="") {
+          if (rank == 'NaN' || rank == NaN || rank == "") {
             rank = 0;
           }
           //this.tempRes = value;
@@ -821,20 +821,19 @@ export class HomeComponent implements OnInit {
     this.projectSeImpressionScore += this.seImpressionScore;
 
   }
- 
+
   calculatetotalProjectScore() {
     ;
     this.projectScore = this.projectSeImpressionScore + this.projectOrganicTrafficScore +
       this.projectSeoConversionsScore + this.projectSeRankingScore;
-
+    
     //this.totalProjectScore = this.totalProjectScore + this.projectScore[campaignIndex];
+    this.showSpinnerToLoadScore = false;
     if (this.projectScore === 0) {
-      this.showSpinnerToLoadScore = false;
       this.agencyScore = "NA"
     }
     else {
-      this.showSpinnerToLoadScore = false;
-      this.agencyScore = Math.round((this.projectScore / this.campaignsCount) * 100);
+      this.agencyScore = Math.round((this.projectScore / this.campaignsCount) * 100) + " %";
     }
   }
   assignOrganicTrafficScore() {
@@ -1366,6 +1365,7 @@ export class HomeComponent implements OnInit {
       }
       this.source = new LocalDataSource(this.campaignList);
       this.showSpinnertoLoadDashboard = false;
+      this.calculatetotalProjectScore();
     });
 
   }
@@ -1383,7 +1383,7 @@ export class HomeComponent implements OnInit {
       this.averagePosition += ((serpList[i].position + serpList[i].prevposition) / 2);
 
     }
-    if (this.averagePosition == null || this.averagePosition == NaN || this.averagePosition == undefined || this.averagePosition == 'undefined'||this.averagePosition == '') {
+    if (this.averagePosition == null || this.averagePosition == NaN || this.averagePosition == undefined || this.averagePosition == 'undefined' || this.averagePosition == '') {
       this.averagePosition = 0;
     }
     this.campaignList[campaignIndex].ranking = this.averagePosition;

@@ -459,6 +459,7 @@ export class CampaignlistComponent implements OnInit {
   }
 
   deleteCampaign(event) {
+    
     success({
       icon: this.translate.instant('sweetalert.WARNINGICON'),
       title: this.translate.instant('message.DELETEMSG'),

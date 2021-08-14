@@ -48,6 +48,21 @@ export class CampaignService {
   deleteCampaignById(id: string): Observable<Campaign> {
     return this.http.delete<Campaign>(this.Url + 'campaigns/' + id);
   }
+  //delete campaignGA
+  deleteCampaignGAById(id:string):Observable<any>{
+    
+    return this.http.delete<any>(this.Url+'campaigngoogleanalyticss/'+id);
+  }
+  //delete campaignGSC
+  deleteCampaignGSCById(id:string):Observable<any>{
+    
+    return this.http.delete<any>(this.Url+'campaigngscs/'+id);
+  }
+  //delete campaignfacebook
+  deleteCampaignFacebookById(id:string):Observable<any>{
+    
+    return this.http.delete<any>(this.Url+'campaignfacebooks/'+id);
+  }
   getFilteredRankingGraph(filter: FilterOptionModel): Observable<any> {
 
     const params = `PageNumber=${filter.pageNumber}&PageSize=${filter.pageSize}&SearchQuery=${filter.searchQuery}&OrderBy=${filter.orderBy}&Fields=${filter.fields}`;

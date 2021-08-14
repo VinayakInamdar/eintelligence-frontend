@@ -145,6 +145,7 @@
                                                             <button type="button" class="btn btn-danger"
                                                                 (click)="saveGaAccount()" [disabled]="!isGaEdit">Save
                                                                 Changes</button>
+                                                                <span class="col" (click)="removeGaIntegration()"><i class="fas fa-trash-alt text-danger"></i></span>
                                                         </p>
 
                                                     </div>
@@ -184,6 +185,7 @@
                                                             <button type="button" class="btn btn-danger"
                                                                 (click)="saveGscAccount()" [disabled]="!isGscEdit">Save
                                                                 Changes</button>
+                                                                <span class="col" (click)="removeGscIntegration()"><i class="fas fa-trash-alt text-danger"></i></span>
                                                         </p>
                                                     </div>
                                                 </div>
@@ -223,6 +225,7 @@
                                                                 (click)="saveFacebookAccount()"
                                                                 [disabled]="!isFacebookEdit">Save
                                                                 Changes</button>
+                                                                <span class="col" (click)="removeFacebookIntegration()"><i class="fas fa-trash-alt text-danger"></i></span>
                                                         </p>
                                                     </div>
                                                 </div>
