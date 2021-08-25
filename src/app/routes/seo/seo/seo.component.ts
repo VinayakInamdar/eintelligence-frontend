@@ -1125,11 +1125,11 @@ export class SeoComponent implements OnInit {
     });
   }
   refreshGSCAccount2() {
-    ;
+      ;
     this.getData();
   }
   refreshGoogleAnalyticsAccount2() {
-
+  
     //this.gaaccesstoken = this.currentGaAccessToken;
     this.getAnalyticsProfileIds();
     this.getSiteSpeedDataMobile();
@@ -1247,7 +1247,7 @@ export class SeoComponent implements OnInit {
   }
   // using to get list of campaigns
   public getCampaignList(): void {
-
+  
     var userid = localStorage.getItem("userID");
     this.campaignService.getCampaign(userid).subscribe(res => {
 
@@ -2194,7 +2194,7 @@ export class SeoComponent implements OnInit {
 
   }
   getSiteSpeedDataMobile() {
-    ;
+      ;
     this.httpOptionJSON = {
       headers: new HttpHeaders({
         'Accept': 'application/json',
@@ -2208,7 +2208,7 @@ export class SeoComponent implements OnInit {
     const url = "https://pagespeedonline.googleapis.com/pagespeedonline/v5/runPagespeed?url=https%3A%2F%2F" + urlcamp + "&strategy=MOBILE&key=AIzaSyC1IsrCeeNXp9ksAmC8szBtYVjTLJC9UWQ";
     this.http.get(url, this.httpOptionJSON).subscribe(res => {
       if (res) {
-
+  
         //FCP 2320 green
         this.showSpinnerSiteSpeedContent = false;
         let rows = res['loadingExperience'].metrics;
@@ -2361,7 +2361,7 @@ export class SeoComponent implements OnInit {
   }
 
   getSiteSpeedDataDesktop() {
-    ;
+      ;
     this.httpOptionJSON = {
       headers: new HttpHeaders({
         'Accept': 'application/json',
@@ -2376,7 +2376,7 @@ export class SeoComponent implements OnInit {
     // const url = "https://pagespeedonline.googleapis.com/pagespeedonline/v5/runPagespeed?url=https%3A%2F%2Fpatwa.co.in&key=AIzaSyC1IsrCeeNXp9ksAmC8szBtYVjTLJC9UWQ"
     this.http.get(url, this.httpOptionJSON).subscribe(res => {
       if (res) {
-
+  
         //FCP 2320 green
         this.showSpinnerSiteSpeedContent = false;
         let rows = res['loadingExperience'].metrics;

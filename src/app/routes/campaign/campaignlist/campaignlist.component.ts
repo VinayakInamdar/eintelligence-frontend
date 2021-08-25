@@ -63,7 +63,7 @@ export class CampaignlistComponent implements OnInit {
 
     actions: {
       columnTitle: '',
-      custom: [{ name: 'editCampaign', title: '<span class="col-md-6"></span><i class="fas fa-edit"></i>' },
+      custom: [{ name: 'editCampaign', title: '<span class="col-md-4"></span><i class="fas fa-edit"></i>' },
       { name: 'deleteCampaign', title: '<span class="text-danger col" style="padding-left:1rem"><i class="fas fa-trash-alt"></i></span>' },
       { name: 'onCampaignSelect', title: '<i class="fas fa-user"></i>' },
       { name: 'showCampaignFulfillment', title: '<span class="col"><i class="fas fa-store"></i></span>' }
@@ -81,7 +81,7 @@ export class CampaignlistComponent implements OnInit {
         filter: false,
         type: 'html',
         valuePrepareFunction: (value) => {
-          ;
+           ;
           let a = value;
           let b = "https://www.";
           let c = b.concat(a);

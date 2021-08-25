@@ -326,7 +326,8 @@ export class CampaginComponent implements OnInit, AfterViewInit {
   facebookid;
   gacode;
   gsccode;
-  webUrlReg: string = '([^https://www.]|[^www.]|[^http://www.])[a-zA-Z]{4,}(([\.][a-z]{3})|([\.][a-z]{2}[\.][a-z]{2}))';
+  webUrlReg: string = '(https?://)?([\\da-z.-]+)\\.([a-z.]{2,6})[/\\w .-]*/?';
+  webUrlReg1='[^:/.]([a-z0-9]{3,}[.]([a-z]{2,4})([.])([a-z]{2,4}))|[^:/.]([a-z0-9]{3,}[.]([a-z]{2,3}))';
   constructor(private translate: TranslateService, fb: FormBuilder, private facebook: FacebookService,
     private campaignService: CampaignService, private authService: SocialAuthService,
     public route: ActivatedRoute, public http: HttpClient, public datepipe: DatePipe, public router: Router, private openIdConnectService: OpenIdConnectService, private integrationsService: IntegrationsService
@@ -359,7 +360,7 @@ export class CampaginComponent implements OnInit, AfterViewInit {
       'name': [this.campaignModel.name, Validators.required],
       'campaignType': [''],
       //'webUrl': [this.campaignModel.webUrl, [Validators.required, Validators.pattern('[a-zA-Z]{4,}[\.][a-z]{2,4}')]],
-      'webUrl': [this.campaignModel.webUrl, [Validators.required, Validators.pattern(this.webUrlReg)]],
+      'webUrl': [this.campaignModel.webUrl, [Validators.required, Validators.pattern(this.webUrlReg1)]],
 
       'moreTraffic': [true],
       'sales': [true],
@@ -1367,8 +1368,8 @@ export class CampaginComponent implements OnInit, AfterViewInit {
               this.hasGaSetup=false;
               localStorage.setItem("gaurl","");
               localStorage.setItem("gaid","");
-              
-             
+              localStorage.setItem("gaaccesstoken","");
+             localStorage.setItem("garefreshtoken","");
             }
           })
         });
@@ -1439,7 +1440,8 @@ export class CampaginComponent implements OnInit, AfterViewInit {
               this.hasGscSetup=false;
               localStorage.setItem("gscurl","");
               localStorage.setItem("gscid","");
-             
+             localStorage.setItem("gscaccesstoken","");
+             localStorage.setItem("gscrefreshtoken","");
             }
           })
         });
@@ -1509,8 +1511,10 @@ export class CampaginComponent implements OnInit, AfterViewInit {
               this.hasFacebookSetup=false;
               localStorage.setItem("facebookpagename","");
               localStorage.setItem("facebookid","");
-              
-             
+              localStorage.setItem("facebookaccesstoken","");
+              localStorage.setItem("FacebookAccessToken","");
+             localStorage.setItem("facebookurl","");
+             localStorage.setItem("FacebookPageToken","");
             }
           })
         });

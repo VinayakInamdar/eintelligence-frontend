@@ -28,7 +28,7 @@ export function createTranslateLoader(http: HttpClient) {
 @NgModule({
     declarations: [
         AppComponent,
-        SigninOidcComponent
+        SigninOidcComponent,
         //RegisterComponent
     ],
     imports: [

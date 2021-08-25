@@ -40,6 +40,16 @@ export const routes: Routes = [
                 loadChildren: () => import('./register/register.module').then(m => m.RegisterModule)
             },
             {
+                path: 'agencyActivatedSuccessfully',
+                loadChildren: () => import('./register/agencyActivated/agency-activates.module').then(m => m.AgencyActivatesModule)
+            },
+            {
+                path: 'agencyNotApproved',
+                component : LayoutComponent,
+                canActivate: [RequireAuthenticatedUserRouteGuardService],
+                loadChildren: () => import('./register/agencyFailed/agency-failed.module').then(m => m.AgencyFailedModule)
+            },
+            {
                 path: 'success',
                 loadChildren: () => import('./register/success/success.module').then(m => m.SuccessModule)
             },

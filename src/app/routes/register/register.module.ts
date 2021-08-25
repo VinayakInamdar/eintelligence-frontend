@@ -16,6 +16,8 @@ import { Agency3Component } from './agency3/agency3.component';
 import { Agency4Component } from './agency4/agency4.component';
 import { LoginComponent } from './login/log in/login.component';
 import { HomeComponent } from '../home/home/home.component';
+import { AgencyActivatedComponent } from './agencyActivated/agency-activated/agency-activated.component';
+import { AgencyFailedComponent } from './agencyFailed/agency-failed/agency-failed.component';
 
 
 
@@ -28,7 +30,9 @@ const routes: Routes = [
   { path: 'agency3', component: Agency3Component },
   { path: 'agency4', component: Agency4Component },
   //{ path: 'login', component: LoginComponent },
-  { path: 'home', component: HomeComponent }
+  { path: 'home', component: HomeComponent },
+  { path: 'agencyActivatedSuccessfully', component: AgencyActivatedComponent },
+  { path: 'agencyNotApproved', component: AgencyFailedComponent}
 ];
 
 @NgModule({
@@ -49,6 +53,6 @@ const routes: Routes = [
   exports: [
     RouterModule,
   ],
-  declarations: [Agency1Component, Agency2Component, Agency3Component]
+  declarations: [Agency1Component, Agency2Component, Agency3Component, AgencyActivatedComponent, AgencyFailedComponent]
 })
 export class RegisterModule { }

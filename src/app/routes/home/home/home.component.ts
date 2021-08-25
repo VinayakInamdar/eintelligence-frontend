@@ -232,10 +232,10 @@ export class HomeComponent implements OnInit {
   settings = {
     actions: {
       columnTitle: '',
-      custom: [{ name: 'editCampaign', title: '<span><i class="fas fa-edit"></i>&nbsp;&nbsp;&nbsp;</span>' },
-      { name: 'deleteCampaign', title: '<i class="fas fa-trash-alt text-danger"></i>' },
-      { name: 'onCampaignSelect', title: '<span>&nbsp;&nbsp;&nbsp;<i class="fas fa-user"></i></span>' },
-      { name: 'showCampaignFulfillment', title: '<span class="col"><i class="fas fa-store"></i></span>' }
+      custom: [{ name: 'editCampaign', title: '<span class="col-md-2"><i class="fas fa-edit"></i>' },
+      { name: 'deleteCampaign', title: '&nbsp;&nbsp;<i class="fas fa-trash-alt text-danger"></i>' },
+      { name: 'onCampaignSelect', title: '&nbsp;&nbsp;<i class="fas fa-user"></i>' },
+      { name: 'showCampaignFulfillment', title: '&nbsp;&nbsp;<i class="fas fa-store"></i>' }
       ],
       add: false, edit: false, delete: false, position: 'right'
     },
@@ -826,7 +826,7 @@ export class HomeComponent implements OnInit {
     ;
     this.projectScore = this.projectSeImpressionScore + this.projectOrganicTrafficScore +
       this.projectSeoConversionsScore + this.projectSeRankingScore;
-    
+
     //this.totalProjectScore = this.totalProjectScore + this.projectScore[campaignIndex];
     this.showSpinnerToLoadScore = false;
     if (this.projectScore === 0) {
@@ -939,7 +939,7 @@ export class HomeComponent implements OnInit {
       refreshToken: refreshToken
     }
     this.campaignService.updateGSC(this.gscid, data).subscribe(response => {
-
+       
       this.getCampaignGSC();
     });
   }
@@ -1138,8 +1138,9 @@ export class HomeComponent implements OnInit {
     }
     this.campaignService.updateGA(this.gaid, data).subscribe(response => {
 
-      ;
+       ;
       this.getCampaignGA();
+      // this.showSpinnertoLoadDashboard=false;
     });
   }
   getAnalyticsProfileIds(campaignIndex, url) {
@@ -1364,8 +1365,9 @@ export class HomeComponent implements OnInit {
         }
       }
       this.source = new LocalDataSource(this.campaignList);
-      this.showSpinnertoLoadDashboard = false;
+
       this.calculatetotalProjectScore();
+      this.showSpinnertoLoadDashboard = false;
     });
 
   }
