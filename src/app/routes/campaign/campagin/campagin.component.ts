@@ -1520,6 +1520,7 @@ export class CampaginComponent implements OnInit, AfterViewInit {
             }
           })
         });
+        
       } else {
         success({
           icon: this.translate.instant('sweetalert.WARNINGICON'),
