@@ -356,6 +356,7 @@ export class CampaginComponent implements OnInit, AfterViewInit {
     });
 
 
+    
     this.valForm = fb.group({
       'name': [this.campaignModel.name, Validators.required],
       'campaignType': [''],
